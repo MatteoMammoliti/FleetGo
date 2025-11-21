@@ -1,0 +1,139 @@
+### ====================================
+### GLOBAL IGNORE
+### ====================================
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+*.local
+
+
+### ====================================
+### BACKEND (SPRING BOOT + MAVEN + GRADLE)
+### ====================================
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# Maven wrapper
+!mvnw
+!mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Ignore other .mvn files not needed
+.mvn/
+
+# Gradle
+.gradle/
+build/
+out/
+
+# Ignore Gradle wrapper except executables
+gradlew.bat
+gradlew
+!gradlew
+!gradlew.bat
+
+# IntelliJ build cache
+
+
+### ====================================
+### FRONTEND (ANGULAR)
+### ====================================
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Angular build artifacts
+dist/
+build/
+.angular/
+.angular/cache/
+.angular/local/
+
+# Angular configuration backups
+*.orig
+*.bak
+
+# IDE settings (WebStorm/VSCode)
+.idea/*
+!.idea/codeStyles
+!.idea/keymaps
+!.idea/inspectionProfiles
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+
+### ====================================
+### DOCKER
+### ====================================
+
+# Docker ignore
+docker-compose.override.yml
+*.dockerfile~
+*.dockerignore~
+
+# Build artifacts
+*.tar
+*.img
+
+
+### ====================================
+### INTELLIJ / IDEA
+### ====================================
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+
+### ====================================
+### MISC
+### ====================================
+
+# Keystore files (security)
+*.jks
+*.keystore
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Coverage / Reports
+coverage/
+jacoco.exec
+test-output/
+
+# Git
+*.merge
+*.swp
+*.swo
