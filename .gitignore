@@ -31,13 +31,15 @@ pom.xml.versionsBackup
 release.properties
 
 # Maven wrapper
+mvnw
+mvnw.cmd
+.mvn/
+
+# Keep Maven wrapper files
 !mvnw
 !mvnw.cmd
-!.mvn/wrapper/maven-wrapper.jar
-!.mvn/wrapper/maven-wrapper.properties
-
-# Ignore other .mvn files not needed
-.mvn/
+!.mvn/
+!.mvn/wrapper/
 
 # Gradle
 .gradle/
