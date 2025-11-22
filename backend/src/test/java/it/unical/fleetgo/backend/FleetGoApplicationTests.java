@@ -1,4 +1,4 @@
-package it.unical.webapplications.fleetgo.backend;
+package it.unical.fleetgo.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

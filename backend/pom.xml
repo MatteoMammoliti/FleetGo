@@ -10,7 +10,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>it.unical.webapplications.fleetgo</groupId>
+	<groupId>it.unical.fleetgo</groupId>
 	<artifactId>fleetgo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FleetGp</name>
