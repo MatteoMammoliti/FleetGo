@@ -6,6 +6,6 @@ import lombok.Data;
 @Embeddable
 @Data
 public class RichiestaAffiliazioneFK {
-    private int idUtente;
-    private int idAzienda;
+    private Integer idUtente;
+    private Integer idAzienda;
 }

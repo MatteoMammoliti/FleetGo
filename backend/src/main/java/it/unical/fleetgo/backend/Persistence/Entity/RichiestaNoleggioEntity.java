@@ -14,6 +14,7 @@ import java.time.LocalTime;
 @Getter
 public class RichiestaNoleggioEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_richiesta")
     private Integer idRichiestaNoleggio;
 
@@ -32,7 +33,7 @@ public class RichiestaNoleggioEntity {
     private LocalDate dataConsegna;
 
     @Column(name = "ora_inizio")
-    private LocalTime oraInzio;
+    private LocalTime oraInizio;
 
     @Column(name = "ora_fine")
     private LocalTime oraFine;

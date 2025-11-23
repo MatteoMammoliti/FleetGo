@@ -2,14 +2,18 @@ package it.unical.fleetgo.backend.Persistence.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "luogo_azienda")
 public class LuogoAziendaEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_luogo")
     private Integer idLuogo;
 

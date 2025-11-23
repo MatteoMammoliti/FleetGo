@@ -13,6 +13,7 @@ import java.util.Set;
 public class AziendaEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_azienda")
     private int idAzienda;
 

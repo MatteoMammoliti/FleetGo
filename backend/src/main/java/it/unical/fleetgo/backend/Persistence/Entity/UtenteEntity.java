@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -15,8 +14,9 @@ import java.util.Set;
 public class UtenteEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_utente")
-    private String idUtente;
+    private Integer idUtente;
 
     @Column(name="nome_utente")
     private String nomeUtente;

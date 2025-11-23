@@ -3,8 +3,11 @@ package it.unical.fleetgo.backend.Persistence.Entity;
 import it.unical.fleetgo.backend.Persistence.Entity.EmbeddableKeys.GestioneVeicoloFleetFK;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "gestione_veicolo_fleetgo")
 public class GestioneVeicoloFleetGoEntity {

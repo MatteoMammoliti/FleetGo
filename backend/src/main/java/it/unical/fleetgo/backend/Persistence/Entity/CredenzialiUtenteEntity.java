@@ -12,7 +12,7 @@ public class CredenzialiUtenteEntity {
 
     @Id
     @Column(name="id_utente")
-    private String idUtente;
+    private Integer idUtente;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapsId
