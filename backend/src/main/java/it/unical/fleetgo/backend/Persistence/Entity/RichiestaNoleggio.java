@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.Entity;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
@@ -18,6 +19,4 @@ public class RichiestaNoleggio {
     private LocalTime oraFine;
     private String motivazione;
     private Boolean richiestaAccettata;
-
-
 }

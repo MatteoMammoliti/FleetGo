@@ -4,16 +4,16 @@ import it.unical.fleetgo.backend.Models.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.DAO.CredenzialiDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaAffiliazioneAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
-import it.unical.fleetgo.backend.Persistence.Entity.Dipendente;
+import Dipendente;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 
 import java.util.Set;
 
 
 public class DipendenteProxy extends Dipendente {
-    private RichiestaAffiliazioneAziendaDAO aziendaDAO;
-    private CredenzialiDAO credenzialiDAO;
-    private RichiestaNoleggioDAO noleggioDAO;
+    private final RichiestaAffiliazioneAziendaDAO aziendaDAO;
+    private final CredenzialiDAO credenzialiDAO;
+    private final RichiestaNoleggioDAO noleggioDAO;
     private boolean richiesteNoleggioCaricate = false;
     private boolean idAziendaCaricato= false;
     private boolean credenzialiCaricato = false;
@@ -27,29 +27,25 @@ public class DipendenteProxy extends Dipendente {
     @Override
     public Set<RichiestaNoleggio> getRichiesteNoleggio() {
         if(!richiesteNoleggioCaricate) {
-            Set<RichiestaNoleggio> richieste = noleggioDAO;
             richiesteNoleggioCaricate = true;
-            super.setRichiesteNoleggio(richieste);
+            super.setRichiesteNoleggio((Set<RichiestaNoleggio>) noleggioDAO);
         }
         return super.getRichiesteNoleggio();
     }
     @Override
     public Integer getIdAziendaAffiliata(){
         if(!idAziendaCaricato) {
-            Integer idAzienda= aziendaDAO;
             idAziendaCaricato = true;
-            super.setIdAziendaAffiliata(idAzienda);
+            super.setIdAziendaAffiliata((Integer) aziendaDAO);
         }
         return super.getIdAziendaAffiliata();
     }
     @Override
     public ContenitoreCredenziali getCredenziali() {
         if(!credenzialiCaricato) {
-            ContenitoreCredenziali credenziali = credenzialiDAO;
             credenzialiCaricato = true;
-            super.setCredenziali(credenziali);
+            super.setCredenziali((ContenitoreCredenziali) credenzialiDAO);
         }
         return super.getCredenziali();
     }
-
 }

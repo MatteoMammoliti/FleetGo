@@ -1,4 +1,4 @@
-package it.unical.fleetgo.backend.Persistence.Entity;
+package it.unical.fleetgo.backend.Persistence.Entity.Utente;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;

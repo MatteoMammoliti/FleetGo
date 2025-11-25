@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.Entity;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
 import lombok.Getter;
 import lombok.Setter;
 

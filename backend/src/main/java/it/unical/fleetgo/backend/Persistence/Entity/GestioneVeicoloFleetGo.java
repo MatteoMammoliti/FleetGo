@@ -10,5 +10,4 @@ public class GestioneVeicoloFleetGo {
     private Veicolo veicolo;
     private Integer idAzienda;
     private boolean noleggiata;
-
 }
