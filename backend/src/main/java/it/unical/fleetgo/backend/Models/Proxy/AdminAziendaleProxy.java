@@ -16,7 +16,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
 
     private boolean aziendaCaricata= false;
     private boolean richiesteNoleggioCaricate = false;
-    private boolean richiesteAffiliazioneCaricate= false;
+    private boolean richiesteManutenzioniCaricate= false;
     private boolean dipendentiCaricati = false;
     private boolean gestioneVeicoloCaricate= false;
     private boolean fatturaCaricate= false;
@@ -53,11 +53,11 @@ public class AdminAziendaleProxy extends AdminAziendale {
         return super.getRichiesteNoleggio();
     }
     @Override
-    public Set<RichiestaManutenzione> getRichiesteManutenzione(){
-        if(!richiesteAffiliazioneCaricate){
-            Set<RichiestaNoleggio> richieste = richiesteManutenzioneDAO;
-            richiesteAffiliazioneCaricate= true;
-            super.setRichiesteNoleggio(richieste);
+    public Set<RichiestaManutenzione> getRichiesteNoleggio(){
+        if(!richiesteManutenzioniCaricate){
+            Set<RichiestaManutenzione> richieste = richiesteManutenzioneDAO;
+            richiesteManutenzioniCaricate= true;
+            super.setRichiesteManutenzione(richieste);
         }
         return super.getRichiesteManutenzione();
     }
