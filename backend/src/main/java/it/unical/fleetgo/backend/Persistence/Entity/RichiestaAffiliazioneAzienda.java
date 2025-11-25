@@ -1,0 +1,14 @@
+package it.unical.fleetgo.backend.Persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+public class RichiestaAffiliazioneAzienda {
+    private Utente utente;
+    private Azienda azienda;
+    private boolean accettata;
+    private LocalDate dataAccettazione;
+}

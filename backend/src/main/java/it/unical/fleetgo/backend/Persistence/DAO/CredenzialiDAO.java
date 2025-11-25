@@ -1,4 +1,4 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
-public class dao {
+public class CredenzialiDAO {
 }
