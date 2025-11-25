@@ -8,8 +8,10 @@ import java.time.LocalTime;
 @Getter
 public class RichiestaNoleggio {
     private Integer idRichiestaNoleggio;
+    private Integer idVeicolo;
+    private Integer idUtente;
     private Utente utente;
-    private Azienda azienda;
+    private Integer idAzienda;
     private LocalDate dataRitiro;
     private LocalDate dataConsegna;
     private LocalTime oraInizio;

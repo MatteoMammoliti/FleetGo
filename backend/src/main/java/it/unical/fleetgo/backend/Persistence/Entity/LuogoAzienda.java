@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class LuogoAzienda {
     private Integer idLuogo;
-    private Azienda azienda;
+    private Integer idAzienda;
     private String nomeLuogo;
     private float longitudine;
     private float latitudine;

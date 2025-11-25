@@ -7,10 +7,8 @@ import lombok.Setter;
 @Setter
 public class CredenzialiUtente {
     private Integer idUtente;
-    private Utente utente;
     private String password;
     private String email;
     private boolean patente;
     private String imgPatente;
-
 }

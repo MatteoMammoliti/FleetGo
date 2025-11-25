@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,5 @@ public class RichiestaNoleggioDTO {
     private String dataConsegna;
     private String motivazione;
     private boolean accettata;
+    private UtenteDTO utente;
 }

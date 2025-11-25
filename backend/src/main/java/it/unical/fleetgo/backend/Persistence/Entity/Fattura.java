@@ -5,9 +5,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Fattura {
+    private Integer numeroFattura;
     private Integer annoFattura;
     private Integer meseFattura;
-    private Utente fleetGo;
+    private Integer fleetGo;
     private Azienda azienda;
     private Integer costo;
     private Boolean fatturaPagata;

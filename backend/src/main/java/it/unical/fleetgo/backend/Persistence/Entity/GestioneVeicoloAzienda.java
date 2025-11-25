@@ -5,7 +5,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GestioneVeicoloAzienda {
-    private Veicolo veicolo;
-    private Azienda azienda;
+    private Integer idVeicolo;
+    private Veicolo Veicolo;
+    private Integer idAzienda;
     private LuogoAzienda luogo;
 }

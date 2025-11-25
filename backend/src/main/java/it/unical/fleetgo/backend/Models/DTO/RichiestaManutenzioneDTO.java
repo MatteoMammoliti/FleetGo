@@ -13,4 +13,5 @@ public class RichiestaManutenzioneDTO {
     private String tipoManutenzione;
     private boolean accettata;
     private boolean completata;
+    private VeicoloDTO veicolo;
 }

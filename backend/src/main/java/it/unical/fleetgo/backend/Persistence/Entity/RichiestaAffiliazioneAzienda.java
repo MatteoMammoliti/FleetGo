@@ -8,7 +8,8 @@ import java.time.LocalDate;
 @Setter
 public class RichiestaAffiliazioneAzienda {
     private Utente utente;
-    private Azienda azienda;
+    private Integer idUtente;
+    private Integer idAzienda;
     private boolean accettata;
     private LocalDate dataAccettazione;
 }

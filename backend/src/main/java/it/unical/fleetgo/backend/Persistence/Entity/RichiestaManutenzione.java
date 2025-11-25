@@ -8,7 +8,8 @@ import java.time.LocalDate;
 @Setter
 public class RichiestaManutenzione {
     private Integer idManutenzione;
-    private Utente admin;
+    private Integer idAdmin;
+    private Integer idVeicolo;
     private Veicolo veicolo;
     private LocalDate dataRichiesta;
     private String tipoManutenzione;

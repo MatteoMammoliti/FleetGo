@@ -8,4 +8,5 @@ public class FatturaDTO {
     private Integer annoFattura;
     private boolean fatturaPagata;
     private Integer costo;
+    private AziendaDTO azienda;
 }
