@@ -1,8 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
 import{FormBuilder} from '@angular/forms';
-import {AuthService} from '@core/services/authService';
-import {routes} from '../../app.routes';
 import {Router} from '@angular/router';
 
 @Component({
@@ -10,13 +8,12 @@ import {Router} from '@angular/router';
   imports: [
     ReactiveFormsModule
   ],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
 })
 
-export class Login {
+export class LoginComponent {
   private fb=inject(FormBuilder) ;
-  private authService=inject(AuthService) ;
   private router=inject(Router) ;
 
 
@@ -45,16 +42,6 @@ export class Login {
 
     const email = this.loginForm.value.email!;
     const password = this.loginForm.value.password!;
-    this.authService.login(email, password).subscribe({
-      next: result => {
-        this.router.navigate(['/dashboard']);
-      },
-      error: error => {
-        this.erroreEmail = "Email o password non valida";
-      }
-    })
-
-
 
   }
 }

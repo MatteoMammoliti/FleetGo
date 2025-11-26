@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'registrazione',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './registrazione.html',
-  styleUrl: './registrazione.css'
+  templateUrl: './registrazione.component.html',
+  styleUrls: ['./registrazione.component.css']
 })
-export class Registrazione {
+export class RegistrazioneComponent {
   nome = '';
   email = '';
   password = '';
