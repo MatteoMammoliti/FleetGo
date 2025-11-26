@@ -42,7 +42,7 @@ public class UtenteDAO {
      * @return
      */
     public boolean eliminaUtente(Integer idUtente){
-        String query="DELETE FROM Utente WHERE idUtente=?";
+        String query="DELETE FROM Utente WHERE id_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
             return st.executeUpdate()>0;
@@ -111,6 +111,4 @@ public class UtenteDAO {
         return new DipendenteProxy(new RichiestaAffiliazioneAziendaDAO(con),new CredenzialiDAO(con),
                 new RichiestaNoleggioDAO(con));
     }
-
-
 }

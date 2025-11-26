@@ -14,6 +14,6 @@ public class AziendaDTO {
     private String nomeAzienda;
     private String sedeAzienda;
     private String pIva;
-    private List<UtenteDTO> dipendentiAzienda;
-    private List<VeicoloDTO> autoGestiteDaAzienda;
+    //private List<UtenteDTO> dipendentiAzienda;
+    //private List<VeicoloDTO> autoGestiteDaAzienda;
 }

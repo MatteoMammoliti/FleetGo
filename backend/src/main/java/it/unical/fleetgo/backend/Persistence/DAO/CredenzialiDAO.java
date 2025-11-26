@@ -1,6 +1,4 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
-
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreCredenzialiDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 
 import java.sql.Connection;
