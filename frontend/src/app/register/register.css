@@ -40,7 +40,12 @@ input {
 }
 
 input:hover {
-  border-color: #686565;    
+  border-color: #000000;    
+}
+
+input:focus {
+  border-color: #03ac19;
+  outline: none;  
 }
 
 
