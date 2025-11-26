@@ -1,8 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
 import{FormBuilder} from '@angular/forms';
-import {AuthService} from '@core/services/authService';
-import {routes} from '../../app.routes';
 import {Router} from '@angular/router';
 import {BarraNoLog} from '../../layouts/barra-no-log/barra-no-log';
 import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
@@ -20,7 +18,6 @@ import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazion
 
 export class Login {
   private fb=inject(FormBuilder) ;
-  private authService=inject(AuthService) ;
   private router=inject(Router) ;
 
 
@@ -49,16 +46,5 @@ export class Login {
 
     const email = this.loginForm.value.email!;
     const password = this.loginForm.value.password!;
-    this.authService.login(email, password).subscribe({
-      next: result => {
-        this.router.navigate(['/dashboard']);
-      },
-      error: error => {
-        this.erroreEmail = "Email o password non valida";
-      }
-    })
-
-
-
   }
 }
