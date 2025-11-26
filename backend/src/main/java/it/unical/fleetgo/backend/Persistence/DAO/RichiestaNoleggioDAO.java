@@ -1,10 +1,12 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
+import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RichiestaNoleggioDAO {
@@ -71,5 +73,31 @@ public class RichiestaNoleggioDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<RichiestaNoleggioProxy> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
+        List<RichiestaNoleggioProxy> richiesteNoleggio=new ArrayList<>();
+        String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idAzienda);
+            st.setBoolean(2,false);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(con));
+                richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
+                richiesta.setIdUtente(rs.getInt("id_dipendente"));
+                richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
+                richiesta.setOraFine(rs.getTime("ora_fine").toLocalTime());
+                richiesta.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
+                richiesta.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
+                richiesta.setMotivazione(rs.getString("motivazione"));
+                richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
+                richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
+                richiesteNoleggio.add(richiesta);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return richiesteNoleggio;
     }
 }

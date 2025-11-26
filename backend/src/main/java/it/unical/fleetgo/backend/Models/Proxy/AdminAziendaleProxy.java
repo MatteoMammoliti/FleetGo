@@ -51,10 +51,11 @@ public class AdminAziendaleProxy extends AdminAziendale {
     }
 
     @Override
-    public Set<RichiestaNoleggio> getRichiesteNoleggio(){
+    public List<RichiestaNoleggio> getRichiesteNoleggio(){
         if(!richiesteNoleggioCaricate){
             richiesteNoleggioCaricate= true;
-            super.setRichiesteNoleggio((Set<RichiestaNoleggio>) richiestaNoleggioDAO);
+            List<RichiestaNoleggioProxy> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdUtente());
+            super.setRichiesteNoleggio(new ArrayList<>(richieste));
         }
         return super.getRichiesteNoleggio();
     }
