@@ -6,9 +6,6 @@ label {
   font-weight: bold;
   color: #000000;
 }
-.form-group {
-  margin-bottom: 10px;
-}
 input {
   width: 100%;
   padding: 10px;
@@ -32,7 +29,9 @@ input:focus {
   border-color: #03ac19;
   outline: none;
 }
-
+.form-group {
+  margin-bottom: 10px;
+}
 
 button {
   width: 100%;

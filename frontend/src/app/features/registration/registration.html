@@ -1,0 +1,50 @@
+<div class="register-container">
+
+
+
+  <app-form-autenticazione>
+    <h2>Crea il tuo account FleetGo</h2>
+
+    <div class="form-group">
+      <label>Nome Completo</label>
+      <input type="text"
+             [(ngModel)]="nome"
+             name="nome"
+             placeholder="Es. Matteo Mammoliti">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email"
+             [(ngModel)]="email"
+             name="email"
+             placeholder="Es. angelo@vivacqua.com">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password"
+             [(ngModel)]="password"
+             name="password"
+             placeholder="Es. CristianLoria03">
+    </div>
+
+    <div class="form-group">
+      <label>Data di Nascita</label>
+      <input type="date"
+             [(ngModel)]="datanascita"
+             name="datanascita"
+             placeholder="Es. 29/11/2003">
+    </div>
+
+    <div class="form-group">
+      <label>Patente Fronte-Retro</label>
+      <input type="file"
+             (change)="onFileSelected($event)"
+             name="patente">
+    </div>
+
+    <button type="submit" (click)="stampaDati()">Registrati</button>
+
+  </app-form-autenticazione>
+</div>
