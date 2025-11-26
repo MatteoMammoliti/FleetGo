@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.Entity.Utente;
 
-
-import it.unical.fleetgo.backend.Models.ContenitoreCredenziali;
+import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import lombok.Getter;
 import lombok.Setter;

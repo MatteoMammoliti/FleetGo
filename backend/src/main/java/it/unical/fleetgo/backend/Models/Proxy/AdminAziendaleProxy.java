@@ -2,7 +2,11 @@ package it.unical.fleetgo.backend.Models.Proxy;
 
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.*;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class AdminAziendaleProxy extends AdminAziendale {
@@ -21,6 +25,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private boolean gestioneVeicoloCaricate= false;
     private boolean fatturaCaricate= false;
     private boolean luogoCaricate= false;
+    private boolean richiesteAffiliazioneCaricate= false;
 
     public AdminAziendaleProxy(AziendaDAO aziendaDAO,RichiestaNoleggioDAO richiestaNoleggioDAO,
                                RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO,GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO,
@@ -51,7 +56,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
         return super.getRichiesteNoleggio();
     }
     @Override
-    public Set<RichiestaManutenzione> getRichiesteNoleggio(){
+    public Set<RichiestaManutenzione> getRichiesteManutenzione(){
         if(!richiesteManutenzioniCaricate){
             richiesteManutenzioniCaricate= true;
             super.setRichiesteManutenzione((Set<RichiestaManutenzione>) richiesteManutenzioneDAO);
@@ -59,12 +64,22 @@ public class AdminAziendaleProxy extends AdminAziendale {
         return super.getRichiesteManutenzione();
     }
     @Override
-    public Set<Dipendente> getDipendenti(){
+    public List<Dipendente> getDipendenti(){
         if(!dipendentiCaricati){
             dipendentiCaricati= true;
-            super.setDipendenti((Set<Dipendente>) richiestaAffiliazioneDAO);
+            List<DipendenteProxy> dipendenti = richiestaAffiliazioneDAO.getDipendentiAzienda(super.getIdAziendaGestita());
+            super.setDipendenti(new ArrayList<>(dipendenti));
         }
         return super.getDipendenti();
+    }
+    @Override
+    public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazione(){
+        if(!richiesteAffiliazioneCaricate){
+            richiesteAffiliazioneCaricate= true;
+            List<RichiestaAffiliazioneAziendaProxy> richieste = richiestaAffiliazioneDAO.getRichiesteAffiliazioneDaValutare(super.getIdAziendaGestita());
+            super.setRichiesteAffiliazione(new ArrayList<>(richieste));
+        }
+        return super.getRichiesteAffiliazione();
     }
     @Override
     public Set<Veicolo> getVeicoliInGestione(){
