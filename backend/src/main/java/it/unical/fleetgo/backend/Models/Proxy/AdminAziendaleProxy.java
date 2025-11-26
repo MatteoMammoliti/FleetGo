@@ -56,10 +56,11 @@ public class AdminAziendaleProxy extends AdminAziendale {
         return super.getRichiesteNoleggio();
     }
     @Override
-    public Set<RichiestaManutenzione> getRichiesteManutenzione(){
+    public List<RichiestaManutenzione> getRichiesteManutenzione(){
         if(!richiesteManutenzioniCaricate){
             richiesteManutenzioniCaricate= true;
-            super.setRichiesteManutenzione((Set<RichiestaManutenzione>) richiesteManutenzioneDAO);
+            List<RichiestaManutenzioneProxy> richiesta =richiesteManutenzioneDAO.getRichiesteManutenzioneInCorsoAzienda(super.getIdUtente());
+            super.setRichiesteManutenzione(new ArrayList<>(richiesta));
         }
         return super.getRichiesteManutenzione();
     }

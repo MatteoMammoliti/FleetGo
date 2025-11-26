@@ -11,7 +11,7 @@ import java.util.Set;
 public class AdminAziendale extends Utente {
     private Integer idAziendaGestita;
     private Set<RichiestaNoleggio> richiesteNoleggio;
-    private Set<RichiestaManutenzione> richiesteManutenzione;
+    private List<RichiestaManutenzione> richiesteManutenzione;
     private List<RichiestaAffiliazioneAzienda> richiesteAffiliazione;
     private List<Dipendente> dipendenti;
     private Set<Veicolo> veicoliInGestione;

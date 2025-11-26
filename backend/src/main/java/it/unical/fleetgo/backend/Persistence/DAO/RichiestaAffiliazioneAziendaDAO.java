@@ -2,7 +2,6 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaAffiliazioneAziendaProxy;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,6 +102,28 @@ public class RichiestaAffiliazioneAziendaDAO {
         }
         return richiesteAffiliazione;
     }
+
+    /**
+     * Permette di contrassegnare una richiesta di affiliazione come accettata o rifiutata
+     * in base al valore del valre booleano accettata.
+     * @param idAzienda
+     * @param idDipendente
+     * @param accettata
+     * @return
+     */
+    public boolean contrassegnaVisionataAffiliazioneAzienda(Integer idAzienda,Integer idDipendente,boolean accettata){
+        String query="UPDATE richiesta_affiliazione_azienda SET accettata=?,data_accettazione=CURRENT_DATE WHERE id_azienda=? AND id_dipendente=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setBoolean(1,accettata);
+            st.setInt(2,idAzienda);
+            st.setInt(3,idDipendente);
+            return st.executeUpdate()>0;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
     private DipendenteProxy creaDipendenteProxy(){
