@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 public class Fattura {
     private Integer numeroFattura;
+    private Integer idAzienda;
     private Integer annoFattura;
     private Integer meseFattura;
     private Integer fleetGo;

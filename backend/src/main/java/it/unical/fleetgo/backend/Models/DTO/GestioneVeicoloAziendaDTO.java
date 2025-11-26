@@ -1,13 +1,13 @@
-package it.unical.fleetgo.backend.Persistence.Entity;
+package it.unical.fleetgo.backend.Models.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GestioneVeicoloAzienda {
+public class GestioneVeicoloAziendaDTO {
     private Integer idVeicolo;
-    private Veicolo Veicolo;
+    private VeicoloDTO Veicolo;
     private Integer idAzienda;
     private Integer idLuogo;
-    private LuogoAzienda luogo;
+    private LuogoDTO luogo;
 }

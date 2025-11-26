@@ -35,27 +35,30 @@ public class FleetGoProxy extends FleetGo {
         }
         return super.getRichiesteManutenzione();
     }
+
     @Override
     public Set<Veicolo> getVeicoloDisponibili() {
         if(!veicoliCaricati){
             veicoliCaricati=true;
-            super.setVeicoloDisponibili((Set<Veicolo>) veicoloDAO);
+            super.setVeicoloDisponibili(veicoloDAO.getVeicoliDisponibiliInPiattaforma());
         }
         return super.getVeicoloDisponibili();
     }
+
     @Override
     public Set<Azienda> getAziende(){
         if(!aziendeCaricate){
             aziendeCaricate=true;
-            super.setAziende((Set<Azienda>) aziendaDAO);
+            super.setAziende(aziendaDAO.getAziendeInPiattaforme());
         }
         return super.getAziende();
     }
+
     @Override
     public Set<Fattura> getFattureEmesse(){
         if(!fattureCaricate){
             fattureCaricate=true;
-            super.setFattureEmesse((Set<Fattura>) fatturaDAO);
+            super.setFattureEmesse(fatturaDAO.getFattureEmesseDaFleetGo());
         }
         return super.getFattureEmesse();
     }

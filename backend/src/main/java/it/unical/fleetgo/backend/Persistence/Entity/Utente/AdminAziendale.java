@@ -14,7 +14,7 @@ public class AdminAziendale extends Utente {
     private Set<RichiestaManutenzione> richiesteManutenzione;
     private List<RichiestaAffiliazioneAzienda> richiesteAffiliazione;
     private List<Dipendente> dipendenti;
-    private Set<Veicolo> veicoliInGestione;
+    private Set<GestioneVeicoloAzienda> veicoliInGestione;
     private Set<Fattura> fatture;
     private Set<LuogoAzienda> luoghiDepositoRitiro;
 }
