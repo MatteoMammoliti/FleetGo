@@ -4,11 +4,15 @@ import{FormBuilder} from '@angular/forms';
 import {AuthService} from '@core/services/authService';
 import {routes} from '../../app.routes';
 import {Router} from '@angular/router';
+import {BarraNoLog} from '../../layouts/barra-no-log/barra-no-log';
+import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BarraNoLog,
+    FormAutenticazione
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
