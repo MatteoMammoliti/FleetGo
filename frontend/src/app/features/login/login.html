@@ -1,0 +1,22 @@
+<div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+    <div>
+      <label for="email">Email: </label>
+      <input id="email" type="email" formControlName="email" placeholder="Inserisci la tua email">
+    </div>
+    <div>
+      <label for="password">Password: </label>
+      <input id="password" type="password" formControlName="password" placeholder="Inserisci la tua password">
+    </div>
+    <div>
+      @if(erroreEmail){
+        <p>{{ erroreEmail }}</p>
+      } @else if (errorePassword){
+        <p>{{errorePassword}}</p>
+      } @else if (erroreCredenziali){
+        <p>{{erroreCredenziali}}</p>
+      }
+      <button type="submit">Login</button>
+    </div>
+  </form>
+</div>
