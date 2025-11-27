@@ -105,6 +105,24 @@ public class UtenteDAO {
         return null;
     }
 
+    /**
+     * Funzione che restituisce true se trova che l'email passata come parametro esiste già
+     * @param email
+     * @return
+     */
+    public boolean esisteEmail(String email) {
+        String query = "SELECT * FROM credenziali_utente WHERE email = ?";
+
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setString(1,email);
+
+            ResultSet rs = st.executeQuery();
+            return rs.next();
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     private AdminAziendaleProxy creoAdminAziendaleProxy(){
         return new AdminAziendaleProxy(new AziendaDAO(con),new RichiestaNoleggioDAO(con),new RichiestaAffiliazioneAziendaDAO(con),
                 new GestioneVeicoloAziendaDAO(con),new FatturaDAO(con),new LuogoAziendaDAO(con),

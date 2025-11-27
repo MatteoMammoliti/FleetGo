@@ -6,21 +6,18 @@ import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
-
 import java.util.List;
-import java.util.Set;
-
 
 public class DipendenteProxy extends Dipendente {
-    private final RichiestaAffiliazioneAziendaDAO aziendaDAO;
+    private final RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao;
     private final CredenzialiDAO credenzialiDAO;
     private final RichiestaNoleggioDAO noleggioDAO;
     private boolean richiesteNoleggioCaricate = false;
     private boolean idAziendaCaricato= false;
     private boolean credenzialiCaricato = false;
 
-    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO aziendaDAO, CredenzialiDAO credenzialiDAO, RichiestaNoleggioDAO noleggioDAO) {
-        this.aziendaDAO = aziendaDAO;
+    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao, CredenzialiDAO credenzialiDAO, RichiestaNoleggioDAO noleggioDAO) {
+        this.richiestaAffiliazioneAziendaDao = richiestaAffiliazioneAziendaDao;
         this.credenzialiDAO = credenzialiDAO;
         this.noleggioDAO = noleggioDAO;
     }
@@ -33,14 +30,16 @@ public class DipendenteProxy extends Dipendente {
         }
         return super.getRichiesteNoleggio();
     }
+
     @Override
     public Integer getIdAziendaAffiliata(){
         if(!idAziendaCaricato) {
             idAziendaCaricato = true;
-            super.setIdAziendaAffiliata((Integer) aziendaDAO);
+            super.setIdAziendaAffiliata(richiestaAffiliazioneAziendaDao.getIdAziendaDipendente(this.getIdUtente()));
         }
         return super.getIdAziendaAffiliata();
     }
+
     @Override
     public ContenitoreCredenziali getCredenziali() {
         if(!credenzialiCaricato) {
