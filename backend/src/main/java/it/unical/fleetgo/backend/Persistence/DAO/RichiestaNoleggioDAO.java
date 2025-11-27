@@ -2,6 +2,7 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -75,8 +76,8 @@ public class RichiestaNoleggioDAO {
         return false;
     }
 
-    public List<RichiestaNoleggioProxy> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
-        List<RichiestaNoleggioProxy> richiesteNoleggio=new ArrayList<>();
+    public List<RichiestaNoleggio> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
+        List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
         String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idAzienda);

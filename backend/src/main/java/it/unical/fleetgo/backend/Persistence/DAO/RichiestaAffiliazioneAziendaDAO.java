@@ -2,6 +2,9 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaAffiliazioneAziendaProxy;
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,8 +58,8 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idAzienda
      * @return
      */
-    public List<DipendenteProxy> getDipendentiAzienda(Integer idAzienda){
-        List<DipendenteProxy> dipendenti=new ArrayList<>();
+    public List<Dipendente> getDipendentiAzienda(Integer idAzienda){
+        List<Dipendente> dipendenti=new ArrayList<>();
         String query= "SELECT u.* FROM richiesta_affiliazione_azienda ra JOIN utente u ON ra.id_dipendente = u.id_utente " +
                 " WHERE ra.id_azienda = ? AND ra.accettata = ?";
         try(PreparedStatement st = con.prepareStatement(query)){
@@ -83,8 +86,8 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idAzienda
      * @return
      */
-    public List<RichiestaAffiliazioneAziendaProxy> getRichiesteAffiliazioneDaValutare(Integer idAzienda){
-        List<RichiestaAffiliazioneAziendaProxy> richiesteAffiliazione=new ArrayList<>();
+    public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazioneDaValutare(Integer idAzienda){
+        List<RichiestaAffiliazioneAzienda> richiesteAffiliazione=new ArrayList<>();
         String query="SELECT * FROM richiesta_affiliazione_azienda WHERE id_azienda=? AND accettata=? AND data_accettazione=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idAzienda);

@@ -2,6 +2,9 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+
 import java.sql.*;
 
 public class UtenteDAO {
@@ -56,14 +59,14 @@ public class UtenteDAO {
      * @param idUtente
      * @return ritorna il proxy del dipendente, null se non esiste.
      */
-    public DipendenteProxy getDipendenteDaId(Integer idUtente){
+    public Dipendente getDipendenteDaId(Integer idUtente){
         String query="SELECT * FROM utente WHERE id_utente=? AND tipo_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setString(2,"Dipendente");
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                DipendenteProxy dipendente = creoDipendenteProxy();
+                Dipendente dipendente = creoDipendenteProxy();
                 dipendente.setNomeUtente(rs.getString("nome_utente"));
                 dipendente.setCognomeUtente(rs.getString("cognome"));
                 dipendente.setIdUtente(rs.getInt("id_utente"));
@@ -81,14 +84,14 @@ public class UtenteDAO {
      * @param idUtente
      * @return ritorna il proxy dell'admin aziendale, null se non esiste.
      */
-    public AdminAziendaleProxy getAdminAziendaDaId(Integer idUtente){
+    public AdminAziendale getAdminAziendaDaId(Integer idUtente){
         String query="SELECT * FROM utente WHERE id_utente=? AND tipo_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setString(2,"AdminAziendale");
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                AdminAziendaleProxy adminAziendaleProxy = creoAdminAziendaleProxy();
+                AdminAziendale adminAziendaleProxy = creoAdminAziendaleProxy();
                 adminAziendaleProxy.setNomeUtente(rs.getString("nome_utente"));
                 adminAziendaleProxy.setCognomeUtente(rs.getString("cognome"));
                 adminAziendaleProxy.setIdUtente(rs.getInt("id_utente"));

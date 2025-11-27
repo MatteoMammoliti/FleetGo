@@ -54,7 +54,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     public List<RichiestaNoleggio> getRichiesteNoleggio(){
         if(!richiesteNoleggioCaricate){
             richiesteNoleggioCaricate= true;
-            List<RichiestaNoleggioProxy> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdUtente());
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdUtente());
             super.setRichiesteNoleggio(new ArrayList<>(richieste));
         }
         return super.getRichiesteNoleggio();
@@ -64,7 +64,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     public List<RichiestaManutenzione> getRichiesteManutenzione(){
         if(!richiesteManutenzioniCaricate){
             richiesteManutenzioniCaricate= true;
-            List<RichiestaManutenzioneProxy> richiesta =richiesteManutenzioneDAO.getRichiesteManutenzioneInCorsoAzienda(super.getIdUtente());
+            List<RichiestaManutenzione> richiesta =richiesteManutenzioneDAO.getRichiesteManutenzioneInCorsoAzienda(super.getIdUtente());
             super.setRichiesteManutenzione(new ArrayList<>(richiesta));
         }
         return super.getRichiesteManutenzione();
@@ -74,7 +74,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     public List<Dipendente> getDipendenti(){
         if(!dipendentiCaricati){
             dipendentiCaricati= true;
-            List<DipendenteProxy> dipendenti = richiestaAffiliazioneDAO.getDipendentiAzienda(super.getIdAziendaGestita());
+            List<Dipendente> dipendenti = richiestaAffiliazioneDAO.getDipendentiAzienda(super.getIdAziendaGestita());
             super.setDipendenti(new ArrayList<>(dipendenti));
         }
         return super.getDipendenti();
@@ -84,7 +84,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazione(){
         if(!richiesteAffiliazioneCaricate){
             richiesteAffiliazioneCaricate= true;
-            List<RichiestaAffiliazioneAziendaProxy> richieste = richiestaAffiliazioneDAO.getRichiesteAffiliazioneDaValutare(
+            List<RichiestaAffiliazioneAzienda> richieste = richiestaAffiliazioneDAO.getRichiesteAffiliazioneDaValutare(
                     super.getIdAziendaGestita()
             );
             super.setRichiesteAffiliazione(new ArrayList<>(richieste));

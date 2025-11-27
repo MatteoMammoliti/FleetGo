@@ -142,14 +142,14 @@ public class RichiesteManutenzioneDAO {
      * Ritorna tutte le richieste di manutenzione ancora da dover accettare.
      * @return
      */
-    public List<RichiestaManutenzioneProxy> getRichiesteManutenzioneDaAccettare(){
-        List<RichiestaManutenzioneProxy> richieste = new ArrayList<RichiestaManutenzioneProxy>();
+    public List<RichiestaManutenzione> getRichiesteManutenzioneDaAccettare(){
+        List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,false);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzione(new VeicoloDAO(con));
+                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
                 richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
                 richiesta.setIdAdmin(rs.getInt("id_admin"));
                 richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
@@ -167,15 +167,15 @@ public class RichiesteManutenzioneDAO {
      * Ritorna tutte le richieste TUTTE le manutenzione accettate ma non ancora completate.
      * @return
      */
-    public List<RichiestaManutenzioneProxy> getRichiesteManutenzioneInCorso(){
-        List<RichiestaManutenzioneProxy> richieste = new ArrayList<RichiestaManutenzioneProxy>();
+    public List<RichiestaManutenzione> getRichiesteManutenzioneInCorso(){
+        List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=? AND completata=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,true);
             st.setBoolean(1,false);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzione(new VeicoloDAO(con));
+                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
                 richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
                 richiesta.setIdAdmin(rs.getInt("id_admin"));
                 richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
@@ -194,15 +194,15 @@ public class RichiesteManutenzioneDAO {
      * @param idAdmin
      * @return
      */
-    public List<RichiestaManutenzioneProxy> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
-        List<RichiestaManutenzioneProxy> richieste = new ArrayList<RichiestaManutenzioneProxy>();
+    public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
+        List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE completata=? AND id_admin_azienda=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,false);
             st.setInt(2,idAdmin);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzione(new VeicoloDAO(con));
+                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
                 richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
                 richiesta.setIdAdmin(rs.getInt("id_admin"));
                 richiesta.setIdVeicolo(rs.getInt("id_veicolo"));

@@ -53,7 +53,7 @@ public class GestioneVeicoloAziendaDAO {
             ResultSet rs = ps.executeQuery();
             Set<GestioneVeicoloAzienda> gestioni = new HashSet<>();
             while(rs.next()) {
-                GestioneVeicoloAzienda gestione = new GestioneVeicoloAziendaProxy();
+                GestioneVeicoloAzienda gestione = new GestioneVeicoloAziendaProxy(new VeicoloDAO(connection),new LuogoAziendaDAO(connection));
                 gestione.setIdVeicolo(rs.getInt("id_veicolo"));
                 gestione.setIdAzienda(rs.getInt("id_azienda"));
                 gestione.setIdLuogo(rs.getInt("id_luogo"));

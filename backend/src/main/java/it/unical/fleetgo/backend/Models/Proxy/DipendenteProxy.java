@@ -7,6 +7,7 @@ import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -25,10 +26,10 @@ public class DipendenteProxy extends Dipendente {
     }
 
     @Override
-    public Set<RichiestaNoleggio> getRichiesteNoleggio() {
+    public List<RichiestaNoleggio> getRichiesteNoleggio() {
         if(!richiesteNoleggioCaricate) {
             richiesteNoleggioCaricate = true;
-            super.setRichiesteNoleggio((Set<RichiestaNoleggio>) noleggioDAO);
+            super.setRichiesteNoleggio(noleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdAziendaAffiliata()));
         }
         return super.getRichiesteNoleggio();
     }
