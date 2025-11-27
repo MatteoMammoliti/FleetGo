@@ -12,4 +12,6 @@ public abstract class UtenteDTO {
     //ANNO-MESE-GIORNO
     String dataNascitaUtente;
     String tipoUtente;
+    private String email;
+    private String password;
 }

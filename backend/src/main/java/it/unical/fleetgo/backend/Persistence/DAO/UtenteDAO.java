@@ -110,7 +110,7 @@ public class UtenteDAO {
      * @param email
      * @return
      */
-    public boolean esisteEmail(String email) {
+    public boolean esisteEmail(String email) throws RuntimeException {
         String query = "SELECT * FROM credenziali_utente WHERE email = ?";
 
         try(PreparedStatement st = con.prepareStatement(query)){
@@ -121,6 +121,20 @@ public class UtenteDAO {
         }catch(SQLException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public String getRuoloDaId(Integer idUtente){
+        String query = "SELECT tipo_utente FROM utente WHERE id_utente=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getString("tipo_utente");
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private AdminAziendaleProxy creoAdminAziendaleProxy(){

@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,17 +22,37 @@ public class CredenzialiDAO {
      * @param password
      * @return
      */
-    public boolean creaCredenzialiUtente(Integer idUtente,String email,String password){
-        String query = "INSERT INTO credenziali_utente (id_utente,password,email) VALUES (?,?,?)";
+    public boolean creaCredenzialiUtente(Integer idUtente,String email,String password,String urlImmagine){
+        String query = "INSERT INTO credenziali_utente (id_utente,password,email,urlImmagine) VALUES (?,?,?,?)";
+        String pwcriptata= BCrypt.hashpw(password,BCrypt.gensalt(12));
         try (PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1, idUtente);
-            st.setString(2, password);
+            st.setString(2, pwcriptata);
             st.setString(3, email);
+            st.setString(4, urlImmagine);
             return st.executeUpdate()>0;
                 }catch (SQLException e){
             e.printStackTrace();
             }
         return false;
+    }
+
+    public Integer confrontaCredenzialiUtente(String email,String password) throws SQLException{
+        String query="SELECT * FROM credenziali_utente WHERE email=?";
+        try(PreparedStatement st = conn.prepareStatement(query)) {
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                String passcript = rs.getString("password");
+                if (!BCrypt.checkpw(password, passcript)) {
+                    System.out.println("Password incorrecte");
+                    return null;
+                }
+                System.out.println("login effettuata");
+                return rs.getInt("id_utente");
+            }
+            return null;
+        }
     }
 
     /**
