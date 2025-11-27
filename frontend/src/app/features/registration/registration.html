@@ -6,11 +6,18 @@
     <h2>Crea il tuo account FleetGo</h2>
 
     <div class="form-group">
-      <label>Nome Completo</label>
+      <label>Nome</label>
       <input type="text"
              [(ngModel)]="nome"
              name="nome"
-             placeholder="Es. Matteo Mammoliti">
+             placeholder="Es. Matteo">
+    </div>
+    <div class="form-group">
+      <label>Cognome</label>
+      <input type="text"
+             [(ngModel)]="cognome"
+             name="cognome"
+             placeholder="Es.Mammoliti">
     </div>
 
     <div class="form-group">
@@ -44,7 +51,7 @@
              name="patente">
     </div>
 
-    <button type="submit" (click)="stampaDati()">Registrati</button>
+    <button type="submit" (click)="onRegistrazione()">Registrati</button>
 
   </app-form-autenticazione>
 </div>
