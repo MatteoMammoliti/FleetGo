@@ -23,6 +23,7 @@ public class ControllerAutenticazione {
     @PostMapping(value = "/registrazione", consumes = { "multipart/form-data" })
     public ResponseEntity<String> registrazione(@RequestPart("utente") DipendenteDTO utente, @RequestPart("immagine") MultipartFile immagine) throws IOException {
         String urlImg= salvataggioPatenteService.salvaImmagine(immagine);
+
         utente.setUrlImmagine(urlImg);
 
         try {

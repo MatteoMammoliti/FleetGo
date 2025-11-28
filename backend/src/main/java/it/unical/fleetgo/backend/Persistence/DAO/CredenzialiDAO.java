@@ -25,13 +25,14 @@ public class CredenzialiDAO {
     public boolean creaCredenzialiUtente(Integer idUtente,String email,String password,String urlImmagine){
         String query = "INSERT INTO credenziali_utente (id_utente,password,email,immagine_patente) VALUES (?,?,?,?)";
         String pwcriptata= BCrypt.hashpw(password,BCrypt.gensalt(12));
+        String urlcriptata = BCrypt.hashpw(urlImmagine,BCrypt.gensalt(12));
 
         System.out.println("ho ricevuto:" + idUtente + ", " + email + ", " + pwcriptata + ", " + urlImmagine);
         try (PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1, idUtente);
             st.setString(2, pwcriptata);
             st.setString(3, email);
-            st.setString(4, urlImmagine);
+            st.setString(4, urlcriptata);
             return st.executeUpdate()>0;
         }catch (SQLException e){
             e.printStackTrace();
