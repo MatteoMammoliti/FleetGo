@@ -19,14 +19,18 @@ public class UtenteService {
 
     @Transactional(rollbackFor =  Exception.class)
     public void registraUtente(UtenteDTO utenteDTO) {
-        if(!utenteDAO.esisteEmail(utenteDTO.getEmail())){
+        if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
             throw new IllegalArgumentException("Email non valida");
         }
         Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
+
+        System.out.println("sono qui" + idAggiunta);
         if(idAggiunta==null){
             throw new RuntimeException("Problema durante l'inserimento dell'utente");
         }
+        System.out.println("sono qui");
         if(!credenzialiDAO.creaCredenzialiUtente(idAggiunta,utenteDTO.getEmail(),utenteDTO.getPassword(),((DipendenteDTO) utenteDTO).getUrlImmagine())){
+            System.out.println("ciao");
             throw new RuntimeException("Problema durante l'inserimento delle credenziali");
         }
 

@@ -22,20 +22,22 @@ public class UtenteDAO {
      */
     public Integer inserisciUtente(UtenteDTO utente){
         String query="INSERT INTO Utente (nome_utente,cognome,data_nascita,tipo_utente) VALUES (?,?,?,?)";
-        try (PreparedStatement st = con.prepareStatement(query)){
+        try (PreparedStatement st = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             st.setString(1,utente.getNomeUtente());
             st.setString(2,utente.getCognomeUtente());
+
             Date formatto = Date.valueOf(utente.getDataNascitaUtente());
             st.setDate(3,formatto);
+
             st.setString(4,utente.getTipoUtente());
+
             int righe = st.executeUpdate();
-            if(righe==0){return null;}
+            if(righe==0)return null;
+
             ResultSet rs = st.getGeneratedKeys();
-            if(rs.next()){
-                return rs.getInt(1);
-            }
+            if(rs.next()) return rs.getInt(1);
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }

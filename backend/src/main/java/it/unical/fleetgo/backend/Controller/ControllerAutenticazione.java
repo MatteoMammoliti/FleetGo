@@ -12,31 +12,29 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
 @RestController
 @RequestMapping("/autenticazione")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerAutenticazione {
-    @Autowired
-    private UtenteService utenteService;
-    @Autowired
-    private SalvataggioPatenteService salvataggioPatenteService;
 
-    @PostMapping("/registrazione")
-    public ResponseEntity<String> registrazione(@RequestBody DipendenteDTO utente, @RequestParam MultipartFile immagine) throws IOException {
+    @Autowired private UtenteService utenteService;
+    @Autowired private SalvataggioPatenteService salvataggioPatenteService;
+
+    @PostMapping(value = "/registrazione", consumes = { "multipart/form-data" })
+    public ResponseEntity<String> registrazione(@RequestPart("utente") DipendenteDTO utente, @RequestPart("immagine") MultipartFile immagine) throws IOException {
         String urlImg= salvataggioPatenteService.salvaImmagine(immagine);
         utente.setUrlImmagine(urlImg);
+
         try {
+
             utenteService.registraUtente(utente);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione avvenuta con successo");
+
         }catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
-
         }catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");
         }
-
-
     }
 
     @PostMapping("/login")

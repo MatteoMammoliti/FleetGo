@@ -1,26 +1,52 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FormAutenticazione } from '@shared/form-autenticazione/form-autenticazione';
+import { AuthService } from '@core/services/auth-service';
+import { DipendenteDTO } from '@models/dipendenteDTO.models';
 
 @Component({
-  selector: 'registrazione',
+  selector: 'app-registration',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    FormAutenticazione
+  ],
   templateUrl: './registrazione.component.html',
-  styleUrls: ['./registrazione.component.css']
+  styleUrl: './registrazione.component.css',
 })
+
 export class RegistrazioneComponent {
   nome = '';
+  cognome = '';
   email = '';
   password = '';
   datanascita = '';
   patente: any = null;
 
+  constructor(private authService: AuthService) {}
+
   onFileSelected(event: any) {
     this.patente = event.target.files[0];
-    console.log("Documento caricato:", this.patente);
   }
 
-  stampaDati() {
-    alert("\nNome: " + this.nome + "\nEmail: " + this.email + "\nData di Nascita: " + this.datanascita);
+  onRegistrazione() {
+    const user: DipendenteDTO = {
+      nomeUtente: this.nome,
+      cognomeUtente: this.cognome,
+      email: this.email,
+      password: this.password,
+      dataNascitaUtente: this.datanascita,
+      tipoUtente: 'Dipendente',
+      patenteAccettata: false
+    };
+
+    this.authService.registrazione(user, this.patente).subscribe({
+      next: (response) => {
+        console.log('Registrazione avvenuta con successo!', response);
+      },
+      error: (error) => {
+        console.error('Errore durante la registrazione:', error);
+      }
+    });
   }
 }
