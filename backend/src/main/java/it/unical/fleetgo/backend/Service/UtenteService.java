@@ -20,6 +20,7 @@ public class UtenteService {
     @Transactional(rollbackFor =  Exception.class)
     public void registraUtente(UtenteDTO utenteDTO) {
         if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
+            System.out.println("Email existente");
             throw new IllegalArgumentException("Email non valida");
         }
         Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
