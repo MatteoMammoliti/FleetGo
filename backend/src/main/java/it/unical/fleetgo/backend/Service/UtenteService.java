@@ -7,32 +7,46 @@ import it.unical.fleetgo.backend.Persistence.DBManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 @Service
 public class UtenteService {
-    UtenteDAO utenteDAO = new UtenteDAO(DBManager.getInstance().getConnection());
-    CredenzialiDAO credenzialiDAO = new CredenzialiDAO(DBManager.getInstance().getConnection());
-    RichiestaAffiliazioneAziendaDAO affiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(DBManager.getInstance().getConnection());
-    RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(DBManager.getInstance().getConnection());
-    RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(DBManager.getInstance().getConnection());
+    Connection con = DBManager.getInstance().getConnection();
+    UtenteDAO utenteDAO = new UtenteDAO(con);
+    CredenzialiDAO credenzialiDAO = new CredenzialiDAO(con);
+    RichiestaAffiliazioneAziendaDAO affiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(con);
+    RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(con);
+    RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(con);
 
     @Transactional(rollbackFor =  Exception.class)
     public void registraUtente(UtenteDTO utenteDTO) {
         if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
-            System.out.println("Email existente");
             throw new IllegalArgumentException("Email non valida");
         }
-        Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
 
-        System.out.println("sono qui" + idAggiunta);
-        if(idAggiunta==null){
-            throw new RuntimeException("Problema durante l'inserimento dell'utente");
-        }
-        System.out.println("sono qui");
-        if(!credenzialiDAO.creaCredenzialiUtente(idAggiunta,utenteDTO.getEmail(),utenteDTO.getPassword(),((DipendenteDTO) utenteDTO).getUrlImmagine())){
-            System.out.println("ciao");
-            throw new RuntimeException("Problema durante l'inserimento delle credenziali");
+
+        try {
+            con.setAutoCommit(false);
+            Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
+
+
+            if (idAggiunta == null) {
+                con.rollback();
+                throw new RuntimeException("Problema durante l'inserimento dell'utente");
+            }
+
+            if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), utenteDTO.getPassword(), ((DipendenteDTO) utenteDTO).getUrlImmagine())) {
+                con.rollback();
+                throw new RuntimeException("Problema durante l'inserimento delle credenziali");
+            }
+            con.commit();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ex) {}
         }
 
     }
