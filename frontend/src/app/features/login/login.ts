@@ -2,14 +2,13 @@ import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
 import{FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
-import {BarraNoLog} from '../../layouts/barra-no-log/barra-no-log';
 import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
-    BarraNoLog,
     FormAutenticazione
   ],
   templateUrl: './login.html',

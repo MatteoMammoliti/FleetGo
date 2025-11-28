@@ -3,6 +3,7 @@ import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-barra-no-log',
+  standalone: true,
   imports: [
     RouterLink
   ],
