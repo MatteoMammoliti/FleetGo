@@ -2,11 +2,14 @@ import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
 import{FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
+import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormAutenticazione
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -42,6 +45,5 @@ export class LoginComponent {
 
     const email = this.loginForm.value.email!;
     const password = this.loginForm.value.password!;
-
   }
 }
