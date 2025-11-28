@@ -2,7 +2,7 @@
 
 <app-form-autenticazione>
   <h2>Accedi al tuo account FleetGo</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+  <form [formGroup]="loginForm">
     <div class="form-group">
       <label for="email">Email </label>
       <input id="email" type="email" formControlName="email" placeholder="Inserisci la tua email">
@@ -19,7 +19,7 @@
       } @else if (erroreCredenziali){
         <p>{{erroreCredenziali}}</p>
       }
-      <button type="submit" class="bottoneLogin">Login</button>
+      <button type="submit" class="bottoneLogin" (click)="onSubmit()">Login</button>
     </div>
   </form>
 </app-form-autenticazione>

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { FormAutenticazione } from '@shared/form-autenticazione/form-autenticazione';
 import { AuthService } from '@core/services/auth-service';
 import { DipendenteDTO } from '@models/dipendenteDTO.models';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -23,7 +24,7 @@ export class RegistrazioneComponent {
   datanascita = '';
   patente: any = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onFileSelected(event: any) {
     this.patente = event.target.files[0];
@@ -42,7 +43,7 @@ export class RegistrazioneComponent {
 
     this.authService.registrazione(user, this.patente).subscribe({
       next: (response) => {
-        console.log('Registrazione avvenuta con successo!', response);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Errore durante la registrazione:', error);

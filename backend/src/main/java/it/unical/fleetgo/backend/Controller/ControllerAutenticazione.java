@@ -40,13 +40,16 @@ public class ControllerAutenticazione {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password,HttpSession session){
+    public ResponseEntity<String> login(@RequestPart("email") String email, @RequestPart("password") String password,HttpSession session){
         try{
+
             Integer idUtente = utenteService.loginUtente(email,password);
             if(idUtente!=null){
+
+                String ruoloUtente = utenteService.getRuolo(idUtente);
                 session.setAttribute("idUtente",idUtente);
-                session.setAttribute("ruolo",utenteService.getRuolo(idUtente));
-                return ResponseEntity.status(HttpStatus.CREATED).body("Login avvenuta con successo");
+                session.setAttribute("ruolo",ruoloUtente);
+                return ResponseEntity.status(HttpStatus.CREATED).body(ruoloUtente);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password e/o email non corrette");
         }catch (SQLException e){
