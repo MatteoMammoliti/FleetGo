@@ -11,7 +11,6 @@ import java.util.Set;
 public class DipendenteDTO extends UtenteDTO {
     private Integer idAziendaAffiliata;
     private Set<RichiestaNoleggioDTO> richiesteNoleggio;
-    private String email;
     private String urlImmagine;
     private boolean patenteAccettata;
 }

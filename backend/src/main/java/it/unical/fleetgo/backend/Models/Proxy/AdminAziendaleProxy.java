@@ -2,7 +2,11 @@ package it.unical.fleetgo.backend.Models.Proxy;
 
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.*;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class AdminAziendaleProxy extends AdminAziendale {
@@ -21,6 +25,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private boolean gestioneVeicoloCaricate= false;
     private boolean fatturaCaricate= false;
     private boolean luogoCaricate= false;
+    private boolean richiesteAffiliazioneCaricate= false;
 
     public AdminAziendaleProxy(AziendaDAO aziendaDAO,RichiestaNoleggioDAO richiestaNoleggioDAO,
                                RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO,GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO,
@@ -38,55 +43,84 @@ public class AdminAziendaleProxy extends AdminAziendale {
     public Integer getIdAziendaGestita(){
         if(!aziendaCaricata){
             aziendaCaricata= true;
-            super.setIdAziendaGestita((Integer) aziendaDAO);
+            super.setIdAziendaGestita(aziendaDAO.getIdAziendaGestita(
+                    this.getIdUtente()
+            ));
         }
         return super.getIdAziendaGestita();
     }
+
     @Override
-    public Set<RichiestaNoleggio> getRichiesteNoleggio(){
+    public List<RichiestaNoleggio> getRichiesteNoleggio(){
         if(!richiesteNoleggioCaricate){
             richiesteNoleggioCaricate= true;
-            super.setRichiesteNoleggio((Set<RichiestaNoleggio>) richiestaNoleggioDAO);
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdUtente());
+            super.setRichiesteNoleggio(new ArrayList<>(richieste));
         }
         return super.getRichiesteNoleggio();
     }
+
     @Override
-    public Set<RichiestaManutenzione> getRichiesteNoleggio(){
+    public List<RichiestaManutenzione> getRichiesteManutenzione(){
         if(!richiesteManutenzioniCaricate){
             richiesteManutenzioniCaricate= true;
-            super.setRichiesteManutenzione((Set<RichiestaManutenzione>) richiesteManutenzioneDAO);
+            List<RichiestaManutenzione> richiesta =richiesteManutenzioneDAO.getRichiesteManutenzioneInCorsoAzienda(super.getIdUtente());
+            super.setRichiesteManutenzione(new ArrayList<>(richiesta));
         }
         return super.getRichiesteManutenzione();
     }
+
     @Override
-    public Set<Dipendente> getDipendenti(){
+    public List<Dipendente> getDipendenti(){
         if(!dipendentiCaricati){
             dipendentiCaricati= true;
-            super.setDipendenti((Set<Dipendente>) richiestaAffiliazioneDAO);
+            List<Dipendente> dipendenti = richiestaAffiliazioneDAO.getDipendentiAzienda(super.getIdAziendaGestita());
+            super.setDipendenti(new ArrayList<>(dipendenti));
         }
         return super.getDipendenti();
     }
+
     @Override
-    public Set<Veicolo> getVeicoliInGestione(){
+    public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazione(){
+        if(!richiesteAffiliazioneCaricate){
+            richiesteAffiliazioneCaricate= true;
+            List<RichiestaAffiliazioneAzienda> richieste = richiestaAffiliazioneDAO.getRichiesteAffiliazioneDaValutare(
+                    super.getIdAziendaGestita()
+            );
+            super.setRichiesteAffiliazione(new ArrayList<>(richieste));
+        }
+        return super.getRichiesteAffiliazione();
+    }
+
+    @Override
+    public Set<GestioneVeicoloAzienda> getVeicoliInGestione(){
         if(!gestioneVeicoloCaricate){
             gestioneVeicoloCaricate= true;
-            super.setVeicoliInGestione((Set<Veicolo>) gestioneVeicoloAziendaDAO);
+            super.setVeicoliInGestione(
+                    gestioneVeicoloAziendaDAO.getVeicoliInGestioneAzienda(super.getIdAziendaGestita())
+            );
         }
         return super.getVeicoliInGestione();
     }
+
     @Override
     public Set<Fattura> getFatture(){
         if(!fatturaCaricate){
             fatturaCaricate= true;
-            super.setFatture((Set<Fattura>) fatturaDAO);
+            super.setFatture(fatturaDAO.getFattureEmesseAdAzienda(
+                    super.getIdAziendaGestita()
+            ));
         }
         return super.getFatture();
     }
+
     @Override
     public Set<LuogoAzienda> getLuoghiDepositoRitiro(){
         if(!luogoCaricate){
             luogoCaricate= true;
-            super.setLuoghiDepositoRitiro((Set<LuogoAzienda>) luogoAziendaDAO);
+            super.setLuoghiDepositoRitiro(luogoAziendaDAO.getLuogiDisponibiliPerAzienda(
+                    super.getIdAziendaGestita()
+            ));
         }
         return super.getLuoghiDepositoRitiro();
     }

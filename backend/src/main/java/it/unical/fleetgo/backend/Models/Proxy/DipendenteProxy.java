@@ -1,50 +1,50 @@
 package it.unical.fleetgo.backend.Models.Proxy;
 
-import it.unical.fleetgo.backend.Models.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.DAO.CredenzialiDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaAffiliazioneAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
-import Dipendente;
+import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
-
-import java.util.Set;
-
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+import java.util.List;
 
 public class DipendenteProxy extends Dipendente {
-    private final RichiestaAffiliazioneAziendaDAO aziendaDAO;
+    private final RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao;
     private final CredenzialiDAO credenzialiDAO;
     private final RichiestaNoleggioDAO noleggioDAO;
     private boolean richiesteNoleggioCaricate = false;
     private boolean idAziendaCaricato= false;
     private boolean credenzialiCaricato = false;
 
-    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO aziendaDAO, CredenzialiDAO credenzialiDAO, RichiestaNoleggioDAO noleggioDAO) {
-        this.aziendaDAO = aziendaDAO;
+    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao, CredenzialiDAO credenzialiDAO, RichiestaNoleggioDAO noleggioDAO) {
+        this.richiestaAffiliazioneAziendaDao = richiestaAffiliazioneAziendaDao;
         this.credenzialiDAO = credenzialiDAO;
         this.noleggioDAO = noleggioDAO;
     }
 
     @Override
-    public Set<RichiestaNoleggio> getRichiesteNoleggio() {
+    public List<RichiestaNoleggio> getRichiesteNoleggio() {
         if(!richiesteNoleggioCaricate) {
             richiesteNoleggioCaricate = true;
-            super.setRichiesteNoleggio((Set<RichiestaNoleggio>) noleggioDAO);
+            super.setRichiesteNoleggio(noleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdAziendaAffiliata()));
         }
         return super.getRichiesteNoleggio();
     }
+
     @Override
     public Integer getIdAziendaAffiliata(){
         if(!idAziendaCaricato) {
             idAziendaCaricato = true;
-            super.setIdAziendaAffiliata((Integer) aziendaDAO);
+            super.setIdAziendaAffiliata(richiestaAffiliazioneAziendaDao.getIdAziendaDipendente(this.getIdUtente()));
         }
         return super.getIdAziendaAffiliata();
     }
+
     @Override
     public ContenitoreCredenziali getCredenziali() {
         if(!credenzialiCaricato) {
             credenzialiCaricato = true;
-            super.setCredenziali((ContenitoreCredenziali) credenzialiDAO);
+            super.setCredenziali(credenzialiDAO.getCredenzialiUtente(getIdAziendaAffiliata()));
         }
         return super.getCredenziali();
     }

@@ -1,14 +1,17 @@
-package it.unical.fleetgo.backend.Models;
-
+package it.unical.fleetgo.backend.Models.DTO;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class ContenitoreCredenziali {
+@Setter
+public class ContenitoreCredenzialiDTO {
     private String email;
     private String urlImmagine;
     private boolean patenteAccetta;
 
-    public ContenitoreCredenziali(String email, String urlImmagine, boolean patenteAccetta) {
+    public ContenitoreCredenzialiDTO(){}
+
+    public ContenitoreCredenzialiDTO(String email, String urlImmagine, boolean patenteAccetta) {
         this.email = email;
         this.urlImmagine = urlImmagine;
         this.patenteAccetta = patenteAccetta;

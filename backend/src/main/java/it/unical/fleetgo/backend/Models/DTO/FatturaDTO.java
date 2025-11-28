@@ -1,5 +1,10 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class FatturaDTO {
     private Integer numeroFattura;
     private Integer idFleetGo;

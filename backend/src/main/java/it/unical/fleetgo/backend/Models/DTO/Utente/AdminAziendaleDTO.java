@@ -7,8 +7,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
     private Set<RichiestaNoleggioDTO> richiesteNoleggio;
     private Set<RichiestaManutenzioneDTO> richiesteManutenzione;
     private Set<DipendenteDTO> dipendenti;
-    private Set<VeicoloDTO> veicoloInGestione;
+    private Set<GestioneVeicoloAziendaDTO> veicoloInGestione;
     private Set<FatturaDTO> fatture;
     private Set<LuogoDTO> luoghiDepositoRitiro;
-
 }
