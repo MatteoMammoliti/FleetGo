@@ -1,0 +1,119 @@
+import {Component, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Router} from '@angular/router';
+import {AuthService} from '@core/services/auth-service';
+import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
+import {validazione} from '@shared/validation/validazione';
+import {VeicoloDTO} from '@models/veicoloDTO.model';
+import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
+
+@Component({
+  selector: 'app-flotta-globale',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    FormAutenticazione,
+    TabellaAuto
+  ],
+  templateUrl: './flotta-globale.html',
+  styleUrl: './flotta-globale.css',
+})
+export class FlottaGlobale {
+private auth=inject(AuthService);
+private router=inject(Router);
+private validatore=inject(validazione);
+
+  mappaErrori = {
+    targaVeicolo: false,
+    urlImmagine: false,
+    modello: false,
+    tipoDistribuzioneVeicolo: false,
+    statusCondizioneVeicolo: false,
+  };
+
+  targaVeicolo = '';
+  urlImmagine:any = null;
+  modello = '';
+  tipoDistribuzioneVeicolo = '';
+  statusCondizioneVeicolo = '';
+
+  errore='';
+
+  onSubmit() {
+    this.reset()
+    if(!this.targaVeicolo || !this.urlImmagine || !this.modello || !this.tipoDistribuzioneVeicolo || !this.statusCondizioneVeicolo){
+      this.errore="Riempi tutti i campi";
+      this.mappaErrori.targaVeicolo = this.targaVeicolo == '';
+      this.mappaErrori.urlImmagine = this.urlImmagine == null;
+      this.mappaErrori.modello = this.modello == '';
+      this.mappaErrori.tipoDistribuzioneVeicolo = this.tipoDistribuzioneVeicolo == '';
+      this.mappaErrori.statusCondizioneVeicolo = this.statusCondizioneVeicolo == '';
+      return
+    }
+
+    if(!this.validatore.checkTarga(this.targaVeicolo)){
+          this.errore='Targa non valida';
+          this.mappaErrori.targaVeicolo=true;
+          return;
+    }
+    if(this.urlImmagine==null){
+      this.errore='Inserisci un immagine';
+      this.mappaErrori.urlImmagine=true;
+      return;
+    }
+    if (this.modello==''){
+      this.errore='Inserisci un modello valido'
+      this.mappaErrori.modello=true;
+      return;
+    }
+    if(this.tipoDistribuzioneVeicolo==''){
+      this.errore='Seleziona un tipo di distribuzione';
+      this.mappaErrori.tipoDistribuzioneVeicolo=true;
+      return;
+    }
+    if(this.statusCondizioneVeicolo==''){
+      this.errore='Seleziona un stato del veicolo';
+      this.mappaErrori.statusCondizioneVeicolo=true;
+      return;
+    }
+
+
+    const formData = new FormData();
+
+    formData.append('targaVeicolo', this.targaVeicolo);
+    formData.append('modello', this.modello);
+    formData.append('tipoDistribuzioneVeicolo', this.tipoDistribuzioneVeicolo);
+    formData.append('statusCondizioneVeicolo', this.statusCondizioneVeicolo);
+
+    console.log("Form valido, invio dati...");
+
+    this.auth.registraVeicolo(formData).subscribe({
+      next: (response) => {
+        this.router.navigate(['/dashboardFleetGo/flotta-globale']);
+      },
+      error: (error) => {
+        console.error('Errore durante la registrazione:', error);
+      }
+
+    })
+
+  }
+
+
+  onFileSelected(event: any) {
+    this.urlImmagine = event.target.files[0];
+  }
+
+  reset(){
+    this.errore = '';
+    this.mappaErrori = {
+      targaVeicolo: false,
+      urlImmagine: false,
+      modello: false,
+      tipoDistribuzioneVeicolo: false,
+      statusCondizioneVeicolo: false,
+    };
+  }
+
+}

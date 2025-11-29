@@ -1,16 +1,17 @@
 import {Routes} from '@angular/router';
 import{LoginComponent} from '@features/login/login.component';
-import {DashboardComponent} from '@features/dashboard/dashboard.component';
 import {RegistrazioneComponent} from '@features/registrazione/registrazione.component';
-import { Admin } from './layouts/admin/admin';
+import {DashboardFleetGo} from '@features/adminFleetGo/dashboard-fleet-go/dashboard-fleet-go';
+import {DashboardAzienda} from '@features/azienda/dashboard-azienda/dashboard-azienda';
+import {DashboardDipendente} from '@features/dipendente/dashboard-dipendente/dashboard-dipendente';
+import {FlottaGlobale} from '@features/adminFleetGo/flotta-globale/flotta-globale';
 
 export const routes: Routes = [
 
   {path: 'login', component: LoginComponent},
-  {path: 'dashboard', component: DashboardComponent},
   {path: 'registrazione', component: RegistrazioneComponent},
-  {path: 'dashboardFleetGo', component: Admin, children: [ 
-    { path: '', redirectTo: 'flotta', pathMatch: 'full' },
-    /*{path: 'flotta', component: FlottaGlobale},*/ ]
-  }
-];
+  {path:'dashboardFleetGo', component: DashboardFleetGo},
+  {path:'dashboardAzienda', component: DashboardAzienda},
+  {path:'dashboardDipendente', component: DashboardDipendente},
+  {path:'dashboardFleetGo/flotta-globale', component:FlottaGlobale}
+]

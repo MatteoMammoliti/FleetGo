@@ -16,7 +16,7 @@ export class validazione {
         return passwordRegex.test(password);
 
     }
-    
+
     checkNome(nome: string): boolean {
         const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,}$/;
         return nomeRegex.test(nome);
@@ -27,11 +27,24 @@ export class validazione {
         return cognomeRegex.test(cognome);
     }
 
-    checkDataNascita(dataNascita: string): boolean {
-        const data = new Date(dataNascita);
-        const oggi = new Date();
-        return data < oggi;
-    }   
+  checkDataNascita(dataNascita: string): boolean {
+    if (!dataNascita) return false;
+
+    const nascita = new Date(dataNascita);
+    const oggi = new Date();
+    const dataMaggiorenne = new Date();
+
+    dataMaggiorenne.setFullYear(oggi.getFullYear() - 18);
+    nascita.setHours(0, 0, 0, 0);
+    dataMaggiorenne.setHours(0, 0, 0, 0);
+
+    return nascita <= dataMaggiorenne;
+  }
+
+    checkTarga(targa:string){
+      const targaRegex = /^[A-Z]{2}[0-9]{3}[A-Z]{2}$/;
+      return targaRegex.test(targa);
+    }
 
 
 }

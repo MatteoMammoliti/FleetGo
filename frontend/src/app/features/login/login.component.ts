@@ -3,7 +3,7 @@ import {ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 import {AuthService} from '@core/services/auth-service';
-import {validazione} from '@shared/validation/validazione'; 
+import {validazione} from '@shared/validation/validazione';
 import { FormsModule } from '@angular/forms';
 import { DipendenteDTO } from '@models/dipendenteDTO.models';
 
@@ -45,13 +45,13 @@ export class LoginComponent {
     if (email == '' || password == '') {
       this.errore = "Compila tutti i campi!";
       this.mappaErrori.email = email == '';
-      this.mappaErrori.password = password == ''; 
+      this.mappaErrori.password = password == '';
 
       return;
     } else {
       this.errore = "";
     }
-    
+
 
     if (this.validator.checkEmail(this.email) == false || this.validator.checkPassword(this.password) == false) {
       if (this.validator.checkEmail(this.email) == false) {
@@ -73,11 +73,11 @@ export class LoginComponent {
 
 
     console.log(email, password);
-    
+
 
     this.authService.login(email, password).subscribe({
       next: (response: any) => {
-        
+
         this.authService.aggiornaRuoloUtenteCorrente(response);
 
         switch (response) {

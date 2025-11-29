@@ -1,7 +1,22 @@
-<app-sidebar>   
-    <a routerLink="/dashboardFleetGo/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/dashboardFleetGo/aziende" routerLinkActive="active">Aziende Affiliate</a>
-      <a routerLink="/dashboardFleetGo/fatturazione" routerLinkActive="active">Fatturazione & Ricavi</a>
-      <a routerLink="/dashboardFleetGo/flotta" routerLinkActive="active">Flotta Globale</a>
-      <a routerLink="/dashboardFleetGo/impostazioni" routerLinkActive="active">Impostazioni</a>
+<app-sidebar >
+  <div class="contenitore-sidebar">
+
+
+  <div class="contenitoreMenu">
+
+
+  <ul>
+    <li><a href="/dashboardFleetGo/dashboard" routerLinkActive="active">Dashboard</a></li>
+    <li><a href="/dashboardFleetGo/aziende" routerLinkActive="active">Aziende Affiliate</a></li>
+    <li><a href="/dashboardFleetGo/fatturazione" routerLinkActive="active">Fatturazione & Ricavi</a></li>
+    <li><a href="dashboardFleetGo/flotta-globale" routerLinkActive="active">Flotta Globale</a></li>
+    <li><a href="/dashboardFleetGo/impostazioni" routerLinkActive="active">Impostazioni</a></li>
+  </ul>
+
+  </div>
+
+  </div>
+  <div class="contenitore-logout">
+    <button class="logout" (click)="logout()">Logout</button>
+  </div>
 </app-sidebar>

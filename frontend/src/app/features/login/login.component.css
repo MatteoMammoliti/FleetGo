@@ -1,5 +1,8 @@
-
-
+.form-autenticazione{
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+}
 label {
   display: block;
   margin-bottom: 8px;

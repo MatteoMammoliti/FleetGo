@@ -1,7 +1,6 @@
-.form-autenticazione{
-  max-width: 400px;
-  width: 100%;
-  margin: auto;
+.titolo{
+  font-weight: bold;
+  font-size: 25pt;
 }
 label {
   display: block;
@@ -9,8 +8,14 @@ label {
   font-weight: bold;
   color: #000000;
 }
-input {
-  width: 100%;
+.form-autenticazione{
+width: 100%;
+}
+.form-riga{
+  display: flex;
+  gap: 20px;
+}
+input, select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -24,20 +29,26 @@ h2 {
   font-weight: bold;;
 }
 
-input:hover {
+input:hover, select:hover {
   border-color: #000000;
+
 }
 
-input:focus {
+input:focus, select:focus {
   border-color: #00A88D;
   outline: none;
 }
 .form-group {
   margin-bottom: 10px;
+  flex:1;
+}
+.allineaTasto{
+  display: flex;
+  justify-content: flex-end;
 }
 
 button {
-  width: 100%;
+  width: auto;
   padding: 12px;
   background-color: #00A88D;
   color: white;
@@ -45,7 +56,8 @@ button {
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 30px;
+
 }
 
 button:hover {
@@ -53,7 +65,7 @@ button:hover {
 }
 
 .bordo-rosso {
-  border: 1 px solid red;
+  border: 1px solid red;
 }
 
 .bordo-rosso:focus {

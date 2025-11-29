@@ -7,7 +7,6 @@
   align-items: center;
   font-weight: bold;
   width: 100%;
-
 }
 
 
@@ -15,6 +14,14 @@
   display: flex;
   gap: 20px;
 
+}
+.fontLogo{
+  display: flex;
+  color: white;
+}
+
+.go{
+  color: #000000;
 }
 
 .bottoniAutenticazione{

@@ -1,17 +1,27 @@
-@if (authService.ruoloUtenteCorrente() === null) {
-  <app-barra-no-log></app-barra-no-log>
-} 
+
+<div class="layout-container" [class.layout_no_log]="authService.ruoloUtenteCorrente() === null" >
+
+<aside class="sidebar" [class.sidebar_no_log]="authService.ruoloUtenteCorrente() === null" >
+  @if (authService.ruoloUtenteCorrente() === null) {
+    <app-barra-no-log></app-barra-no-log>
+  }
 
 @else if (authService.ruoloUtenteCorrente() === 'FleetGo') {
+    <app-barra-log-fleet-go></app-barra-log-fleet-go>
+}
+
+@else if (authService.ruoloUtenteCorrente() === 'AdminAziendale') {
   <app-barra-log-fleet-go></app-barra-log-fleet-go>
-} 
 
-@else if (authService.ruoloUtenteCorrente() === 'AdminAziendale') {}
+}
 
-@else if (authService.ruoloUtenteCorrente()=== 'Dipendente') {}
-
-<div>
+@else if (authService.ruoloUtenteCorrente()=== 'Dipendente') {
+}
+</aside>
+<main class="main-content "  >
   <router-outlet></router-outlet>
+</main>
 </div>
+
 
 
