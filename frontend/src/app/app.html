@@ -1,5 +1,17 @@
-<app-barra-no-log></app-barra-no-log>
+@if (authService.ruoloUtenteCorrente() === null) {
+  <app-barra-no-log></app-barra-no-log>
+} 
+
+@else if (authService.ruoloUtenteCorrente() === 'FleetGo') {
+  <app-barra-log-fleet-go></app-barra-log-fleet-go>
+} 
+
+@else if (authService.ruoloUtenteCorrente() === 'AdminAziendale') {}
+
+@else if (authService.ruoloUtenteCorrente()=== 'Dipendente') {}
+
 <div>
   <router-outlet></router-outlet>
 </div>
+
 

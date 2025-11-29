@@ -1,60 +1,85 @@
 import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
-import{FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 import {AuthService} from '@core/services/auth-service';
+import {validazione} from '@shared/validation/validazione'; 
+import { FormsModule } from '@angular/forms';
+import { DipendenteDTO } from '@models/dipendenteDTO.models';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormAutenticazione
-  ],
+  imports: [ReactiveFormsModule,FormAutenticazione,FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 
 export class LoginComponent {
-  private fb = inject(FormBuilder);
+  validator = inject(validazione);
+
+  email = '';
+  password = '';
+
+  mappaErrori = {
+    email: false,
+    password: false,
+  };
+
   private router = inject(Router);
   private authService = inject(AuthService);
 
-  errorePassword = "";
-  erroreEmail = "";
-  erroreCredenziali = "";
-
-  loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
-  });
+  errore='';
 
   onSubmit() {
-    if (this.loginForm.invalid) {
-      if (this.loginForm.get('email')?.invalid) {
-        this.erroreEmail = "Email non valida";
+    this.errore="";
+    this.mappaErrori = {
+    email: false,
+    password: false,
+  };
+
+    const email = this.email;
+    const password = this.password;
+
+    if (email == '' || password == '') {
+      this.errore = "Compila tutti i campi!";
+      this.mappaErrori.email = email == '';
+      this.mappaErrori.password = password == ''; 
+
+      return;
+    } else {
+      this.errore = "";
+    }
+    
+
+    if (this.validator.checkEmail(this.email) == false || this.validator.checkPassword(this.password) == false) {
+      if (this.validator.checkEmail(this.email) == false) {
+        this.errore = "Email non valida";
+        this.mappaErrori.email = true;
       } else {
-        this.erroreEmail = "";
+        this.errore = "";
       }
-      if (this.loginForm.get('password')?.invalid) {
-        this.errorePassword = "Password non valida";
+      if (this.validator.checkPassword(this.password) == false) {
+        this.errore = "Password non valida";
+        this.mappaErrori.password = true;
       } else {
-        this.errorePassword = "";
+        this.errore = "";
       }
       return;
     }
 
-    this.errorePassword = "";
-    this.erroreEmail = "";
+    this.errore = "";
 
-    const email = this.loginForm.value.email!;
-    const password = this.loginForm.value.password!;
 
     console.log(email, password);
+    
 
     this.authService.login(email, password).subscribe({
       next: (response: any) => {
+        
+        this.authService.aggiornaRuoloUtenteCorrente(response);
+
         switch (response) {
           case 'Dipendente':
             this.router.navigate(['/dashboardDipendente']);
@@ -72,7 +97,7 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Errore durante il login:', error);
-        this.erroreCredenziali = "Credenziali non valide";
+        this.errore = "Credenziali non valide";
       }
     });
   }

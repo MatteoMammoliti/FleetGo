@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(FormsModule),
-    provideHttpClient() // Fornisce HttpClient a tutta l'applicazione
+    provideHttpClient() 
   ]
 };

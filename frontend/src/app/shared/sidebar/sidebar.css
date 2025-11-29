@@ -1,0 +1,42 @@
+.barra_laterale {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #002040;
+    display: flex;
+    flex-direction: column;
+    }
+
+.navigazione {
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    }
+
+.navigazione a {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 15px 20px;
+    font-size: 16px;
+    transition: 0.3s;
+    }
+
+.navigazione a:hover {
+    background-color: #003060;
+    color: white;
+}
+
+.active {
+    background-color: #004080;
+    color: white;
+    border-left: white 4px solid #34db84;
+    }
+
+.logo {
+    padding: 21px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }

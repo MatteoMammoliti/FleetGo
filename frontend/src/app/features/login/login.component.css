@@ -18,7 +18,7 @@ input {
 }
 h2 {
   text-align: center;
-  color: #03ac19;
+  color: #00A88D;
   margin-bottom: 25px;
   font-size: large;
   font-weight: bold;;
@@ -29,15 +29,18 @@ input:hover {
 }
 
 input:focus {
-  border-color: #03ac19;
+  border-color: #00A88D;
   outline: none;
 }
 
+.form-group {
+  margin-bottom: 10px;
+}
 
 button {
   width: 100%;
   padding: 12px;
-  background-color: #03ac19;
+  background-color: #00A88D;
   color: white;
   border: none;
   border-radius: 10px;
@@ -47,5 +50,24 @@ button {
 }
 
 button:hover {
-  background-color: #226607;
+  background-color: #035a4c;
+}
+
+.bordo-rosso {
+  border: 1px solid red;
+}
+
+.bordo-rosso:focus {
+  border-color: red;
+  outline: none;
+}
+
+.bordo-rosso:hover {
+  border-color: red;
+}
+
+.messaggioErrore {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
 }
