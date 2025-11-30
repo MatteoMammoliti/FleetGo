@@ -16,19 +16,17 @@ public class VeicoloDAO {
         this.connection = connection;
     }
 
-    public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) {
+    public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
         String query = "INSERT INTO veicolo(targa, immagine_veicolo, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo, status_condizione_veicolo) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
+        try(PreparedStatement ps = connection.prepareStatement(query))  {
             ps.setString(1, veicoloDTO.getTargaVeicolo());
             ps.setString(2, veicoloDTO.getUrlImmagine());
             ps.setString(3, veicoloDTO.getModello());
             ps.setString(4, veicoloDTO.getTipoDistribuzioneVeicolo());
             ps.setInt(5, veicoloDTO.getLivelloCarburante());
             ps.setString(6, veicoloDTO.getStatusCondizioneVeicolo());
-            return ps.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return ps.executeUpdate() > 0;
         }
     }
 
