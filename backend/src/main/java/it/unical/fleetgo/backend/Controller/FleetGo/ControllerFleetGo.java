@@ -2,12 +2,16 @@ package it.unical.fleetgo.backend.Controller.FleetGo;
 
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
+import it.unical.fleetgo.backend.Service.SalvataggioImmagineVeicolo;
 import it.unical.fleetgo.backend.Service.VeicoloService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +22,15 @@ import java.util.List;
 public class ControllerFleetGo {
 
     @Autowired private VeicoloService veicoloService;
+    @Autowired private SalvataggioImmagineVeicolo salvataggioImmagineVeicolo;
 
     @PostMapping("/registraVeicolo")
     public ResponseEntity<String> registraVeicolo(@RequestPart("targaVeicolo") String targa,@RequestPart("modello") String modello,@RequestPart ("tipoDistribuzioneVeicolo") String distrubuzione,
-                                                  @RequestPart("statusCondizioneVeicolo") String condizione) {
+                                                  @RequestPart("statusCondizioneVeicolo") String condizione,@RequestPart("immagineVeicolo") MultipartFile immagineVeicolo ) throws IOException {
         VeicoloDTO veicoloDTO = new VeicoloDTO();
+        String urlImmagine = salvataggioImmagineVeicolo.salvaImmagine(immagineVeicolo);
         veicoloDTO.setTargaVeicolo(targa);
+        veicoloDTO.setUrlImmagine(urlImmagine);
         veicoloDTO.setModello(modello);
         veicoloDTO.setTipoDistribuzioneVeicolo(distrubuzione);
         veicoloDTO.setStatusCondizioneVeicolo(condizione);
