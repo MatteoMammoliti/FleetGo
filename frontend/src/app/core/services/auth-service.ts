@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {DipendenteDTO} from '@models/dipendenteDTO.models';
 import {Observable} from 'rxjs';
 import { Injectable, signal } from '@angular/core';
-import {VeicoloDTO} from '@models/veicoloDTO.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +25,6 @@ export class AuthService {
     formData.append("immagine",immaginePatente);
     formData.append("utente", new Blob([JSON.stringify(utente)], { type: 'application/json' }));
     return this.http.post(`${this.apiUrl}/registrazione`, formData, { responseType: 'text' });
-  }
-
-  registraVeicolo(formData: FormData)   {
-
-    return this.http.post(`${this.apiUrl}/registraVeicolo`, formData, { responseType: 'text' });
   }
 
   login(email:string, password:string) :Observable<string>{
