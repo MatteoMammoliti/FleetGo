@@ -13,4 +13,5 @@ public class Veicolo {
     private String tipoDistribuzioneVeicolo;
     private Integer livelloCarburante;
     private String statusCondizioneVeicolo;
+    private Integer idAziendaAssociato;
 }

@@ -42,7 +42,7 @@ public class VeicoloDAO {
     }
 
     public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
-        String query = "SELECT * FROM veicolo";
+        String query = "SELECT * FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             List<Veicolo> veicoli = new ArrayList<>();
@@ -99,6 +99,17 @@ public class VeicoloDAO {
             throw new RuntimeException(e);
         }
     }
+    public Integer cercaIdAziendaPerTarga(String targa) {
+        String query= "SELECT g.id_azienda FROM gestione_veicolo_azienda g JOIN veicolo v ON v.id_veicolo=g.id_veicolo AND v.targa=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setString(1, targa);
+            ResultSet rs = st.executeQuery();
+            return rs.next() ? rs.getInt("id_azienda") : null;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private Veicolo getVeicoloDaResultSet(ResultSet rs) throws SQLException {
         Veicolo v = new Veicolo();
@@ -109,6 +120,12 @@ public class VeicoloDAO {
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
         v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
         v.setStatusCondizioneVeicolo(rs.getString("status_condizione_veicolo"));
+        Integer idAzienda = rs.getInt("id_azienda");
+        if(!rs.wasNull()){
+            v.setIdAziendaAssociato(idAzienda);
+        }else {
+            v.setIdAziendaAssociato(null);
+        }
         return v;
     }
 }
