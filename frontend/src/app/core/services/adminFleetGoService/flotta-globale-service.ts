@@ -11,7 +11,7 @@ export class FlottaGlobaleService {
 
   registraVeicolo(formData: FormData)   {
 
-    return this.http.post(`${this.apiUrl}/registraVeicolo`, formData, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/aggiuntaVeicoli`, formData, { responseType: 'text' });
   }
 
 }
