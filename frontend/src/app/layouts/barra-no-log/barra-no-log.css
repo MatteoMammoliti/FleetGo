@@ -1,18 +1,19 @@
 .barraSuperiore {
-  background-color: #00A88D;
+  background-color: #002040;
   color: black;
-  padding: 15px;
   display: flex;
   gap: 20px;
   align-items: center;
   font-weight: bold;
   width: 100%;
+
 }
 
 
 .barraSuperiore ul {
   display: flex;
   gap: 20px;
+
 
 }
 .fontLogo{
