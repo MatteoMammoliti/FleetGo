@@ -13,7 +13,7 @@ public class VeicoloDTO {
     private String tipoDistribuzioneVeicolo;
     private Integer livelloCarburante;
     private String statusCondizioneVeicolo;
-    private Integer idAziendaAssociato;
+    private String nomeAziendaAffiliata;
     private LuogoDTO luogoRitiroDeposito;
 
 }

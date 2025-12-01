@@ -42,7 +42,8 @@ public class VeicoloDAO {
     }
 
     public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
-        String query = "SELECT * FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo";
+        String query = "SELECT v.*,a.nome_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             List<Veicolo> veicoli = new ArrayList<>();
@@ -120,11 +121,11 @@ public class VeicoloDAO {
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
         v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
         v.setStatusCondizioneVeicolo(rs.getString("status_condizione_veicolo"));
-        Integer idAzienda = rs.getInt("id_azienda");
+        String nomeAzienda = rs.getString("nome_azienda");
         if(!rs.wasNull()){
-            v.setIdAziendaAssociato(idAzienda);
+            v.setNomeAziendaAffiliata(nomeAzienda);
         }else {
-            v.setIdAziendaAssociato(null);
+            v.setNomeAziendaAffiliata(null);
         }
         return v;
     }
