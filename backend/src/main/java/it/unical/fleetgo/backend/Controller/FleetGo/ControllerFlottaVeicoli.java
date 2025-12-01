@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/dashboardFleetGo")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
-public class ControllerFleetGo {
+public class ControllerFlottaVeicoli {
 
     @Autowired private VeicoloService veicoloService;
 
@@ -43,9 +43,9 @@ public class ControllerFleetGo {
     }
 
     @PostMapping(value = "/eliminaVeicolo", consumes = { "multipart/form-data" })
-    public ResponseEntity<String> eliminaVeicolo(@RequestPart("veicolo") VeicoloDTO veicoloDTO) {
+    public ResponseEntity<String> eliminaVeicolo(@RequestPart("targaVeicolo") String targaVeicolo) {
         try {
-            veicoloService.eliminaVeicolo(veicoloDTO);
+            veicoloService.eliminaVeicolo(targaVeicolo);
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo eliminato con successo");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");

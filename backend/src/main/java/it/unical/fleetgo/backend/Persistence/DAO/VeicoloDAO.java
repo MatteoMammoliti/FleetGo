@@ -30,11 +30,11 @@ public class VeicoloDAO {
         }
     }
 
-    public boolean eliminaVeicolo(Integer idVeicolo) {
-        String query = "DELETE FROM veicolo WHERE id_veicolo = ?";
+    public boolean eliminaVeicolo(String targaVeicolo) {
+        String query = "DELETE FROM veicolo WHERE targa = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idVeicolo);
+            ps.setString(1, targaVeicolo);
             return ps.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -58,24 +58,6 @@ public class VeicoloDAO {
         }
     }
 
-    public Integer getIdVeicoloDaDettagli(Veicolo veicolo) {
-        String query = "SELECT id_veicolo FROM veicolo WHERE targa = ? AND modello_veicolo = ? AND tipo_distribuzione_veicolo = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, veicolo.getTargaVeicolo());
-            ps.setString(2, veicolo.getModello());
-            ps.setString(3, veicolo.getTipoDistribuzioneVeicolo());
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()){
-                return rs.getInt("id_veicolo");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
 
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";

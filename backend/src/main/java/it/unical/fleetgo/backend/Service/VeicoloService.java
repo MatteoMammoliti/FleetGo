@@ -22,15 +22,8 @@ public class VeicoloService {
         }
     }
 
-    public void eliminaVeicolo(VeicoloDTO veicoloDTO) {
-
-        Veicolo veicolo = new Veicolo();
-        veicolo.setTargaVeicolo(veicoloDTO.getTargaVeicolo());
-        veicolo.setModello(veicoloDTO.getModello());
-        veicolo.setTipoDistribuzioneVeicolo(veicoloDTO.getTipoDistribuzioneVeicolo());
-
-        int idVeicolo = veicoloDAO.getIdVeicoloDaDettagli(veicolo);
-        if(!veicoloDAO.eliminaVeicolo(idVeicolo)) {
+    public void eliminaVeicolo(String targaVeicolo) {
+        if(!veicoloDAO.eliminaVeicolo(targaVeicolo)) {
             throw new RuntimeException("Problema durante l'eliminazione del veicolo");
         }
     }
