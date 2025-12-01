@@ -1,10 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from '@angular/router';
-import {AuthService} from '@core/services/auth-service';
 import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
 import {validazione} from '@shared/validation/validazione';
-import {VeicoloDTO} from '@models/veicoloDTO.model';
+import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
 import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
 
 @Component({
@@ -20,7 +19,7 @@ import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
   styleUrl: './flotta-globale.css',
 })
 export class FlottaGlobale {
-private auth=inject(AuthService);
+private auth=inject(FlottaGlobaleService);
 private router=inject(Router);
 private validatore=inject(validazione);
 
@@ -85,12 +84,13 @@ private validatore=inject(validazione);
     formData.append('modello', this.modello);
     formData.append('tipoDistribuzioneVeicolo', this.tipoDistribuzioneVeicolo);
     formData.append('statusCondizioneVeicolo', this.statusCondizioneVeicolo);
+    formData.append('immagineVeicolo', this.urlImmagine);
 
     console.log("Form valido, invio dati...");
 
     this.auth.registraVeicolo(formData).subscribe({
       next: (response) => {
-        this.router.navigate(['/dashboardFleetGo/flotta-globale']);
+        this.pulisciForm();
       },
       error: (error) => {
         console.error('Errore durante la registrazione:', error);
@@ -114,6 +114,15 @@ private validatore=inject(validazione);
       tipoDistribuzioneVeicolo: false,
       statusCondizioneVeicolo: false,
     };
+  }
+
+  pulisciForm(){
+    this.targaVeicolo = '';
+    this.urlImmagine = null;
+    this.modello = '';
+    this.tipoDistribuzioneVeicolo = '';
+    this.statusCondizioneVeicolo = '';
+    this.reset();
   }
 
 }
