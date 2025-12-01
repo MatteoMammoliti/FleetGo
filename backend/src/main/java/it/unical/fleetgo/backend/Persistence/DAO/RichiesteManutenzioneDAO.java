@@ -26,32 +26,39 @@ public class RichiesteManutenzioneDAO {
 
         try{
             con.setAutoCommit(false);
+
             PreparedStatement st = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             st.setInt(1,richiestaManutenzioneDTO.getIdAdminAzienda());
             st.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
             st.setDate(3, Date.valueOf(richiestaManutenzioneDTO.getDataRichiesta()));
             st.setString(4,richiestaManutenzioneDTO.getTipoManutenzione());
             st.executeUpdate();
+
             ResultSet rs = st.getGeneratedKeys();
             if(!rs.next()){
                 con.rollback();
                 return null;
             }
+
             PreparedStatement st2 = con.prepareStatement(aggiornoStatoVeicolo);
             st2.setString(1,"Manutenzione");
             st2.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
+
             if(st2.executeUpdate()==0){
                 con.rollback();
                 return null;
             }
+
             con.commit();
             return rs.getInt(1);
 
-            }catch(SQLException e){
-            e.printStackTrace();
-            con.rollback();
-            }finally{con.setAutoCommit(true);}
-        return null;
+            } catch(SQLException e){
+                con.rollback();
+                throw new RuntimeException(e);
+
+            } finally{
+                con.setAutoCommit(true);
+        }
     }
 
     /**
@@ -65,31 +72,37 @@ public class RichiesteManutenzioneDAO {
     public boolean rimuoviRichiestaManutenzione(Integer idManutenzione,Integer idVeicolo) throws SQLException {
         String eliminoRichiesta = "DELETE FROM richiesta_manutenzione WHERE id_manutenzione=? AND accettata=?";
         String cambioStatusVeicolo = "UPDATE veicolo SET status_condizione_veicolo=? WHERE id_veicolo=?";
+
         try{
             con.setAutoCommit(false);
             PreparedStatement st = con.prepareStatement(eliminoRichiesta);
             st.setInt(1,idManutenzione);
             st.setBoolean(2,false);
             int riga=st.executeUpdate();
+
             if(riga==0){
                 con.rollback();
                 return false;
             }
+
             PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo);
             st2.setString(1,"Libero");
             st2.setInt(2,idVeicolo);
+
             if(st2.executeUpdate()==0){
                 con.rollback();
                 return false;
             }
+
             con.commit();
             return true;
 
         }catch(SQLException e){
             con.rollback();
-            e.printStackTrace();
-        }finally{con.setAutoCommit(true);}
-    return false;
+            throw new RuntimeException(e);
+        } finally{
+            con.setAutoCommit(true);
+        }
     }
 
     /**
@@ -105,10 +118,10 @@ public class RichiesteManutenzioneDAO {
             st.setBoolean(1,accettata);
             st.setInt(2,idManutenzione);
             return st.executeUpdate()>0;
+
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     public boolean contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione,Integer idVeicolo) throws SQLException {
@@ -133,9 +146,10 @@ public class RichiesteManutenzioneDAO {
             return true;
         }catch(SQLException e){
             con.rollback();
-            e.printStackTrace();
-        }finally{con.setAutoCommit(true);}
-        return false;
+            throw new RuntimeException(e);
+        }finally{
+            con.setAutoCommit(true);
+        }
     }
 
     /**

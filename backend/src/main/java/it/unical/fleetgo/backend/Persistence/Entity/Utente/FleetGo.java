@@ -5,14 +5,13 @@ import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 public class FleetGo extends Utente {
-    private Set<RichiestaManutenzione> richiesteManutenzione;
-    private Set<Veicolo> veicoloDisponibili;
-    private Set<Azienda> aziende;
-    private Set<Fattura> fattureEmesse;
+    private List<RichiestaManutenzione> richiesteManutenzione;
+    private List<Veicolo> veicoloDisponibili;
+    private List<Azienda> aziende;
+    private List<Fattura> fattureEmesse;
 }

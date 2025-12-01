@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VeicoloDAO {
 
@@ -41,11 +41,11 @@ public class VeicoloDAO {
         }
     }
 
-    public Set<Veicolo> getVeicoliDisponibiliInPiattaforma() {
+    public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
         String query = "SELECT * FROM veicolo";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-            Set<Veicolo> veicoli = new HashSet<>();
+            List<Veicolo> veicoli = new ArrayList<>();
 
             ResultSet rs = ps.executeQuery();
 
@@ -58,7 +58,26 @@ public class VeicoloDAO {
         }
     }
 
-    public Veicolo getVeicolo(Integer idVeicolo) {
+    public Integer getIdVeicoloDaDettagli(Veicolo veicolo) {
+        String query = "SELECT id_veicolo FROM veicolo WHERE targa = ? AND modello_veicolo = ? AND tipo_distribuzione_veicolo = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, veicolo.getTargaVeicolo());
+            ps.setString(2, veicolo.getModello());
+            ps.setString(3, veicolo.getTipoDistribuzioneVeicolo());
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt("id_veicolo");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {

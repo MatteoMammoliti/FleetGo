@@ -93,7 +93,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     }
 
     @Override
-    public Set<GestioneVeicoloAzienda> getVeicoliInGestione(){
+    public List<GestioneVeicoloAzienda> getVeicoliInGestione(){
         if(!gestioneVeicoloCaricate){
             gestioneVeicoloCaricate= true;
             super.setVeicoliInGestione(
@@ -104,7 +104,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     }
 
     @Override
-    public Set<Fattura> getFatture(){
+    public List<Fattura> getFatture(){
         if(!fatturaCaricate){
             fatturaCaricate= true;
             super.setFatture(fatturaDAO.getFattureEmesseAdAzienda(
@@ -115,7 +115,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     }
 
     @Override
-    public Set<LuogoAzienda> getLuoghiDepositoRitiro(){
+    public List<LuogoAzienda> getLuoghiDepositoRitiro(){
         if(!luogoCaricate){
             luogoCaricate= true;
             super.setLuoghiDepositoRitiro(luogoAziendaDAO.getLuogiDisponibiliPerAzienda(

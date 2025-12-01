@@ -8,8 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GestioneVeicoloAziendaDAO {
 
@@ -44,14 +44,14 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public Set<GestioneVeicoloAzienda> getVeicoliInGestioneAzienda(Integer idAzienda) {
+    public List<GestioneVeicoloAzienda> getVeicoliInGestioneAzienda(Integer idAzienda) {
         String query = "SELECT * FROM gestione_veicolo_azienda WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
 
             ResultSet rs = ps.executeQuery();
-            Set<GestioneVeicoloAzienda> gestioni = new HashSet<>();
+            List<GestioneVeicoloAzienda> gestioni = new ArrayList<>();
             while(rs.next()) {
                 GestioneVeicoloAzienda gestione = new GestioneVeicoloAziendaProxy(new VeicoloDAO(connection),new LuogoAziendaDAO(connection));
                 gestione.setIdVeicolo(rs.getInt("id_veicolo"));

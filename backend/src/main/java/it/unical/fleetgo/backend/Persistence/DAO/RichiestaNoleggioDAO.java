@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RichiestaNoleggioDAO {
-    Connection con;
 
-    public RichiestaNoleggioDAO(Connection con) {this.con=con;}
+    private final Connection connection;
+
+    public RichiestaNoleggioDAO(Connection con) {
+        this.connection = con;
+    }
 
     /**
      * Aggiunge una nuova richiesta di noleggio.
@@ -27,7 +30,7 @@ public class RichiestaNoleggioDAO {
         String dataFine=richiestaNoleggio.getDataConsegna();
         String oraInizio =richiestaNoleggio.getOraInizio();
         String oraFine =richiestaNoleggio.getOraFine();
-        try(PreparedStatement st = con.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS)){
+        try(PreparedStatement st = connection.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS)){
             st.setInt(1,richiestaNoleggio.getIdDipendente());
             st.setInt(2,richiestaNoleggio.getIdAziendaRiferimento());
             st.setTime(3, Time.valueOf( LocalTime.parse(oraInizio)));
@@ -47,7 +50,7 @@ public class RichiestaNoleggioDAO {
     }
     public boolean rimuoviRichiestaNoleggio(Integer idRichiesta){
         String query="DELETE FROM richiesta_noleggio WHERE id_richiesta=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
+        try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idRichiesta);
             return st.executeUpdate()>0;
         }catch (SQLException e){
@@ -65,7 +68,7 @@ public class RichiestaNoleggioDAO {
      */
     public boolean contrassegnaRichiestaNoleggio(Integer idRichiesta,boolean accettata){
         String query="UPDATE richiesta_noleggio SET accettata=? WHERE id_richiesta=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
+        try(PreparedStatement st = connection.prepareStatement(query)){
             st.setBoolean(1,accettata);
             st.setInt(2,idRichiesta);
             return st.executeUpdate()>0;
@@ -79,12 +82,12 @@ public class RichiestaNoleggioDAO {
     public List<RichiestaNoleggio> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
         List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
         String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
+        try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
             st.setBoolean(2,false);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(con));
+                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(connection));
                 richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
                 richiesta.setIdUtente(rs.getInt("id_dipendente"));
                 richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime());

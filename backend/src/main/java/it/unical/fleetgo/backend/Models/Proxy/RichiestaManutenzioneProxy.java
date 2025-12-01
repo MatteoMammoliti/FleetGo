@@ -17,7 +17,7 @@ public class RichiestaManutenzioneProxy extends RichiestaManutenzione {
     @Override
     public Veicolo getVeicolo() {
         if(!veicoloCaricato){
-            Veicolo v = veicoloDAO.getVeicolo(super.getIdVeicolo());
+            Veicolo v = veicoloDAO.getVeicoloDaId(super.getIdVeicolo());
             veicoloCaricato = true;
             super.setVeicolo(v);
         }

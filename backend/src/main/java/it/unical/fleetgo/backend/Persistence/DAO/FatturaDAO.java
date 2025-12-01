@@ -7,8 +7,9 @@ import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FatturaDAO {
 
@@ -44,55 +45,43 @@ public class FatturaDAO {
         return getFattura(fattura, query);
     }
 
-    public Set<Fattura> getFattureEmesseDaFleetGo() {
+    public List<Fattura> getFattureEmesseDaFleetGo() {
         String query = "SELECT * FROM fattura";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ResultSet rs = ps.executeQuery();
-            Set<Fattura> fatture = new HashSet<>();
-
-            while(rs.next()) {
-                Fattura f = new FatturaProxy(new AziendaDAO(connection));
-                f.setNumeroFattura(rs.getInt("numero_fattura"));
-                f.setIdAzienda(rs.getInt("id_azienda"));
-                f.setAnnoFattura(rs.getInt("anno_fattura"));
-                f.setMeseFattura(rs.getInt("mese_fattura"));
-                f.setFleetGo(rs.getInt("id_fleetgo"));
-                f.setCosto(rs.getInt("costo"));
-                f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
-                fatture.add(f);
-            }
-            return fatture;
+            return creaListaFattura(ps);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Set<Fattura> getFattureEmesseAdAzienda(Integer idAzienda) {
+    public List<Fattura> getFattureEmesseAdAzienda(Integer idAzienda) {
         String query = "SELECT * FROM fattura WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
-
-            ResultSet rs = ps.executeQuery();
-            Set<Fattura> fatture = new HashSet<>();
-
-            while(rs.next()) {
-                Fattura f = new FatturaProxy(new AziendaDAO(connection));
-                f.setNumeroFattura(rs.getInt("numero_fattura"));
-                f.setIdAzienda(rs.getInt("id_azienda"));
-                f.setAnnoFattura(rs.getInt("anno_fattura"));
-                f.setMeseFattura(rs.getInt("mese_fattura"));
-                f.setFleetGo(rs.getInt("id_fleetgo"));
-                f.setCosto(rs.getInt("costo"));
-                f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
-                fatture.add(f);
-            }
-            return fatture;
+            return creaListaFattura(ps);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Fattura> creaListaFattura(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        List<Fattura> fatture = new ArrayList<>();
+
+        while(rs.next()) {
+            Fattura f = new FatturaProxy(new AziendaDAO(connection));
+            f.setNumeroFattura(rs.getInt("numero_fattura"));
+            f.setIdAzienda(rs.getInt("id_azienda"));
+            f.setAnnoFattura(rs.getInt("anno_fattura"));
+            f.setMeseFattura(rs.getInt("mese_fattura"));
+            f.setFleetGo(rs.getInt("id_fleetgo"));
+            f.setCosto(rs.getInt("costo"));
+            f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
+            fatture.add(f);
+        }
+        return fatture;
     }
 
     private boolean getFattura(FatturaDTO fattura, String query) {

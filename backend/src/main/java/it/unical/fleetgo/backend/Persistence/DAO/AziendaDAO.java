@@ -2,13 +2,12 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AziendaDAO {
 
@@ -82,9 +81,9 @@ public class AziendaDAO {
         return null;
     }
 
-    public Set<Azienda> getAziendeInPiattaforme() {
+    public List<Azienda> getAziendeInPiattaforme() {
         String query = "SELECT * FROM azienda";
-        Set<Azienda> aziende = new HashSet<>();
+        List<Azienda> aziende = new ArrayList<>();
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();

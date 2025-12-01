@@ -6,8 +6,7 @@ import it.unical.fleetgo.backend.Persistence.DAO.RichiesteManutenzioneDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.FleetGo;
-
-import java.util.Set;
+import java.util.List;
 
 public class FleetGoProxy extends FleetGo {
     private final RichiesteManutenzioneDAO manutenzioneDAO;
@@ -28,16 +27,20 @@ public class FleetGoProxy extends FleetGo {
     }
 
     @Override
-    public Set<RichiestaManutenzione> getRichiesteManutenzione() {
+    public List<RichiestaManutenzione> getRichiesteManutenzione() {
         if(!richiesteManutenzioneCaricate){
             richiesteManutenzioneCaricate=true;
-            super.setRichiesteManutenzione((Set<RichiestaManutenzione>) manutenzioneDAO);
+
+            List<RichiestaManutenzione> daAccettare = manutenzioneDAO.getRichiesteManutenzioneDaAccettare();
+            List<RichiestaManutenzione> inCorso = manutenzioneDAO.getRichiesteManutenzioneInCorso();
+            daAccettare.addAll(inCorso);
+            super.setRichiesteManutenzione(daAccettare);
         }
         return super.getRichiesteManutenzione();
     }
 
     @Override
-    public Set<Veicolo> getVeicoloDisponibili() {
+    public List<Veicolo> getVeicoloDisponibili() {
         if(!veicoliCaricati){
             veicoliCaricati=true;
             super.setVeicoloDisponibili(veicoloDAO.getVeicoliDisponibiliInPiattaforma());
@@ -46,7 +49,7 @@ public class FleetGoProxy extends FleetGo {
     }
 
     @Override
-    public Set<Azienda> getAziende(){
+    public List<Azienda> getAziende(){
         if(!aziendeCaricate){
             aziendeCaricate=true;
             super.setAziende(aziendaDAO.getAziendeInPiattaforme());
@@ -55,7 +58,7 @@ public class FleetGoProxy extends FleetGo {
     }
 
     @Override
-    public Set<Fattura> getFattureEmesse(){
+    public List<Fattura> getFattureEmesse(){
         if(!fattureCaricate){
             fattureCaricate=true;
             super.setFattureEmesse(fatturaDAO.getFattureEmesseDaFleetGo());

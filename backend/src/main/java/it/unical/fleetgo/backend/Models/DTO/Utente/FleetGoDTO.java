@@ -4,12 +4,11 @@ import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
-
-import java.util.Set;
+import java.util.List;
 
 public class FleetGoDTO extends UtenteDTO {
-    private Set<RichiestaManutenzioneDTO> richiesteManutenzione;
-    private Set<VeicoloDTO> veicoloDisponibili;
-    private Set<AziendaDTO> aziende;
-    private Set<FatturaDTO> fattureEmesse;
+    private List<RichiestaManutenzioneDTO> richiesteManutenzione;
+    private List<VeicoloDTO> veicoloDisponibili;
+    private List<AziendaDTO> aziende;
+    private List<FatturaDTO> fattureEmesse;
 }

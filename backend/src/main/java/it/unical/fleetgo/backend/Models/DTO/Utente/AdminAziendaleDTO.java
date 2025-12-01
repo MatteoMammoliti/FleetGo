@@ -1,13 +1,13 @@
 package it.unical.fleetgo.backend.Models.DTO.Utente;
 import it.unical.fleetgo.backend.Models.DTO.*;
-import java.util.Set;
+import java.util.List;
 
 public class AdminAziendaleDTO extends UtenteDTO {
     private Integer idAziendaGestita;
-    private Set<RichiestaNoleggioDTO> richiesteNoleggio;
-    private Set<RichiestaManutenzioneDTO> richiesteManutenzione;
-    private Set<DipendenteDTO> dipendenti;
-    private Set<GestioneVeicoloAziendaDTO> veicoloInGestione;
-    private Set<FatturaDTO> fatture;
-    private Set<LuogoDTO> luoghiDepositoRitiro;
+    private List<RichiestaNoleggioDTO> richiesteNoleggio;
+    private List<RichiestaManutenzioneDTO> richiesteManutenzione;
+    private List<DipendenteDTO> dipendenti;
+    private List<GestioneVeicoloAziendaDTO> veicoloInGestione;
+    private List<FatturaDTO> fatture;
+    private List<LuogoDTO> luoghiDepositoRitiro;
 }

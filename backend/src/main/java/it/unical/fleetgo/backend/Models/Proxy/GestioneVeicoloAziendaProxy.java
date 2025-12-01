@@ -22,7 +22,7 @@ public class GestioneVeicoloAziendaProxy extends GestioneVeicoloAzienda {
     @Override
     public Veicolo getVeicolo() {
         if(!veicoloCaricato){
-            Veicolo v = veicoloDAO.getVeicolo(
+            Veicolo v = veicoloDAO.getVeicoloDaId(
                     super.getIdVeicolo()
             );
             veicoloCaricato = true;
