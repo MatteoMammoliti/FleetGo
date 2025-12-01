@@ -87,10 +87,10 @@ public class ControllerFlottaVeicoli {
         veicoloDTO.setTipoDistribuzioneVeicolo(v.getTipoDistribuzioneVeicolo());
         veicoloDTO.setLivelloCarburante(v.getLivelloCarburante());
         veicoloDTO.setStatusCondizioneVeicolo(v.getStatusCondizioneVeicolo());
-        if(v.getIdAziendaAssociato()!=null){
-            veicoloDTO.setIdAziendaAssociato(v.getIdAziendaAssociato());
+        if(v.getNomeAziendaAffiliata()!=null){
+            veicoloDTO.setNomeAziendaAffiliata(v.getNomeAziendaAffiliata());
         }else {
-            veicoloDTO.setIdAziendaAssociato(null);
+            veicoloDTO.setNomeAziendaAffiliata(null);
         }
         return veicoloDTO;
     }
