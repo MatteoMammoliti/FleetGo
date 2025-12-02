@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FormBackground} from '@shared/form-background/form-background';
 import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
-import {FormCercaAuto} from '@shared/form-cerca-auto/form-cerca-auto';
+import {FormAggiungiAuto} from '@shared/form-aggiungi-auto/form-aggiungi-auto';
 
 
 
@@ -14,7 +14,7 @@ import {FormCercaAuto} from '@shared/form-cerca-auto/form-cerca-auto';
     FormsModule,
     FormBackground,
     TabellaAuto,
-    FormCercaAuto
+    FormAggiungiAuto
   ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',

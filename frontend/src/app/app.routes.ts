@@ -1,19 +1,25 @@
-import {Routes} from '@angular/router';
-import{LoginComponent} from '@features/login/login.component';
-import {RegistrazioneComponent} from '@features/registrazione/registrazione.component';
-import {DashboardFleetGo} from '@features/adminFleetGo/dashboard-fleet-go/dashboard-fleet-go';
-import {DashboardAzienda} from '@features/azienda/dashboard-azienda/dashboard-azienda';
-import {DashboardDipendente} from '@features/dipendente/dashboard-dipendente/dashboard-dipendente';
-import {FlottaGlobale} from '@features/adminFleetGo/flotta-globale/flotta-globale';
-import {AziendeAffiliate} from '@features/adminFleetGo/aziende-affiliate/aziende-affiliate';
+import { Routes } from '@angular/router';
+import { LoginComponent } from '@features/login/login.component';
+import { RegistrazioneComponent } from '@features/registrazione/registrazione.component';
+import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
 
 export const routes: Routes = [
+ {
+    path: '',
+    component: GeneralLayoutNoLogin,
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: LoginComponent },
+      { path: 'registrazione', component: RegistrazioneComponent }
+    ]
+  },
 
-  {path: 'login', component: LoginComponent},
-  {path: 'registrazione', component: RegistrazioneComponent},
-  {path:'dashboardFleetGo', component: DashboardFleetGo},
-  {path:'dashboardAzienda', component: DashboardAzienda},
-  {path:'dashboardDipendente', component: DashboardDipendente},
-  {path:'dashboardFleetGo/flotta-globale', component:FlottaGlobale},
-  {path:'dashboardFleetGo/aziende-affiliate', component: AziendeAffiliate}
-]
+  {
+    path: 'dashboardFleetGo',
+    loadChildren: () => import('./features/adminFleetGo/admin-fleet-go.routes')
+      .then(m => m.ADMIN_FLEET_GO_ROUTES)
+  },
+
+
+  { path: '**', redirectTo: 'login' }
+];

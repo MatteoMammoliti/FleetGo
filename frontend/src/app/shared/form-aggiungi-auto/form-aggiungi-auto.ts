@@ -11,10 +11,10 @@ import {validazione} from '@shared/validation/validazione';
         FormBackground,
         FormsModule
     ],
-  templateUrl: './form-cerca-auto.html',
-  styleUrl: './form-cerca-auto.css',
+  templateUrl: './form-aggiungi-auto.html',
+  styleUrl: './form-aggiungi-auto.css',
 })
-export class FormCercaAuto {
+export class FormAggiungiAuto {
 
   private auth=inject(FlottaGlobaleService);
   private router=inject(Router);

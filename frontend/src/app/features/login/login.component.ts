@@ -88,7 +88,7 @@ export class LoginComponent {
             this.router.navigate(['/dashboardAzienda']);
             break;
           case 'FleetGo':
-            this.router.navigate(['/dashboardFleetGo']);
+            this.router.navigate(['/dashboardFleetGo/dashboard']);
             break;
           default:
             this.router.navigate(['/errorPage']);

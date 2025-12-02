@@ -1,0 +1,19 @@
+<div>
+  <nav class="barraSuperiore">
+    <ul>
+      <h1>
+        <app-logo></app-logo>
+      </h1>
+      <li><a href="">Contatti</a></li>
+      <li><a href="">Chi siamo</a>
+    </ul>
+    <div class="bottoniAutenticazione">
+      <button routerLink="/login" class="bottone">Accedi</button>
+      <button routerLink="/registrazione" class="bottone">Registrati</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

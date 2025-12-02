@@ -1,0 +1,22 @@
+<div class="layout-container">
+  <app-sidebar class="sidebar">
+    <div class="contenitore-sidebar">
+      <div class="contenitoreMenu">
+        <ul>
+          <li><a routerLink="dashboard" routerLinkActive="active">Dashboard</a></li>
+          <li><a routerLink="aziende-affiliate" routerLinkActive="active">Aziende Affiliate</a></li>
+          <li><a routerLink="fatturazione" routerLinkActive="active">Fatturazione</a></li>
+          <li><a routerLink="flotta-globale" routerLinkActive="active">Flotta Globale</a></li>
+          <li><a routerLink="impostazioni" routerLinkActive="active">Impostazioni</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="contenitore-logout">
+      <button class="logout" (click)="logout()">Logout</button>
+    </div>
+  </app-sidebar>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

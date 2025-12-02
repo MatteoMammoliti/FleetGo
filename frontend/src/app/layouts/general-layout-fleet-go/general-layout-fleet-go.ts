@@ -2,17 +2,17 @@ import { Component } from '@angular/core';
 import { Sidebar } from '@shared/sidebar/sidebar';
 import { inject } from '@angular/core';
 import { AuthService } from '@core/services/auth-service';
-import {Router} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 
 @Component({
-  selector: 'app-barra-log-fleet-go',
-  imports: [Sidebar],
+  selector: 'app-general-layout-fleet-go',
+  imports: [Sidebar, RouterOutlet, RouterLink ,RouterLinkActive],
   standalone: true,
-  templateUrl: './barra-log-fleet-go.html',
-  styleUrl: './barra-log-fleet-go.css',
+  templateUrl: './general-layout-fleet-go.html',
+  styleUrl: './general-layout-fleet-go.css',
 })
-export class BarraLogFleetGo {
+export class GeneralLayoutFleetGo {
   public authService= inject(AuthService);
   private router = inject(Router);
 

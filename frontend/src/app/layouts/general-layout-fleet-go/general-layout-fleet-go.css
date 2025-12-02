@@ -2,11 +2,16 @@
   margin:auto;
   padding: 10px;
   cursor: pointer;
-  height: 100%;
   border-left: 4px solid transparent;
   flex-direction: column;
   flex-grow: 1;
   color:white;
+}
+.layout-container{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
 }
 a{
   font-size: 20px;

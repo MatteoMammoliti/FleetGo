@@ -20,13 +20,7 @@ input, select {
   border: 1px solid #ddd;
   border-radius: 10px;
 }
-h2 {
-  text-align: center;
-  color: #00A88D;
-  margin-bottom: 25px;
-  font-size: large;
-  font-weight: bold;;
-}
+
 
 input:hover, select:hover {
   border-color: #000000;

@@ -3,12 +3,14 @@ import {FormBackground} from "@shared/form-background/form-background";
 import {VeicoloDTO} from '@models/veicoloDTO.model';
 import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
 import {Observable} from 'rxjs';
+import {TabellaBackground} from "@shared/tabella-background/tabella-background";
 
 @Component({
   selector: 'app-tabella-auto',
-    imports: [
-        FormBackground
-    ],
+  imports: [
+    FormBackground,
+    TabellaBackground
+  ],
   templateUrl: './tabella-auto.html',
   styleUrl: './tabella-auto.css',
 })

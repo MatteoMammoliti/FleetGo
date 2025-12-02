@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import {TabellaBackground} from '@shared/tabella-background/tabella-background';
 
 @Component({
   selector: 'app-tabella-aziende',
   standalone: true,
-  imports: [],
+  imports: [
+    TabellaBackground
+  ],
   templateUrl: './tabella-aziende.html',
   styleUrl: './tabella-aziende.css'
 })
