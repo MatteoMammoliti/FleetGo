@@ -19,6 +19,7 @@ import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
   styleUrl: './flotta-globale.css',
 })
 export class FlottaGlobale {
+
 private auth=inject(FlottaGlobaleService);
 private router=inject(Router);
 private validatore=inject(validazione);

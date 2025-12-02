@@ -16,8 +16,8 @@ export class FlottaGlobaleService {
     return this.http.post(`${this.apiUrl}/aggiuntaVeicoli`, formData, { responseType: 'text' });
   }
 
-  richiediVeicoli():Observable<ArrayBuffer>{
-    return this.http.get(`${this.apiUrl}/listaVeicoli`,{responseType:'arraybuffer'})
+  richiediVeicoli():Observable<VeicoloDTO[]>{
+    return this.http.get<VeicoloDTO[]>(`${this.apiUrl}/listaVeicoli`);
   }
 
 }
