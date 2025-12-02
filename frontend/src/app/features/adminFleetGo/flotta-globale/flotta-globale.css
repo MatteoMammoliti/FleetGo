@@ -8,18 +8,17 @@ label {
   font-weight: bold;
   color: #000000;
 }
-.form-autenticazione{
-width: 100%;
-}
+
 .form-riga{
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+
 }
 input, select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  box-sizing: border-box;
 }
 h2 {
   text-align: center;
@@ -31,7 +30,6 @@ h2 {
 
 input:hover, select:hover {
   border-color: #000000;
-
 }
 
 input:focus, select:focus {
@@ -40,7 +38,7 @@ input:focus, select:focus {
 }
 .form-group {
   margin-bottom: 10px;
-  flex:1;
+  min-width: 0;
 }
 .allineaTasto{
   display: flex;
