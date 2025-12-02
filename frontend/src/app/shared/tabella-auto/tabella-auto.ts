@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {FormAutenticazione} from "@shared/form-autenticazione/form-autenticazione";
+import {FormAutenticazione} from "@shared/form-background/form-autenticazione";
 import {VeicoloDTO} from '@models/veicoloDTO.model';
 import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
 import {Observable} from 'rxjs';
@@ -17,6 +17,9 @@ export class TabellaAuto {
   constructor() {}
     listaVeicoli:VeicoloDTO[]=[];
   ngOnInit(): void {
+    this.aggiornaDati();
+  }
+  aggiornaDati(){
     this.service.richiediVeicoli().subscribe({
       next: (response) => {
         if (response) {
@@ -31,6 +34,8 @@ export class TabellaAuto {
         console.error("Errore nel caricamento:", err);
       }
     });
+
   }
+
 
 }

@@ -32,7 +32,9 @@ export class AuthService {
     formData.append("email", email);
     formData.append("password", password);
 
-    return this.http.post(`${this.apiUrl}/login`, formData, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/login`, formData, {
+      withCredentials:true, responseType: 'text'}
+    );
   }
 
   aggiornaRuoloUtenteCorrente(ruoloRicevuto: string) {

@@ -9,15 +9,19 @@ import {Observable} from 'rxjs';
 export class FlottaGlobaleService {
   constructor(private http: HttpClient) {
   }
-  private apiUrl= 'http://localhost:8080/fleetGoDashboard';
+  private apiUrl= 'http://localhost:8080/dashboardFleetGo';
 
-  registraVeicolo(formData: FormData)   {
+  registraVeicolo(formData: FormData):Observable<VeicoloDTO>   {
 
-    return this.http.post(`${this.apiUrl}/aggiuntaVeicoli`, formData, { responseType: 'text' });
+    return this.http.post<VeicoloDTO>(`${this.apiUrl}/registraVeicolo`, formData, { withCredentials:true});
   }
 
   richiediVeicoli():Observable<VeicoloDTO[]>{
-    return this.http.get<VeicoloDTO[]>(`${this.apiUrl}/listaVeicoli`);
+    return this.http.get<VeicoloDTO[]>(`${this.apiUrl}/listaVeicoli`, {
+      withCredentials:true
+    });
   }
+
+
 
 }

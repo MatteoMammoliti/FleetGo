@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FormAutenticazione } from '@shared/form-autenticazione/form-autenticazione';
+import { FormAutenticazione } from '@shared/form-background/form-autenticazione';
 import { AuthService } from '@core/services/auth-service';
 import { DipendenteDTO } from '@models/dipendenteDTO.models';
 import {Router} from '@angular/router';
-import {validazione} from '@shared/validation/validazione'; 
+import {validazione} from '@shared/validation/validazione';
 import { inject } from '@angular/core';
 
 @Component({
@@ -39,7 +39,7 @@ export class RegistrazioneComponent {
 
 
   constructor(private authService: AuthService, private router: Router) {}
-  
+
   onFileSelected(event: any) {
     this.patente = event.target.files[0];
   }
@@ -54,8 +54,8 @@ export class RegistrazioneComponent {
       ripetiPassword: false,
       datanascita: false,
       patente: false
-    };  
-    
+    };
+
 
     if (this.patente == null || this.nome == '' || this.cognome == '' || this.datanascita == '' || this.email == '' || this.password == '' || this.ripetiPassword == '') {
       this.errore = "Compila tutti i campi!";
@@ -65,7 +65,7 @@ export class RegistrazioneComponent {
       this.mappaErrori.datanascita = this.datanascita == '';
       this.mappaErrori.email = this.email == '';
       this.mappaErrori.password = this.password == '';
-      this.mappaErrori.ripetiPassword = this.ripetiPassword == '';  
+      this.mappaErrori.ripetiPassword = this.ripetiPassword == '';
       return;
     } else {
       this.errore = "";
@@ -93,7 +93,7 @@ export class RegistrazioneComponent {
       return;
     } else {
       this.errore = "";
-    } 
+    }
 
     if (this.password !== this.ripetiPassword) {
       this.errore = "Le password non coincidono";
@@ -102,7 +102,7 @@ export class RegistrazioneComponent {
       return
     } else {
       this.errore = "";
-    } 
+    }
 
 
     if (this.validator.checkEmail(this.email) == false || this.validator.checkPassword(this.password) == false) {

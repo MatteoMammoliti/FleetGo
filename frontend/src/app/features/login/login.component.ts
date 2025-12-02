@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {FormAutenticazione} from '@shared/form-autenticazione/form-autenticazione';
+import {FormAutenticazione} from '@shared/form-background/form-autenticazione';
 import {AuthService} from '@core/services/auth-service';
 import {validazione} from '@shared/validation/validazione';
 import { FormsModule } from '@angular/forms';
