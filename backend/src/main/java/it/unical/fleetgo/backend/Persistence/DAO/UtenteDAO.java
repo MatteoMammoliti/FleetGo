@@ -6,6 +6,10 @@ import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UtenteDAO {
     Connection con;
@@ -137,6 +141,105 @@ public class UtenteDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean modificaDatiUtente(String nome,String cognome,String data,String email,String nomeAzienda,String sedeAzienda,String pIva,Integer idUtente) throws SQLException {
+        try{
+            con.setAutoCommit(false);
+            if(nome!=null || cognome !=null || data!=null) {
+                StringBuilder aggiornoUtente=new StringBuilder("UPDATE utente SET ");
+                List<Object> parametri = new ArrayList<>();
+                boolean primo=true;
+                if(nome!=null){
+                    aggiornoUtente.append("nome_utente=? ");
+                    parametri.add(nome);
+                    primo=false;
+                }
+                if(cognome!=null){
+                    if(!primo){aggiornoUtente.append(", ");}
+                    aggiornoUtente.append("cognome=? ");
+                    parametri.add(cognome);
+                    primo=false;
+                }
+                if(data!=null){
+                    if(!primo){aggiornoUtente.append(", ");}
+                    aggiornoUtente.append("data_nascita=? ");
+                    parametri.add(LocalDate.parse(data));
+                }
+                aggiornoUtente.append("WHERE id_utente=? ");
+                parametri.add(idUtente);
+
+                try(PreparedStatement st = con.prepareStatement(aggiornoUtente.toString())){
+                    for(int i=0;i<parametri.size();i++){
+                        st.setObject(i+1,parametri.get(i));
+                    }
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return false;
+                    }
+
+                }
+            }
+            if(email!=null){
+                try(PreparedStatement st = con.prepareStatement("UPDATE credenziali_utente SET email=? WHERE id_utente=?")){
+                    st.setString(1,email);
+                    st.setInt(2,idUtente);
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return false;
+                    }
+                }
+            }
+            if(nomeAzienda!=null || sedeAzienda!=null || pIva!=null){
+                StringBuilder aggiornoAzienda=new StringBuilder("UPDATE azienda SET ");
+                List<Object> parametri = new ArrayList<>();
+                boolean primo= true;
+                if(nomeAzienda!=null){
+                    aggiornoAzienda.append("nome_azienda=? ");
+                    parametri.add(nomeAzienda);
+                    primo=false;
+                }
+                if(sedeAzienda!=null){
+                    if(!primo){aggiornoAzienda.append(", ");}
+                    aggiornoAzienda.append("sede_azienda=? ");
+                    parametri.add(sedeAzienda);
+                    primo=false;
+                }
+                if(pIva!=null){
+                    if(!primo){aggiornoAzienda.append(", ");}
+                    aggiornoAzienda.append("p_iva=? ");
+                    parametri.add(pIva);
+                }
+                aggiornoAzienda.append("WHERE id_admin_azienda=?");
+                parametri.add(idUtente);
+                try(PreparedStatement st = con.prepareStatement(aggiornoAzienda.toString())){
+                    for (int i=0;i<parametri.size();i++){
+                        st.setObject(i+1,parametri.get(i));
+                    }
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return false;
+                    }
+                }
+            }
+            con.commit();
+            return true;
+        } catch (SQLException e) {
+            con.rollback();
+            String state = e.getSQLState();
+            String msg = e.getMessage().toLowerCase();
+            if("23505".equals(state)){
+                if(msg.contains("email")){
+                    throw new RuntimeException("Email già presente");
+                }
+                else if(msg.contains("p_iva")){
+                    throw new RuntimeException("P.Iva già registrata da un'altra azienda");
+                }
+            }
+            throw new RuntimeException(e);
+        }finally {
+            con.setAutoCommit(true);
+        }
     }
 
     private AdminAziendaleProxy creoAdminAziendaleProxy(){
