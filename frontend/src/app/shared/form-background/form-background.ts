@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-form-autenticazione',
   standalone: true,
   imports: [],
-  templateUrl: './form-autenticazione.html',
-  styleUrl: './form-autenticazione.css',
+  templateUrl: './form-background.html',
+  styleUrl: './form-background.css',
 })
-export class FormAutenticazione {
+export class FormBackground {
 
 }

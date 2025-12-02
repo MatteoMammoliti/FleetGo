@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {FormAutenticazione} from "@shared/form-background/form-autenticazione";
+import {FormBackground} from "@shared/form-background/form-background";
 import {FormsModule} from "@angular/forms";
 import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
 import {Router} from '@angular/router';
@@ -8,7 +8,7 @@ import {validazione} from '@shared/validation/validazione';
 @Component({
   selector: 'app-form-cerca-auto',
     imports: [
-        FormAutenticazione,
+        FormBackground,
         FormsModule
     ],
   templateUrl: './form-cerca-auto.html',

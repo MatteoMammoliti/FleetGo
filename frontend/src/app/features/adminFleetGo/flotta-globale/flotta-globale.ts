@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FormAutenticazione} from '@shared/form-background/form-autenticazione';
+import {FormBackground} from '@shared/form-background/form-background';
 import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
 import {FormCercaAuto} from '@shared/form-cerca-auto/form-cerca-auto';
 
@@ -12,7 +12,7 @@ import {FormCercaAuto} from '@shared/form-cerca-auto/form-cerca-auto';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    FormAutenticazione,
+    FormBackground,
     TabellaAuto,
     FormCercaAuto
   ],

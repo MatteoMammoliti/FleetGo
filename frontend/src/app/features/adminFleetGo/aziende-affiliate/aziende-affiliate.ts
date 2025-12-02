@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from '@angular/router';
-import { FormAutenticazione } from '@shared/form-autenticazione/form-autenticazione';
+import { FormBackground } from '@shared/form-background/form-background';
 import { validazione } from '@shared/validation/validazione';
-import { AziendeAffiliateService } from '@core/services/adminFleetGoService/aziende-affiliate-service'; 
+import { AziendeAffiliateService } from '@core/services/adminFleetGoService/aziende-affiliate-service';
 import { TabellaAziendeComponent } from '@shared/tabella-aziende/tabella-aziende';
 
 @Component({
   selector: 'app-aziende-affiliate',
-  standalone: true, 
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    FormAutenticazione,
+    FormBackground,
     TabellaAziendeComponent
   ],
   templateUrl: './aziende-affiliate.html',
@@ -20,14 +20,14 @@ import { TabellaAziendeComponent } from '@shared/tabella-aziende/tabella-aziende
 })
 
 export class AziendeAffiliate {
-  
+
   private router = inject(Router);
   private validatore = inject(validazione);
-  private aziendeService = inject(AziendeAffiliateService); 
+  private aziendeService = inject(AziendeAffiliateService);
 
   nome = '';
   cognome = '';
-  email = ''; 
+  email = '';
   password = '';
   nomeAzienda = '';
   partitaIva = '';
@@ -80,7 +80,7 @@ export class AziendeAffiliate {
     const formData = new FormData();
     formData.append('nome', this.nome);
     formData.append('cognome', this.cognome);
-    formData.append('email', this.email); 
+    formData.append('email', this.email);
     formData.append('password', this.password);
     formData.append('nomeAzienda', this.nomeAzienda);
     formData.append('partitaIva', this.partitaIva);
@@ -91,16 +91,16 @@ export class AziendeAffiliate {
     this.aziendeService.registraAzienda(formData).subscribe({
       next: (res) => {
         console.log("Azienda registrata!", res);
-        this.pulisciForm(); 
+        this.pulisciForm();
       },
       error: (err) => {
         console.error("Errore", err);
         this.errore = "Errore durante la registrazione";
       }
     });
-  } 
+  }
 
-  
+
   reset() {
     this.errore = '';
     this.mappaErrori = {

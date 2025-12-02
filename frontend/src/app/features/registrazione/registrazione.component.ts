@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FormAutenticazione } from '@shared/form-background/form-autenticazione';
+import { FormBackground } from '@shared/form-background/form-background';
 import { AuthService } from '@core/services/auth-service';
 import { DipendenteDTO } from '@models/dipendenteDTO.models';
 import {Router} from '@angular/router';
@@ -10,7 +10,7 @@ import { inject } from '@angular/core';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [FormsModule, FormAutenticazione],
+  imports: [FormsModule, FormBackground],
   templateUrl: './registrazione.component.html',
   styleUrl: './registrazione.component.css',
 })
