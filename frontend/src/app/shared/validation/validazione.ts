@@ -45,6 +45,10 @@ export class validazione {
       const targaRegex = /^[A-Z]{2}[0-9]{3}[A-Z]{2}$/;
       return targaRegex.test(targa);
     }
+    checkPartitaIva(piva: string): boolean {
+        const pivaRegex = /^[0-9]{11}$/;
+        return pivaRegex.test(piva);
+    }
 
 
 }

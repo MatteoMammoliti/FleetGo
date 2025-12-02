@@ -5,6 +5,7 @@ import {DashboardFleetGo} from '@features/adminFleetGo/dashboard-fleet-go/dashbo
 import {DashboardAzienda} from '@features/azienda/dashboard-azienda/dashboard-azienda';
 import {DashboardDipendente} from '@features/dipendente/dashboard-dipendente/dashboard-dipendente';
 import {FlottaGlobale} from '@features/adminFleetGo/flotta-globale/flotta-globale';
+import {AziendeAffiliate} from '@features/adminFleetGo/aziende-affiliate/aziende-affiliate';
 
 export const routes: Routes = [
 
@@ -13,5 +14,6 @@ export const routes: Routes = [
   {path:'dashboardFleetGo', component: DashboardFleetGo},
   {path:'dashboardAzienda', component: DashboardAzienda},
   {path:'dashboardDipendente', component: DashboardDipendente},
-  {path:'dashboardFleetGo/flotta-globale', component:FlottaGlobale}
+  {path:'dashboardFleetGo/flotta-globale', component:FlottaGlobale},
+  {path:'dashboardFleetGo/aziende-affiliate', component: AziendeAffiliate}
 ]
