@@ -1,0 +1,28 @@
+<div class="contenitore-tabella">
+  <h2>Elenco Aziende Affiliate</h2>
+
+  <table class="tabella-semplice">
+    <thead>
+      <tr>
+        <th>Nome Azienda</th>
+        <th>Partita IVA</th>
+        <th>Sede</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      @for (azienda of listaAziende; track azienda.piva) {
+        <tr>
+          <td>{{ azienda.nome }}</td>
+          <td>{{ azienda.piva }}</td>
+          <td>{{ azienda.sede }}</td>
+          <td>
+            <button class="bottone-elimina" (click)="elimina(azienda)">Elimina</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
