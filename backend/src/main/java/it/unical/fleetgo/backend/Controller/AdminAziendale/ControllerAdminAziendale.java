@@ -22,7 +22,7 @@ public class ControllerAdminAziendale {
         this.adminAziendale = adminAziendale;
     }
 
-    @PostMapping("/modificaNomeAdmin")
+    @PostMapping("/modificaDatiAdmin")
     public ResponseEntity<String> modificaDatiUtente(@RequestPart(value = "nome",required = false)String nome,
                                                      @RequestPart(value = "cognome",required = false)String cognome,
                                                      @RequestPart(value = "data",required = false) String data,
