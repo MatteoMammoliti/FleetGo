@@ -143,7 +143,7 @@ public class UtenteDAO {
         return null;
     }
 
-    public boolean modificaDatiUtente(String nome,String cognome,String data,String email,String nomeAzienda,String sedeAzienda,String pIva,Integer idUtente) throws SQLException {
+    public boolean modificaDatiUtente(String nome,String cognome,String data,String email,String nomeAzienda,String sedeAzienda,String pIva,Integer idUtente) throws RuntimeException, SQLException {
         try{
             con.setAutoCommit(false);
             if(nome!=null || cognome !=null || data!=null) {
@@ -224,16 +224,18 @@ public class UtenteDAO {
             }
             con.commit();
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             con.rollback();
-            String state = e.getSQLState();
-            String msg = e.getMessage().toLowerCase();
-            if("23505".equals(state)){
-                if(msg.contains("email")){
-                    throw new RuntimeException("Email già presente");
-                }
-                else if(msg.contains("p_iva")){
-                    throw new RuntimeException("P.Iva già registrata da un'altra azienda");
+            if(e instanceof SQLException sqlEccezione){
+                String state = sqlEccezione.getSQLState();
+                String msg = sqlEccezione.getMessage().toLowerCase();
+                if("23505".equals(state)){
+                    if(msg.contains("email")){
+                        throw new RuntimeException("Email già presente");
+                    }
+                    else if(msg.contains("p_iva")){
+                        throw new RuntimeException("P.Iva già registrata da un'altra azienda");
+                    }
                 }
             }
             throw new RuntimeException(e);

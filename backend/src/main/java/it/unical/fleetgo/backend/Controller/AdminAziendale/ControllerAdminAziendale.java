@@ -23,20 +23,24 @@ public class ControllerAdminAziendale {
     }
 
     @PostMapping("/modificaNomeAdmin")
-    public ResponseEntity<String> modificaDatiUtente(@RequestPart("nome")String nome,@RequestPart("cognome")String cognome,@RequestPart("data") String data,
-                                                     @RequestPart("email")String email,@RequestPart("nomeAzienda")String nomeAzienda,@RequestPart("sedeAzienda")String sedeAzienda,
-                                                     @RequestPart("pIva")String piva,HttpSession session){
+    public ResponseEntity<String> modificaDatiUtente(@RequestPart(value = "nome",required = false)String nome,
+                                                     @RequestPart(value = "cognome",required = false)String cognome,
+                                                     @RequestPart(value = "data",required = false) String data,
+                                                     @RequestPart(value = "email",required = false)String email,
+                                                     @RequestPart(value = "nomeAzienda",required = false)String nomeAzienda,
+                                                     @RequestPart(value = "sedeAzienda",required = false)String sedeAzienda,
+                                                     @RequestPart(value = "pIva",required = false)String piva,HttpSession session){
         Integer idUtente= (Integer)session.getAttribute("idUtente");
         try{
             adminAziendale.modificaDati(nome,cognome,data,email,nomeAzienda,sedeAzienda,piva,idUtente);
-            return  ResponseEntity.status(HttpStatus.CREATED).body("Dati modificati con successo!");
-        }catch (SQLException e){
+            return  ResponseEntity.status(HttpStatus.OK).body("Dati modificati con successo!");
+        }catch (RuntimeException | SQLException e){
             String errore=e.getMessage();
             if(errore.equals("Email già presente")){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errore);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(errore);
             }
             if(errore.equals("P.Iva già registrata da un'altra azienda")){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errore);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(errore);
             }
             e.printStackTrace();
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
