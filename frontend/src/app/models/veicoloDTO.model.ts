@@ -1,3 +1,5 @@
+import {LuogoDTO} from '@models/luogoDTO.models';
+
 export interface VeicoloDTO {
   idVeicolo?: number;
   targaVeicolo: string;
@@ -6,4 +8,6 @@ export interface VeicoloDTO {
   tipoDistribuzioneVeicolo: string;
   livelloCarburante?: number;
   statusCondizioneVeicolo: string;
+  nomeAziendaAssociato?:string;
+  luogo?:LuogoDTO;
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormAutenticazione} from "@shared/form-autenticazione/form-autenticazione";
+import {VeicoloDTO} from '@models/veicoloDTO.model';
 
 @Component({
   selector: 'app-tabella-auto',
@@ -10,5 +11,11 @@ import {FormAutenticazione} from "@shared/form-autenticazione/form-autenticazion
   styleUrl: './tabella-auto.css',
 })
 export class TabellaAuto {
+  constructor() {
+
+  }
+
+  listaVeicoli: VeicoloDTO[] = [];
+
 
 }
