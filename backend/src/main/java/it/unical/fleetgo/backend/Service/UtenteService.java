@@ -19,13 +19,10 @@ public class UtenteService {
     RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(con);
     RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(con);
 
-    @Transactional(rollbackFor =  Exception.class)
-    public void registraUtente(UtenteDTO utenteDTO) {
+    public Integer registraUtente(UtenteDTO utenteDTO) {
         if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
-            System.out.println("Email existente");
             throw new IllegalArgumentException("Email non valida");
         }
-
 
         try {
             con.setAutoCommit(false);
@@ -42,14 +39,14 @@ public class UtenteService {
                 throw new RuntimeException("Problema durante l'inserimento delle credenziali");
             }
             con.commit();
+            return idAggiunta;
         }catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }finally {
             try {
                 con.setAutoCommit(true);
-            } catch (SQLException ex) {}
+            } catch (SQLException ignored) {}
         }
-
     }
 
     public Integer loginUtente(String email,String password) throws SQLException {

@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 import {validazione} from '@shared/validation/validazione';
 
 @Component({
-  selector: 'app-form-cerca-auto',
+  selector: 'app-form-aggiungi-auto',
     imports: [
         FormBackground,
         FormsModule

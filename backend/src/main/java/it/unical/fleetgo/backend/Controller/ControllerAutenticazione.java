@@ -26,13 +26,11 @@ public class ControllerAutenticazione {
 
         utente.setUrlImmagine(urlImg);
 
-        try {
-
+        try{
             utenteService.registraUtente(utente);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione avvenuta con successo");
 
         }catch(IllegalArgumentException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
         }catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");

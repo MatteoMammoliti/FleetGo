@@ -1,0 +1,118 @@
+.titolo {
+  font-weight: bold;
+  font-size: 25pt;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #00A88D;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #002040;
+}
+
+
+.layout-due-colonne {
+  display: flex;
+  gap: 20px;
+}
+
+.colonna {
+  flex: 1;
+  padding: 20px;
+  border-radius: 15px;
+
+}
+
+
+.form-riga {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #000000;
+  font-size: 0.9rem;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+}
+
+
+input:hover {
+  border-color: #000000;
+}
+
+input:focus {
+  border-color: #00A88D;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.bordo-rosso {
+  border: 1px solid red;
+  background-color: #fff5f5;
+}
+
+.messaggioErrore {
+  color: red;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 10px;
+}
+
+
+.allineaTasto {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+button {
+  background-color: #00A88D;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: #035a4c;
+}
+
+@media (max-width: 900px) {
+  .layout-due-colonne {
+    flex-direction: column;
+  }
+}

@@ -14,7 +14,6 @@ export class validazione {
         return true;
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(password);
-
     }
 
     checkNome(nome: string): boolean {
@@ -49,6 +48,4 @@ export class validazione {
         const pivaRegex = /^[0-9]{11}$/;
         return pivaRegex.test(piva);
     }
-
-
 }

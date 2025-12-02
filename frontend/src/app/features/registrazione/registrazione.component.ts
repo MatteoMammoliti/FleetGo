@@ -79,7 +79,7 @@ export class RegistrazioneComponent {
       this.errore = "";
     }
 
-    if (this.validator.checkCognome(this.cognome) == false) {
+    if (!this.validator.checkCognome(this.cognome)) {
       this.errore = "Cognome non valido";
       this.mappaErrori.cognome = true;
       return;
@@ -87,7 +87,7 @@ export class RegistrazioneComponent {
       this.errore = "";
     }
 
-    if (this.validator.checkDataNascita(this.datanascita) == false) {
+    if (!this.validator.checkDataNascita(this.datanascita)) {
       this.errore = "Data di nascita non valida";
       this.mappaErrori.datanascita = true;
       return;
@@ -105,14 +105,14 @@ export class RegistrazioneComponent {
     }
 
 
-    if (this.validator.checkEmail(this.email) == false || this.validator.checkPassword(this.password) == false) {
-      if (this.validator.checkEmail(this.email) == false) {
+    if (!this.validator.checkEmail(this.email) || !this.validator.checkPassword(this.password)) {
+      if (!this.validator.checkEmail(this.email)) {
         this.errore = "Email non valida";
         this.mappaErrori.email = true;
       } else {
         this.errore = "";
       }
-      if (this.validator.checkPassword(this.password) == false) {
+      if (!this.validator.checkPassword(this.password)) {
         this.errore = "Password non valida";
         this.mappaErrori.password = true;
         this.mappaErrori.ripetiPassword = true;

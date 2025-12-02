@@ -49,7 +49,7 @@ public class ControllerFlottaVeicoli {
         }
     }
 
-    @PostMapping(value = "/eliminaVeicolo", consumes = { "multipart/form-data" })
+    @PostMapping(value = "/eliminaVeicolo")
     public ResponseEntity<String> eliminaVeicolo(@RequestPart("targaVeicolo") String targaVeicolo) {
         try {
             veicoloService.eliminaVeicolo(targaVeicolo);
