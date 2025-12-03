@@ -32,15 +32,6 @@ export class LoginComponent {
 
   errore='';
 
-
-
-loginFAKE() {
-  this.authService.aggiornaRuoloUtenteCorrente('AdminAziendale');
-  this.router.navigate(['/dashboardAzienda/impostazioni']);
-}
-
-
-
   onSubmit() {
     this.errore="";
     this.mappaErrori = {
@@ -62,14 +53,14 @@ loginFAKE() {
     }
 
 
-    if (this.validator.checkEmail(this.email) == false || this.validator.checkPassword(this.password) == false) {
-      if (this.validator.checkEmail(this.email) == false) {
+    if (!this.validator.checkEmail(this.email) || !this.validator.checkPassword(this.password)) {
+      if (!this.validator.checkEmail(this.email)) {
         this.errore = "Email non valida";
         this.mappaErrori.email = true;
       } else {
         this.errore = "";
       }
-      if (this.validator.checkPassword(this.password) == false) {
+      if (!this.validator.checkPassword(this.password)) {
         this.errore = "Password non valida";
         this.mappaErrori.password = true;
       } else {

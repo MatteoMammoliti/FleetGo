@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { GeneralLayoutAdminAziendale } from '../../layouts/app-general-layout-admin-aziendale/general-layout-admin-aziendale'; 
-import { DashboardAzienda } from './dashboard-azienda/dashboard-azienda';
-import { ModificaDatiComponent } from './modifica-dati/modifica-dati'; 
+import { GeneralLayoutAdminAziendale } from '../../layouts/app-general-layout-admin-aziendale/general-layout-admin-aziendale';
+import { DashboardAzienda } from '@features/SezioneAdminAziendale/dashboard-admin-aziendale/dashboard-azienda';
+import { ModificaDatiComponent } from './modifica-dati/modifica-dati';
 
 export const AZIENDA_ROUTES: Routes = [
   {
@@ -9,7 +9,7 @@ export const AZIENDA_ROUTES: Routes = [
     component: GeneralLayoutAdminAziendale,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      
+
       { path: 'dashboard', component: DashboardAzienda },
 
       { path: 'impostazioni', component: ModificaDatiComponent }

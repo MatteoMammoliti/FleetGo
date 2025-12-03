@@ -1,8 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Output, EventEmitter} from '@angular/core';
 import {FormBackground} from "@shared/form-background/form-background";
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@shared/validation/validazione';
-import {AziendeAffiliateService} from '@core/services/adminFleetGoService/aziende-affiliate-service';
+import {AziendeAffiliateService} from '@core/services/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {AdminAziendaleDTO} from '@models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@models/aziendaDTO';
 
@@ -17,6 +17,7 @@ import {AziendaDTO} from '@models/aziendaDTO';
 })
 
 export class FormAggiungiAdminAzienda {
+  @Output() aziendaAggiunta = new EventEmitter<void>();
   private validatore = inject(validazione);
   private aziendeService = inject(AziendeAffiliateService);
 
@@ -102,6 +103,7 @@ export class FormAggiungiAdminAzienda {
       next: (res) => {
         console.log("Azienda registrata!", res);
         this.pulisciForm();
+        this.aziendaAggiunta.emit();
       },
       error: (err) => {
         console.error("Errore", err);

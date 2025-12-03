@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TabellaAziendeComponent } from '@shared/tabella-aziende/tabella-aziende';
 import {FormAggiungiAdminAzienda} from '@shared/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
@@ -16,4 +16,10 @@ import {FormAggiungiAdminAzienda} from '@shared/form-aggiungi-admin-azienda/form
   styleUrl: './aziende-affiliate.css',
 })
 
-export class AziendeAffiliate {}
+export class AziendeAffiliate {
+  @ViewChild('tabellaAziende') tabella!: TabellaAziendeComponent;
+
+  onAziendaAggiunta() {
+    this.tabella.aggiornaDati();
+  }
+}

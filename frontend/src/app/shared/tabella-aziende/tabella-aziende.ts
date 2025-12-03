@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {TabellaBackground} from '@shared/tabella-background/tabella-background';
-import {AziendeAffiliateService} from '@core/services/adminFleetGoService/aziende-affiliate-service';
+import {AziendeAffiliateService} from '@core/services/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {AziendaDTO} from '@models/aziendaDTO';
 
 @Component({
@@ -21,17 +21,12 @@ export class TabellaAziendeComponent {
 
   ngOnInit(): void {
     this.aggiornaDati();
-    for(const a of this.listaAziende){
-      console.log("arrivato id", a.idAzienda)
-    }
   }
-
-
 
   aggiornaDati() {
     this.service.richiediAziende().subscribe({
       next: (data) => {
-
+        console.log("ho ricevuto")
         if(data) {
           this.listaAziende = data;
           console.log("Dati caricati:", this.listaAziende);

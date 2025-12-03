@@ -16,14 +16,14 @@ export const routes: Routes = [
 
   {
     path: 'dashboardFleetGo',
-    loadChildren: () => import('./features/adminFleetGo/admin-fleet-go.routes')
+    loadChildren: () => import('@features/SezioneFleetGo/admin-fleet-go.routes')
       .then(m => m.ADMIN_FLEET_GO_ROUTES)
   },
 
   {
     path: 'dashboardAzienda',
-    loadChildren: () => import('./features/azienda/admin-aziendale.routes')
-      .then(m => m.AZIENDA_ROUTES) 
+    loadChildren: () => import('@features/SezioneAdminAziendale/admin-aziendale.routes')
+      .then(m => m.AZIENDA_ROUTES)
   },
 
   { path: '**', redirectTo: 'login' }

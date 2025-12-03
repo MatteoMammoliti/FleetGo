@@ -5,7 +5,6 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.DBManager;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -62,4 +61,7 @@ public class UtenteService {
         return utenteDAO.getRuoloDaId(idUtente);
     }
 
+    public void eliminaUtente(Integer idUtente) {
+        utenteDAO.eliminaUtente(idUtente);
+    }
 }

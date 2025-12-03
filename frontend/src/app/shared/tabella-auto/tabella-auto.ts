@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {VeicoloDTO} from '@models/veicoloDTO.model';
-import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
+import {FlottaGlobaleService} from '@core/services/ServiceSezioneFleetGo/flotta-globale-service';
 import {TabellaBackground} from "@shared/tabella-background/tabella-background";
 
 @Component({
