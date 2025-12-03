@@ -21,7 +21,12 @@ export class TabellaAziendeComponent {
 
   ngOnInit(): void {
     this.aggiornaDati();
+    for(const a of this.listaAziende){
+      console.log("arrivato id", a.idAzienda)
+    }
   }
+
+
 
   aggiornaDati() {
     this.service.richiediAziende().subscribe({

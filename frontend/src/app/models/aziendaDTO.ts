@@ -3,5 +3,5 @@ export interface AziendaDTO {
   nomeAzienda: string;
   pIva: string;
   sedeAzienda: string;
-  idAdmin?: number
+  idAdminAzienda?: number
 }

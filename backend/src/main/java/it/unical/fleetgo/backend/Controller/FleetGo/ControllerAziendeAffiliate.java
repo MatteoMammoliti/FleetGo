@@ -54,6 +54,7 @@ public class ControllerAziendeAffiliate {
                     aziendaDTO.setNomeAzienda(a.getNomeAzienda());
                     aziendaDTO.setSedeAzienda(a.getSedeAzienda());
                     aziendaDTO.setPIva(a.getPIva());
+                    System.out.println("sono qui e mando " + a.getIdAdmin());
                     aziendaDTO.setIdAdminAzienda(a.getIdAdmin());
                     listaAziende.add(aziendaDTO);
                 }
@@ -66,7 +67,7 @@ public class ControllerAziendeAffiliate {
     }
 
     @PostMapping("/eliminaAzienda")
-    public ResponseEntity<String> eliminaAzienda(@RequestPart("idAdmin") Integer idAdminGestore, HttpSession session) {
+    public ResponseEntity<String> eliminaAzienda(@RequestBody Integer idAdminGestore, HttpSession session) {
         try {
             if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("FleetGo")) {
                 aziendaService.eliminaAzienda(idAdminGestore);

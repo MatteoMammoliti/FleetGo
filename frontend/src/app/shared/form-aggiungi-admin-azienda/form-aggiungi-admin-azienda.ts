@@ -93,6 +93,7 @@ export class FormAggiungiAdminAzienda {
       nomeAzienda: this.nomeAzienda,
       pIva: this.partitaIva,
       sedeAzienda: this.sedeLegale
+
     }
 
     console.log("Form valido, invio i dati...");
