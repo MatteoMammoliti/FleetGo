@@ -1,0 +1,20 @@
+import { Routes } from '@angular/router';
+import { GeneralLayoutAdminAziendale } from '../../layouts/app-general-layout-admin-aziendale/general-layout-admin-aziendale'; 
+import { DashboardAzienda } from './dashboard-azienda/dashboard-azienda';
+import { ModificaDatiComponent } from './modifica-dati/modifica-dati'; 
+
+export const AZIENDA_ROUTES: Routes = [
+  {
+    path: '',
+    component: GeneralLayoutAdminAziendale,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      
+      { path: 'dashboard', component: DashboardAzienda },
+
+      { path: 'impostazioni', component: ModificaDatiComponent }
+    ]
+  }
+];
+
+

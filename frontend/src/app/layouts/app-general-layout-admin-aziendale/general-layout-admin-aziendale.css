@@ -1,0 +1,43 @@
+.contenitoreMenu{
+  margin:auto;
+  padding: 10px;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  flex-direction: column;
+  flex-grow: 1;
+  color:white;
+}
+.layout-container{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
+a{
+  font-size: 20px;
+
+
+}
+a:hover{
+  font-weight: bold;
+}
+.contenitore-logout{
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.contenitore-sidebar{
+  display: flex;
+  box-sizing: border-box;
+
+}
+
+.logout {
+  width: auto;
+  padding: 12px;
+  background-color: #00A88D;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin:10px;
+}

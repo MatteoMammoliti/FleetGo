@@ -20,6 +20,11 @@ export const routes: Routes = [
       .then(m => m.ADMIN_FLEET_GO_ROUTES)
   },
 
+  {
+    path: 'dashboardAzienda',
+    loadChildren: () => import('./features/azienda/admin-aziendale.routes')
+      .then(m => m.AZIENDA_ROUTES) 
+  },
 
   { path: '**', redirectTo: 'login' }
 ];

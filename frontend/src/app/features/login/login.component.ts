@@ -32,6 +32,15 @@ export class LoginComponent {
 
   errore='';
 
+
+
+loginFAKE() {
+  this.authService.aggiornaRuoloUtenteCorrente('AdminAziendale');
+  this.router.navigate(['/dashboardAzienda/impostazioni']);
+}
+
+
+
   onSubmit() {
     this.errore="";
     this.mappaErrori = {
