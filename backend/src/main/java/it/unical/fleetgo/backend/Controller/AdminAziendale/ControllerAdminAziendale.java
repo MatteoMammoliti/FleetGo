@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiUtente;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Service.ServiceAdminAziendale;
@@ -18,9 +19,12 @@ import java.sql.SQLException;
 public class ControllerAdminAziendale {
 
     private final ServiceAdminAziendale adminAziendale;
+    private final UtenteService utenteService;
 
-    public ControllerAdminAziendale(ServiceAdminAziendale adminAziendale) {
+    public ControllerAdminAziendale(ServiceAdminAziendale adminAziendale,UtenteService utenteService) {
         this.adminAziendale = adminAziendale;
+        this.utenteService = utenteService;
+
     }
 
     @PostMapping("/modificaDatiAdmin")
@@ -41,6 +45,19 @@ public class ControllerAdminAziendale {
             e.printStackTrace();
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
         }
+    }
+    @GetMapping("/datiUtente")
+    public ResponseEntity<ContenitoreDatiUtente> invioDatiUtente(HttpSession session){
+        Integer idUtente= (Integer)session.getAttribute("idUtente");
+        ContenitoreDatiUtente dati;
+        try{
+            dati=utenteService.getDatiUtente(idUtente);
+            return  ResponseEntity.status(HttpStatus.OK).body(dati);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+
     }
 
 

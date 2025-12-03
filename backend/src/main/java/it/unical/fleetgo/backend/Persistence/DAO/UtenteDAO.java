@@ -1,8 +1,11 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiRegistrazioneAzienda;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiUtente;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
+import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
@@ -10,7 +13,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class UtenteDAO {
     Connection con;
@@ -242,6 +244,24 @@ public class UtenteDAO {
         }finally {
             con.setAutoCommit(true);
         }
+    }
+
+    public ContenitoreDatiUtente getDatiUtente(Integer idUtente){
+        String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,a.sede_azienda,a.p_iva FROM utente u JOIN" +
+                " credenziali_utente c ON u.id_utente=c.id_utente LEFT JOIN azienda a ON u.id_utente=a.id_admin_azienda WHERE u.id_utente =?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                ContenitoreDatiUtente contenitore = new ContenitoreDatiUtente(rs.getString("email"),rs.getString("nome_utente"),rs.getString("cognome"),
+                        rs.getDate("data_nascita").toString(),rs.getString("nome_azienda"),rs.getString("sede_azienda"),rs.getString("p_iva"));
+                return contenitore;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private AdminAziendaleProxy creoAdminAziendaleProxy(){
