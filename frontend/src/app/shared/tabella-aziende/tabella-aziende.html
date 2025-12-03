@@ -7,22 +7,23 @@
     <th>Nome Azienda</th>
     <th>Partita IVA</th>
     <th>Sede</th>
+    <th>Id Admin</th>
     <th>Azioni</th>
   </tr>
   </thead>
   <tbody>
 
-    @for (azienda of listaAziende; track azienda.piva) {
+    @for (azienda of listaAziende; track azienda.pIva) {
       <tr>
-        <td>{{ azienda.nome }}</td>
-        <td>{{ azienda.piva }}</td>
-        <td>{{ azienda.sede }}</td>
+        <td>{{ azienda.nomeAzienda }}</td>
+        <td>{{ azienda.pIva }}</td>
+        <td>{{ azienda.sedeAzienda }}</td>
+        <td>{{ azienda.idAdmin }}</td>
         <td>
-          <button class="bottone-elimina" (click)="elimina(azienda)">Elimina</button>
+          <button class="bottone-elimina" (click)="elimina(azienda.idAdmin)">Elimina</button>
         </td>
       </tr>
     }
   </tbody>
 </app-tabella-background>
-
 </div>

@@ -3,12 +3,17 @@ package it.unical.fleetgo.backend.Controller.FleetGo;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiRegistrazioneAzienda;
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
+import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.UtenteService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
@@ -34,5 +39,42 @@ public class ControllerAziendeAffiliate {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");
         }
+    }
+
+    @GetMapping("/elencoAziende")
+    public ResponseEntity<List<AziendaDTO>> getElencoAziende(HttpSession session) {
+        try {
+            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("FleetGo")) {
+                List<Azienda> elencoAziende = aziendaService.getElencoAziende();
+                List<AziendaDTO> listaAziende = new ArrayList<>();
+
+                for(Azienda a : elencoAziende) {
+                    AziendaDTO aziendaDTO = new AziendaDTO();
+                    aziendaDTO.setIdAzienda(a.getIdAzienda());
+                    aziendaDTO.setNomeAzienda(a.getNomeAzienda());
+                    aziendaDTO.setSedeAzienda(a.getSedeAzienda());
+                    aziendaDTO.setPIva(a.getPIva());
+                    aziendaDTO.setIdAdminAzienda(a.getIdAdmin());
+                    listaAziende.add(aziendaDTO);
+                }
+                return ResponseEntity.ok(listaAziende);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        return null;
+    }
+
+    @PostMapping("/eliminaAzienda")
+    public ResponseEntity<String> eliminaAzienda(@RequestPart("idAdmin") Integer idAdminGestore, HttpSession session) {
+        try {
+            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("FleetGo")) {
+                aziendaService.eliminaAzienda(idAdminGestore);
+                return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione dell'azienda");
+        }
+        return null;
     }
 }
