@@ -10,15 +10,16 @@
 
 }
 
+input:hover {
+  border-color: #000000;
+}
+
 input:focus {
   border-color: #00A88D;
   outline: none;
   background-color: #ffffff;
 }
 
-input:hover {
-  border-color: #000000;
-}
 
 .bordo-rosso {
   border: 1px solid red;
