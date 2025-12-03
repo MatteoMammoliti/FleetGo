@@ -1,11 +1,18 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiRegistrazioneAzienda;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiUtente;
+import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
+import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtenteDAO {
     Connection con;
@@ -134,6 +141,124 @@ public class UtenteDAO {
                 return rs.getString("tipo_utente");
             }
         }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void modificaDatiUtente(ModificaDatiUtenteDTO dati) throws RuntimeException, SQLException {
+        try{
+            con.setAutoCommit(false);
+            if(dati.getNome()!=null || dati.getCognome() !=null || dati.getData()!=null) {
+                StringBuilder aggiornoUtente=new StringBuilder("UPDATE utente SET ");
+                List<Object> parametri = new ArrayList<>();
+                boolean primo=true;
+                if(dati.getNome()!=null){
+                    aggiornoUtente.append("nome_utente=? ");
+                    parametri.add(dati.getNome());
+                    primo=false;
+                }
+                if(dati.getCognome()!=null){
+                    if(!primo){aggiornoUtente.append(", ");}
+                    aggiornoUtente.append("cognome=? ");
+                    parametri.add(dati.getCognome());
+                    primo=false;
+                }
+                if(dati.getData()!=null){
+                    if(!primo){aggiornoUtente.append(", ");}
+                    aggiornoUtente.append("data_nascita=? ");
+                    parametri.add(LocalDate.parse(dati.getData()));
+                }
+                aggiornoUtente.append("WHERE id_utente=? ");
+                parametri.add(dati.getIdUtente());
+
+                try(PreparedStatement st = con.prepareStatement(aggiornoUtente.toString())){
+                    for(int i=0;i<parametri.size();i++){
+                        st.setObject(i+1,parametri.get(i));
+                    }
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return;
+                    }
+
+                }
+            }
+            if(dati.getEmail()!=null){
+                try(PreparedStatement st = con.prepareStatement("UPDATE credenziali_utente SET email=? WHERE id_utente=?")){
+                    st.setString(1,dati.getEmail());
+                    st.setInt(2,dati.getIdUtente());
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return;
+                    }
+                }
+            }
+            if(dati.getNomeAzienda()!=null || dati.getSedeAzienda()!=null || dati.getPIva()!=null){
+                StringBuilder aggiornoAzienda=new StringBuilder("UPDATE azienda SET ");
+                List<Object> parametri = new ArrayList<>();
+                boolean primo= true;
+                if(dati.getNomeAzienda()!=null){
+                    aggiornoAzienda.append("nome_azienda=? ");
+                    parametri.add(dati.getNomeAzienda());
+                    primo=false;
+                }
+                if(dati.getSedeAzienda()!=null){
+                    if(!primo){aggiornoAzienda.append(", ");}
+                    aggiornoAzienda.append("sede_azienda=? ");
+                    parametri.add(dati.getSedeAzienda());
+                    primo=false;
+                }
+                if(dati.getPIva()!=null){
+                    if(!primo){aggiornoAzienda.append(", ");}
+                    aggiornoAzienda.append("p_iva=? ");
+                    parametri.add(dati.getPIva());
+                }
+                aggiornoAzienda.append("WHERE id_admin_azienda=?");
+                parametri.add(dati.getIdUtente());
+                try(PreparedStatement st = con.prepareStatement(aggiornoAzienda.toString())){
+                    for (int i=0;i<parametri.size();i++){
+                        st.setObject(i+1,parametri.get(i));
+                    }
+                    if(st.executeUpdate()==0){
+                        con.rollback();
+                        return;
+                    }
+                }
+            }
+            con.commit();
+        } catch (Exception e) {
+            con.rollback();
+            if(e instanceof SQLException sqlEccezione){
+                String state = sqlEccezione.getSQLState();
+                String msg = sqlEccezione.getMessage().toLowerCase();
+                if("23505".equals(state)){
+                    if(msg.contains("email")){
+                        throw new RuntimeException("Email già presente");
+                    }
+                    else if(msg.contains("p_iva")){
+                        throw new RuntimeException("P.Iva già registrata da un'altra azienda");
+                    }
+                }
+            }
+            throw new RuntimeException(e);
+        }finally {
+            con.setAutoCommit(true);
+        }
+    }
+
+    public ContenitoreDatiUtente getDatiUtente(Integer idUtente){
+        String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,a.sede_azienda,a.p_iva FROM utente u JOIN" +
+                " credenziali_utente c ON u.id_utente=c.id_utente LEFT JOIN azienda a ON u.id_utente=a.id_admin_azienda WHERE u.id_utente =?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                ContenitoreDatiUtente contenitore = new ContenitoreDatiUtente(rs.getString("email"),rs.getString("nome_utente"),rs.getString("cognome"),
+                        rs.getDate("data_nascita").toString(),rs.getString("nome_azienda"),rs.getString("sede_azienda"),rs.getString("p_iva"));
+                return contenitore;
+            }
+
+        }catch (Exception e){
             e.printStackTrace();
         }
         return null;

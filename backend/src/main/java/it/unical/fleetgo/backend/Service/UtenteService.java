@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiUtente;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
@@ -64,4 +65,8 @@ public class UtenteService {
     public void eliminaUtente(Integer idUtente) {
         utenteDAO.eliminaUtente(idUtente);
     }
+    public ContenitoreDatiUtente getDatiUtente(Integer idUtente){
+        return utenteDAO.getDatiUtente(idUtente);
+    }
+
 }
