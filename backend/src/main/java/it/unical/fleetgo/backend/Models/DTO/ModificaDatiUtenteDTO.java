@@ -15,4 +15,16 @@ public class ModificaDatiUtenteDTO
     String sedeAzienda;
     String pIva;
     Integer idUtente;
+
+    public ModificaDatiUtenteDTO(){};
+    public ModificaDatiUtenteDTO(String nome, String cognome, String data, String email, String nomeAzienda, String sedeAzienda, String pIva, Integer idUtente){
+        this.nome=nome;
+        this.cognome=cognome;
+        this.data=data;
+        this.email=email;
+        this.nomeAzienda=nomeAzienda;
+        this.sedeAzienda=sedeAzienda;
+        this.pIva=pIva;
+        this.idUtente=idUtente;
+    };
 }

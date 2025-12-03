@@ -1,12 +1,9 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiUtente;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
-import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Service.ServiceAdminAziendale;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +44,9 @@ public class ControllerAdminAziendale {
         }
     }
     @GetMapping("/datiUtente")
-    public ResponseEntity<ContenitoreDatiUtente> invioDatiUtente(HttpSession session){
+    public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session){
         Integer idUtente= (Integer)session.getAttribute("idUtente");
-        ContenitoreDatiUtente dati;
+        ModificaDatiUtenteDTO dati;
         try{
             dati=utenteService.getDatiUtente(idUtente);
             return  ResponseEntity.status(HttpStatus.OK).body(dati);
