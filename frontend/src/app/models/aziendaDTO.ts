@@ -1,7 +1,7 @@
 export interface AziendaDTO {
   idAzienda?: number;
   nomeAzienda: string;
-  partitaIva: string;
+  pIva: string;
   sedeAzienda: string;
   idAdmin?: number
 }

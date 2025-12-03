@@ -22,6 +22,14 @@
       </div>
 
       <div class="form-riga">
+        <div class="form-group">
+          <label>Data di Nascita</label>
+          <input type="date" [(ngModel)]="dataNascita" placeholder="Data di Nascita"
+                 [class.bordo-rosso]="mappaErrori.dataNascita">
+        </div>
+      </div>
+
+      <div class="form-riga">
 
         <div class="form-group">
           <label>Email</label>

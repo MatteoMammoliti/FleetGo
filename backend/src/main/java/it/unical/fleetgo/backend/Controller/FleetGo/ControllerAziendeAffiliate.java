@@ -19,7 +19,7 @@ public class ControllerAziendeAffiliate {
     @Autowired private UtenteService utenteService;
 
     @PostMapping("/registraAzienda&Admin")
-    public ResponseEntity<String> registraAziendaEAdmin(@RequestPart("contenitore")ContenitoreDatiRegistrazioneAzienda contenitoreDati) {
+    public ResponseEntity<String> registraAziendaEAdmin(@RequestBody ContenitoreDatiRegistrazioneAzienda contenitoreDati) {
 
         AziendaDTO azienda = contenitoreDati.getAzienda();
         AdminAziendaleDTO adminAziendale = contenitoreDati.getAdminAziendale();

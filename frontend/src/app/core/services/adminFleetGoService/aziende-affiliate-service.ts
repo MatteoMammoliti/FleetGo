@@ -17,10 +17,10 @@ export class AziendeAffiliateService {
   registraAzienda(admin: AdminAziendaleDTO, azienda: AziendaDTO){
 
     const contenitore:ContenitoreDatiRegistrazioneAzienda = {
-      admin: admin,
+      adminAziendale: admin,
       azienda: azienda
     }
 
-    return this.http.post(`${this.apiUrl}/registraAdminAziendale`, contenitore, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/registraAzienda&Admin`, contenitore, { responseType: 'text' });
   }
 }

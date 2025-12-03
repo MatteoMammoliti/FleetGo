@@ -34,7 +34,12 @@ public class UtenteService {
                 throw new RuntimeException("Problema durante l'inserimento dell'utente");
             }
 
-            if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), utenteDTO.getPassword(), ((DipendenteDTO) utenteDTO).getUrlImmagine())) {
+            String urlImmagine = null;
+            if(utenteDTO instanceof DipendenteDTO) {
+                urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
+            }
+
+            if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), utenteDTO.getPassword(), urlImmagine)) {
                 con.rollback();
                 throw new RuntimeException("Problema durante l'inserimento delle credenziali");
             }

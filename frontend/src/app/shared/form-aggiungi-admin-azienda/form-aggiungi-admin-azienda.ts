@@ -22,6 +22,7 @@ export class FormAggiungiAdminAzienda {
 
   nome = '';
   cognome = '';
+  dataNascita = '';
   email = '';
   password = '';
   nomeAzienda = '';
@@ -33,6 +34,7 @@ export class FormAggiungiAdminAzienda {
     nome: false,
     cognome: false,
     email: false,
+    dataNascita: false,
     password: false,
     nomeAzienda: false,
     partitaIva: false,
@@ -51,6 +53,12 @@ export class FormAggiungiAdminAzienda {
       this.mappaErrori.nomeAzienda = this.nomeAzienda == '';
       this.mappaErrori.partitaIva = this.partitaIva == '';
       this.mappaErrori.sedeLegale = this.sedeLegale == '';
+      return;
+    }
+
+    if(!this.validatore.checkDataNascita(this.dataNascita)){
+      this.errore='Data di nascita non valida';
+      this.mappaErrori.dataNascita=true;
       return;
     }
 
@@ -75,6 +83,7 @@ export class FormAggiungiAdminAzienda {
     const adminAziendale: AdminAziendaleDTO = {
       nomeUtente: this.nome,
       cognomeUtente: this.cognome,
+      dataNascitaUtente: this.dataNascita,
       email: this.email,
       password: this.password,
       tipoUtente: 'AdminAziendale'
@@ -82,7 +91,7 @@ export class FormAggiungiAdminAzienda {
 
     const azienda: AziendaDTO = {
       nomeAzienda: this.nomeAzienda,
-      partitaIva: this.partitaIva,
+      pIva: this.partitaIva,
       sedeAzienda: this.sedeLegale
     }
 
@@ -105,6 +114,7 @@ export class FormAggiungiAdminAzienda {
     this.mappaErrori = {
       nome: false,
       cognome: false,
+      dataNascita: false,
       email: false,
       password: false,
       nomeAzienda: false,
@@ -116,6 +126,7 @@ export class FormAggiungiAdminAzienda {
   pulisciForm() {
     this.nome = '';
     this.cognome = '';
+    this.dataNascita = '';
     this.email = '';
     this.password = '';
     this.nomeAzienda = '';
