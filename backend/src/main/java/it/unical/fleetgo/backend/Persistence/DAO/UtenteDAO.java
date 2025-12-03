@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
@@ -143,31 +144,31 @@ public class UtenteDAO {
         return null;
     }
 
-    public boolean modificaDatiUtente(String nome,String cognome,String data,String email,String nomeAzienda,String sedeAzienda,String pIva,Integer idUtente) throws RuntimeException, SQLException {
+    public void modificaDatiUtente(ModificaDatiUtenteDTO dati) throws RuntimeException, SQLException {
         try{
             con.setAutoCommit(false);
-            if(nome!=null || cognome !=null || data!=null) {
+            if(dati.getNome()!=null || dati.getCognome() !=null || dati.getData()!=null) {
                 StringBuilder aggiornoUtente=new StringBuilder("UPDATE utente SET ");
                 List<Object> parametri = new ArrayList<>();
                 boolean primo=true;
-                if(nome!=null){
+                if(dati.getNome()!=null){
                     aggiornoUtente.append("nome_utente=? ");
-                    parametri.add(nome);
+                    parametri.add(dati.getNome());
                     primo=false;
                 }
-                if(cognome!=null){
+                if(dati.getCognome()!=null){
                     if(!primo){aggiornoUtente.append(", ");}
                     aggiornoUtente.append("cognome=? ");
-                    parametri.add(cognome);
+                    parametri.add(dati.getCognome());
                     primo=false;
                 }
-                if(data!=null){
+                if(dati.getData()!=null){
                     if(!primo){aggiornoUtente.append(", ");}
                     aggiornoUtente.append("data_nascita=? ");
-                    parametri.add(LocalDate.parse(data));
+                    parametri.add(LocalDate.parse(dati.getData()));
                 }
                 aggiornoUtente.append("WHERE id_utente=? ");
-                parametri.add(idUtente);
+                parametri.add(dati.getIdUtente());
 
                 try(PreparedStatement st = con.prepareStatement(aggiornoUtente.toString())){
                     for(int i=0;i<parametri.size();i++){
@@ -175,55 +176,54 @@ public class UtenteDAO {
                     }
                     if(st.executeUpdate()==0){
                         con.rollback();
-                        return false;
+                        return;
                     }
 
                 }
             }
-            if(email!=null){
+            if(dati.getEmail()!=null){
                 try(PreparedStatement st = con.prepareStatement("UPDATE credenziali_utente SET email=? WHERE id_utente=?")){
-                    st.setString(1,email);
-                    st.setInt(2,idUtente);
+                    st.setString(1,dati.getEmail());
+                    st.setInt(2,dati.getIdUtente());
                     if(st.executeUpdate()==0){
                         con.rollback();
-                        return false;
+                        return;
                     }
                 }
             }
-            if(nomeAzienda!=null || sedeAzienda!=null || pIva!=null){
+            if(dati.getNomeAzienda()!=null || dati.getSedeAzienda()!=null || dati.getPIva()!=null){
                 StringBuilder aggiornoAzienda=new StringBuilder("UPDATE azienda SET ");
                 List<Object> parametri = new ArrayList<>();
                 boolean primo= true;
-                if(nomeAzienda!=null){
+                if(dati.getNomeAzienda()!=null){
                     aggiornoAzienda.append("nome_azienda=? ");
-                    parametri.add(nomeAzienda);
+                    parametri.add(dati.getNomeAzienda());
                     primo=false;
                 }
-                if(sedeAzienda!=null){
+                if(dati.getSedeAzienda()!=null){
                     if(!primo){aggiornoAzienda.append(", ");}
                     aggiornoAzienda.append("sede_azienda=? ");
-                    parametri.add(sedeAzienda);
+                    parametri.add(dati.getSedeAzienda());
                     primo=false;
                 }
-                if(pIva!=null){
+                if(dati.getPIva()!=null){
                     if(!primo){aggiornoAzienda.append(", ");}
                     aggiornoAzienda.append("p_iva=? ");
-                    parametri.add(pIva);
+                    parametri.add(dati.getPIva());
                 }
                 aggiornoAzienda.append("WHERE id_admin_azienda=?");
-                parametri.add(idUtente);
+                parametri.add(dati.getIdUtente());
                 try(PreparedStatement st = con.prepareStatement(aggiornoAzienda.toString())){
                     for (int i=0;i<parametri.size();i++){
                         st.setObject(i+1,parametri.get(i));
                     }
                     if(st.executeUpdate()==0){
                         con.rollback();
-                        return false;
+                        return;
                     }
                 }
             }
             con.commit();
-            return true;
         } catch (Exception e) {
             con.rollback();
             if(e instanceof SQLException sqlEccezione){

@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
+import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Service.ServiceAdminAziendale;
 import it.unical.fleetgo.backend.Service.UtenteService;
@@ -23,16 +24,11 @@ public class ControllerAdminAziendale {
     }
 
     @PostMapping("/modificaDatiAdmin")
-    public ResponseEntity<String> modificaDatiUtente(@RequestPart(value = "nome",required = false)String nome,
-                                                     @RequestPart(value = "cognome",required = false)String cognome,
-                                                     @RequestPart(value = "data",required = false) String data,
-                                                     @RequestPart(value = "email",required = false)String email,
-                                                     @RequestPart(value = "nomeAzienda",required = false)String nomeAzienda,
-                                                     @RequestPart(value = "sedeAzienda",required = false)String sedeAzienda,
-                                                     @RequestPart(value = "pIva",required = false)String piva,HttpSession session){
+    public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
         Integer idUtente= (Integer)session.getAttribute("idUtente");
+        dati.setIdUtente(idUtente);
         try{
-            adminAziendale.modificaDati(nome,cognome,data,email,nomeAzienda,sedeAzienda,piva,idUtente);
+            adminAziendale.modificaDati(dati);
             return  ResponseEntity.status(HttpStatus.OK).body("Dati modificati con successo!");
         }catch (RuntimeException | SQLException e){
             String errore=e.getMessage();
