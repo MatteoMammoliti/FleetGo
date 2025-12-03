@@ -1,14 +1,11 @@
 import {Component, inject} from '@angular/core';
-import {FormBackground} from "@shared/form-background/form-background";
 import {VeicoloDTO} from '@models/veicoloDTO.model';
 import {FlottaGlobaleService} from '@core/services/adminFleetGoService/flotta-globale-service';
-import {Observable} from 'rxjs';
 import {TabellaBackground} from "@shared/tabella-background/tabella-background";
 
 @Component({
   selector: 'app-tabella-auto',
   imports: [
-    FormBackground,
     TabellaBackground
   ],
   templateUrl: './tabella-auto.html',
@@ -38,6 +35,4 @@ export class TabellaAuto {
     });
 
   }
-
-
 }

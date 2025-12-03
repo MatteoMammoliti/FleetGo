@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TabellaBackground} from '@shared/tabella-background/tabella-background';
+import {AziendeAffiliateService} from '@core/services/adminFleetGoService/aziende-affiliate-service';
+import {AziendaDTO} from '@models/aziendaDTO';
 
 @Component({
   selector: 'app-tabella-aziende',
@@ -12,14 +14,44 @@ import {TabellaBackground} from '@shared/tabella-background/tabella-background';
 })
 export class TabellaAziendeComponent {
 
-  listaAziende = [
-    { nome: 'Azienda1', piva: '11111111111', sede: 'Bivona' },
-    { nome: 'Azienda2', piva: '22222222222', sede: 'Vibo Marina'},
-    { nome: 'Azienda3', piva: '33333333333', sede: 'Porto Salvo' }
-  ];
+  private service: AziendeAffiliateService = inject(AziendeAffiliateService);
+  constructor() {}
 
-  elimina(azienda: any) {
-    alert("elimino: " + azienda.nome);
+  listaAziende:AziendaDTO[] = [];
+
+  ngOnInit(): void {
+    this.aggiornaDati();
+    for(const a of this.listaAziende){
+      console.log("arrivato id", a.idAzienda)
+    }
   }
 
+
+
+  aggiornaDati() {
+    this.service.richiediAziende().subscribe({
+      next: (data) => {
+
+        if(data) {
+          this.listaAziende = data;
+          console.log("Dati caricati:", this.listaAziende);
+        }
+      },
+      error: (err) => {
+        console.error("Errore nel caricamento:", err);
+      }
+    });
+  }
+
+  elimina(idAdmin: number | undefined) {
+    this.service.eliminaAzienda(idAdmin).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.aggiornaDati();
+      },
+      error: (err) => {
+        console.error("Errore nell'eliminazione:", err);
+      }
+    });
+  }
 }

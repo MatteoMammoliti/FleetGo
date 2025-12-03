@@ -3,8 +3,10 @@ package it.unical.fleetgo.backend.Service;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DBManager;
+import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import org.springframework.stereotype.Service;
 import java.sql.Connection;
+import java.util.List;
 
 @Service
 public class AziendaService {
@@ -18,9 +20,13 @@ public class AziendaService {
         }
     }
 
-    public void eliminaAzienda(Integer idAzienda) {
-        if(!aziendaDAO.eliminaAzienda(idAzienda)) {
+    public void eliminaAzienda(Integer idAdminAzienda) {
+        if(!aziendaDAO.eliminaAzienda(idAdminAzienda)) {
             throw new RuntimeException("Problema durante l'eliminazione dell'azienda");
         }
+    }
+
+    public List<Azienda> getElencoAziende() {
+        return aziendaDAO.getAziendeInPiattaforme();
     }
 }

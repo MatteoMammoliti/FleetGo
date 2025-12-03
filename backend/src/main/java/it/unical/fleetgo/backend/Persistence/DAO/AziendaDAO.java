@@ -31,11 +31,11 @@ public class AziendaDAO {
         }
     }
 
-    public boolean eliminaAzienda(Integer idAzienda){
-        String query = "DELETE FROM azienda WHERE id_azienda = ?";
+    public boolean eliminaAzienda(Integer idAdminAzienda){
+        String query = "DELETE FROM azienda WHERE id_admin_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
-            ps.setInt(1, idAzienda);
+            ps.setInt(1, idAdminAzienda);
             return ps.executeUpdate() > 0;
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -91,6 +91,7 @@ public class AziendaDAO {
             while(rs.next()) {
                 Azienda a = new Azienda();
                 a.setIdAzienda(rs.getInt("id_azienda"));
+                a.setIdAdmin(rs.getInt("id_admin_azienda"));
                 a.setSedeAzienda(rs.getString("sede_azienda"));
                 a.setNomeAzienda(rs.getString("nome_azienda"));
                 a.setPIva(rs.getString("p_iva"));

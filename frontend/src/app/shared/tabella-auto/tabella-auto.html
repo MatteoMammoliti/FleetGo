@@ -1,7 +1,6 @@
 <app-tabella-background>
     <thead>
     <tr>
-      <th>Immagine</th>
       <th>Targa</th>
       <th>Modello</th>
       <th>Alimentazione</th>
@@ -10,37 +9,20 @@
     </tr>
     </thead>
     <tbody>
-      @for(veicolo of listaVeicoli; track veicolo.targaVeicolo){
-     <tr>
-       <td>
-         <div>
-           @if(veicolo.UrlImmagine!=null){
-
+        @for(veicolo of listaVeicoli; track veicolo.targaVeicolo){
+       <tr>
+         <td>{{veicolo.targaVeicolo}}</td>
+         <td>{{veicolo.modello}}</td>
+         <td>{{veicolo.tipoDistribuzioneVeicolo}}</td>
+         <td>{{veicolo.statusCondizioneVeicolo}}</td>
+         <td>
+           @if(veicolo.nomeAziendaAssociato!=''){
+             {{veicolo.nomeAziendaAssociato}}
            } @else {
-             <label>Nessuna immagine</label>
+             <button>Aggiungi azienda</button>
            }
-         </div>
-       </td>
-       <td>
-         {{veicolo.targaVeicolo}}
-       </td>
-       <td>
-         {{veicolo.modello}}
-       </td>
-       <td>
-         {{veicolo.tipoDistribuzioneVeicolo}}
-       </td>
-       <td>
-         {{veicolo.statusCondizioneVeicolo}}
-       </td>
-       <td>
-         @if(veicolo.nomeAziendaAssociato!=''){
-         {{veicolo.nomeAziendaAssociato}}
-         } @else {
-           <button>Aggiungi azienda</button>
-         }
-       </td>
-     </tr>
-    }
+         </td>
+       </tr>
+      }
     </tbody>
 </app-tabella-background>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {AdminAziendaleDTO} from '@models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@models/aziendaDTO';
 import {ContenitoreDatiRegistrazioneAzienda} from '@models/ContenitoreDatiRegistrazioneAzienda';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,19 @@ export class AziendeAffiliateService {
     }
 
     return this.http.post(`${this.apiUrl}/registraAzienda&Admin`, contenitore, { responseType: 'text' });
+  }
+
+  richiediAziende(): Observable<AziendaDTO[]>{
+    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziende`, {
+      withCredentials:true
+    });
+  }
+
+  eliminaAzienda(idAdmin: number | undefined): Observable<string> {
+    console.log("elimino azienda con id", idAdmin)
+    return this.http.post(`${this.apiUrl}/eliminaAzienda`, idAdmin, {
+      responseType: 'text',
+    withCredentials:true
+    });
   }
 }
