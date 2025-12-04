@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ContenitoreDatiRegistrazioneAzienda} from '@models/ContenitoreDatiRegistrazioneAzienda';
 import {Observable} from 'rxjs';
 import {ModificaDatiUtenteDTO} from '@models/ModificaDatiUtenteDTO';
 
@@ -10,19 +9,15 @@ import {ModificaDatiUtenteDTO} from '@models/ModificaDatiUtenteDTO';
 
 export class ModificaDatiService {
 
-  constructor(private http: HttpClient) {}
-
   private apiUrl = 'http://localhost:8080/dashboardAdminAziendale';
 
-  public modificaDati(): Observable<string> {
+  constructor(private http: HttpClient) {}
 
-    const contenitore: ModificaDatiUtenteDTO = {
-      nome: '',
-      cognome: '',
-      email: '',
-      password: ''
-    }
+  public getDati(): Observable<ModificaDatiUtenteDTO> {
+    return this.http.get<ModificaDatiUtenteDTO>(`${this.apiUrl}/datiUtente`, { withCredentials: true });
+  }
 
-    return this.http.post(`${this.apiUrl}/modificaDati`, contenitore, { responseType: 'text'});
+  public modificaDati(dati: ModificaDatiUtenteDTO): Observable<string> {
+    return this.http.post(`${this.apiUrl}/modificaDatiAdmin`, dati, { responseType: 'text', withCredentials: true});
   }
 }

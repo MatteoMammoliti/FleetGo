@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
-export class DashboardAzienda {
-
-}
+export class DashboardAzienda {}

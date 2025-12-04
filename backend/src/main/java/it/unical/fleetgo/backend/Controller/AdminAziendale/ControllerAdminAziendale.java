@@ -1,7 +1,7 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
-import it.unical.fleetgo.backend.Service.ServiceAdminAziendale;
+import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,12 @@ import java.sql.SQLException;
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerAdminAziendale {
 
-    private final ServiceAdminAziendale adminAziendale;
+    private final AdminAziendaleService adminAziendale;
     private final UtenteService utenteService;
 
-    public ControllerAdminAziendale(ServiceAdminAziendale adminAziendale,UtenteService utenteService) {
+    public ControllerAdminAziendale(AdminAziendaleService adminAziendale, UtenteService utenteService) {
         this.adminAziendale = adminAziendale;
         this.utenteService = utenteService;
-
     }
 
     @PostMapping("/modificaDatiAdmin")
@@ -43,6 +42,7 @@ public class ControllerAdminAziendale {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
         }
     }
+
     @GetMapping("/datiUtente")
     public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session){
         Integer idUtente= (Integer)session.getAttribute("idUtente");
@@ -53,9 +53,5 @@ public class ControllerAdminAziendale {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
-
     }
-
-
 }

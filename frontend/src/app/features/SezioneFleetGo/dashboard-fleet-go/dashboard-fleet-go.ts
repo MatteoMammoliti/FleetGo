@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })
-export class DashboardFleetGo {
-
-}
+export class DashboardFleetGo {}

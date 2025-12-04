@@ -9,10 +9,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Service
-public class ServiceAdminAziendale {
+public class AdminAziendaleService {
     Connection con = DBManager.getInstance().getConnection();
-    private UtenteDAO utenteDAO = new UtenteDAO(con);
-
+    private final UtenteDAO utenteDAO = new UtenteDAO(con);
 
     public void modificaDati(ModificaDatiUtenteDTO dati) throws SQLException {
         utenteDAO.modificaDatiUtente(dati);
