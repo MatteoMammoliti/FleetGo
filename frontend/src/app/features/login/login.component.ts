@@ -101,4 +101,8 @@ export class LoginComponent {
       }
     });
   }
+
+  recuperoPassword():any {
+    this.router.navigate(['/recuperoPassword']);
+  }
 }

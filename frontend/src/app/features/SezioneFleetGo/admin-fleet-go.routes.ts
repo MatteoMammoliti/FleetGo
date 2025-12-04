@@ -4,7 +4,6 @@ import { DashboardFleetGo } from './dashboard-fleet-go/dashboard-fleet-go';
 import { FlottaGlobale } from './flotta-globale/flotta-globale';
 import { AziendeAffiliate } from './aziende-affiliate/aziende-affiliate'
 
-
 export const ADMIN_FLEET_GO_ROUTES: Routes = [
   {
     path: '',

@@ -8,6 +8,5 @@ import { Sidebar } from '@shared/sidebar/sidebar';
   templateUrl: './general-layout-dipendente.html',
   styleUrl: './general-layout-dipendente.css',
 })
-export class GeneralLayoutDipendente {
 
-}
+export class GeneralLayoutDipendente {}

@@ -5,6 +5,8 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.DBManager;
+import org.apache.commons.lang3.RandomUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -18,6 +20,8 @@ public class UtenteService {
     RichiestaAffiliazioneAziendaDAO affiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(con);
     RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(con);
     RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(con);
+
+    @Autowired private EmailService emailService;
 
     public Integer registraUtente(UtenteDTO utenteDTO) {
         if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
@@ -65,8 +69,19 @@ public class UtenteService {
     public void eliminaUtente(Integer idUtente) {
         utenteDAO.eliminaUtente(idUtente);
     }
+
     public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente){
         return utenteDAO.getDatiUtente(idUtente);
     }
 
+    public void invioCodice(String email) {
+        int codiceOTP = RandomUtils.nextInt(100000, 999999);
+
+        emailService.inviaCodiceOtp(email, codiceOTP);
+        credenzialiDAO.inserimentoDatiRecuperoPassword(email, codiceOTP);
+    }
+
+    public void modificaPassword(String email, Integer codiceOTP, String nuovaPassword) {
+        credenzialiDAO.modificaPassword(codiceOTP, nuovaPassword, email);
+    }
 }

@@ -17,7 +17,15 @@ export class GeneralLayoutFleetGo {
   private router = inject(Router);
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log("Logout avvenuto con successo sul backend.");
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error("Errore durante il logout:", err);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

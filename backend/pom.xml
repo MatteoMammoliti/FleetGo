@@ -12,8 +12,8 @@
 
 	<groupId>it.unical.fleetgo</groupId>
 	<artifactId>fleetgo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>FleetGp</name>
+	<version>1.0</version>
+	<name>FleetGo</name>
 	<description>fleetgo backend</description>
 
 	<url/>
@@ -35,7 +35,11 @@
 	</properties>
 
 	<dependencies>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>4.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

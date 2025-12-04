@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from '@features/login/login.component';
 import { RegistrazioneComponent } from '@features/registrazione/registrazione.component';
 import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
+import {RecuperoPassword} from '@features/recupero-password/recupero-password';
 
 export const routes: Routes = [
  {
@@ -10,7 +11,8 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
-      { path: 'registrazione', component: RegistrazioneComponent }
+      { path: 'registrazione', component: RegistrazioneComponent },
+      {path: 'recuperoPassword', component: RecuperoPassword}
     ]
   },
 
