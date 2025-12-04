@@ -1,0 +1,43 @@
+<app-tabella-background>
+  
+  <div class="toolbar">
+    <div class="ricerca">
+      <input type="text" [(ngModel)]="cercaDipendente" placeholder="Cerca Dipendente">
+    </div>
+    <div class="filtri">
+      <select [(ngModel)]="filtro">
+        <option value="">Tutti gli stati</option>
+        <option value="Attivo">Attivo</option>
+        <option value="Sospeso">Sospeso</option>
+      </select>
+    </div>
+  </div>
+  <table class="tabella-semplice">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Data Iscrizione</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+
+  @for (dipendente of listaDipendenti; track dipendente.id) {
+    <tr>    
+      <td>{{ dipendente.id }}</td>
+      <td>{{ dipendente.nome }}</td>
+      <td>{{ dipendente.cognome }}</td>
+      <td>{{ dipendente.data }}</td>
+      <td>
+        <button class="bottone-rimuovi" (click)="rimuovi(dipendente.id)">
+           Rimuovi
+        </button>
+      </td>
+  }
+</tbody>
+  </table>
+
+</app-tabella-background>
