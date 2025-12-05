@@ -43,4 +43,15 @@ export class FormGestioneDipendentiAdminAziendale implements OnInit {
       }
     });
   }
+
+  get dipendentiFiltrati(): DipendenteDTO[] {
+    if (!this.cercaDipendente) {
+      return this.listaDipendenti;
+    }
+
+    return this.listaDipendenti.filter(d =>
+      (d.nomeUtente && d.nomeUtente.toLowerCase().includes(this.cercaDipendente.toLowerCase())) ||
+      (d.cognomeUtente && d.cognomeUtente.toLowerCase().includes(this.cercaDipendente.toLowerCase()))
+    );
+  }
 }

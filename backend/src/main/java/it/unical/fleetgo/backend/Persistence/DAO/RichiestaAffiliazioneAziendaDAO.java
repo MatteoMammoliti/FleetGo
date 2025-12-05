@@ -30,27 +30,25 @@ public class RichiestaAffiliazioneAziendaDAO {
             st.setInt(2,idAzienda);
             return st.executeUpdate()>0;
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     /**
      * Elimina una richiesta affiliazione ad un'azienda da parte del dipendente.
+     *
      * @param idDipendente
      * @param idAzienda
-     * @return
      */
-    public boolean rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente,Integer idAzienda){
+    public void rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda){
         String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     /**
@@ -80,7 +78,6 @@ public class RichiestaAffiliazioneAziendaDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return dipendenti;

@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Controller.AdminAziendale;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
+import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ControllerGestioneDipendenti {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
+    @Autowired private UtenteService utenteService;
 
     @GetMapping("/getDipendenti")
     public ResponseEntity<List<DipendenteDTO>> getDipendenti(HttpSession session) {
@@ -65,7 +67,24 @@ public class ControllerGestioneDipendenti {
         }
         return null;
     }
-//
-//    public ResponseEntity<Dipendente> getDipendente(HttpSession session, Integer idUtente) {}
 
+    @GetMapping("/getDipendente")
+    public ResponseEntity<DipendenteDTO> getDipendente(HttpSession session, Integer idUtente) {
+        try {
+            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")) {
+                Dipendente d = utenteService.getDipendente(idUtente);
+
+                DipendenteDTO dipendenteDTO = new DipendenteDTO();
+                dipendenteDTO.setIdUtente(d.getIdUtente());
+                dipendenteDTO.setNomeUtente(d.getNomeUtente());
+                dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
+                dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
+                dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
+                return ResponseEntity.ok(dipendenteDTO);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return null;
+    }
 }

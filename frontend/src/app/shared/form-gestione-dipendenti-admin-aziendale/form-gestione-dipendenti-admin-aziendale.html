@@ -12,13 +12,14 @@
         <th>Nome</th>
         <th>Cognome</th>
         <th>Data di nascita</th>
-        <th>Azioni</th>
+        <th>Rimuovi</th>
+        <th>Info</th>
       </tr>
     </thead>
 
     <tbody>
 
-  @for (dipendente of listaDipendenti; track dipendente.idUtente) {
+  @for (dipendente of dipendentiFiltrati; track dipendente.idUtente) {
     <tr>
       <td>{{ dipendente.idUtente }}</td>
       <td>{{ dipendente.nomeUtente }}</td>
