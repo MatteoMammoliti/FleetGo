@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +14,15 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/dashboardAdminAziendale")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
-public class ControllerAdminAziendale {
+public class ControllerModificaDati {
 
-    private final AdminAziendaleService adminAziendale;
-    private final UtenteService utenteService;
+    @Autowired private AdminAziendaleService adminAziendale;
+    @Autowired private UtenteService utenteService;
 
-    public ControllerAdminAziendale(AdminAziendaleService adminAziendale, UtenteService utenteService) {
-        this.adminAziendale = adminAziendale;
-        this.utenteService = utenteService;
-    }
+//    public ControllerModificaDati(AdminAziendaleService adminAziendale, UtenteService utenteService) {
+//        this.adminAziendale = adminAziendale;
+//        this.utenteService = utenteService;
+//    }
 
     @PostMapping("/modificaDatiAdmin")
     public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
@@ -38,7 +39,6 @@ public class ControllerAdminAziendale {
             if(errore.equals("P.Iva già registrata da un'altra azienda")){
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(errore);
             }
-            e.printStackTrace();
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
         }
     }

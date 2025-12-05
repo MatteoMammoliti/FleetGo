@@ -32,13 +32,6 @@ export class LoginComponent {
 
   errore='';
 
-  // ... dentro la classe ...
-
-loginFAKE() {
-  this.authService.aggiornaRuoloUtenteCorrente('AdminAziendale');
-  this.router.navigate(['/dashboardAzienda/dipendenti']);
-}
-
   onSubmit() {
     this.errore="";
     this.mappaErrori = {

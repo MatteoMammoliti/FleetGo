@@ -18,5 +18,3 @@ export const AZIENDA_ROUTES: Routes = [
     ]
   }
 ];
-
-

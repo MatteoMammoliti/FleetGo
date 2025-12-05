@@ -58,24 +58,30 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idAzienda
      * @return
      */
-    public List<Dipendente> getDipendentiAzienda(Integer idAzienda){
+    public List<Dipendente> getDipendentiAzienda(Integer idAzienda) throws RuntimeException {
         List<Dipendente> dipendenti=new ArrayList<>();
+
         String query= "SELECT u.* FROM richiesta_affiliazione_azienda ra JOIN utente u ON ra.id_dipendente = u.id_utente " +
                 " WHERE ra.id_azienda = ? AND ra.accettata = ?";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
             st.setBoolean(2,true);
             ResultSet rs = st.executeQuery();
+
             while(rs.next()){
+
                 DipendenteProxy dipendente = creaDipendenteProxy();
                 dipendente.setIdUtente(rs.getInt("id_utente"));
                 dipendente.setNomeUtente(rs.getString("nome_utente"));
                 dipendente.setDataNascitaUtente(rs.getDate("data_nascita").toLocalDate());
-                dipendente.setCognomeUtente(rs.getString("cognome_utente"));
+                dipendente.setCognomeUtente(rs.getString("cognome"));
                 dipendenti.add(dipendente);
             }
+
         }catch (SQLException e){
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return dipendenti;
     }
