@@ -8,6 +8,6 @@ export interface VeicoloDTO {
   tipoDistribuzioneVeicolo?: string;
   livelloCarburante?: number;
   statusCondizioneVeicolo?: string;
-  nomeAziendaAssociato?:string;
+  nomeAziendaAffiliata?:string;
   luogo?:LuogoDTO;
 }

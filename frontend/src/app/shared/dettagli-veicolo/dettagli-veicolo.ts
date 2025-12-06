@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgClass, NgForOf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {VeicoloDTO} from '@models/veicoloDTO.model';
 import {FlottaGlobaleService} from '@core/services/ServiceSezioneFleetGo/flotta-globale-service';
 import {AziendeAffiliateService} from '@core/services/ServiceSezioneFleetGo/aziende-affiliate-service';
@@ -12,7 +12,8 @@ import {ActivatedRoute,Router} from '@angular/router';
   imports: [
     FormsModule,
     NgForOf,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './dettagli-veicolo.html',
   styleUrl: './dettagli-veicolo.css',
@@ -30,16 +31,18 @@ export class DettagliVeicolo {
   ngOnInit(){
     const targa:string | null = this.activeRoute.snapshot.paramMap.get('targa');
     this.initVeicolo(targa);
-    if(this.veicolo.idAziendaAssegnata==null){
-      this.initAziende();
-    }
   }
 
   initVeicolo(targa:string | null){
     this.veicoloService.richiediVeicolo(targa).subscribe({
       next: (response) => {
         if (response) {
+          console.log("Dati caricati:", response);
           this.veicolo = response;
+          console.log(this.veicolo.nomeAziendaAffiliata)
+          if(this.veicolo.nomeAziendaAffiliata === ""){
+            this.initAziende();
+          }
 
         }
       }, error:
@@ -66,7 +69,7 @@ export class DettagliVeicolo {
     const veicoloDaInviare:VeicoloDTO = {
       idVeicolo:this.veicolo.idVeicolo,
       targaVeicolo:this.veicolo.targaVeicolo,
-      nomeAziendaAssociato:this.aziendaSelezionata != "" ? this.aziendaSelezionata : undefined,
+      nomeAziendaAffiliata:this.aziendaSelezionata != "" ? this.aziendaSelezionata : undefined,
       statusCondizioneVeicolo:this.statusCambiato != "" ? this.statusCambiato : undefined
     }
     this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({

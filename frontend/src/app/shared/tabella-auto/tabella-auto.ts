@@ -80,7 +80,7 @@ export class TabellaAuto {
         (veicolo.statusCondizioneVeicolo && veicolo.statusCondizioneVeicolo.toLowerCase().includes(this.filtroStato.toLowerCase()));
 
       const azienda = !this.filtroAzienda ||
-        (veicolo.nomeAziendaAssociato && veicolo.nomeAziendaAssociato.toLowerCase().includes(this.filtroAzienda.toLowerCase()));
+        (veicolo.nomeAziendaAffiliata && veicolo.nomeAziendaAffiliata.toLowerCase().includes(this.filtroAzienda.toLowerCase()));
 
       return targa && modello && stato && azienda;
     });
@@ -99,6 +99,5 @@ export class TabellaAuto {
 
   apriDettaglioVeicolo(targaVeicolo: string) {
     this.route.navigate(["/dashboardFleetGo","dettagli-veicolo",targaVeicolo])
-
   }
 }

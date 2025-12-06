@@ -1,86 +1,110 @@
 <div class="container mt-5 mb-5">
 
-  <div [@ngIf]="!veicolo" class="text-center mt-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Caricamento...</span>
+  @if (!veicolo) {
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+      <p class="mt-2">Recupero dati veicolo in corso...</p>
     </div>
-    <p class="mt-2">Recupero dati veicolo in corso...</p>
-  </div>
+  }
 
-  <div [@ngIf]="veicolo" class="card shadow-lg">
-    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-      <h3 class="mb-0">Gestione Veicolo: {{ veicolo.idVeicolo }}</h3>
-      <span class="badge"
-            [ngClass]="{
-              'bg-success': veicolo.statusCondizioneVeicolo === 'DISPONIBILE',
-              'bg-warning': veicolo.statusCondizioneVeicolo === 'MANUTENZIONE',
-              'bg-danger': veicolo.statusCondizioneVeicolo === 'IN_USO'
-            }">
-        {{ veicolo.statusCondizioneVeicolo }}
-      </span>
-    </div>
+  @if (veicolo) {
+    <div class="card shadow-lg">
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Gestione Veicolo: {{ veicolo.targaVeicolo }}</h3>
 
-    <div class="card-body">
-      <form (ngSubmit)="salvaModifiche()" #veicoloForm="ngForm">
-        <div class="row">
+        <span class="badge"
+              [ngClass]="{
+                'bg-success': veicolo.statusCondizioneVeicolo === 'Disponibile',
+                'bg-warning': veicolo.statusCondizioneVeicolo === 'Manutenzione',
+                'bg-danger': veicolo.statusCondizioneVeicolo === 'Noleggiato'
+              }">
+          {{ veicolo.statusCondizioneVeicolo }}
+        </span>
+      </div>
 
-          <div class="col-md-5 text-center border-end">
-            <img [src]="veicolo.urlImmagine ? veicolo.urlImmagine : 'assets/placeholder-car.png'"
-                 class="img-fluid rounded mb-3"
-                 alt="Foto Veicolo"
-                 style="max-height: 250px; object-fit: cover;">
+      <div class="card-body">
+        <form (ngSubmit)="salvaModifiche()" #veicoloForm="ngForm">
+          <div class="row">
 
-            <div class="mb-3 text-start px-3">
-              <label class="form-label fw-bold">Modello</label>
-              <input type="text" class="form-control" name="modello" [(ngModel)]="veicolo.modello" required>
+            <div class="col-md-5 text-center border-end">
+              <img [src]="veicolo.urlImmagine ? veicolo.urlImmagine : 'assets/placeholder-car.png'"
+                   class="img-fluid rounded mb-3"
+                   alt="Foto Veicolo"
+                   style="max-height: 250px; object-fit: cover;">
+
+              <div class="mb-3 text-start px-3">
+                <label class="form-label fw-bold">Modello</label>
+                <input type="text" class="form-control" name="modello" [(ngModel)]="veicolo.modello" required>
+              </div>
+
+              <div class="mb-3 text-start px-3">
+                <label class="form-label fw-bold">Tipo Distribuzione</label>
+                <input type="text" class="form-control" name="distribuzione" [(ngModel)]="veicolo.tipoDistribuzioneVeicolo" readonly>
+                <small class="text-muted">Dato tecnico non modificabile</small>
+              </div>
             </div>
 
-            <div class="mb-3 text-start px-3">
-              <label class="form-label fw-bold">Tipo Distribuzione</label>
-              <input type="text" class="form-control" name="distribuzione" [(ngModel)]="veicolo.tipoDistribuzioneVeicolo" readonly>
-              <small class="text-muted">Dato tecnico non modificabile</small>
+            <div class="col-md-7 px-4">
+              <h5 class="text-primary mb-3">Impostazioni FleetGo</h5>
+
+              <div class="mb-4">
+                @if (veicolo.nomeAziendaAffiliata) {
+                  <label class="form-label fw-bold">
+                    Azienda Affiliata: {{ veicolo.nomeAziendaAffiliata }}
+                  </label>
+                }
+
+                @if (!veicolo.nomeAziendaAffiliata) {
+                  <label class="form-label fw-bold">Assegna ad Azienda</label>
+                  <select class="form-select" name="idAzienda" [(ngModel)]="aziendaSelezionata">
+                    <option value="">-- Nessuna (Parcheggio FleetGo) --</option>
+                    @for (azienda of aziende; track azienda.idAzienda) {
+                      <option [value]="azienda.nomeAzienda">
+                        {{ azienda.nomeAzienda }} ({{ azienda.sedeAzienda }})
+                      </option>
+                    }
+                  </select>
+                  <div class="form-text">Seleziona un'azienda per trasferire il veicolo.</div>
+                }
+              </div>
+
+              <div class="mb-4">
+                @if (veicolo.statusCondizioneVeicolo !== 'Manutenzione') {
+                  <label class="form-label fw-bold">
+                    Stato Attuale: {{ veicolo.statusCondizioneVeicolo }}
+                  </label>
+                }
+
+                @if (veicolo.statusCondizioneVeicolo === 'Manutenzione') {
+                  <label class="form-label fw-bold">Cambia Stato</label>
+                  <select class="form-select" name="stato" [(ngModel)]="statusCambiato">
+                    <option value="" disabled selected>-- Seleziona Azione --</option>
+                    <option value="Disponibile">Rendi DISPONIBILE</option>
+                  </select>
+                }
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-bold">Livello Carburante: {{ veicolo.livelloCarburante }}%</label>
+                <input type="range" class="form-range" min="0" max="100" step="5"
+                       name="benzina" [(ngModel)]="veicolo.livelloCarburante">
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                <button type="button" class="btn btn-secondary me-md-2" (click)="tornaIndietro()">
+                  Annulla
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg" [disabled]="!veicoloForm.valid">
+                  <i class="bi bi-save"></i> Salva Modifiche
+                </button>
+              </div>
+
             </div>
           </div>
-
-          <div class="col-md-7 px-4">
-            <h5 class="text-primary mb-3">Impostazioni FleetGo</h5>
-
-            <div class="mb-4">
-              <label [@ngIf]="veicolo.nomeAziendaAssociato!=null" class="form-label fw-bold">Azienda Affiliata: {{ veicolo.nomeAziendaAssociato }}</label>
-              <select [@ngIf]="veicolo.nomeAziendaAssociato==null" class="form-select" name="idAzienda" [(ngModel)]="aziendaSelezionata">
-                <option [ngValue]="null">-- Nessuna (Parcheggio FleetGo) --</option>
-                <option *ngFor="let azienda of aziende" [value]="azienda.nomeAzienda">
-                  {{ azienda.nomeAzienda }} ({{ azienda.sedeAzienda}})
-                </option>
-              </select>
-              <div class="form-text">Seleziona un'azienda per trasferire il veicolo.</div>
-            </div>
-
-            <div class="mb-4">
-              <label [@ngIf]="veicolo.statusCondizioneVeicolo!='MANUTENZIONE'" class="form-label fw-bold">Stato Attuale {{veicolo.statusCondizioneVeicolo}}</label>
-              <select [@ngIf]="veicolo.statusCondizioneVeicolo==='MANUTENZIONE'" class="form-select" name="stato" [(ngModel)]="veicolo.statusCondizioneVeicolo">
-                <option [ngModel]="statusCambiato" value="DISPONIBILE">DISPONIBILE</option>
-              </select>
-            </div>
-
-            <div class="mb-4">
-              <label class="form-label fw-bold">Livello Carburante: {{ veicolo.livelloCarburante }}%</label>
-              <input type="range" class="form-range" min="0" max="100" step="5"
-                     name="benzina" [(ngModel)]="veicolo.livelloCarburante">
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
-              <button type="button" class="btn btn-secondary me-md-2" (click)="tornaIndietro()">
-                Annulla
-              </button>
-              <button type="submit" class="btn btn-primary btn-lg" [disabled]="!veicoloForm.valid">
-                <i class="bi bi-save"></i> Salva Modifiche
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
+  }
 </div>
