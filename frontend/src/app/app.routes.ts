@@ -3,6 +3,7 @@ import { LoginComponent } from '@features/login/login.component';
 import { RegistrazioneComponent } from '@features/registrazione/registrazione.component';
 import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
 import {RecuperoPassword} from '@features/recupero-password/recupero-password';
+import {authGuard} from '@core/services/auth.guard';
 
 export const routes: Routes = [
  {
@@ -19,14 +20,27 @@ export const routes: Routes = [
   {
     path: 'dashboardFleetGo',
     loadChildren: () => import('@features/SezioneFleetGo/admin-fleet-go.routes')
-      .then(m => m.ADMIN_FLEET_GO_ROUTES)
+      .then(m => m.ADMIN_FLEET_GO_ROUTES),
+    canActivate: [authGuard],
+    data: { ruolo: 'FleetGo'}
   },
 
   {
     path: 'dashboardAzienda',
     loadChildren: () => import('@features/SezioneAdminAziendale/admin-aziendale.routes')
-      .then(m => m.AZIENDA_ROUTES)
+      .then(m => m.AZIENDA_ROUTES),
+    canActivate: [authGuard],
+    data: { ruolo: 'AdminAziendale' }
   },
+
+  {
+    path: 'dashboardDipendente',
+    loadChildren: () => import('@features/SezioneDipendente/dipendente.routes')
+      .then(m => m.DIPENDENTE_ROUTES),
+    canActivate: [authGuard],
+    data: { ruolo: 'Dipendente' }
+  },
+
 
   { path: '**', redirectTo: 'login' }
 ];
