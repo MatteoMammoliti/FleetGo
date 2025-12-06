@@ -3,6 +3,7 @@ import { GeneralLayoutAdminAziendale } from '../../layouts/app-general-layout-ad
 import { DashboardAzienda } from '@features/SezioneAdminAziendale/dashboard-admin-aziendale/dashboard-azienda';
 import { ModificaDatiComponent } from './modifica-dati/modifica-dati';
 import { GestioneDipendentiComponent} from './gestione-dipendenti/gestione-dipendenti';
+import {FlottaAdminAziendale} from '@features/SezioneAdminAziendale/flotta-admin-aziendale/flotta-admin-aziendale';
 
 export const AZIENDA_ROUTES: Routes = [
   {
@@ -14,7 +15,8 @@ export const AZIENDA_ROUTES: Routes = [
       { path: 'dashboard', component: DashboardAzienda },
 
       { path: 'impostazioni', component: ModificaDatiComponent },
-      { path: 'dipendenti', component : GestioneDipendentiComponent}
+      { path: 'dipendenti', component : GestioneDipendentiComponent},
+      { path: 'flotta', component : FlottaAdminAziendale }
     ]
   }
 ];
