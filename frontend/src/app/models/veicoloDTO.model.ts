@@ -9,5 +9,6 @@ export interface VeicoloDTO {
   livelloCarburante?: number;
   statusCondizioneVeicolo?: string;
   nomeAziendaAffiliata?:string;
-  luogo?:LuogoDTO;
+  luogoRitiroDeposito?:LuogoDTO;
+  idAziendaAffiliata?:number;
 }
