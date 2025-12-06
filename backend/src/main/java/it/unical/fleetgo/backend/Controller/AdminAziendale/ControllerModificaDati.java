@@ -19,11 +19,6 @@ public class ControllerModificaDati {
     @Autowired private AdminAziendaleService adminAziendale;
     @Autowired private UtenteService utenteService;
 
-//    public ControllerModificaDati(AdminAziendaleService adminAziendale, UtenteService utenteService) {
-//        this.adminAziendale = adminAziendale;
-//        this.utenteService = utenteService;
-//    }
-
     @PostMapping("/modificaDatiAdmin")
     public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
         Integer idUtente= (Integer)session.getAttribute("idUtente");

@@ -73,7 +73,6 @@ public class VeicoloDAO {
         }
     }
 
-
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
 

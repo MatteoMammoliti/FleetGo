@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {TabellaAuto} from '@shared/tabella-auto-fleetgo/tabella-auto';
+import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
 import {FormAggiungiAuto} from '@shared/form-aggiungi-auto/form-aggiungi-auto';
 
 @Component({

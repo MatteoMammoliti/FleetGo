@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import Chart from 'chart.js/auto'
-
+import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dashboard-service';
 
 @Component({
   selector: 'app-grafico-stato-flotta',
@@ -9,32 +9,31 @@ import Chart from 'chart.js/auto'
   templateUrl: './grafico-stato-flotta.html',
   styleUrl: './grafico-stato-flotta.css',
 })
+
 export class GraficoStatoFlotta {
+
+  constructor(private service:DashboardService) {}
+
   public graficoTorta:any;
-
-  totaleVeicoli=0;
-
-  datiGrafico = {
-    autoDisponibili:0,
-    autoInUso:0,
-    autoInManutenzione:0
-  }
+  autoDisponibili = 0;
+  autoInUso = 0;
+  autoInManutenzione = 0;
+  totaleVeicoli= 0;
 
   ngOnInit(): void {
     this.settaDatiGraficoStatoFlotta()
-    this.sommaTotaleVeicoli();
-    this.creaGrafico();
   }
+
   creaGrafico(){
     this.graficoTorta=new Chart(
       'graficoStatoFlotta',
       {
         type:'pie',
         data:{
-          labels:[this.datiGrafico.autoDisponibili+' Disponibili',this.datiGrafico.autoInUso+' In uso',this.datiGrafico.autoInManutenzione+ " In manutenzione"],
+          labels:[this.autoDisponibili+' Disponibili',this.autoInUso+' In uso', this.autoInManutenzione+ " In manutenzione"],
           datasets:[
             {
-              data: [this.datiGrafico.autoDisponibili, this.datiGrafico.autoInUso, this.datiGrafico.autoInManutenzione],
+              data: [this.autoDisponibili, this.autoInUso, this.autoInManutenzione],
 
               backgroundColor: [
                 '#00A88D',
@@ -59,23 +58,25 @@ export class GraficoStatoFlotta {
 
             }
           }
-
         }
-
-
-        })
-      }
-
-
-  settaDatiGraficoStatoFlotta(){
-    //solo per testare ora
-    this.datiGrafico.autoDisponibili = 10;
-    this.datiGrafico.autoInUso = 4;
-    this.datiGrafico.autoInManutenzione = 2;
-
-  }
-  sommaTotaleVeicoli(){
-    this.totaleVeicoli=this.datiGrafico.autoDisponibili+this.datiGrafico.autoInUso+this.datiGrafico.autoInManutenzione;
+      })
   }
 
+  settaDatiGraficoStatoFlotta() {
+    this.service.getStatoVeicoli().subscribe({
+      next: (contenitore) => {
+        this.autoDisponibili = contenitore.numVeicoliDisponibili;
+        this.autoInUso = contenitore.numVeicoliNoleggiati;
+        this.autoInManutenzione = contenitore.numVeicoliInManutenzione;
+
+        this.totaleVeicoli = this.autoDisponibili + this.autoInUso + this.autoInManutenzione;
+
+        if (this.graficoTorta) {
+          this.graficoTorta.destroy();
+        }
+        this.creaGrafico();
+      },
+      error: (err) => console.error("Errore grafico:", err)
+    });
+  }
 }
