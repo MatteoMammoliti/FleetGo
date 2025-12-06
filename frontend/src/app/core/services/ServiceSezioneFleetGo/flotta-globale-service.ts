@@ -12,7 +12,6 @@ export class FlottaGlobaleService {
   private apiUrl= 'http://localhost:8080/dashboardFleetGo';
 
   registraVeicolo(formData: FormData):Observable<VeicoloDTO>   {
-
     return this.http.post<VeicoloDTO>(`${this.apiUrl}/registraVeicolo`, formData, { withCredentials:true});
   }
 
@@ -22,6 +21,7 @@ export class FlottaGlobaleService {
     });
   }
 
-
-
+  rimuoviVeicolo(targaVeicolo:string): Observable<string> {
+    return this.http.post(`${this.apiUrl}/eliminaVeicolo`, targaVeicolo, {responseType: "text", withCredentials:true});
+  }
 }

@@ -18,16 +18,6 @@
     </div>
 
     <div class="form-group">
-      <label> Stato veicolo </label>
-      <select [(ngModel)]="statusCondizioneVeicolo" [class.bordo-rosso]="mappaErrori.statusCondizioneVeicolo">
-        <option value="" disabled selected>Seleziona stato...</option>
-
-        <option value="Libero">Attivo</option>
-        <option value="Manutenzione">Manutenzione</option>
-      </select>
-    </div>
-
-    <div class="form-group">
       <label> Alimentazione </label>
       <select [(ngModel)]="tipoDistribuzioneVeicolo" [class.bordo-rosso]="mappaErrori.tipoDistribuzioneVeicolo">
         <option value="" disabled selected>Seleziona tipo...</option>

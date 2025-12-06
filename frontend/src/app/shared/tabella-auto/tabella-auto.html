@@ -1,28 +1,60 @@
 <app-tabella-background>
+
+  <div class="toolbar">
+
+    <div class="ricerca">
+      <input type="text" [(ngModel)]="filtroTarga" placeholder="Cerca per targa">
+    </div>
+
+    <div class="ricerca">
+      <input type="text" [(ngModel)]="filtroModello" placeholder="Cerca per modello">
+    </div>
+
+    <div class="filtri">
+      <select [(ngModel)]="filtroStato">
+        <option [ngValue]="''">Tutti gli stati</option>
+        <option value="Disponibile">Disponibile</option>
+        <option value="In manutenzione">In manutenzione</option>
+        <option value="Noleggiato">Noleggiato</option>
+      </select>
+    </div>
+
+    <div class="filtri">
+      <select [(ngModel)]="filtroAzienda">
+        <option [ngValue]="''">Tutte le aziende</option>
+
+        @for (azienda of listaAziendeInPiattaforma; track azienda.idAzienda) {
+          <option [value]="azienda.nomeAzienda">{{azienda.nomeAzienda}}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <table class="tabella-semplice">
     <thead>
     <tr>
       <th>Targa</th>
       <th>Modello</th>
-      <th>Alimentazione</th>
       <th>Stato</th>
-      <th>Azienda affiliata</th>
+      <th>Azienda</th>
+      <th>Rimuovi</th>
+      <th>Info</th>
     </tr>
     </thead>
     <tbody>
-        @for(veicolo of listaVeicoli; track veicolo.targaVeicolo){
-       <tr>
-         <td>{{veicolo.targaVeicolo}}</td>
-         <td>{{veicolo.modello}}</td>
-         <td>{{veicolo.tipoDistribuzioneVeicolo}}</td>
-         <td>{{veicolo.statusCondizioneVeicolo}}</td>
-         <td>
-           @if(veicolo.nomeAziendaAssociato!=''){
-             {{veicolo.nomeAziendaAssociato}}
-           } @else {
-             <button>Aggiungi azienda</button>
-           }
-         </td>
-       </tr>
+
+      @for (auto of veicoliFiltrati; track auto.idVeicolo) {
+        <tr>
+          <td>{{ auto.targaVeicolo }}</td>
+          <td>{{ auto.modello }}</td>
+          <td>{{ auto.statusCondizioneVeicolo }}</td>
+          <td>{{ auto.nomeAziendaAssociato }}</td>
+
+          <td><button class="bottone-rimuovi" (click)="rimuoviVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
+          <td><button class="bottone-rimuovi">Info</button></td>
+        </tr>
       }
+
     </tbody>
+  </table>
 </app-tabella-background>

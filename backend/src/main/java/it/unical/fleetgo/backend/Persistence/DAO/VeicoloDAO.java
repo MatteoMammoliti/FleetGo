@@ -31,11 +31,25 @@ public class VeicoloDAO {
     }
 
     public boolean eliminaVeicolo(String targaVeicolo) {
+
+        String controlloAssegmanento = "SELECT 1 FROM veicolo v JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo WHERE v.targa = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(controlloAssegmanento)) {
+            ps.setString(1, targaVeicolo);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                throw new IllegalStateException("Veicolo assegnato ad un azienda. Revocarlo prima di eliminarlo");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         String query = "DELETE FROM veicolo WHERE targa = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, targaVeicolo);
-            return ps.execute();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

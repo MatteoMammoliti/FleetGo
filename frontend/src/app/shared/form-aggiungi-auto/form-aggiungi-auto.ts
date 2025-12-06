@@ -2,7 +2,6 @@ import {Component, inject} from '@angular/core';
 import {FormBackground} from "@shared/form-background/form-background";
 import {FormsModule} from "@angular/forms";
 import {FlottaGlobaleService} from '@core/services/ServiceSezioneFleetGo/flotta-globale-service';
-import {Router} from '@angular/router';
 import {validazione} from '@shared/validation/validazione';
 
 @Component({
@@ -17,7 +16,6 @@ import {validazione} from '@shared/validation/validazione';
 export class FormAggiungiAuto {
 
   private auth=inject(FlottaGlobaleService);
-  private router=inject(Router);
   private validatore=inject(validazione);
 
   mappaErrori = {
@@ -25,14 +23,13 @@ export class FormAggiungiAuto {
     urlImmagine: false,
     modello: false,
     tipoDistribuzioneVeicolo: false,
-    statusCondizioneVeicolo: false,
   };
 
   targaVeicolo = '';
   urlImmagine:any = null;
   modello = '';
   tipoDistribuzioneVeicolo = '';
-  statusCondizioneVeicolo = '';
+  statusCondizioneVeicolo = 'Disponibile';
 
   errore='';
 
@@ -44,7 +41,6 @@ export class FormAggiungiAuto {
       this.mappaErrori.urlImmagine = this.urlImmagine == null;
       this.mappaErrori.modello = this.modello == '';
       this.mappaErrori.tipoDistribuzioneVeicolo = this.tipoDistribuzioneVeicolo == '';
-      this.mappaErrori.statusCondizioneVeicolo = this.statusCondizioneVeicolo == '';
       return
     }
 
@@ -66,11 +62,6 @@ export class FormAggiungiAuto {
     if(this.tipoDistribuzioneVeicolo==''){
       this.errore='Seleziona un tipo di distribuzione';
       this.mappaErrori.tipoDistribuzioneVeicolo=true;
-      return;
-    }
-    if(this.statusCondizioneVeicolo==''){
-      this.errore='Seleziona un stato del veicolo';
-      this.mappaErrori.statusCondizioneVeicolo=true;
       return;
     }
 
@@ -102,7 +93,6 @@ export class FormAggiungiAuto {
       urlImmagine: false,
       modello: false,
       tipoDistribuzioneVeicolo: false,
-      statusCondizioneVeicolo: false,
     };
   }
 
@@ -111,7 +101,6 @@ export class FormAggiungiAuto {
     this.urlImmagine = null;
     this.modello = '';
     this.tipoDistribuzioneVeicolo = '';
-    this.statusCondizioneVeicolo = '';
     this.reset();
   }
 

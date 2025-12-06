@@ -32,7 +32,6 @@ export class AziendeAffiliateService {
   }
 
   eliminaAzienda(idAdmin: number | undefined): Observable<string> {
-    console.log("elimino azienda con id", idAdmin)
     return this.http.post(`${this.apiUrl}/eliminaAzienda`, idAdmin, {
       responseType: 'text',
     withCredentials:true
