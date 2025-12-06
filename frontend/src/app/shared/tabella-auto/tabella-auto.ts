@@ -5,6 +5,7 @@ import {TabellaBackground} from "@shared/tabella-background/tabella-background";
 import {AziendaDTO} from '@models/aziendaDTO';
 import {FormsModule} from '@angular/forms';
 import {AziendeAffiliateService} from '@core/services/ServiceSezioneFleetGo/aziende-affiliate-service';
+import {Route, Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-tabella-auto',
@@ -19,6 +20,7 @@ export class TabellaAuto {
 
   private service= inject(FlottaGlobaleService);
   private serviceAziende:AziendeAffiliateService = inject(AziendeAffiliateService)
+  private route:Router = inject(Router)
 
   filtroTarga = "";
   filtroModello= "";
@@ -93,5 +95,10 @@ export class TabellaAuto {
         console.error("Errore durante la rimozione:", err);
       }
     })
+  }
+
+  apriDettaglioVeicolo(targaVeicolo: string) {
+    this.route.navigate(["/dashboardFleetGo","dettagli-veicolo",targaVeicolo])
+
   }
 }

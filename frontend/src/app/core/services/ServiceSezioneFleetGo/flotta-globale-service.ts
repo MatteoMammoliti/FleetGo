@@ -24,4 +24,11 @@ export class FlottaGlobaleService {
   rimuoviVeicolo(targaVeicolo:string): Observable<string> {
     return this.http.post(`${this.apiUrl}/eliminaVeicolo`, targaVeicolo, {responseType: "text", withCredentials:true});
   }
+
+  richiediVeicolo(targa:string|null):Observable<VeicoloDTO>{
+    return this.http.get<VeicoloDTO>(`${this.apiUrl}/informazioneVeicolo/${targa}`, {withCredentials:true});
+  }
+  inviaModifiche(veicolo:VeicoloDTO):Observable<string>{
+    return this.http.post(`${this.apiUrl}/modificaVeicolo`, veicolo, {responseType: "text", withCredentials:true});
+  }
 }
