@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreContatoriStatoVeicoli;
 import it.unical.fleetgo.backend.Models.DTO.GestioneVeicoloAziendaDTO;
 import it.unical.fleetgo.backend.Models.Proxy.GestioneVeicoloAziendaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.GestioneVeicoloAzienda;
@@ -20,12 +21,11 @@ public class GestioneVeicoloAziendaDAO {
     }
 
     public boolean inserisciNuovoVeicoloGestito(GestioneVeicoloAziendaDTO gestioneVeicoloAzienda) {
-        String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda, luogo_ritiro_consegna) VALUES (?, ?, ?)";
+        String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda) VALUES (?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, gestioneVeicoloAzienda.getIdVeicolo());
             ps.setInt(2, gestioneVeicoloAzienda.getIdAzienda());
-            ps.setInt(3, gestioneVeicoloAzienda.getIdLuogo());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -63,5 +63,24 @@ public class GestioneVeicoloAziendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ContenitoreContatoriStatoVeicoli getStatoVeicoli(Integer idAzienda) {
+        String query = "SELECT " +
+                "SUM(CASE WHEN v.status_condizione_veicolo = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
+                "SUM(CASE WHEN v.status_condizione_veicolo = 'In manutenzione' THEN 1 ELSE 0 END) as veicoliInManutenzione," +
+                "SUM(CASE WHEN v.status_condizione_veicolo = 'Libero' THEN 1 ELSE 0 END) as veicoliDisponibili " +
+                "FROM veicolo v JOIN gestione_veicolo_azienda g ON g.id_veicolo = v.id_veicolo WHERE g.id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                return new ContenitoreContatoriStatoVeicoli(rs.getInt("veicoliNoleggiati"), rs.getInt("veicoliInManutenzione"), rs.getInt("veicoliDisponibili"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

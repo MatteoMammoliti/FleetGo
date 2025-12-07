@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
+import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,7 +57,7 @@ public class VeicoloDAO {
     }
 
     public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
-        String query = "SELECT v.*,a.nome_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
                 " ON a.id_azienda = g.id_azienda";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -65,14 +66,13 @@ public class VeicoloDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                veicoli.add(getVeicoloDaResultSet(rs));
+                veicoli.add(getVeicoloDaResultSet(rs,false,true));
             }
             return veicoli;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
@@ -83,9 +83,27 @@ public class VeicoloDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
-                return getVeicoloDaResultSet(rs);
+                return getVeicoloDaResultSet(rs,false,false);
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Veicolo getVeicoloDaTarga(String targa) {
+        String query = "SELECT v.*,l.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo LEFT JOIN azienda a ON g.id_azienda = a.id_azienda WHERE v.targa = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, targa);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return getVeicoloDaResultSet(rs,true,false);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return null;
@@ -126,7 +144,21 @@ public class VeicoloDAO {
         return null;
     }
 
-    private Veicolo getVeicoloDaResultSet(ResultSet rs) throws SQLException {
+    public String cercaNomeAziendaTramiteId(Integer idVeicolo){
+        String query="SELECT a.nome_azienda FROM azienda a JOIN gestione_veicolo_azienda g ON g.id_azienda = a.id_azienda WHERE g.id_veicolo =?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idVeicolo);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getString("nome_azienda");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private Veicolo getVeicoloDaResultSet(ResultSet rs,boolean conLuogo,boolean soloAzienda) throws SQLException {
         Veicolo v = new Veicolo();
         v.setIdVeicolo(rs.getInt("id_veicolo"));
         v.setTargaVeicolo(rs.getString("targa"));
@@ -135,11 +167,21 @@ public class VeicoloDAO {
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
         v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
         v.setStatusCondizioneVeicolo(rs.getString("status_condizione_veicolo"));
-        String nomeAzienda = rs.getString("nome_azienda");
-        if(!rs.wasNull()){
-            v.setNomeAziendaAffiliata(nomeAzienda);
-        }else {
-            v.setNomeAziendaAffiliata(null);
+        if(conLuogo){
+            LuogoAzienda luogo = new LuogoAzienda();
+            luogo.setIdLuogo(rs.getInt("id_luogo"));
+            luogo.setIdAzienda(rs.getInt("id_azienda"));
+            luogo.setNomeLuogo(rs.getString("nome_luogo"));
+            luogo.setLatitudine(rs.getFloat("latitudine"));
+            luogo.setLongitudine(rs.getFloat("longitudine"));
+            v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));;
+            v.setIdAziendaAffiliata(rs.getInt("id_azienda"));
+
+            v.setLuogo(luogo);
+        }
+        if(soloAzienda){
+            v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));
+            v.setIdAziendaAffiliata(rs.getInt("id_azienda"));
         }
         return v;
     }

@@ -4,6 +4,8 @@ import { DashboardAzienda } from '@features/SezioneAdminAziendale/dashboard-admi
 import { ModificaDatiComponent } from './modifica-dati/modifica-dati';
 import { GestioneDipendentiComponent} from './gestione-dipendenti/gestione-dipendenti';
 import { DettagliDipendente } from '@shared/dettagli-dipendente/dettagli-dipendente';
+import {FlottaAdminAziendale} from '@features/SezioneAdminAziendale/flotta-admin-aziendale/flotta-admin-aziendale';
+
 
 export const AZIENDA_ROUTES: Routes = [
   {
@@ -16,7 +18,9 @@ export const AZIENDA_ROUTES: Routes = [
 
       { path: 'impostazioni', component: ModificaDatiComponent },
       { path: 'dipendenti', component : GestioneDipendentiComponent},
-      { path: 'dettagli-dipendente/:id', component : DettagliDipendente }
-    ]
-  }
+
+      { path: 'dettagli-dipendente/:id', component : DettagliDipendente },
+      { path: 'flotta', component : FlottaAdminAziendale }
+    ],
+  },
 ];

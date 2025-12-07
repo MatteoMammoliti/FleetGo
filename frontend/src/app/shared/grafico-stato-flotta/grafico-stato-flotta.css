@@ -1,0 +1,13 @@
+.chart-container{
+  max-height: 120px;
+  overflow: hidden;
+  margin:auto;
+}
+.contenitore{
+
+}
+
+h3{
+  color:#002040;
+  font-weight: bold;
+}
