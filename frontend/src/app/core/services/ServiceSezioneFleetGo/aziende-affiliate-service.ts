@@ -34,7 +34,7 @@ export class AziendeAffiliateService {
   eliminaAzienda(idAdmin: number | undefined): Observable<string> {
     return this.http.post(`${this.apiUrl}/eliminaAzienda`, idAdmin, {
       responseType: 'text',
-    withCredentials:true
+      withCredentials:true
     });
   }
 }

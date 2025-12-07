@@ -19,4 +19,10 @@ export class DipendentiService {
   public rimuoviDipendente(idUtente: number | undefined): Observable<any> {
     return this.http.post(`${this.apiUrl}/rimuoviDipendente`, idUtente, { responseType: 'text', withCredentials: true});
   }
+  public getDipendenteID(id: string): Observable<DipendenteDTO> {
+    return this.http.get<DipendenteDTO>(`${this.apiUrl}/getDipendente/${id}`, { withCredentials: true });
+  }
+  public aggiornaDipendente(dipendente: DipendenteDTO): Observable<any> {
+    return this.http.post(`${this.apiUrl}/aggiornaDipendente`, dipendente, { responseType: 'text', withCredentials: true });
+  }
 }

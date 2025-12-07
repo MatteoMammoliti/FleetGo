@@ -4,5 +4,4 @@ export interface DipendenteDTO extends UtenteDTO {
   idAziendaAffiliata?: number;
   urlImmagine?: string;
   patenteAccettata?: boolean;
-
 }

@@ -1,0 +1,91 @@
+<div class="container mt-5 mb-5">
+
+  @if (!dipendente) {
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+      <p class="mt-2">Recupero dati dipendente in corso...</p>
+    </div>
+  }
+
+  @if (dipendente) {
+    <div class="card shadow-lg">
+      
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Gestione Dipendente: {{ dipendente.nomeUtente }} {{ dipendente.cognomeUtente }}</h3>
+
+      </div>
+
+      <div class="card-body">
+        <form (ngSubmit)="salvaModifiche()" #dipendenteForm="ngForm">
+          <div class="row">
+
+            <div class="col-md-5 text-center border-end">
+              
+              <img [src]="dipendente.urlImmagine ? dipendente.urlImmagine : 'assets/images/user-placeholder.png'"
+                   class="img-fluid rounded-circle mb-3"
+                   alt="Foto Dipendente"
+                   style="width: 200px; height: 200px; object-fit: cover; border: 3px solid #eee;">
+
+              <div class="mb-3 text-start px-3">
+                <label class="form-label fw-bold">Nome</label>
+                <input type="text" class="form-control" name="nome" [(ngModel)]="dipendente.nomeUtente" required>
+              </div>
+
+              <div class="mb-3 text-start px-3">
+                <label class="form-label fw-bold">Cognome</label>
+                <input type="text" class="form-control" name="cognome" [(ngModel)]="dipendente.cognomeUtente" required>
+              </div>
+
+              <div class="mb-3 text-start px-3">
+                <label class="form-label fw-bold">Data di Nascita</label>
+                <input type="date" class="form-control" name="dataNascita" [(ngModel)]="dipendente.dataNascitaUtente">
+              </div>
+            </div>
+
+            <div class="col-md-7 px-4">
+              <h5 class="text-primary mb-3">Impostazioni Amministratore</h5>
+
+              <div class="mb-4">
+                <label class="form-label fw-bold">Email Aziendale (Login)</label>
+                <input type="text" class="form-control" [value]="dipendente.email" disabled readonly>
+                <div class="form-text">L'email non può essere modificata da qui.</div>
+              </div>
+
+              <div class="mb-4 p-3 bg-light rounded border">
+                <label class="form-label fw-bold d-block">Stato Patente</label>
+                
+                @if (dipendente.patenteAccettata) {
+                  <div class="text-success fw-bold">
+                    Patente Verificata e Approvata
+                  </div>
+                } @else {
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-warning fw-bold">In attesa di approvazione</span>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="approvaPatente" 
+                             name="patenteAccettata" [(ngModel)]="dipendente.patenteAccettata">
+                      <label class="form-check-label" for="approvaPatente">Approva Ora</label>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                <button type="button" class="btn btn-secondary me-md-2" (click)="tornaIndietro()">
+                  Annulla
+                </button>
+                
+                <button type="submit" class="btn btn-primary btn-lg" [disabled]="!dipendenteForm.valid">
+                  <i class="bi bi-save"></i> Salva Modifiche
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

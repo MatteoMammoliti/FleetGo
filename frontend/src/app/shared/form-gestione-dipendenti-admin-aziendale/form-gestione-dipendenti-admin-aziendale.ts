@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { TabellaBackground } from '@shared/tabella-background/tabella-background';
 import {DipendenteDTO} from '@models/dipendenteDTO.models';
 import {DipendentiService} from '@core/services/ServiceSezioneAdminAziendale/dipendenti-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-form-gestione-dipendenti-admin-aziendale',
-  imports: [FormsModule, TabellaBackground],
+  imports: [FormsModule, TabellaBackground,RouterLink],
   standalone: true,
   templateUrl: './form-gestione-dipendenti-admin-aziendale.html',
   styleUrl: './form-gestione-dipendenti-admin-aziendale.css',

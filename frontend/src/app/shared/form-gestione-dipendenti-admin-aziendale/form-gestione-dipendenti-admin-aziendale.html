@@ -2,7 +2,7 @@
 
   <div class="toolbar">
     <div class="ricerca">
-      <input type="text" [(ngModel)]="cercaDipendente" placeholder="Cerca Dipendente">
+      <input type="text" [(ngModel)]="cercaDipendente" placeholder="CERCA DIPENDENTE">
     </div>
   </div>
   <table class="tabella-semplice">
@@ -29,8 +29,10 @@
         <button class="bottone-rimuovi" (click)="rimuoviDipendente(dipendente.idUtente)">Rimuovi</button>
       </td>
       <td>
-        <button class="bottone-rimuovi">Info</button>
-      </td>
+  <button class="bottone-info" 
+          [routerLink]="['/dashboardAzienda/dettagli-dipendente', dipendente.idUtente]">info
+  </button>
+</td>
     </tr>
   }
 </tbody>
