@@ -44,23 +44,30 @@ public class VeicoloService {
         return veicoloDAO.getVeicoloDaTarga(targa);
     }
 
-    public void modificaDati(VeicoloDTO veicoloDTO){
-
-        if(veicoloDTO.getNomeAziendaAffiliata()!=null && veicoloDTO.getStatusCondizioneVeicolo()==null){
-           this.inserisciNuovoVeicoloGestito(veicoloDTO);
-        } else if (veicoloDTO.getNomeAziendaAffiliata()==null && veicoloDTO.getStatusCondizioneVeicolo()!=null) {
-            this.cambiaStatusVeicolo(veicoloDTO);
-        } else if (veicoloDTO.getNomeAziendaAffiliata()!=null && veicoloDTO.getStatusCondizioneVeicolo()!=null) {
-            this.inserisciNuovoVeicoloGestito(veicoloDTO);
-            this.cambiaStatusVeicolo(veicoloDTO);
+    public void modificaDati(VeicoloDTO veicoloDTO) throws SQLException {
+        connection.setAutoCommit(false);
+        try{
+            if(veicoloDTO.getNomeAziendaAffiliata()!=null){
+                this.inserisciNuovoVeicoloGestito(veicoloDTO);
+            } else if (veicoloDTO.getStatusCondizioneVeicolo()!=null) {
+                this.cambiaStatusVeicolo(veicoloDTO);
+            }
+            connection.commit();
+        }catch (Exception e){
+            connection.rollback();
+            throw new RuntimeException(e);
+        }finally {
+            connection.setAutoCommit(true);
         }
     }
 
-    private void inserisciNuovoVeicoloGestito(VeicoloDTO veicolo){
+    private void inserisciNuovoVeicoloGestito(VeicoloDTO veicolo) throws SQLException {
         GestioneVeicoloAziendaDTO contenitore = new GestioneVeicoloAziendaDTO();
         contenitore.setIdVeicolo(veicolo.getIdVeicolo());
         contenitore.setIdAzienda(veicolo.getIdAziendaAffiliata());
         gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(contenitore);
+        veicoloDAO.cambiaStatusVeicolo("Noleggiato",veicolo.getIdVeicolo());
+
     }
     private void cambiaStatusVeicolo(VeicoloDTO veicolo){
         veicoloDAO.cambiaStatusVeicolo(veicolo.getStatusCondizioneVeicolo(), veicolo.getIdVeicolo());

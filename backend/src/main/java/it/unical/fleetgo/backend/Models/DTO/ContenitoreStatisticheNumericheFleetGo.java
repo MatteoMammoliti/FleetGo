@@ -1,0 +1,23 @@
+package it.unical.fleetgo.backend.Models.DTO;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class ContenitoreStatisticheNumericheFleetGo {
+    private int totaleVeicoli;
+    private int veicoliAssegnati;
+    private int veicoliDisponibili;
+    private int veicoliManutenzione;
+    private int totaleAziende;
+
+    public ContenitoreStatisticheNumericheFleetGo(){}
+    public ContenitoreStatisticheNumericheFleetGo(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende){
+        this.totaleVeicoli=totaleVeicoli;
+        this.veicoliAssegnati=veicoliAssegnati;
+        this.veicoliDisponibili=veicoliDisponibili;
+        this.veicoliManutenzione=veicoliManutenzione;
+        this.totaleAziende=totaleAziende;
+    }
+}

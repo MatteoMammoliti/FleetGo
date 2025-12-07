@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheFleetGo;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
@@ -259,6 +260,30 @@ public class UtenteDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Funzione che restituisce le statistiche numeriche utilizzate nelle card visibili
+     * all'interno della dashbaord fleetGo
+     * @return Verranno restituiti il numero di veicoli totali, veicolo assegnati, in manutenzione e numero di aziende affiliate.
+     */
+    public ContenitoreStatisticheNumericheFleetGo getStatisticheNumeriche() {
+        String query = "SELECT " +
+                " (SELECT COUNT(*) FROM veicolo) as veicoli_totali, " +
+                " (SELECT COUNT (*) FROM azienda) as aziende_totali, " +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Manutenzione') as veicoli_in_manutenzione," +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Noleggiato') as veicoli_assegnati," +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Libero') as veicoli_disponibili";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return new ContenitoreStatisticheNumericheFleetGo(rs.getInt("veicoli_totali"),
+                        rs.getInt("veicoli_assegnati"), rs.getInt("veicoli_disponibili"),
+                        rs.getInt("veicoli_in_manutenzione"), rs.getInt("aziende_totali"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }return null;
     }
 
     private AdminAziendaleProxy creoAdminAziendaleProxy(){
