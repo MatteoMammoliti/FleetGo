@@ -1,0 +1,33 @@
+.dashboard-container {
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.titolo-dashboard {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0b2559;
+  margin-bottom: 30px;
+}
+
+
+.griglia-kpi {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 25px;
+}
+
+@media (max-width: 992px) {
+  .griglia-kpi {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .griglia-kpi {
+    grid-template-columns: 1fr;
+  }
+}

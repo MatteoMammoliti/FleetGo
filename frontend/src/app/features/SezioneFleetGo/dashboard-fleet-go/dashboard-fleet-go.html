@@ -1,1 +1,40 @@
-<p>dashboard-fleet-go saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!</p>
+<div class="dashboard-container">
+
+  <h1 class="titolo-dashboard">Panoramica FleetGo</h1>
+
+  <div class="griglia-kpi">
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="Flotta Totale"
+      [valore]=statistiche.totaleVeicoli
+      icona="bi-car-front"
+      coloreSfondo="card-blue"
+      descrizione="Veicoli in piattaforma">
+    </app-card-statistiche-dashboard-fleet>
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="Assegnati"
+      [valore]=statistiche.veicoliAssegnati
+      icona="bi-briefcase"
+      coloreSfondo="card-green"
+      [descrizione]="'70% della flotta'">
+    </app-card-statistiche-dashboard-fleet>
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="Aziende Partner"
+      [valore]=statistiche.totaleAziende
+      icona="bi-building"
+      coloreSfondo="card-cyan"
+      descrizione="Attive in piattaforma">
+    </app-card-statistiche-dashboard-fleet>
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="In Manutenzione"
+      [valore]=statistiche.veicoliManutenzione
+      icona="bi-tools"
+      coloreSfondo="card-orange"
+      descrizione="Richiede attenzione">
+    </app-card-statistiche-dashboard-fleet>
+
+  </div>
+</div>

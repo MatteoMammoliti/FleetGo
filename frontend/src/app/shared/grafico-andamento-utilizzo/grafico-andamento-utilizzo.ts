@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {RichiestaNoleggioDTO} from '@models/richiestaNoleggioDTO.models';
 
@@ -12,7 +12,6 @@ export class GraficoAndamentoUtilizzo {
   public graficoAndamentoUtilizzo: any;
   listaNoleggi: RichiestaNoleggioDTO[] = [];
   lunghezzaMese:number=0;
-
 
   ngOnInit(): void {
     this.creaGrafico();
