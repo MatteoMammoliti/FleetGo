@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  flex: 1;
+  gap: 20px;
+}
+
+.box-largo {
+  flex: 7;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.box-stretto {
+  flex: 3;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+}
+.box-stretto > app-form-background {
+  display: flex;
+  flex: 1;
+}
+
+.box-largo > app-form-background {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

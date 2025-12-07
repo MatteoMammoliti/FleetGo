@@ -54,7 +54,6 @@ public class ControllerAziendeAffiliate {
                     aziendaDTO.setNomeAzienda(a.getNomeAzienda());
                     aziendaDTO.setSedeAzienda(a.getSedeAzienda());
                     aziendaDTO.setPIva(a.getPIva());
-                    System.out.println("sono qui e mando " + a.getIdAdmin());
                     aziendaDTO.setIdAdminAzienda(a.getIdAdmin());
                     listaAziende.add(aziendaDTO);
                 }
