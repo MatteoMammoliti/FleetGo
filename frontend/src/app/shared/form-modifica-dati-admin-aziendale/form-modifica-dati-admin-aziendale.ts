@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {FormBackground} from "@shared/form-background/form-background";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@shared/validation/validazione';
@@ -20,7 +20,11 @@ export class FormModificaDatiAdminAziendale {
   private service: ModificaDatiService = inject(ModificaDatiService);
   private validator: validazione = inject(validazione);
 
-  datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
+  @Input() datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
+  errore = '';
+  @Input() erroreBackend="";
+
+  @Output() richiestaModifica=new EventEmitter<ModificaDatiUtenteDTO>();
 
   constructor() {}
 
@@ -32,7 +36,8 @@ export class FormModificaDatiAdminAziendale {
   partitaIva: string | null = '';
   sedeAzienda: string | null = '';
 
-  errore = '';
+
+
   mappaErrori= {
     nome: false,
     cognome: false,
@@ -44,9 +49,23 @@ export class FormModificaDatiAdminAziendale {
   };
 
 
-  ngOnInit() {
+  ngOnChanges() {
     this.caricaDatiEsistenti();
   }
+
+  caricaDatiEsistenti() {
+    if(this.datiCorrenti) {
+      this.nome = this.datiCorrenti.nome;
+      this.cognome = this.datiCorrenti.cognome;
+      this.data = this.datiCorrenti.data;
+      this.email = this.datiCorrenti.email;
+      this.nomeAzienda = this.datiCorrenti.nomeAzienda;
+      this.partitaIva = this.datiCorrenti.pIva;
+      this.sedeAzienda = this.datiCorrenti.sedeAzienda;
+    }
+  }
+
+
 
   reset() {
     this.errore = '';
@@ -61,30 +80,6 @@ export class FormModificaDatiAdminAziendale {
     };
   }
 
-  caricaDatiEsistenti() {
-
-    this.service.getDati().subscribe({
-      next: (datiRicevuti) => {
-
-        console.log("Dati arrivati dal backend:", datiRicevuti);
-
-        if(datiRicevuti) {
-          this.nome = datiRicevuti.nome;
-          this.cognome = datiRicevuti.cognome;
-          this.data = datiRicevuti.data;
-          this.email = datiRicevuti.email;
-          this.nomeAzienda = datiRicevuti.nomeAzienda;
-          this.partitaIva = datiRicevuti.pIva;
-          this.sedeAzienda = datiRicevuti.sedeAzienda;
-          this.datiCorrenti = datiRicevuti;
-        }
-      },
-      error: (err) => {
-        console.error('Errore nel caricamento dati', err);
-        this.errore = 'Impossibile caricare i dati utente';
-      }
-    });
-  }
 
   onSalvaModifiche() {
     this.reset();
@@ -138,16 +133,7 @@ export class FormModificaDatiAdminAziendale {
     const ciSonoModifiche = Object.values(datiAggiornati).some(val => val !== null);
 
     if(ciSonoModifiche) {
-      this.service.modificaDati(datiAggiornati).subscribe({
-        next: (res) => {
-          if(res) {
-            this.caricaDatiEsistenti();
-          }
-        },
-        error: (err) => {
-          console.log('Errore durante la modifica dati', err);
-        }
-      });
+      this.richiestaModifica.emit(datiAggiornati);
     }
   }
 }

@@ -2,4 +2,4 @@
   <h1 class="titolo-pagina">Modifica Profilo & Dati Aziendali</h1>
 </div>
 
-<app-form-modifica-dati-admin-aziendale></app-form-modifica-dati-admin-aziendale>
+<app-form-modifica-dati-admin-aziendale [datiCorrenti]=utenteDaModificare [erroreBackend]=errore (richiestaModifica)=modificaDatiUtente($event)></app-form-modifica-dati-admin-aziendale>

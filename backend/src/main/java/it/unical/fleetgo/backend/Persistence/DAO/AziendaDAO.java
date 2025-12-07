@@ -38,6 +38,7 @@ public class AziendaDAO {
             ps.setInt(1, idAdminAzienda);
             return ps.executeUpdate() > 0;
         } catch (SQLException e){
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

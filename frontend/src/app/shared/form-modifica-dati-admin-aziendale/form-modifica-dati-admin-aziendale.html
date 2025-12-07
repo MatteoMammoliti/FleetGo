@@ -55,6 +55,14 @@
 
     </div>
   </div>
+  <div>
+    @if (errore) {
+      <p class="errore">{{ errore }}</p>
+    }
+    @else if(erroreBackend) {
+      <p class="errore">{{ erroreBackend }}</p>
+    }
+  </div>
 
   <div class="allinea-destra">
     <button class="button-primary" (click)="onSalvaModifiche()">

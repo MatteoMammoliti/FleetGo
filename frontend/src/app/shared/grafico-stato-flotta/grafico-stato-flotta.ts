@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, Input, SimpleChanges} from '@angular/core';
 
 import Chart from 'chart.js/auto'
 import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dashboard-service';
+import {ContenitoreContatoriStatoVeicoli} from '@models/ContenitoreContatoriStatoVeicoli';
+
 
 @Component({
   selector: 'app-grafico-stato-flotta',
@@ -12,28 +14,30 @@ import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dash
 
 export class GraficoStatoFlotta {
 
-  constructor(private service:DashboardService) {}
+  public graficoTorta: any;
 
-  public graficoTorta:any;
-  autoDisponibili = 0;
-  autoInUso = 0;
-  autoInManutenzione = 0;
-  totaleVeicoli= 0;
+  @Input({required: true}) contenitoreInput: ContenitoreContatoriStatoVeicoli = {
+    numVeicoliDisponibili: 0,
+    numVeicoliInManutenzione: 0,
+    numVeicoliNoleggiati: 0
+  };
+  totaleVeicoli = 0;
 
-  ngOnInit(): void {
-    this.settaDatiGraficoStatoFlotta()
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.contenitoreInput);
+    this.inserisciDatiGrafico()
   }
 
-  creaGrafico(){
-    this.graficoTorta=new Chart(
+  creaGrafico() {
+    this.graficoTorta = new Chart(
       'graficoStatoFlotta',
       {
-        type:'pie',
-        data:{
-          labels:[this.autoDisponibili+' Disponibili',this.autoInUso+' In uso', this.autoInManutenzione+ " In manutenzione"],
-          datasets:[
+        type: 'pie',
+        data: {
+          labels: [this.percentuale(this.contenitoreInput.numVeicoliDisponibili) + '% Disponibili', this.percentuale(this.contenitoreInput.numVeicoliNoleggiati)+ '% In uso',  this.percentuale(this.contenitoreInput.numVeicoliInManutenzione) + "% In manutenzione"],
+          datasets: [
             {
-              data: [this.autoDisponibili, this.autoInUso, this.autoInManutenzione],
+              data: [this.contenitoreInput.numVeicoliDisponibili, this.contenitoreInput.numVeicoliNoleggiati , this.contenitoreInput.numVeicoliInManutenzione],
 
               backgroundColor: [
                 '#00A88D',
@@ -45,15 +49,15 @@ export class GraficoStatoFlotta {
             }],
 
         },
-        options:{
+        options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins:{
-            legend:{
-              position:'right',
-              labels:{
-                padding:10,
-                boxWidth:10
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                padding: 10,
+                boxWidth: 10
               }
 
             }
@@ -62,21 +66,15 @@ export class GraficoStatoFlotta {
       })
   }
 
-  settaDatiGraficoStatoFlotta() {
-    this.service.getStatoVeicoli().subscribe({
-      next: (contenitore) => {
-        this.autoDisponibili = contenitore.numVeicoliDisponibili;
-        this.autoInUso = contenitore.numVeicoliNoleggiati;
-        this.autoInManutenzione = contenitore.numVeicoliInManutenzione;
+  percentuale(valore:number){
+    return valore/this.totaleVeicoli*100;
+  }
+  inserisciDatiGrafico() {
+    this.totaleVeicoli = this.contenitoreInput.numVeicoliDisponibili + this.contenitoreInput.numVeicoliInManutenzione + this.contenitoreInput.numVeicoliNoleggiati;
 
-        this.totaleVeicoli = this.autoDisponibili + this.autoInUso + this.autoInManutenzione;
-
-        if (this.graficoTorta) {
-          this.graficoTorta.destroy();
-        }
-        this.creaGrafico();
-      },
-      error: (err) => console.error("Errore grafico:", err)
-    });
+    if (this.graficoTorta) {
+      this.graficoTorta.destroy();
+    }
+    this.creaGrafico();
   }
 }

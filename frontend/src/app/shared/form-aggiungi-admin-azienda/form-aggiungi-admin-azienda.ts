@@ -5,6 +5,7 @@ import {validazione} from '@shared/validation/validazione';
 import {AziendeAffiliateService} from '@core/services/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {AdminAziendaleDTO} from '@models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@models/aziendaDTO';
+import {AggiuntaNuovoAdminDTO} from '@models/aggiuntaNuovoAdmin.models';
 
 @Component({
   selector: 'app-form-aggiungi-admin-azienda',
@@ -17,7 +18,8 @@ import {AziendaDTO} from '@models/aziendaDTO';
 })
 
 export class FormAggiungiAdminAzienda {
-  @Output() aziendaAggiunta = new EventEmitter<void>();
+
+  @Output() aziendaAggiunta = new EventEmitter<AggiuntaNuovoAdminDTO>();
   private validatore = inject(validazione);
   private aziendeService = inject(AziendeAffiliateService);
 
@@ -41,6 +43,8 @@ export class FormAggiungiAdminAzienda {
     partitaIva: false,
     sedeLegale: false,
   };
+
+  mod:AggiuntaNuovoAdminDTO = {} as AggiuntaNuovoAdminDTO;
 
   onSubmit() {
     this.reset();
@@ -96,20 +100,19 @@ export class FormAggiungiAdminAzienda {
       sedeAzienda: this.sedeLegale
 
     }
+    this.mod.adminAziendale=adminAziendale;
+    this.mod.azienda=azienda;
+
+
 
     console.log("Form valido, invio i dati...");
 
-    this.aziendeService.registraAzienda(adminAziendale, azienda).subscribe({
-      next: (res) => {
-        console.log("Azienda registrata!", res);
-        this.pulisciForm();
-        this.aziendaAggiunta.emit();
-      },
-      error: (err) => {
-        console.error("Errore", err);
-        this.errore = "Errore durante la registrazione";
-      }
-    });
+
+
+
+
+    this.aziendaAggiunta.emit(this.mod);
+
   }
 
   reset() {

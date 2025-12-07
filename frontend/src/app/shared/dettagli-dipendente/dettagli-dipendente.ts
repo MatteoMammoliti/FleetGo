@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DipendentiService } from '@core/services/ServiceSezioneAdminAziendale/dipendenti-service';
 import { DipendenteDTO } from '@models/dipendenteDTO.models';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,7 @@ export class DettagliDipendente implements OnInit {
       error: (err) => {
         console.error('Errore nel caricamento dei dati:', err);
         this.loading = false;
-      } 
+      }
     });
   }
   salvaModifiche() {

@@ -1,16 +1,14 @@
   <div class="container">
 
-  <app-form-background class="box-largo">
-    <h2>Andamento spese mese corrente</h2>
+  <app-form-background class="box-largo"
+    titolo="Andamento spese mese corrente">
     <app-grafico-andamento-utilizzo></app-grafico-andamento-utilizzo>
   </app-form-background>
   <div class="box-stretto">
-    <app-form-background >
-      <h2>Stato Flotta</h2>
-      <app-grafico-stato-flotta></app-grafico-stato-flotta>
+    <app-form-background titolo="Stato Flotta" >
+      <app-grafico-stato-flotta [contenitoreInput]=contenitoreInputGraficoStatoFlotta></app-grafico-stato-flotta>
     </app-form-background>
-    <app-form-background>
-      <h2>Attività</h2>
+    <app-form-background titolo="Attività">
     </app-form-background>
   </div>
 </div>

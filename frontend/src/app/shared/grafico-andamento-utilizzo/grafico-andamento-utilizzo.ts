@@ -37,7 +37,7 @@ export class GraficoAndamentoUtilizzo {
               borderColor: '#00A88D',
               backgroundColor: 'rgba(0, 168, 141, 0.2)',
               borderWidth: 2,
-              tension: 0.4, // Curva morbida
+              tension: 0.4,
               fill: true
             }]
         }

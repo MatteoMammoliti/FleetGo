@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabellaBackground } from '@shared/tabella-background/tabella-background';
 import {DipendenteDTO} from '@models/dipendenteDTO.models';
@@ -12,38 +12,11 @@ import { RouterLink } from '@angular/router';
   templateUrl: './form-gestione-dipendenti-admin-aziendale.html',
   styleUrl: './form-gestione-dipendenti-admin-aziendale.css',
 })
-export class FormGestioneDipendentiAdminAziendale implements OnInit {
+export class FormGestioneDipendentiAdminAziendale {
   cercaDipendente: string = '';
+  @Input() listaDipendenti: DipendenteDTO[] = [];
+  @Output() richiestaRimozioneDipendente=new EventEmitter<number>();
 
-  private service: DipendentiService = inject(DipendentiService);
-
-  listaDipendenti: DipendenteDTO[] = [];
-
-  ngOnInit() {
-    this.getDipendenti();
-  }
-
-  getDipendenti() {
-    this.service.getDipendenti().subscribe({
-      next: (response: DipendenteDTO[]) => {
-        this.listaDipendenti = response;
-      },
-      error: (error) => {
-        console.error('Errore durante il recupero dei dipendenti:', error);
-      }
-    })
-  }
-
-  rimuoviDipendente(idDipendente:number | undefined) {
-    this.service.rimuoviDipendente(idDipendente).subscribe({
-      next: (response) => {
-        this.getDipendenti();
-      },
-      error: (error) => {
-        console.error('Errore durante la rimozione del dipendente:', error);
-      }
-    });
-  }
 
   get dipendentiFiltrati(): DipendenteDTO[] {
     if (!this.cercaDipendente) {
@@ -55,4 +28,14 @@ export class FormGestioneDipendentiAdminAziendale implements OnInit {
       (d.cognomeUtente && d.cognomeUtente.toLowerCase().includes(this.cercaDipendente.toLowerCase()))
     );
   }
+
+
+  rimuoviDipendente(idDipendente:number | undefined) {
+    this.richiestaRimozioneDipendente.emit(idDipendente);
+  }
+
+
+
+
+
 }
