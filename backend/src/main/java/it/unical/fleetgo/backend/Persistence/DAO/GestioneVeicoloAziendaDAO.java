@@ -20,12 +20,11 @@ public class GestioneVeicoloAziendaDAO {
     }
 
     public boolean inserisciNuovoVeicoloGestito(GestioneVeicoloAziendaDTO gestioneVeicoloAzienda) {
-        String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda, luogo_ritiro_consegna) VALUES (?, ?, ?)";
+        String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda) VALUES (?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, gestioneVeicoloAzienda.getIdVeicolo());
             ps.setInt(2, gestioneVeicoloAzienda.getIdAzienda());
-            ps.setInt(3, gestioneVeicoloAzienda.getIdLuogo());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new RuntimeException(e);

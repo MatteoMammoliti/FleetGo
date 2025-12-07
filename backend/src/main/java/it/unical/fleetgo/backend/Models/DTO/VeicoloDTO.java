@@ -14,6 +14,6 @@ public class VeicoloDTO {
     private Integer livelloCarburante;
     private String statusCondizioneVeicolo;
     private String nomeAziendaAffiliata;
+    private Integer idAziendaAffiliata;
     private LuogoDTO luogoRitiroDeposito;
-
 }

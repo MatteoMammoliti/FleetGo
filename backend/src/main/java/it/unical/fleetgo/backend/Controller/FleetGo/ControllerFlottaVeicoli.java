@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
 
+import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineVeicolo;
@@ -89,6 +90,43 @@ public class ControllerFlottaVeicoli {
         return null;
     }
 
+    @GetMapping(value = "/informazioneVeicolo/{targa}")
+    public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa, HttpSession session) {
+        try{
+            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo") && targa != null){
+                Veicolo veicolo = veicoloService.getInformazioniVeicolo(targa);
+                VeicoloDTO veicoloDTO = getVeicoloDTO(veicolo);
+                LuogoDTO luogo = new LuogoDTO();
+                luogo.setNomeLuogo(veicolo.getLuogo().getNomeLuogo());
+                luogo.setLatitudine(veicolo.getLuogo().getLatitudine());
+                luogo.setLongitudine(veicolo.getLuogo().getLongitudine());
+                veicoloDTO.setLuogoRitiroDeposito(luogo);
+
+                return ResponseEntity.ok(veicoloDTO);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping(value = "/modificaVeicolo")
+    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicoloDTO, HttpSession session) {
+        try{
+            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
+                veicoloService.modificaDati(veicoloDTO);
+                return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");
+
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+
+
     private VeicoloDTO getVeicoloDTO(Veicolo v) {
         VeicoloDTO veicoloDTO = new VeicoloDTO();
         veicoloDTO.setIdVeicolo(v.getIdVeicolo());
@@ -100,8 +138,10 @@ public class ControllerFlottaVeicoli {
         veicoloDTO.setStatusCondizioneVeicolo(v.getStatusCondizioneVeicolo());
         if(v.getNomeAziendaAffiliata()!=null){
             veicoloDTO.setNomeAziendaAffiliata(v.getNomeAziendaAffiliata());
+            veicoloDTO.setIdAziendaAffiliata(v.getIdAziendaAffiliata());
         }else {
             veicoloDTO.setNomeAziendaAffiliata(null);
+            veicoloDTO.setIdAziendaAffiliata(null);
         }
         return veicoloDTO;
     }
