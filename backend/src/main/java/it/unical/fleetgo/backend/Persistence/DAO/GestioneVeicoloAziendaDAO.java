@@ -83,4 +83,18 @@ public class GestioneVeicoloAziendaDAO {
         }
         return null;
     }
+
+    public void contrasegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
+        String query="UPDATE veicolo SET status_condizione_veicolo =? WHERE id_veicolo IN " +
+                " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)" +
+                " AND status_condizione_veicolo != 'Manutenzione'";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+                st.setString(1, "Libero");
+                st.setInt(2, idAdminAzienda);
+                st.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

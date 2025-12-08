@@ -70,7 +70,6 @@ public class ControllerAziendeAffiliate {
         try {
             if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("FleetGo")) {
                 aziendaService.eliminaAzienda(idAdminGestore);
-                utenteService.eliminaUtente(idAdminGestore);
                 return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
             }
         } catch (Exception e) {
