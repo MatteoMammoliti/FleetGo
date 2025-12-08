@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Component, OnInit, inject} from '@angular/core';
+import {Form, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TabellaAuto} from '@shared/tabella-auto/tabella-auto';
 import {FormAggiungiAuto} from '@shared/form-aggiungi-auto/form-aggiungi-auto';
+import {FlottaGlobaleService} from '@core/services/ServiceSezioneFleetGo/flotta-globale-service';
+import {VeicoloDTO} from '@models/veicoloDTO.model';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -16,4 +18,46 @@ import {FormAggiungiAuto} from '@shared/form-aggiungi-auto/form-aggiungi-auto';
   styleUrl: './flotta-globale.css',
 })
 
-export class FlottaGlobale {}
+export class FlottaGlobale implements OnInit{
+  private service= inject(FlottaGlobaleService);
+  listaVeicoli:VeicoloDTO[]=[];
+
+  ngOnInit(): void {
+    this.caricaDati();
+  }
+
+  caricaDati() {
+    this.service.richiediVeicoli().subscribe({
+      next: (datiDalServer) => {
+        this.listaVeicoli = datiDalServer;
+      },
+      error: (err) => {
+        console.error("Errore nel caricamento:", err);
+      }
+    });
+  }
+
+  gestisciSalvataggio(datiForm: FormData) {
+    this.service.registraVeicolo(datiForm).subscribe({
+      next: (response) => {
+        console.log("Veicolo salvato con successo:", response);
+        this.caricaDati();
+      },
+      error: (err) => {
+        console.error("Errore durante il salvataggio del veicolo:", err);
+      }
+    });
+  }
+
+  gestisciEliminazione(targaVeicolo: string) {
+    this.service.rimuoviVeicolo(targaVeicolo).subscribe({
+      next: (response) => {
+        console.log("Veicolo eliminato con successo:", response);
+        this.caricaDati();
+      },
+      error: (err) => {
+        console.error("Errore durante l'eliminazione del veicolo:", err);
+      }
+    });
+  }
+}

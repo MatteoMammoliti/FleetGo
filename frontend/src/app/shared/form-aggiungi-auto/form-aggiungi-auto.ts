@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Output, EventEmitter} from '@angular/core';
 import {FormBackground} from "@shared/form-background/form-background";
 import {FormsModule} from "@angular/forms";
 import {FlottaGlobaleService} from '@core/services/ServiceSezioneFleetGo/flotta-globale-service';
@@ -14,97 +14,68 @@ import {validazione} from '@shared/validation/validazione';
   styleUrl: './form-aggiungi-auto.css',
 })
 export class FormAggiungiAuto {
-
-  private auth=inject(FlottaGlobaleService);
-  private validatore=inject(validazione);
+  private validator = inject(validazione);
+  
+  @Output() onSalvataggio = new EventEmitter<FormData>();
 
   mappaErrori = {
-    targaVeicolo: false,
-    urlImmagine: false,
-    modello: false,
-    tipoDistribuzioneVeicolo: false,
+    targaVeicolo: false, urlImmagine: false, modello: false, tipoDistribuzioneVeicolo: false,
+    statusCondizioneVeicolo: false
   };
-
   targaVeicolo = '';
-  urlImmagine:any = null;
+  urlImmagine: any=null;
   modello = '';
   tipoDistribuzioneVeicolo = '';
   statusCondizioneVeicolo = 'Disponibile';
-
   errore='';
 
   onSubmit() {
-    this.reset()
-    if(!this.targaVeicolo || !this.urlImmagine || !this.modello || !this.tipoDistribuzioneVeicolo || !this.statusCondizioneVeicolo){
-      this.errore="Riempi tutti i campi";
-      this.mappaErrori.targaVeicolo = this.targaVeicolo == '';
-      this.mappaErrori.urlImmagine = this.urlImmagine == null;
-      this.mappaErrori.modello = this.modello == '';
-      this.mappaErrori.tipoDistribuzioneVeicolo = this.tipoDistribuzioneVeicolo == '';
-      return
-    }
+    this.reset();
 
-    if(!this.validatore.checkTarga(this.targaVeicolo)){
-      this.errore='Targa non valida';
-      this.mappaErrori.targaVeicolo=true;
+    if (!this.targaVeicolo || !this.urlImmagine || !this.modello || !this.tipoDistribuzioneVeicolo || !this.statusCondizioneVeicolo) {
+      this.errore = "Riempi tutti i campi";
+      
+      if (!this.targaVeicolo) this.mappaErrori.targaVeicolo = true;
+      if (!this.urlImmagine) this.mappaErrori.urlImmagine = true;
+      if (!this.modello) this.mappaErrori.modello = true;
+      if (!this.tipoDistribuzioneVeicolo) this.mappaErrori.tipoDistribuzioneVeicolo = true;
+      if (!this.statusCondizioneVeicolo) this.mappaErrori.statusCondizioneVeicolo = true;
+      
       return;
     }
-    if(this.urlImmagine==null){
-      this.errore='Inserisci un immagine';
-      this.mappaErrori.urlImmagine=true;
-      return;
-    }
-    if (this.modello==''){
-      this.errore='Inserisci un modello valido'
-      this.mappaErrori.modello=true;
-      return;
-    }
-    if(this.tipoDistribuzioneVeicolo==''){
-      this.errore='Seleziona un tipo di distribuzione';
-      this.mappaErrori.tipoDistribuzioneVeicolo=true;
-      return;
-    }
-
 
     const formData = new FormData();
-
     formData.append('targaVeicolo', this.targaVeicolo);
+    formData.append('Immagine', this.urlImmagine);
     formData.append('modello', this.modello);
     formData.append('tipoDistribuzioneVeicolo', this.tipoDistribuzioneVeicolo);
     formData.append('statusCondizioneVeicolo', this.statusCondizioneVeicolo);
-    formData.append('immagineVeicolo', this.urlImmagine);
 
-    console.log("Form valido, invio dati...");
-
-    this.auth.registraVeicolo(formData).subscribe({
-      next: (response) => {
-        this.pulisciForm();
-      },
-      error: (error) => {
-        console.error('Errore durante la registrazione:', error);
-      }
-
-    })
+    this.onSalvataggio.emit(formData);
   }
-  reset(){
-    this.errore = '';
+
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.lenght > 0) {
+      this.urlImmagine = event.target.files[0];
+    }
+  }
+
+  reset() {
+    this.errore='';
     this.mappaErrori = {
       targaVeicolo: false,
       urlImmagine: false,
       modello: false,
       tipoDistribuzioneVeicolo: false,
+      statusCondizioneVeicolo: false
     };
   }
 
-  pulisciForm(){
+  pulisciForm() {
     this.targaVeicolo = '';
     this.urlImmagine = null;
     this.modello = '';
     this.tipoDistribuzioneVeicolo = '';
-    this.reset();
-  }
-
-  onFileSelected(event: any) {
-    this.urlImmagine = event.target.files[0];
+    this.statusCondizioneVeicolo = 'Disponibile';
   }
 }

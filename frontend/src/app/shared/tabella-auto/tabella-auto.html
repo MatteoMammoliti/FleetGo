@@ -23,7 +23,7 @@
       <select [(ngModel)]="filtroAzienda">
         <option [ngValue]="''">Tutte le aziende</option>
 
-        @for (azienda of listaAziendeInPiattaforma; track azienda.idAzienda) {
+        @for (azienda of listaAziende; track azienda.idAzienda) {
           <option [value]="azienda.nomeAzienda">{{azienda.nomeAzienda}}</option>
         }
       </select>
@@ -50,8 +50,8 @@
           <td>{{ auto.statusCondizioneVeicolo }}</td>
           <td>{{ auto.nomeAziendaAffiliata }}</td>
 
-          <td><button class="bottone-rimuovi" (click)="rimuoviVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
-          <td><button class="bottone-rimuovi" (click)="apriDettaglioVeicolo(auto.targaVeicolo)">Info</button></td>
+          <td><button class="bottone-rimuovi" (click)="eliminaVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
+          <td><button class="bottone-rimuovi" (click)="dettagliVeicolo(auto.targaVeicolo)">Info</button></td>
         </tr>
       }
 
