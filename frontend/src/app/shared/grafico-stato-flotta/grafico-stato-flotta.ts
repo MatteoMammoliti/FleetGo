@@ -1,8 +1,9 @@
 import {Component, Input, SimpleChanges} from '@angular/core';
 
 import Chart from 'chart.js/auto'
-import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dashboard-service';
-import {ContenitoreContatoriStatoVeicoli} from '@models/ContenitoreContatoriStatoVeicoli';
+import {
+  ContenitoreStatisticheNumeriche
+} from '@models/ContenitoreStatisticheNumeriche';
 
 
 @Component({
@@ -16,11 +17,15 @@ export class GraficoStatoFlotta {
 
   public graficoTorta: any;
 
-  @Input({required: true}) contenitoreInput: ContenitoreContatoriStatoVeicoli = {
-    numVeicoliDisponibili: 0,
-    numVeicoliInManutenzione: 0,
-    numVeicoliNoleggiati: 0
+  @Input({required: true}) contenitoreInput: ContenitoreStatisticheNumeriche = {
+    veicoliAssegnati: 0,
+    totaleVeicoli: 0,
+    totaleAziende: 0,
+    veicoliDisponibili: 0,
+    veicoliManutenzione: 0,
+    veicoliNoleggati: 0
   };
+
   totaleVeicoli = 0;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,10 +39,12 @@ export class GraficoStatoFlotta {
       {
         type: 'pie',
         data: {
-          labels: [this.percentuale(this.contenitoreInput.numVeicoliDisponibili) + '% Disponibili', this.percentuale(this.contenitoreInput.numVeicoliNoleggiati)+ '% In uso',  this.percentuale(this.contenitoreInput.numVeicoliInManutenzione) + "% In manutenzione"],
+          labels: [this.percentuale(this.contenitoreInput.veicoliDisponibili) + '% Disponibili',
+            this.percentuale(this.contenitoreInput.veicoliNoleggati)+ '% In uso',
+            this.percentuale(this.contenitoreInput.veicoliManutenzione) + "% In manutenzione"],
           datasets: [
             {
-              data: [this.contenitoreInput.numVeicoliDisponibili, this.contenitoreInput.numVeicoliNoleggiati , this.contenitoreInput.numVeicoliInManutenzione],
+              data: [this.contenitoreInput.veicoliDisponibili, this.contenitoreInput.veicoliNoleggati , this.contenitoreInput.veicoliManutenzione],
 
               backgroundColor: [
                 '#00A88D',
@@ -70,7 +77,9 @@ export class GraficoStatoFlotta {
     return valore/this.totaleVeicoli*100;
   }
   inserisciDatiGrafico() {
-    this.totaleVeicoli = this.contenitoreInput.numVeicoliDisponibili + this.contenitoreInput.numVeicoliInManutenzione + this.contenitoreInput.numVeicoliNoleggiati;
+    this.totaleVeicoli = this.contenitoreInput.veicoliDisponibili +
+      this.contenitoreInput.veicoliManutenzione
+      + this.contenitoreInput.veicoliNoleggati;
 
     if (this.graficoTorta) {
       this.graficoTorta.destroy();
