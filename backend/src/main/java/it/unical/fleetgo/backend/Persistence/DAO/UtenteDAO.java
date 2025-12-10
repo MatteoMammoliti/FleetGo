@@ -1,5 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheFleetGo;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.AdminAziendaleProxy;
@@ -251,11 +251,15 @@ public class UtenteDAO {
             st.setInt(1,idUtente);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                ModificaDatiUtenteDTO contenitore = new ModificaDatiUtenteDTO(rs.getString("nome_utente"),rs.getString("cognome"),rs.getDate("data_nascita").toString(),
-                        rs.getString("email"),rs.getString("nome_azienda"),rs.getString("sede_azienda"),rs.getString("p_iva"),null);
-                return contenitore;
+                return new ModificaDatiUtenteDTO(rs.getString("nome_utente"),
+                        rs.getString("cognome"),
+                        rs.getDate("data_nascita").toString(),
+                        rs.getString("email"),
+                        rs.getString("nome_azienda"),
+                        rs.getString("sede_azienda"),
+                        rs.getString("p_iva"),
+                        null);
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -267,7 +271,7 @@ public class UtenteDAO {
      * all'interno della dashbaord fleetGo
      * @return Verranno restituiti il numero di veicoli totali, veicolo assegnati, in manutenzione e numero di aziende affiliate.
      */
-    public ContenitoreStatisticheNumericheFleetGo getStatisticheNumeriche() {
+    public ContenitoreStatisticheNumeriche getStatisticheNumeriche() {
         String query = "SELECT " +
                 " (SELECT COUNT(*) FROM veicolo) as veicoli_totali, " +
                 " (SELECT COUNT (*) FROM azienda) as aziende_totali, " +
@@ -277,9 +281,13 @@ public class UtenteDAO {
         try(PreparedStatement st = con.prepareStatement(query)){
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                return new ContenitoreStatisticheNumericheFleetGo(rs.getInt("veicoli_totali"),
-                        rs.getInt("veicoli_assegnati"), rs.getInt("veicoli_disponibili"),
-                        rs.getInt("veicoli_in_manutenzione"), rs.getInt("aziende_totali"));
+                return new ContenitoreStatisticheNumeriche(
+                        rs.getInt("veicoli_totali"),
+                        rs.getInt("veicoli_assegnati"),
+                        rs.getInt("veicoli_disponibili"),
+                        rs.getInt("veicoli_in_manutenzione"),
+                        rs.getInt("aziende_totali")
+                );
             }
         }catch (Exception e){
             e.printStackTrace();

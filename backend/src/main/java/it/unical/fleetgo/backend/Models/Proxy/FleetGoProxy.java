@@ -13,7 +13,6 @@ public class FleetGoProxy extends FleetGo {
     private final VeicoloDAO veicoloDAO;
     private final AziendaDAO aziendaDAO;
     private final FatturaDAO fatturaDAO;
-
     private boolean richiesteManutenzioneCaricate=false;
     private boolean veicoliCaricati=false;
     private boolean aziendeCaricate=false;

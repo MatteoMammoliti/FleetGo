@@ -26,31 +26,30 @@ public class CredenzialiDAO {
         String query = "INSERT INTO credenziali_utente (id_utente,password,email,immagine_patente) VALUES (?,?,?,?)";
         String pwcriptata= BCrypt.hashpw(password,BCrypt.gensalt(12));
 
-        System.out.println("ho ricevuto:" + idUtente + ", " + email + ", " + pwcriptata + ", " + urlImmagine);
         try (PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1, idUtente);
             st.setString(2, pwcriptata);
             st.setString(3, email);
             st.setString(4, urlImmagine);
             return st.executeUpdate()>0;
+
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     public Integer confrontaCredenzialiUtente(String email,String password) throws SQLException{
         String query="SELECT * FROM credenziali_utente WHERE email=?";
+
         try(PreparedStatement st = conn.prepareStatement(query)) {
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
+
             if (rs.next()) {
                 String passcript = rs.getString("password");
-                if (!BCrypt.checkpw(password, passcript)) {
-                    System.out.println("Password incorrecte");
-                    return null;
-                }
-                System.out.println("login effettuata");
+
+                if (!BCrypt.checkpw(password, passcript)) return null;
+
                 return rs.getInt("id_utente");
             }
             return null;
@@ -64,21 +63,23 @@ public class CredenzialiDAO {
      */
     public ContenitoreCredenziali getCredenzialiUtente(Integer idUtente){
         String query = "SELECT email,patente,immagine_patente FROM credenziali_utente WHERE id_utente=?";
+
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1, idUtente);
             ResultSet rs = st.executeQuery();
+
             if(rs.next()){
                 ContenitoreCredenziali contenitore = new ContenitoreCredenziali();
                 contenitore.setEmail(rs.getString("email"));
                 contenitore.setPatenteAccetta(rs.getBoolean("patente"));
                 String urlImmagine = rs.getString("immagine_patente");
-                if(urlImmagine!=null){
-                    contenitore.setUrlImmagine(urlImmagine);
-                };
+
+                if(urlImmagine!=null) contenitore.setUrlImmagine(urlImmagine);
                 return contenitore;
             }
+
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }

@@ -5,19 +5,25 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ContenitoreStatisticheNumericheFleetGo {
+public class ContenitoreStatisticheNumeriche {
     private int totaleVeicoli;
     private int veicoliAssegnati;
     private int veicoliDisponibili;
     private int veicoliManutenzione;
+    private int veicoliNoleggati;
     private int totaleAziende;
 
-    public ContenitoreStatisticheNumericheFleetGo(){}
-    public ContenitoreStatisticheNumericheFleetGo(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende){
+    public ContenitoreStatisticheNumeriche(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende){
         this.totaleVeicoli=totaleVeicoli;
         this.veicoliAssegnati=veicoliAssegnati;
         this.veicoliDisponibili=veicoliDisponibili;
         this.veicoliManutenzione=veicoliManutenzione;
         this.totaleAziende=totaleAziende;
+    }
+
+    public ContenitoreStatisticheNumeriche(int veicoliNoleggati, int veicoliDisponibili, int veicoliManutenzione) {
+        this.veicoliNoleggati = veicoliNoleggati;
+        this.veicoliDisponibili = veicoliDisponibili;
+        this.veicoliManutenzione = veicoliManutenzione;
     }
 }

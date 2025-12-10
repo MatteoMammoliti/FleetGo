@@ -31,14 +31,13 @@ public class AziendaDAO {
         }
     }
 
-    public boolean eliminaAzienda(Integer idAdminAzienda){
+    public void eliminaAzienda(Integer idAdminAzienda){
         String query = "DELETE FROM azienda WHERE id_admin_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, idAdminAzienda);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e){
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -51,9 +50,8 @@ public class AziendaDAO {
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {
-                return rs.getInt("id_azienda");
-            }
+            if(rs.next()) return rs.getInt("id_azienda");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,6 +74,7 @@ public class AziendaDAO {
                 a.setPIva(rs.getString("p_iva"));
                 return a;
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreContatoriStatoVeicoli;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
@@ -23,7 +23,6 @@ public class AdminAziendaleService {
     private final AziendaDAO aziendaDAO = new AziendaDAO(connection);
     private final GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
 
-
     public void modificaDati(ModificaDatiUtenteDTO dati) throws SQLException {
         utenteDAO.modificaDatiUtente(dati);
     }
@@ -40,7 +39,7 @@ public class AdminAziendaleService {
         richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(idUtente, idAzienda);
     }
 
-    public ContenitoreContatoriStatoVeicoli getStatoVeicolo(Integer idAzienda) {
+    public ContenitoreStatisticheNumeriche getStatoVeicolo(Integer idAzienda) {
         return gestioneVeicoloAziendaDAO.getStatoVeicoli(idAzienda);
     }
 }

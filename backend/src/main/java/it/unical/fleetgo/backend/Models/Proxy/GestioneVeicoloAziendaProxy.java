@@ -10,7 +10,6 @@ public class GestioneVeicoloAziendaProxy extends GestioneVeicoloAzienda {
 
     private final VeicoloDAO veicoloDAO;
     private final LuogoAziendaDAO luogoDAO;
-
     private boolean veicoloCaricato = false;
     private boolean luogoCaricato = false;
 

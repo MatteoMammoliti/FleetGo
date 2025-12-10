@@ -1,6 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheFleetGo;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
@@ -91,7 +91,7 @@ public class UtenteService {
         return utenteDAO.getDipendenteDaId(idUtente);
     }
 
-    public ContenitoreStatisticheNumericheFleetGo getStatisticheNumeriche(){
+    public ContenitoreStatisticheNumeriche getStatisticheNumeriche(){
         return utenteDAO.getStatisticheNumeriche();
     }
 }

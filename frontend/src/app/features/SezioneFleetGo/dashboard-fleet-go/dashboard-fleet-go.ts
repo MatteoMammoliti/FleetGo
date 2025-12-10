@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {CardStatisticheDashboardFleet} from '@shared/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 import {RouterLink} from '@angular/router';
 import {DashboardFleetGoService} from '@core/services/ServiceSezioneFleetGo/dashboardFleetGo-service';
-import {ContenitoreStatisticheNumericheFleetGo} from '@models/ContenitoreStatisticheNumericheFleetGo';
+import {ContenitoreStatisticheNumeriche} from '@models/ContenitoreStatisticheNumeriche';
 
 @Component({
   selector: 'app-dashboard-fleet-go',
@@ -13,13 +13,13 @@ import {ContenitoreStatisticheNumericheFleetGo} from '@models/ContenitoreStatist
 export class DashboardFleetGo {
   constructor(private dashboardService:DashboardFleetGoService) {}
 
-
-  statistiche: ContenitoreStatisticheNumericheFleetGo = {
+  statistiche: ContenitoreStatisticheNumeriche = {
     totaleVeicoli: 0,
     veicoliAssegnati: 0,
     veicoliManutenzione: 0,
     totaleAziende: 0,
-    veicoliDisponibili: 0
+    veicoliDisponibili: 0,
+    veicoliNoleggati: 0
   };
 
   ngOnInit(): void {
@@ -35,5 +35,4 @@ export class DashboardFleetGo {
       error: (err) => console.error("Errore richiesta statistiche:", err)
     });
   }
-
 }

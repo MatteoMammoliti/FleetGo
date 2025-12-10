@@ -7,7 +7,6 @@ import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 public class RichiestaManutenzioneProxy extends RichiestaManutenzione {
 
     private final VeicoloDAO veicoloDAO;
-
     private boolean veicoloCaricato = false;
 
     public RichiestaManutenzioneProxy(VeicoloDAO veicoloDAO) {

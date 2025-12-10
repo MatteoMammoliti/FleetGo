@@ -2,6 +2,7 @@ package it.unical.fleetgo.backend.Controller;
 
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiModificaPasswordDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
+import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import it.unical.fleetgo.backend.Service.SalvataggioPatenteService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +21,7 @@ public class ControllerAutenticazione {
 
     @Autowired private UtenteService utenteService;
     @Autowired private SalvataggioPatenteService salvataggioPatenteService;
+    @Autowired private AdminAziendaleService adminAziendaleService;
 
     @PostMapping(value = "/registrazione", consumes = { "multipart/form-data" })
     public ResponseEntity<String> registrazione(@RequestPart("utente") DipendenteDTO utente, @RequestPart("immagine") MultipartFile immagine) throws IOException {
@@ -41,13 +43,18 @@ public class ControllerAutenticazione {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestPart("email") String email, @RequestPart("password") String password,HttpSession session){
         try{
-
             Integer idUtente = utenteService.loginUtente(email,password);
-            if(idUtente!=null){
+
+            if(idUtente != null){
 
                 String ruoloUtente = utenteService.getRuolo(idUtente);
                 session.setAttribute("idUtente",idUtente);
                 session.setAttribute("ruolo",ruoloUtente);
+
+                if(ruoloUtente.equals("AdminAziendale")) {
+                    session.setAttribute("idAzienda", adminAziendaleService.getIdAziendaGestita(idUtente));
+                }
+
                 return ResponseEntity.status(HttpStatus.CREATED).body(ruoloUtente);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password e/o email non corrette");
@@ -69,7 +76,6 @@ public class ControllerAutenticazione {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Codice OTP già inviato");
         } catch (RuntimeException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'invio del codice OTP");
         }
     }
@@ -82,7 +88,6 @@ public class ControllerAutenticazione {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Codice OTP errato o scaduto");
         } catch (RuntimeException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica della password");
         }
     }

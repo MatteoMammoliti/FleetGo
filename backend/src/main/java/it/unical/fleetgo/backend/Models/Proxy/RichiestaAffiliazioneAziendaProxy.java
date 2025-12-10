@@ -6,7 +6,6 @@ import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
 public class RichiestaAffiliazioneAziendaProxy extends RichiestaAffiliazioneAzienda {
 
     private final UtenteDAO utenteDAO;
-
     private boolean utenteCaricato = false;
 
     public RichiestaAffiliazioneAziendaProxy(UtenteDAO utenteDAO) {

@@ -7,7 +7,6 @@ import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
 public class RichiestaNoleggioProxy extends RichiestaNoleggio {
 
     private final UtenteDAO utenteDAO;
-
     private boolean utenteCaricato = false;
 
     public RichiestaNoleggioProxy(UtenteDAO utenteDAO) {

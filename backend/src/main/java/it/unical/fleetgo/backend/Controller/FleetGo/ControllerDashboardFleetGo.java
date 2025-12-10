@@ -1,6 +1,6 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheFleetGo;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ControllerDashboardFleetGo {
     private UtenteService utenteService;
 
     @GetMapping("/statistiche")
-    public ResponseEntity<ContenitoreStatisticheNumericheFleetGo> getStatisticheNumeriche(HttpSession session){
+    public ResponseEntity<ContenitoreStatisticheNumeriche> getStatisticheNumeriche(HttpSession session){
         try{
             if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
                 return ResponseEntity.ok(utenteService.getStatisticheNumeriche());

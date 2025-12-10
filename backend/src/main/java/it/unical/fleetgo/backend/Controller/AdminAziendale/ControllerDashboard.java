@@ -1,6 +1,6 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreContatoriStatoVeicoli;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,15 @@ public class ControllerDashboard {
     @Autowired private AdminAziendaleService adminAziendaleService;
 
     @GetMapping("/statoVeicoli")
-    public ResponseEntity<ContenitoreContatoriStatoVeicoli> getStatoVeicolo(HttpSession session) {
+    public ResponseEntity<ContenitoreStatisticheNumeriche> getStatoVeicolo(HttpSession session) {
         try {
 
             if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")){
-
-                Integer idAzienda = adminAziendaleService.getIdAziendaGestita(
-                        (Integer) session.getAttribute("idUtente")
-                );
-
-                return ResponseEntity.ok(adminAziendaleService.getStatoVeicolo(idAzienda));
+                return ResponseEntity.ok(adminAziendaleService.getStatoVeicolo(
+                        (Integer) session.getAttribute("idAzienda")
+                ));
             }
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

@@ -26,9 +26,7 @@ public class ControllerGestioneDipendenti {
 
             if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")) {
 
-
-                int idUtente = (int) session.getAttribute("idUtente");
-                int idAzienda = adminAziendaleService.getIdAziendaGestita(idUtente);
+                int idAzienda = (int) session.getAttribute("idAzienda");
 
                 List<Dipendente> dipendenti = adminAziendaleService.getDipendenti(idAzienda);
 
@@ -56,9 +54,7 @@ public class ControllerGestioneDipendenti {
         try {
             if(sessione.getAttribute("ruolo") != null && sessione.getAttribute("ruolo").equals("AdminAziendale")) {
 
-                int idAdmin = (int) sessione.getAttribute("idUtente");
-                int idAzienda = adminAziendaleService.getIdAziendaGestita(idAdmin);
-
+                int idAzienda = (int) sessione.getAttribute("idAzienda");
                 adminAziendaleService.rimuoviDipendente(idUtente, idAzienda);
                 return ResponseEntity.ok("Utente eliminato con successo");
             }
@@ -87,5 +83,4 @@ public class ControllerGestioneDipendenti {
         }
         return null;
     }
-
 }

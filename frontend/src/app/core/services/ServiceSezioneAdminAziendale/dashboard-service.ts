@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ContenitoreContatoriStatoVeicoli} from '@models/ContenitoreContatoriStatoVeicoli';
 import {Observable} from 'rxjs';
+import {ContenitoreStatisticheNumeriche} from '@models/ContenitoreStatisticheNumeriche';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +12,7 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  public getStatoVeicoli(): Observable<ContenitoreContatoriStatoVeicoli> {
-    return this.http.get<ContenitoreContatoriStatoVeicoli>(`${this.apiUrl}/statoVeicoli`, { withCredentials: true });
+  public getStatoVeicoli(): Observable<ContenitoreStatisticheNumeriche> {
+    return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/statoVeicoli`, { withCredentials: true });
   }
-
 }

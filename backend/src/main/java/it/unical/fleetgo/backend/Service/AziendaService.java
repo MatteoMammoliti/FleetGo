@@ -28,7 +28,7 @@ public class AziendaService {
     public void eliminaAzienda(Integer idAdminAzienda) throws SQLException {
         connection.setAutoCommit(false);
         try{
-            gestioneDAO.contrasegnaVeicoliLiberiPreEliminazioneAzienda(idAdminAzienda);
+            gestioneDAO.contrassegnaVeicoliLiberiPreEliminazioneAzienda(idAdminAzienda);
             aziendaDAO.eliminaAzienda(idAdminAzienda);
             utenteDAO.eliminaUtente(idAdminAzienda);
             connection.commit();

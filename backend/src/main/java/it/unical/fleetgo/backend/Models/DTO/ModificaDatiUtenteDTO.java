@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ModificaDatiUtenteDTO
-{
+public class ModificaDatiUtenteDTO {
     String nome;
     String cognome;
     String data;
@@ -16,7 +15,6 @@ public class ModificaDatiUtenteDTO
     String pIva;
     Integer idUtente;
 
-    public ModificaDatiUtenteDTO(){};
     public ModificaDatiUtenteDTO(String nome, String cognome, String data, String email, String nomeAzienda, String sedeAzienda, String pIva, Integer idUtente){
         this.nome=nome;
         this.cognome=cognome;

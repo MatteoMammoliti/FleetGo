@@ -26,10 +26,12 @@ public class RichiestaNoleggioDAO {
     public Integer aggiungiRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio){
         String query="INSERT INTO richiesta_noleggio (id_dipendente,id_azienda,ora_inizio,ora_fine,data_ritiro, " +
                 " data_consegna, motivazione) VALUES (?,?,?,?,?,?,?)";
+
         String dataInizio=richiestaNoleggio.getDataRitiro();
         String dataFine=richiestaNoleggio.getDataConsegna();
         String oraInizio =richiestaNoleggio.getOraInizio();
         String oraFine =richiestaNoleggio.getOraFine();
+
         try(PreparedStatement st = connection.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS)){
             st.setInt(1,richiestaNoleggio.getIdDipendente());
             st.setInt(2,richiestaNoleggio.getIdAziendaRiferimento());
@@ -40,23 +42,24 @@ public class RichiestaNoleggioDAO {
             st.setString(7, richiestaNoleggio.getMotivazione());
             st.executeUpdate();
             ResultSet idGenerato = st.getGeneratedKeys();
-            if(idGenerato.next()){
-                return idGenerato.getInt(1);
-            }
+
+            if(idGenerato.next()) return idGenerato.getInt(1);
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
+
     public boolean rimuoviRichiestaNoleggio(Integer idRichiesta){
         String query="DELETE FROM richiesta_noleggio WHERE id_richiesta=?";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idRichiesta);
             return st.executeUpdate()>0;
+
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     /**
@@ -74,18 +77,20 @@ public class RichiestaNoleggioDAO {
             return st.executeUpdate()>0;
 
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     public List<RichiestaNoleggio> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
-        List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
         String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
             st.setBoolean(2,false);
             ResultSet rs = st.executeQuery();
+
+            List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
+
             while(rs.next()){
                 RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(connection));
                 richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
@@ -99,9 +104,10 @@ public class RichiestaNoleggioDAO {
                 richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
                 richiesteNoleggio.add(richiesta);
             }
+
+            return richiesteNoleggio;
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return richiesteNoleggio;
     }
 }

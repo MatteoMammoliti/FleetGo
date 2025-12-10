@@ -1,10 +1,9 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreContatoriStatoVeicoli;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.GestioneVeicoloAziendaDTO;
 import it.unical.fleetgo.backend.Models.Proxy.GestioneVeicoloAziendaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.GestioneVeicoloAzienda;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +19,13 @@ public class GestioneVeicoloAziendaDAO {
         this.connection = connection;
     }
 
-    public boolean inserisciNuovoVeicoloGestito(GestioneVeicoloAziendaDTO gestioneVeicoloAzienda) {
+    public void inserisciNuovoVeicoloGestito(GestioneVeicoloAziendaDTO gestioneVeicoloAzienda) {
         String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda) VALUES (?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, gestioneVeicoloAzienda.getIdVeicolo());
             ps.setInt(2, gestioneVeicoloAzienda.getIdAzienda());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -65,7 +64,7 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public ContenitoreContatoriStatoVeicoli getStatoVeicoli(Integer idAzienda) {
+    public ContenitoreStatisticheNumeriche getStatoVeicoli(Integer idAzienda) {
         String query = "SELECT " +
                 "SUM(CASE WHEN v.status_condizione_veicolo = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
                 "SUM(CASE WHEN v.status_condizione_veicolo = 'In manutenzione' THEN 1 ELSE 0 END) as veicoliInManutenzione," +
@@ -76,7 +75,11 @@ public class GestioneVeicoloAziendaDAO {
             ps.setInt(1, idAzienda);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
-                return new ContenitoreContatoriStatoVeicoli(rs.getInt("veicoliNoleggiati"), rs.getInt("veicoliInManutenzione"), rs.getInt("veicoliDisponibili"));
+                return new ContenitoreStatisticheNumeriche(
+                        rs.getInt("veicoliNoleggiati"),
+                        rs.getInt("veicoliDisponibili"),
+                        rs.getInt("veicoliInManutenzione")
+                );
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -84,17 +87,18 @@ public class GestioneVeicoloAziendaDAO {
         return null;
     }
 
-    public void contrasegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
+    public void contrassegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
         String query="UPDATE veicolo SET status_condizione_veicolo =? WHERE id_veicolo IN " +
-                " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)" +
+                " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g " +
+                "JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)" +
                 " AND status_condizione_veicolo != 'Manutenzione'";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
                 st.setString(1, "Libero");
                 st.setInt(2, idAdminAzienda);
                 st.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
 }

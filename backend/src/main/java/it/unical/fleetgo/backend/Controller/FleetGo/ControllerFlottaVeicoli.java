@@ -1,5 +1,4 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
-
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,8 +24,12 @@ public class ControllerFlottaVeicoli {
     @Autowired private SalvataggioImmagineVeicolo salvataggioImmagineVeicolo;
 
     @PostMapping("/registraVeicolo")
-    public ResponseEntity<String> registraVeicolo(@RequestPart("targaVeicolo") String targa,@RequestPart("modello") String modello,@RequestPart ("tipoDistribuzioneVeicolo") String distrubuzione,
-                                                  @RequestPart("statusCondizioneVeicolo") String condizione,@RequestPart("immagineVeicolo") MultipartFile immagineVeicolo, HttpSession session) throws IOException {
+    public ResponseEntity<String> registraVeicolo(@RequestPart("targaVeicolo") String targa,
+                                                  @RequestPart("modello") String modello,
+                                                  @RequestPart ("tipoDistribuzioneVeicolo") String distrubuzione,
+                                                  @RequestPart("statusCondizioneVeicolo") String condizione,
+                                                  @RequestPart("immagineVeicolo") MultipartFile immagineVeicolo,
+                                                  HttpSession session) throws IOException {
 
         VeicoloDTO veicoloDTO = new VeicoloDTO();
         String urlImmagine = salvataggioImmagineVeicolo.salvaImmagine(immagineVeicolo);
@@ -63,6 +65,7 @@ public class ControllerFlottaVeicoli {
                 veicoloService.eliminaVeicolo(targaVeicolo);
                 return ResponseEntity.status(HttpStatus.OK).body("Veicolo eliminato con successo");
             }
+
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (RuntimeException e) {
@@ -118,14 +121,11 @@ public class ControllerFlottaVeicoli {
                 return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
             }
         }catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");
 
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
-
-
+    }
 
     private VeicoloDTO getVeicoloDTO(Veicolo v) {
         VeicoloDTO veicoloDTO = new VeicoloDTO();

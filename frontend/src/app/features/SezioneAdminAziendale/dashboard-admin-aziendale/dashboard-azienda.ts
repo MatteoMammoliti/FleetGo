@@ -2,8 +2,8 @@ import {Component, inject} from '@angular/core';
 import {FormBackground} from '@shared/form-background/form-background';
 import {GraficoStatoFlotta} from '@shared/grafico-stato-flotta/grafico-stato-flotta';
 import {GraficoAndamentoUtilizzo} from '@shared/grafico-andamento-utilizzo/grafico-andamento-utilizzo';
-import {ContenitoreContatoriStatoVeicoli} from '@models/ContenitoreContatoriStatoVeicoli';
 import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dashboard-service';
+import {ContenitoreStatisticheNumeriche} from '@models/ContenitoreStatisticheNumeriche';
 
 @Component({
   selector: 'app-dashboard-azienda',
@@ -18,11 +18,19 @@ import {DashboardService} from '@core/services/ServiceSezioneAdminAziendale/dash
 export class DashboardAzienda {
 
   constructor(private service:DashboardService) {}
+
   ngOnInit(){
     this.settaDatiGraficoStatoFlotta();
   }
 
-contenitoreInputGraficoStatoFlotta: ContenitoreContatoriStatoVeicoli = {numVeicoliDisponibili:0, numVeicoliInManutenzione:0, numVeicoliNoleggiati:0}
+  contenitoreInputGraficoStatoFlotta: ContenitoreStatisticheNumeriche = {
+      veicoliAssegnati: 0,
+      totaleVeicoli: 0,
+      totaleAziende: 0,
+      veicoliNoleggati: 0,
+      veicoliManutenzione:0,
+      veicoliDisponibili:0
+    }
 
   settaDatiGraficoStatoFlotta() {
     this.service.getStatoVeicoli().subscribe({
@@ -34,7 +42,4 @@ contenitoreInputGraficoStatoFlotta: ContenitoreContatoriStatoVeicoli = {numVeico
       error: (err) => console.error("Errore grafico:", err)
     });
   }
-
-
-
 }

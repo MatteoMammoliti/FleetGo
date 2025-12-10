@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ContenitoreStatisticheNumericheFleetGo} from '@models/ContenitoreStatisticheNumericheFleetGo';
+import {ContenitoreStatisticheNumeriche} from '@models/ContenitoreStatisticheNumeriche';
 
 
 @Injectable({
@@ -12,8 +12,8 @@ export class DashboardFleetGoService{
   constructor(private http:HttpClient) {}
   private apiUrl = 'http://localhost:8080/dashboardFleetGo';
 
-  richiediStatistiche():Observable<ContenitoreStatisticheNumericheFleetGo>{
-    return this.http.get<ContenitoreStatisticheNumericheFleetGo>(`${this.apiUrl}/statistiche`, {
+  richiediStatistiche():Observable<ContenitoreStatisticheNumeriche>{
+    return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/statistiche`, {
       withCredentials:true
   });
   }

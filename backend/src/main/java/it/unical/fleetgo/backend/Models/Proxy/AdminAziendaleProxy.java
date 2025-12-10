@@ -17,7 +17,6 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private final GestioneVeicoloAziendaDAO  gestioneVeicoloAziendaDAO;
     private final FatturaDAO fatturaDAO;
     private final LuogoAziendaDAO luogoAziendaDAO;
-
     private boolean aziendaCaricata= false;
     private boolean richiesteNoleggioCaricate = false;
     private boolean richiesteManutenzioniCaricate= false;
@@ -28,8 +27,12 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private boolean richiesteAffiliazioneCaricate= false;
 
     public AdminAziendaleProxy(AziendaDAO aziendaDAO,RichiestaNoleggioDAO richiestaNoleggioDAO,
-                               RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO,GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO,
-                               FatturaDAO fatturaDAO,LuogoAziendaDAO luogoAziendaDAO,RichiesteManutenzioneDAO richiesteManutenzioneDAO) {
+                               RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO,
+                               GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO,
+                               FatturaDAO fatturaDAO,
+                               LuogoAziendaDAO luogoAziendaDAO,
+                               RichiesteManutenzioneDAO richiesteManutenzioneDAO) {
+
         this.aziendaDAO = aziendaDAO;
         this.richiestaNoleggioDAO = richiestaNoleggioDAO;
         this.richiestaAffiliazioneDAO = richiestaAffiliazioneAziendaDAO;

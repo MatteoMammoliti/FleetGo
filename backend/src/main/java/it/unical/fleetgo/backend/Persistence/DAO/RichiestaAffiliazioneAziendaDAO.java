@@ -90,23 +90,26 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @return
      */
     public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazioneDaValutare(Integer idAzienda){
-        List<RichiestaAffiliazioneAzienda> richiesteAffiliazione=new ArrayList<>();
         String query="SELECT * FROM richiesta_affiliazione_azienda WHERE id_azienda=? AND accettata=? AND data_accettazione=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
             st.setBoolean(2,false);
             st.setDate(3,null);
             ResultSet rs = st.executeQuery();
+
+            List<RichiestaAffiliazioneAzienda> richiesteAffiliazione=new ArrayList<>();
+
             while(rs.next()){
                 RichiestaAffiliazioneAziendaProxy richiesta = creaRichiestaAffiliazioneAziendaProxy();
                 richiesta.setIdUtente(rs.getInt("id_utente"));
                 richiesta.setIdAzienda(rs.getInt("id_azienda"));
                 richiesteAffiliazione.add(richiesta);
             }
+
+            return richiesteAffiliazione;
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return richiesteAffiliazione;
     }
 
     /**
@@ -118,16 +121,17 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @return
      */
     public boolean contrassegnaVisionataAffiliazioneAzienda(Integer idAzienda,Integer idDipendente,boolean accettata){
-        String query="UPDATE richiesta_affiliazione_azienda SET accettata=?,data_accettazione=CURRENT_DATE WHERE id_azienda=? AND id_dipendente=?";
+        String query="UPDATE richiesta_affiliazione_azienda SET accettata=?,data_accettazione=CURRENT_DATE " +
+        "WHERE id_azienda=? AND id_dipendente=?";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setBoolean(1,accettata);
             st.setInt(2,idAzienda);
             st.setInt(3,idDipendente);
             return st.executeUpdate()>0;
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     /**
@@ -151,7 +155,11 @@ public class RichiestaAffiliazioneAziendaDAO {
     }
 
     private DipendenteProxy creaDipendenteProxy(){
-        return new DipendenteProxy(new RichiestaAffiliazioneAziendaDAO(connection),new CredenzialiDAO(connection),new RichiestaNoleggioDAO(connection));
+        return new DipendenteProxy(
+                new RichiestaAffiliazioneAziendaDAO(connection),
+                new CredenzialiDAO(connection),
+                new RichiestaNoleggioDAO(connection)
+        );
     }
     private RichiestaAffiliazioneAziendaProxy creaRichiestaAffiliazioneAziendaProxy(){
         return new RichiestaAffiliazioneAziendaProxy(new UtenteDAO(connection));

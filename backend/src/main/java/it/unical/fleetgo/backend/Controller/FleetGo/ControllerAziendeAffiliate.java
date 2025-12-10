@@ -34,6 +34,7 @@ public class ControllerAziendeAffiliate {
             azienda.setIdAdminAzienda(idAdminAziendale);
             aziendaService.registraAzienda(azienda);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione avvenuta con successo");
+
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
         } catch (RuntimeException e) {
@@ -72,8 +73,8 @@ public class ControllerAziendeAffiliate {
                 aziendaService.eliminaAzienda(idAdminGestore);
                 return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione dell'azienda");
         }
         return null;
