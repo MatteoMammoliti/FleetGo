@@ -1,8 +1,13 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {DipendenteDTO} from '@models/dipendenteDTO.models';
 import {Observable} from 'rxjs';
 import { Injectable, signal } from '@angular/core';
 import {ContenitoreDatiModificaPasswordDTO} from '@models/ContenitoreDatiModificaPasswordDTO';
+
+export interface LoginResponse {
+  redirectUrl: string;
+  ruolo: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -28,14 +33,16 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/registrazione`, formData, { responseType: 'text' });
   }
 
-  login(email:string, password:string) :Observable<string>{
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+  login(email:string, password:string) :Observable<LoginResponse>{
 
-    return this.http.post(`${this.apiUrl}/login`, formData, {
-      withCredentials:true, responseType: 'text'}
-    );
+    const body = new HttpParams()
+      .set('email', email)
+      .set('password', password);
+
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      withCredentials:true
+    });
   }
 
   aggiornaRuoloUtenteCorrente(ruoloRicevuto: string) {

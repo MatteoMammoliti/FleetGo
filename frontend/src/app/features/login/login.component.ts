@@ -78,26 +78,16 @@ export class LoginComponent {
     this.authService.login(email, password).subscribe({
       next: (response: any) => {
 
-        this.authService.aggiornaRuoloUtenteCorrente(response);
-
-        switch (response) {
-          case 'Dipendente':
-            this.router.navigate(['/dashboardDipendente']);
-            break;
-          case 'AdminAziendale':
-            this.router.navigate(['/dashboardAzienda']);
-            break;
-          case 'FleetGo':
-            this.router.navigate(['/dashboardFleetGo/dashboard']);
-            break;
-          default:
-            this.router.navigate(['/errorPage']);
-            break;
-        }
+        this.authService.aggiornaRuoloUtenteCorrente(response.ruolo);
+        this.router.navigate([response.redirectUrl]);
       },
       error: (error) => {
-        console.error('Errore durante il login:', error);
-        this.errore = "Credenziali non valide";
+
+        if(error.status==401) {
+          this.errore = "Credenziali non valide";
+          return;
+        }
+        this.errore = "Errore di connessione";
       }
     });
   }
