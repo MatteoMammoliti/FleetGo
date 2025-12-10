@@ -2,7 +2,6 @@ package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.GestioneVeicoloAziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
-import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
 import it.unical.fleetgo.backend.Persistence.DBManager;
@@ -41,7 +40,7 @@ public class VeicoloService {
     }
 
     public Veicolo getInformazioniVeicolo(String targa){
-        return veicoloDAO.getVeicoloDaTarga(targa);
+        return veicoloDAO.getVeicoloByTarga(targa);
     }
 
     public void modificaDati(VeicoloDTO veicoloDTO) throws SQLException {

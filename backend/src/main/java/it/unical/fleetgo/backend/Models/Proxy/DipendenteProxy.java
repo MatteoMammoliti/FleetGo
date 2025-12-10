@@ -3,8 +3,8 @@ package it.unical.fleetgo.backend.Models.Proxy;
 import it.unical.fleetgo.backend.Persistence.DAO.CredenzialiDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaAffiliazioneAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
-import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import java.util.List;
 
@@ -41,10 +41,10 @@ public class DipendenteProxy extends Dipendente {
     }
 
     @Override
-    public ContenitoreCredenziali getCredenziali() {
+    public CredenzialiUtente getCredenziali() {
         if(!credenzialiCaricato) {
             credenzialiCaricato = true;
-            super.setCredenziali(credenzialiDAO.getCredenzialiUtente(getIdAziendaAffiliata()));
+            super.setCredenziali(credenzialiDAO.getCredenzialiUtente(this.getIdUtente()));
         }
         return super.getCredenziali();
     }

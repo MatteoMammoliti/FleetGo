@@ -82,7 +82,7 @@ public class UtenteDAO {
             }
 
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class UtenteDAO {
             }
 
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -139,7 +139,7 @@ public class UtenteDAO {
                 return rs.getString("tipo_utente");
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -261,7 +261,7 @@ public class UtenteDAO {
                         null);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -290,8 +290,9 @@ public class UtenteDAO {
                 );
             }
         }catch (Exception e){
-            e.printStackTrace();
-        }return null;
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     private AdminAziendaleProxy creoAdminAziendaleProxy(){

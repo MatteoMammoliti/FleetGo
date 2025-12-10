@@ -47,13 +47,11 @@ public class ControllerModificaDati {
     @GetMapping("/datiUtente")
     public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session){
         Integer idUtente = (Integer)session.getAttribute("idUtente");
-
         ModificaDatiUtenteDTO dati;
 
         try{
             dati=utenteService.getDatiUtente(idUtente);
             return  ResponseEntity.status(HttpStatus.OK).body(dati);
-
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

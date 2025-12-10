@@ -91,7 +91,7 @@ public class VeicoloDAO {
         return null;
     }
 
-    public Veicolo getVeicoloDaTarga(String targa) {
+    public Veicolo getVeicoloByTarga(String targa) {
         String query = "SELECT v.*,l.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo LEFT JOIN azienda a ON g.id_azienda = a.id_azienda WHERE v.targa = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -109,13 +109,13 @@ public class VeicoloDAO {
         return null;
     }
 
-    public boolean cambiaStatusVeicolo(String nuovoStatus, Integer idVeicolo) {
+    public void cambiaStatusVeicolo(String nuovoStatus, Integer idVeicolo) {
         String query = "UPDATE veicolo SET status_condizione_veicolo = ? WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, nuovoStatus);
             ps.setInt(2, idVeicolo);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -131,31 +131,6 @@ public class VeicoloDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-    public Integer cercaIdAziendaPerTarga(String targa) {
-        String query= "SELECT g.id_azienda FROM gestione_veicolo_azienda g JOIN veicolo v ON v.id_veicolo=g.id_veicolo AND v.targa=?";
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setString(1, targa);
-            ResultSet rs = st.executeQuery();
-            return rs.next() ? rs.getInt("id_azienda") : null;
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String cercaNomeAziendaTramiteId(Integer idVeicolo){
-        String query="SELECT a.nome_azienda FROM azienda a JOIN gestione_veicolo_azienda g ON g.id_azienda = a.id_azienda WHERE g.id_veicolo =?";
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1, idVeicolo);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                return rs.getString("nome_azienda");
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return "";
     }
 
     private Veicolo getVeicoloDaResultSet(ResultSet rs,boolean conLuogo,boolean soloAzienda) throws SQLException {

@@ -2,7 +2,7 @@ package it.unical.fleetgo.backend.Controller.FleetGo;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
-import it.unical.fleetgo.backend.Service.SalvataggioImmagineVeicolo;
+import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.VeicoloService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ControllerFlottaVeicoli {
 
     @Autowired private VeicoloService veicoloService;
-    @Autowired private SalvataggioImmagineVeicolo salvataggioImmagineVeicolo;
+    @Autowired private SalvataggioImmagineService salvataggioImmagineVeicolo;
 
     @PostMapping("/registraVeicolo")
     public ResponseEntity<String> registraVeicolo(@RequestPart("targaVeicolo") String targa,
@@ -32,7 +32,7 @@ public class ControllerFlottaVeicoli {
                                                   HttpSession session) throws IOException {
 
         VeicoloDTO veicoloDTO = new VeicoloDTO();
-        String urlImmagine = salvataggioImmagineVeicolo.salvaImmagine(immagineVeicolo);
+        String urlImmagine = salvataggioImmagineVeicolo.salvaImmagine(immagineVeicolo, "immagini-veicolo");
         veicoloDTO.setTargaVeicolo(targa);
         veicoloDTO.setUrlImmagine(urlImmagine);
         veicoloDTO.setModello(modello);
@@ -41,12 +41,8 @@ public class ControllerFlottaVeicoli {
         veicoloDTO.setLivelloCarburante(100);
 
         try{
-
-            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
-                veicoloService.registraVeicolo(veicoloDTO);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Veicolo registrato con successo");
-            }
-
+            veicoloService.registraVeicolo(veicoloDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Veicolo registrato con successo");
         }catch(SQLException e){
             String state = e.getSQLState();
             if(state.equals("23505")){
@@ -54,60 +50,48 @@ public class ControllerFlottaVeicoli {
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inserimento fallito a causa di un errore con il sistema");
         }
-        return null;
     }
 
     @PostMapping(value = "/eliminaVeicolo")
     public ResponseEntity<String> eliminaVeicolo(@RequestBody String targaVeicolo, HttpSession session) {
         try {
-
-            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
-                veicoloService.eliminaVeicolo(targaVeicolo);
-                return ResponseEntity.status(HttpStatus.OK).body("Veicolo eliminato con successo");
-            }
-
+            veicoloService.eliminaVeicolo(targaVeicolo);
+            return ResponseEntity.status(HttpStatus.OK).body("Veicolo eliminato con successo");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
         }
-        return null;
     }
 
     @GetMapping(value = "/listaVeicoli")
     public ResponseEntity<List<VeicoloDTO>> getListaVeicoli(HttpSession session) {
         try {
-            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
-                List<Veicolo> listaVeicoli = veicoloService.getListaVeicoli();
-                List<VeicoloDTO> listaVeicoliDTO = new ArrayList<>();
+            List<Veicolo> listaVeicoli = veicoloService.getListaVeicoli();
+            List<VeicoloDTO> listaVeicoliDTO = new ArrayList<>();
 
-                for(Veicolo v : listaVeicoli) {
-                    VeicoloDTO veicoloDTO = getVeicoloDTO(v);
-                    listaVeicoliDTO.add(veicoloDTO);
-                }
-                return ResponseEntity.ok(listaVeicoliDTO);
+            for(Veicolo v : listaVeicoli) {
+                VeicoloDTO veicoloDTO = getVeicoloDTO(v);
+                listaVeicoliDTO.add(veicoloDTO);
             }
+            return ResponseEntity.ok(listaVeicoliDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return null;
     }
 
     @GetMapping(value = "/informazioneVeicolo/{targa}")
     public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa, HttpSession session) {
         try{
-            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo") && targa != null){
-                Veicolo veicolo = veicoloService.getInformazioniVeicolo(targa);
-                VeicoloDTO veicoloDTO = getVeicoloDTO(veicolo);
-                LuogoDTO luogo = new LuogoDTO();
-                luogo.setNomeLuogo(veicolo.getLuogo().getNomeLuogo());
-                luogo.setLatitudine(veicolo.getLuogo().getLatitudine());
-                luogo.setLongitudine(veicolo.getLuogo().getLongitudine());
-                veicoloDTO.setLuogoRitiroDeposito(luogo);
+            Veicolo veicolo = veicoloService.getInformazioniVeicolo(targa);
+            VeicoloDTO veicoloDTO = getVeicoloDTO(veicolo);
+            LuogoDTO luogo = new LuogoDTO();
+            luogo.setNomeLuogo(veicolo.getLuogo().getNomeLuogo());
+            luogo.setLatitudine(veicolo.getLuogo().getLatitudine());
+            luogo.setLongitudine(veicolo.getLuogo().getLongitudine());
+            veicoloDTO.setLuogoRitiroDeposito(luogo);
 
-                return ResponseEntity.ok(veicoloDTO);
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.ok(veicoloDTO);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -116,15 +100,11 @@ public class ControllerFlottaVeicoli {
     @PostMapping(value = "/modificaVeicolo")
     public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicoloDTO, HttpSession session) {
         try{
-            if(session.getAttribute("ruolo")!=null && session.getAttribute("ruolo").equals("FleetGo")){
-                veicoloService.modificaDati(veicoloDTO);
-                return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
-            }
+            veicoloService.modificaDati(veicoloDTO);
+            return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");
-
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     private VeicoloDTO getVeicoloDTO(Veicolo v) {

@@ -2,17 +2,14 @@ package it.unical.fleetgo.backend.Controller;
 
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiModificaPasswordDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
-import it.unical.fleetgo.backend.Service.AdminAziendaleService;
-import it.unical.fleetgo.backend.Service.SalvataggioPatenteService;
+import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.UtenteService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/autenticazione")
@@ -20,12 +17,11 @@ import java.sql.SQLException;
 public class ControllerAutenticazione {
 
     @Autowired private UtenteService utenteService;
-    @Autowired private SalvataggioPatenteService salvataggioPatenteService;
-    @Autowired private AdminAziendaleService adminAziendaleService;
+    @Autowired private SalvataggioImmagineService salvataggioImmagineService;
 
     @PostMapping(value = "/registrazione", consumes = { "multipart/form-data" })
     public ResponseEntity<String> registrazione(@RequestPart("utente") DipendenteDTO utente, @RequestPart("immagine") MultipartFile immagine) throws IOException {
-        String urlImg= salvataggioPatenteService.salvaImmagine(immagine);
+        String urlImg= salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
 
         utente.setUrlImmagine(urlImg);
 

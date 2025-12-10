@@ -22,15 +22,12 @@ public class ControllerDashboard {
     public ResponseEntity<ContenitoreStatisticheNumeriche> getStatoVeicolo(HttpSession session) {
         try {
 
-            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")){
-                return ResponseEntity.ok(adminAziendaleService.getStatoVeicolo(
-                        (Integer) session.getAttribute("idAzienda")
-                ));
-            }
+            return ResponseEntity.ok(adminAziendaleService.getStatoVeicolo(
+                    (Integer) session.getAttribute("idAzienda")
+            ));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return null;
     }
 }

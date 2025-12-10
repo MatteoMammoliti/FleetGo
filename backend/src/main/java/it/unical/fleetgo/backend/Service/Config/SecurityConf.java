@@ -1,9 +1,5 @@
 package it.unical.fleetgo.backend.Service.Config;
 
-import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.CredenzialiDAO;
-import it.unical.fleetgo.backend.Persistence.DBManager;
-import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import it.unical.fleetgo.backend.Service.UtenteService;
@@ -28,15 +24,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityCong {
-    @Autowired
-    AdminAziendaleService adminAziendaleService;
-    @Autowired
-    UtenteService utenteService;
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+public class SecurityConf {
+
+    @Autowired AdminAziendaleService adminAziendaleService;
+    @Autowired UtenteService utenteService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,7 +36,6 @@ public class SecurityCong {
         )
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/autenticazione/**").permitAll()
                         .requestMatchers("/dashboardAdminAziendale/**").hasRole("AdminAziendale")
@@ -60,21 +50,30 @@ public class SecurityCong {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler((request, response, auth) -> {
+
                             String ruolo =auth.getAuthorities().iterator().next().toString();
                             String ruoloPulito= ruolo.replace("ROLE_","");
-                            String targetUrl = "/autenticazione/login";
-                            if (ruoloPulito.equals("FleetGo")) targetUrl = "/dashboardFleetGo";
-                            else if (ruoloPulito.equals("AdminAziendale")) targetUrl = "/dashboardAzienda";
-                            else if (ruoloPulito.equals("Dipendente")) targetUrl = "/dashboardDipendente";
+
+                            String targetUrl = switch (ruoloPulito) {
+                                case "FleetGo" -> "/dashboardFleetGo";
+                                case "AdminAziendale" -> "/dashboardAzienda";
+                                case "Dipendente" -> "/dashboardDipendente";
+                                default -> "/autenticazione/login";
+                            };
 
                             HttpSession session = request.getSession();
                             CredenzialiUtente contenitoreCredenziali = utenteService.getCredenzialiUtentiByEmail(auth.getName());
+
                             session.setAttribute("ruolo", ruoloPulito);
                             session.setAttribute("idUtente", contenitoreCredenziali.getIdUtente());
-                            if (ruoloPulito.equals("AdminAziendale")) {
-                                session.setAttribute("idAzienda", adminAziendaleService.getIdAziendaGestita(contenitoreCredenziali.getIdUtente()));
-                            }
 
+                            if (ruoloPulito.equals("AdminAziendale")) {
+                                session.setAttribute("idAzienda",
+                                        adminAziendaleService.getIdAziendaGestita(
+                                                contenitoreCredenziali.getIdUtente()
+                                        )
+                                );
+                            }
 
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.setContentType("application/json;charset=UTF-8");

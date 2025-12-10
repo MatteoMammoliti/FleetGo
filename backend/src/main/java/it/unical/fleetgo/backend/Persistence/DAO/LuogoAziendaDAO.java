@@ -66,7 +66,7 @@ public class LuogoAziendaDAO {
         }
     }
 
-    public LuogoAzienda getLuogo(Integer idLuogo) {
+    public LuogoAzienda getLuogoById(Integer idLuogo) {
         String query = "SELECT * from luogo_azienda WHERE id_luogo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {

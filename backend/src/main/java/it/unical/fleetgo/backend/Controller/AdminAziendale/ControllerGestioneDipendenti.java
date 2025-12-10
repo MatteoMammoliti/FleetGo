@@ -23,64 +23,52 @@ public class ControllerGestioneDipendenti {
     @GetMapping("/getDipendenti")
     public ResponseEntity<List<DipendenteDTO>> getDipendenti(HttpSession session) {
         try {
+            int idAzienda = (int) session.getAttribute("idAzienda");
 
-            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")) {
+            List<Dipendente> dipendenti = adminAziendaleService.getDipendenti(idAzienda);
 
-                int idAzienda = (int) session.getAttribute("idAzienda");
+            List<DipendenteDTO> listaDipendenti = new ArrayList<>();
 
-                List<Dipendente> dipendenti = adminAziendaleService.getDipendenti(idAzienda);
-
-                List<DipendenteDTO> listaDipendenti = new ArrayList<>();
-
-                for(Dipendente d : dipendenti) {
-                    DipendenteDTO dipendenteDTO = new DipendenteDTO();
-                    dipendenteDTO.setIdUtente(d.getIdUtente());
-                    dipendenteDTO.setNomeUtente(d.getNomeUtente());
-                    dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
-                    dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
-                    dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
-                    listaDipendenti.add(dipendenteDTO);
-                }
-                return ResponseEntity.ok(listaDipendenti);
+            for(Dipendente d : dipendenti) {
+                DipendenteDTO dipendenteDTO = new DipendenteDTO();
+                dipendenteDTO.setIdUtente(d.getIdUtente());
+                dipendenteDTO.setNomeUtente(d.getNomeUtente());
+                dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
+                dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
+                dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
+                listaDipendenti.add(dipendenteDTO);
             }
+            return ResponseEntity.ok(listaDipendenti);
+
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
-        return null;
     }
 
     @PostMapping("/rimuoviDipendente")
     public ResponseEntity<String> eliminaUtente(HttpSession sessione, @RequestBody Integer idUtente) {
         try {
-            if(sessione.getAttribute("ruolo") != null && sessione.getAttribute("ruolo").equals("AdminAziendale")) {
-
-                int idAzienda = (int) sessione.getAttribute("idAzienda");
-                adminAziendaleService.rimuoviDipendente(idUtente, idAzienda);
-                return ResponseEntity.ok("Utente eliminato con successo");
-            }
+            int idAzienda = (int) sessione.getAttribute("idAzienda");
+            adminAziendaleService.rimuoviDipendente(idUtente, idAzienda);
+            return ResponseEntity.ok("Utente eliminato con successo");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Errore durante l'eliminazione dell'utente");
         }
-        return null;
     }
 
     @GetMapping("/getDipendente")
     public ResponseEntity<DipendenteDTO> getDipendente(HttpSession session, Integer idUtente) {
         try {
-            if(session.getAttribute("ruolo") != null && session.getAttribute("ruolo").equals("AdminAziendale")) {
-                Dipendente d = utenteService.getDipendente(idUtente);
-
-                DipendenteDTO dipendenteDTO = new DipendenteDTO();
-                dipendenteDTO.setIdUtente(d.getIdUtente());
-                dipendenteDTO.setNomeUtente(d.getNomeUtente());
-                dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
-                dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
-                dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
-                return ResponseEntity.ok(dipendenteDTO);
-            }
+            Dipendente d = utenteService.getDipendente(idUtente);
+            DipendenteDTO dipendenteDTO = new DipendenteDTO();
+            dipendenteDTO.setIdUtente(d.getIdUtente());
+            dipendenteDTO.setNomeUtente(d.getNomeUtente());
+            dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
+            dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
+            dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
+            return ResponseEntity.ok(dipendenteDTO);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
-        return null;
     }
 }

@@ -33,7 +33,7 @@ public class GestioneVeicoloAziendaProxy extends GestioneVeicoloAzienda {
     @Override
     public LuogoAzienda getLuogo() {
         if(!luogoCaricato) {
-            LuogoAzienda l = luogoDAO.getLuogo(
+            LuogoAzienda l = luogoDAO.getLuogoById(
                     super.getIdLuogo()
             );
             luogoCaricato = true;

@@ -112,7 +112,7 @@ public class RichiesteManutenzioneDAO {
      * @param accettata
      * @return
      */
-    public boolean contrasegnaRichiestaManutenzione(Integer idManutenzione,boolean accettata){
+    public boolean contrassegnaRichiestaManutenzione(Integer idManutenzione, boolean accettata){
         String query="UPDATE richiesta_manutenzione SET accettata=? WHERE id_manutenzione=?";
         try(PreparedStatement st =con.prepareStatement(query)){
             st.setBoolean(1,accettata);
