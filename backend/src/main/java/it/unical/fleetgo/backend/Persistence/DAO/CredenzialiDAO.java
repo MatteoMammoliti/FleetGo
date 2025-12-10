@@ -1,6 +1,9 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Persistence.Entity.ContenitoreCredenziali;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -80,6 +83,23 @@ public class CredenzialiDAO {
 
         }catch (SQLException e){
             throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public CredenzialiUtente getCredenzialiUtenteByEmail(String email){
+        CredenzialiUtente contenitore = new CredenzialiUtente();
+        String query="SELECT password,id_utente FROM credenziali_utente WHERE email=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                contenitore.setPassword(rs.getString("password"));
+                contenitore.setIdUtente(rs.getInt("id_utente"));
+                return contenitore;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
         return null;
     }

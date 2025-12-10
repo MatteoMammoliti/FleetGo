@@ -6,6 +6,7 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.DBManager;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,9 @@ public class UtenteService {
 
     public ContenitoreStatisticheNumeriche getStatisticheNumeriche(){
         return utenteDAO.getStatisticheNumeriche();
+    }
+
+    public CredenzialiUtente getCredenzialiUtentiByEmail(String email){
+        return credenzialiDAO.getCredenzialiUtenteByEmail(email);
     }
 }

@@ -40,34 +40,6 @@ public class ControllerAutenticazione {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestPart("email") String email, @RequestPart("password") String password,HttpSession session){
-        try{
-            Integer idUtente = utenteService.loginUtente(email,password);
-
-            if(idUtente != null){
-
-                String ruoloUtente = utenteService.getRuolo(idUtente);
-                session.setAttribute("idUtente",idUtente);
-                session.setAttribute("ruolo",ruoloUtente);
-
-                if(ruoloUtente.equals("AdminAziendale")) {
-                    session.setAttribute("idAzienda", adminAziendaleService.getIdAziendaGestita(idUtente));
-                }
-
-                return ResponseEntity.status(HttpStatus.CREATED).body(ruoloUtente);
-            }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password e/o email non corrette");
-        }catch (SQLException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login non avvenuta a causa di un errore nel sistema");
-        }
-    }
-
-    @PostMapping("/logout")
-    public void logout(HttpSession session) {
-        session.invalidate();
-    }
-
     @PostMapping(value = "/richiediCodiceOTP", consumes = "multipart/form-data")
     public ResponseEntity<String> recuperoPassword(@RequestPart("email") String email) {
         try {
