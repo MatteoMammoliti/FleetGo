@@ -1,0 +1,72 @@
+<div>
+  <div class="sezione">
+    <h3>Dati Personali Admin</h3>
+
+    <div class="form-riga">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" [(ngModel)]="nome"
+               [class.bordo-rosso]="mappaErrori.nome">
+      </div>
+
+      <div class="form-group">
+        <label>Cognome</label>
+        <input type="text" [(ngModel)]="cognome"
+               [class.bordo-rosso]="mappaErrori.cognome">
+      </div>
+
+      <div class="form-group">
+        <label>Data di nascita</label>
+        <input type="date" [(ngModel)]="data"
+               [class.bordo-rosso]="mappaErrori.cognome">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email"
+             [class.bordo-rosso]="mappaErrori.email">
+    </div>
+  </div>
+
+  <div class="sezione">
+    <h3>Dati Azienda Gestita</h3>
+
+    <div class="form-riga">
+      <div class="form-group">
+        <label>Nome Azienda</label>
+        <input type="text" [(ngModel)]="nomeAzienda"
+               [class.bordo-rosso]="mappaErrori.nomeAzienda">
+
+      </div>
+      <div class="form-group">
+        <label>Partita IVA</label>
+        <input type="text" [(ngModel)]="partitaIva"
+               [class.bordo-rosso]="mappaErrori.partitaIva">
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Sede Legale</label>
+      <input type="text" [(ngModel)]="sedeAzienda"
+             [class.bordo-rosso]="mappaErrori.sedeAzienda">
+
+    </div>
+  </div>
+  <div>
+    @if (errore) {
+      <p class="errore">{{ errore }}</p>
+    }
+    @else if(erroreBackend) {
+      <p class="errore">{{ erroreBackend }}</p>
+    }
+  </div>
+
+  <div class="allinea-destra">
+    <button class="button-primary" (click)="onSalvaModifiche()">
+      Salva Modifiche
+    </button>
+  </div>
+
+</div>

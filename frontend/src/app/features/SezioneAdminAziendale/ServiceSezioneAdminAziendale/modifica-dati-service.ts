@@ -1,0 +1,24 @@
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
+import {environment} from '@env/environment';
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class ModificaDatiService {
+
+  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+
+  constructor(private http: HttpClient) {}
+
+  public getDati(): Observable<ModificaDatiUtenteDTO> {
+    return this.http.get<ModificaDatiUtenteDTO>(`${this.apiUrl}/datiUtente`, { withCredentials: true });
+  }
+
+  public modificaDati(dati: ModificaDatiUtenteDTO): Observable<string> {
+    return this.http.post(`${this.apiUrl}/modificaDatiAdmin`, dati, { responseType: 'text', withCredentials: true});
+  }
+}

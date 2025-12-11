@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ɵEmptyOutletComponent } from "@angular/router";
 import {NgOptimizedImage} from '@angular/common';
-import {Logo} from '@shared/logo/logo';
+import {Logo} from '@shared/Componenti/Ui/logo/logo';
 
 @Component({
   selector: 'app-sidebar',

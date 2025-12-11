@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Sidebar } from '@shared/sidebar/sidebar';
 import { inject } from '@angular/core';
-import { AuthService } from '@core/services/auth-service';
+import { AuthService } from '@core/auth/auth-service';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 @Component({

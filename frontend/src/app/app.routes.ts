@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from '@features/login/login.component';
-import { RegistrazioneComponent } from '@features/registrazione/registrazione.component';
+import { LoginComponent } from '@features/SezioneAutenticazione/Pagine/login/login.component';
+import { RegistrazioneComponent } from '@features/SezioneAutenticazione/Pagine/registrazione/registrazione.component';
 import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
-import {RecuperoPassword} from '@features/recupero-password/recupero-password';
-import {authGuard} from '@core/services/auth.guard';
+import {RecuperoPassword} from '@features/SezioneAutenticazione/Pagine/recupero-password/recupero-password';
+import {authGuard} from '@core/auth/auth.guard';
 
 export const routes: Routes = [
  {

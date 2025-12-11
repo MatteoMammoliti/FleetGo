@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { GeneralLayoutFleetGo } from '../../layouts/general-layout-fleet-go/general-layout-fleet-go';
-import { DashboardFleetGo } from './dashboard-fleet-go/dashboard-fleet-go';
-import { FlottaGlobale } from './flotta-globale/flotta-globale';
-import { AziendeAffiliate } from './aziende-affiliate/aziende-affiliate'
-import {DettagliVeicolo} from '@shared/dettagli-veicolo/dettagli-veicolo';
+import { DashboardFleetGo } from '@features/SezioneFleetGo/Pagine/dashboard-fleet-go/dashboard-fleet-go';
+import { FlottaGlobale } from '@features/SezioneFleetGo/Pagine/flotta-globale/flotta-globale';
+import { AziendeAffiliate } from '@features/SezioneFleetGo/Pagine/aziende-affiliate/aziende-affiliate'
+import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
 
 export const ADMIN_FLEET_GO_ROUTES: Routes = [
   {

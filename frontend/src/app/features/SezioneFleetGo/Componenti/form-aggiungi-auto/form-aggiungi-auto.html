@@ -1,0 +1,48 @@
+
+<div class="form-autenticazione">
+  <h2>"Aggiungi un nuovo Veicolo"</h2>
+  <div class="form-riga">
+    <div class="form-group">
+      <label> Targa </label>
+      <input type="email" [(ngModel)]="targaVeicolo" placeholder="Inserisci la targa"
+             [class.bordo-rosso]="mappaErrori.targaVeicolo">
+    </div>
+    <div class="form-group">
+      <label> Modello </label>
+      <input type="email" [(ngModel)]="modello" placeholder="Inserisci marca e modello"
+             [class.bordo-rosso]="mappaErrori.modello">
+    </div>
+
+    <div class="form-group">
+      <label> Alimentazione </label>
+      <select [(ngModel)]="tipoDistribuzioneVeicolo" [class.bordo-rosso]="mappaErrori.tipoDistribuzioneVeicolo">
+        <option value="" disabled selected>Seleziona tipo...</option>
+
+        <option value="Elettrico">Elettrico</option>
+        <option value="Ibrido">Ibrido</option>
+        <option value="Benzina">Benzina</option>
+        <option value="Diesel">Diesel</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Immagine Veicolo</label>
+      <input type="file"
+             (change)="onFileSelected($event)"
+             name="immagineVeicolo"
+             [class.bordo-rosso]="mappaErrori.urlImmagine">
+    </div>
+
+
+  </div>
+  <div class="allineaTasto">
+    @if(errore){
+      <p class="messaggioErrore">{{ errore }}</p>
+    }
+    <button (click)="onSubmit()">
+      Salva Veicolo
+    </button>
+  </div>
+
+
+</div>

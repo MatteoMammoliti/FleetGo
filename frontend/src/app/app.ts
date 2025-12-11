@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {GeneralLayoutNoLogin} from "./layouts/general-layout-no-login/general-layout-no-login";
-import { AuthService } from '@core/services/auth-service';
+import { AuthService } from '@core/auth/auth-service';
 import { GeneralLayoutFleetGo } from './layouts/general-layout-fleet-go/general-layout-fleet-go';
 
 @Component({

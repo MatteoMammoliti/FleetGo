@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {Logo} from '@shared/logo/logo';
+import {Logo} from '@shared/Componenti/Ui/logo/logo';
 
 @Component({
   selector: 'app-general-layout-no-login',

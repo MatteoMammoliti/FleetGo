@@ -1,0 +1,71 @@
+<div class="form-autenticazione">
+  <h2>"Crea il tuo account FleetGo"</h2>
+    <div class="form-group">
+      <label>Nome</label>
+      <input type="text"
+             [(ngModel)]="nome"
+             name="nome"
+             placeholder="Es. Matteo"
+             [class.bordo-rosso]="mappaErrori.nome">
+    </div>
+    <div class="form-group">
+      <label>Cognome</label>
+      <input type="text"
+             [(ngModel)]="cognome"
+             name="cognome"
+             placeholder="Es.Mammoliti"
+             [class.bordo-rosso]="mappaErrori.cognome">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email"
+             [(ngModel)]="email"
+             name="email"
+             placeholder="Es. angelo@vivacqua.com"
+             [class.bordo-rosso]="mappaErrori.email">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password"
+             [(ngModel)]="password"
+             name="password"
+             placeholder="Inserisci la password"
+             [class.bordo-rosso]="mappaErrori.password">
+    </div>
+
+      <div class="form-group">
+      <label>Ripeti Password</label>
+      <input type="password"
+             [(ngModel)]="ripetiPassword"
+             name="ripetiPassword"
+             placeholder="Reinserisci la password"
+             [class.bordo-rosso]="mappaErrori.ripetiPassword">
+    </div>
+
+
+    <div class="form-group">
+      <label>Data di Nascita</label>
+      <input type="date"
+             [(ngModel)]="datanascita"
+             name="datanascita"
+             placeholder="Es. 29/11/2003"
+             [class.bordo-rosso]="mappaErrori.datanascita">
+    </div>
+
+    <div class="form-group">
+      <label>Patente Fronte-Retro</label>
+      <input type="file"
+             (change)="onFileSelected($event)"
+             name="patente"
+             [class.bordo-rosso]="mappaErrori.patente">
+    </div>
+
+    @if(errore){
+        <p class="messaggioErrore">{{ errore }}</p>
+    }
+    <button type="submit" (click)="onRegistrazione()">Registrati</button>
+
+
+</div>
