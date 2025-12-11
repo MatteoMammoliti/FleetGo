@@ -4,12 +4,14 @@ import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiModificaPasswordDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.UtenteService;
+import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/autenticazione")
@@ -33,6 +35,8 @@ public class ControllerAutenticazione {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
         }catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");
         }
     }
 
@@ -45,6 +49,8 @@ public class ControllerAutenticazione {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Codice OTP già inviato");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'invio del codice OTP");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");
         }
     }
 
@@ -57,6 +63,8 @@ public class ControllerAutenticazione {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Codice OTP errato o scaduto");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica della password");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");
         }
     }
 }

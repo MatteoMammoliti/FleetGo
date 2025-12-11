@@ -6,11 +6,13 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.UtenteService;
+import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,29 +35,20 @@ public class ControllerAziendeAffiliate {
             azienda.setIdAdminAzienda(idAdminAziendale);
             aziendaService.registraAzienda(azienda);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione avvenuta con successo");
-
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");
         }
     }
 
     @GetMapping("/elencoAziende")
     public ResponseEntity<List<AziendaDTO>> getElencoAziende() {
         try {
-            List<Azienda> elencoAziende = aziendaService.getElencoAziende();
-            List<AziendaDTO> listaAziende = new ArrayList<>();
-            for(Azienda a : elencoAziende) {
-                AziendaDTO aziendaDTO = new AziendaDTO();
-                aziendaDTO.setIdAzienda(a.getIdAzienda());
-                aziendaDTO.setNomeAzienda(a.getNomeAzienda());
-                aziendaDTO.setSedeAzienda(a.getSedeAzienda());
-                aziendaDTO.setPIva(a.getPIva());
-                aziendaDTO.setIdAdminAzienda(a.getIdAdmin());
-                listaAziende.add(aziendaDTO);
-            }
-            return ResponseEntity.ok(listaAziende);
+            List<AziendaDTO> elencoAziende = aziendaService.getElencoAziende();
+            return ResponseEntity.ok(elencoAziende);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

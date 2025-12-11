@@ -5,96 +5,129 @@ import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
-import it.unical.fleetgo.backend.Persistence.DBManager;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @Service
 public class UtenteService {
 
-    Connection con = DBManager.getInstance().getConnection();
-    UtenteDAO utenteDAO = new UtenteDAO(con);
-    CredenzialiDAO credenzialiDAO = new CredenzialiDAO(con);
-//    RichiestaAffiliazioneAziendaDAO affiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(con);
-//    RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(con);
-//    RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(con);
-
     @Autowired private EmailService emailService;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private DataSource dataSource;
 
-    public Integer registraUtente(UtenteDTO utenteDTO) {
-        if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
-            throw new IllegalArgumentException("Email non valida");
-        }
+    public Integer registraUtente(UtenteDTO utenteDTO) throws SQLException {
 
-        try {
-            con.setAutoCommit(false);
-            Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
+        try(Connection connection = dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
 
-
-            if (idAggiunta == null) {
-                con.rollback();
-                throw new RuntimeException("Problema durante l'inserimento dell'utente");
+            if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
+                throw new IllegalArgumentException("Email non valida");
             }
 
-            String urlImmagine = null;
-            if(utenteDTO instanceof DipendenteDTO) {
-                urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
-            }
-
-            String passwordCriptata = passwordEncoder.encode(utenteDTO.getPassword());
-            if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), passwordCriptata, urlImmagine)) {
-                con.rollback();
-                throw new RuntimeException("Problema durante l'inserimento delle credenziali");
-            }
-            con.commit();
-            return idAggiunta;
-        }catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }finally {
             try {
-                con.setAutoCommit(true);
-            } catch (SQLException ignored) {}
+
+                connection.setAutoCommit(false);
+                Integer idAggiunta = utenteDAO.inserisciUtente(utenteDTO);
+
+                if (idAggiunta == null) {
+                    connection.rollback();
+                    throw new RuntimeException("Problema durante l'inserimento dell'utente");
+                }
+
+                String urlImmagine = null;
+                if(utenteDTO instanceof DipendenteDTO) {
+                    urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
+                }
+
+                String passwordCriptata = passwordEncoder.encode(utenteDTO.getPassword());
+
+                if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), passwordCriptata, urlImmagine)) {
+                    connection.rollback();
+                    throw new RuntimeException("Problema durante l'inserimento delle credenziali");
+                }
+
+                connection.commit();
+                return idAggiunta;
+
+            }catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }finally {
+
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ignored) {}
+            }
         }
     }
 
-    public void eliminaUtente(Integer idUtente) {
-        utenteDAO.eliminaUtente(idUtente);
+    public void eliminaUtente(Integer idUtente) throws SQLException {
+        try(Connection connection = dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            utenteDAO.eliminaUtente(idUtente);
+        }
     }
 
-    public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente){
-        return utenteDAO.getDatiUtente(idUtente);
+    public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente) throws SQLException {
+        try(Connection connection = dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            return utenteDAO.getDatiUtente(idUtente);
+        }
     }
 
-    public void invioCodice(String email) {
-        int codiceOTP = RandomUtils.nextInt(100000, 999999);
-        emailService.inviaCodiceOtp(email, codiceOTP);
-        credenzialiDAO.inserimentoDatiRecuperoPassword(email, codiceOTP);
+    public void invioCodice(String email) throws SQLException {
+
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+
+            int codiceOTP = RandomUtils.nextInt(100000, 999999);
+            emailService.inviaCodiceOtp(email, codiceOTP);
+            credenzialiDAO.inserimentoDatiRecuperoPassword(email, codiceOTP);
+        }
     }
 
-    public void modificaPassword(String email, Integer codiceOTP, String nuovaPassword) {
+    public void modificaPassword(String email, Integer codiceOTP, String nuovaPassword) throws SQLException {
 
-        String passwordCriptata = passwordEncoder.encode(nuovaPassword);
-
-        credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email);
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            String passwordCriptata = passwordEncoder.encode(nuovaPassword);
+            credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email);
+        }
     }
 
-    public Dipendente getDipendente(Integer idUtente){
-        return utenteDAO.getDipendenteDaId(idUtente);
+    public DipendenteDTO getDipendente(Integer idUtente) throws SQLException {
+
+        try(Connection connection = this.dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            Dipendente d = utenteDAO.getDipendenteDaId(idUtente);
+            DipendenteDTO dipendenteDTO = new DipendenteDTO();
+            dipendenteDTO.setIdUtente(d.getIdUtente());
+            dipendenteDTO.setNomeUtente(d.getNomeUtente());
+            dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
+            dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
+            dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
+            return dipendenteDTO;
+        }
     }
 
-    public ContenitoreStatisticheNumeriche getStatisticheNumeriche(){
-        return utenteDAO.getStatisticheNumeriche();
+    public ContenitoreStatisticheNumeriche getStatisticheNumeriche() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            return utenteDAO.getStatisticheNumeriche();
+        }
     }
 
-    public CredenzialiUtente getCredenzialiUtentiByEmail(String email){
-        return credenzialiDAO.getCredenzialiUtenteByEmail(email);
+    public CredenzialiUtente getCredenzialiUtentiByEmail(String email) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            return credenzialiDAO.getCredenzialiUtenteByEmail(email);
+        }
     }
 }

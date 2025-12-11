@@ -68,7 +68,7 @@ public class GestioneVeicoloAziendaDAO {
         String query = "SELECT " +
                 "SUM(CASE WHEN v.status_condizione_veicolo = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
                 "SUM(CASE WHEN v.status_condizione_veicolo = 'In manutenzione' THEN 1 ELSE 0 END) as veicoliInManutenzione," +
-                "SUM(CASE WHEN v.status_condizione_veicolo = 'Libero' THEN 1 ELSE 0 END) as veicoliDisponibili " +
+                "SUM(CASE WHEN v.status_condizione_veicolo = 'Disponibile' THEN 1 ELSE 0 END) as veicoliDisponibili " +
                 "FROM veicolo v JOIN gestione_veicolo_azienda g ON g.id_veicolo = v.id_veicolo WHERE g.id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {

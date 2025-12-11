@@ -37,8 +37,8 @@ export class FlottaGlobale implements OnInit{
     });
   }
 
-  gestisciSalvataggio(datiForm: FormData) {
-    this.service.registraVeicolo(datiForm).subscribe({
+  gestisciSalvataggio(dati: FormData) {
+    this.service.registraVeicolo(dati).subscribe({
       next: (response) => {
         console.log("Veicolo salvato con successo:", response);
         this.caricaDati();

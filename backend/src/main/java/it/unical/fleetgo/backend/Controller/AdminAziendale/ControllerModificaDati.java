@@ -52,7 +52,7 @@ public class ControllerModificaDati {
         try{
             dati=utenteService.getDatiUtente(idUtente);
             return  ResponseEntity.status(HttpStatus.OK).body(dati);
-        }catch (Exception e){
+        }catch (SQLException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

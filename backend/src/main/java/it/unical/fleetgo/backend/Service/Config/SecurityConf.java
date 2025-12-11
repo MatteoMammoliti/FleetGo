@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Configuration
@@ -62,17 +63,26 @@ public class SecurityConf {
                             };
 
                             HttpSession session = request.getSession();
-                            CredenzialiUtente contenitoreCredenziali = utenteService.getCredenzialiUtentiByEmail(auth.getName());
+                            CredenzialiUtente contenitoreCredenziali = null;
+                            try {
+                                contenitoreCredenziali = utenteService.getCredenzialiUtentiByEmail(auth.getName());
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
 
                             session.setAttribute("ruolo", ruoloPulito);
                             session.setAttribute("idUtente", contenitoreCredenziali.getIdUtente());
 
                             if (ruoloPulito.equals("AdminAziendale")) {
-                                session.setAttribute("idAzienda",
-                                        adminAziendaleService.getIdAziendaGestita(
-                                                contenitoreCredenziali.getIdUtente()
-                                        )
-                                );
+                                try {
+                                    session.setAttribute("idAzienda",
+                                            adminAziendaleService.getIdAziendaGestita(
+                                                    contenitoreCredenziali.getIdUtente()
+                                            )
+                                    );
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
 
                             response.setStatus(HttpServletResponse.SC_OK);
