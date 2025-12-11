@@ -3,4 +3,3 @@ export const environment = {
   googleMapsApiKey: 'AIzaSyBscaV6CykngFpe0rY6OhSFcKwQVJnbQmQ',
   apiUrl: 'http://localhost:8080'
 };
-
