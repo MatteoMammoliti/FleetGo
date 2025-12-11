@@ -33,7 +33,9 @@ export class DashboardAzienda {
       totaleAziende: 0,
       veicoliNoleggiati: 0,
       veicoliManutenzione:0,
-      veicoliDisponibili:0
+      veicoliDisponibili:0,
+      fattureDaGenerare:0,
+      guadagnoMensile: 0
     }
 
   settaDatiGraficoStatoFlotta() {

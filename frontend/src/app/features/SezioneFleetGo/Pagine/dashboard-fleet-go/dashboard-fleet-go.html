@@ -5,36 +5,45 @@
   <div class="griglia-kpi">
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Flotta Totale"
-      [valore]=statistiche.totaleVeicoli
+      titolo="Ricavi mese"
+      [valore]="statistiche.guadagnoMensile"
       icona="bi-car-front"
       coloreSfondo="card-blue"
-      descrizione="Veicoli in piattaforma">
+      descrizione="Guadagni di questo mese">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Assegnati"
-      [valore]=statistiche.veicoliAssegnati
+      titolo="Da fatturare"
+      [valore]="statistiche.fattureDaGenerare"
       icona="bi-briefcase"
       coloreSfondo="card-green"
-      [descrizione]="'70% della flotta'">
+      [descrizione]="'Fatture da generare!'">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Aziende Partner"
-      [valore]=statistiche.totaleAziende
+      titolo="Flotta utilizzata"
+      [valore]="Math.floor (statistiche.veicoliAssegnati/statistiche.totaleVeicoli)*100"
       icona="bi-building"
       coloreSfondo="card-cyan"
-      descrizione="Attive in piattaforma">
+      descrizione="'{{statistiche.veicoliAssegnati}} su {{statistiche.totaleVeicoli}}'">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
       titolo="In Manutenzione"
-      [valore]=statistiche.veicoliManutenzione
+      [valore]="statistiche.veicoliManutenzione"
       icona="bi-tools"
       coloreSfondo="card-orange"
       descrizione="Richiede attenzione">
     </app-card-statistiche-dashboard-fleet>
 
   </div>
+  <div>
+    <app-fatture-da-generare [fatture]="fatture" ></app-fatture-da-generare>
+  </div>
+  <div>
+    <app-richieste-manutenzione-da-gestire [richiesteManutenzioneDaGestire]="richiesteManutenzione" (inviaRichiesta)="caricaRichiestaManutenzione($event)"></app-richieste-manutenzione-da-gestire>
+  </div>
+  @if(richiestaSelezionata){
+    <app-gestisci-richiesta-manutenzione [datiRichiesta]="richiestaSelezionata"></app-gestisci-richiesta-manutenzione>
+  }
 </div>

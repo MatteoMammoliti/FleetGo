@@ -17,13 +17,15 @@ export class GraficoStatoFlotta {
 
   public graficoTorta: any;
 
-  @Input({required: true}) contenitoreInput: ContenitoreStatisticheNumeriche = {
+  @Input({required: true}) contenitoreInput: ContenitoreStatisticheNumeriche ={
     veicoliAssegnati: 0,
     totaleVeicoli: 0,
     totaleAziende: 0,
     veicoliDisponibili: 0,
     veicoliManutenzione: 0,
-    veicoliNoleggiati: 0
+    veicoliNoleggiati: 0,
+    fattureDaGenerare: 0,
+    guadagnoMensile:0
   };
 
   totaleVeicoli = 0;

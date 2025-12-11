@@ -1,0 +1,64 @@
+<div class="main-container">
+
+  <div class="header-section">
+    <h1 class="titolo-pagina">Gestione Manutenzioni</h1>
+    <p class="sottotitolo">Visualizza e gestisci le richieste di intervento dalla flotta.</p>
+  </div>
+
+  <div>
+
+    @if (!richiesteManutenzioneDaGestire) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Caricamento richieste...</p>
+      </div>
+    }
+
+    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
+      <div class="empty-state">
+        <i class="bi bi-check-circle-fill"></i>
+        <p>Tutto in ordine! Nessuna richiesta di manutenzione in attesa.</p>
+      </div>
+    }
+
+    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length > 0) {
+      <div class="table-responsive">
+        <table class="fl-table">
+          <thead>
+          <tr>
+            <th>Veicolo</th>
+            <th>Data Richiesta</th>
+            <th>Tipologia Intervento</th>
+            <th>Stato Attuale</th>
+            <th class="text-right">Azioni</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (richiesta of richiesteManutenzioneDaGestire; track richiesta.idManutenzione) {
+              <tr>
+                <td>
+                  <div class="veicolo-info">
+                    <span class="targa">{{ richiesta.idVeicolo }}</span>
+                  </div>
+                </td>
+                <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <span class="tipo-badge">{{ richiesta.tipoManutenzione }}</span>
+                </td>
+                <td>
+                  <span class="status-badge warning">In Attesa</span>
+                </td>
+                <td class="azioni-cell">
+                  <button class="btn-icon check" (click)="gestisciRichiesta(richiesta.idManutenzione)">Gestisci
+                    <i class="bi bi-check-lg"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+</div>

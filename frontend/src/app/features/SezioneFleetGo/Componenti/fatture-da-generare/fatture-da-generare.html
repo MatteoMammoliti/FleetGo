@@ -1,0 +1,52 @@
+<div class="panel-container">
+
+  <div class="panel-header">
+    <div class="titolo-con-icona">
+      <i class="bi bi-receipt-cutoff icona-rossa"></i>
+      <h3>Fatture da Generare</h3>
+    </div>
+    @if (fatture.length > 0) {
+      <span class="badge-count">{{ fatture.length }} in attesa</span>
+    }
+  </div>
+
+  <div class="panel-body">
+
+    <div class="lista-items">
+      @for (fattura of fatture; track fattura.idAzienda + '-' + fattura.mese) {
+
+        <div class="item-fattura">
+
+          <div class="info-principali">
+            <span class="nome-azienda">{{ fattura.nomeAzienda }}</span>
+            <div class="dettagli-minori">
+              <span class="periodo">
+                <i class="bi bi-calendar3"></i>
+                {{ fattura.mese }} {{ fattura.anno}}
+              </span>
+              <span class="separatore">•</span>
+              <span class="noleggi-count">{{ fattura.numeroNoleggi }} noleggi</span>
+            </div>
+          </div>
+
+          <div class="azione-container">
+            <span class="prezzo-stimato">€ {{ fattura.costoTotale }}</span>
+          </div>
+
+        </div>
+      }
+
+      @if (fatture.length === 0) {
+        <div class="empty-state">
+          <div class="icona-check-bg">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <p>Ottimo lavoro!</p>
+          <small>Non ci sono fatture pendenti da generare.</small>
+        </div>
+      }
+    </div>
+
+  </div>
+
+</div>

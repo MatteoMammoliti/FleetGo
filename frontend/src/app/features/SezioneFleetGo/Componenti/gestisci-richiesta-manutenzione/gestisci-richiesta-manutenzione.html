@@ -1,0 +1,63 @@
+<div class="modal-backdrop" (click)="onClose()"></div>
+
+<div class="modal-container animate-pop-in">
+
+  <div class="modal-header">
+    <div class="header-title">
+      <i class="bi bi-tools icon-header"></i>
+      <h2>Gestione Richiesta #{{datiRichiesta.idManutenzione}}</h2>
+    </div>
+    <button class="btn-close" (click)="onClose()" title="Chiudi">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="info-grid mb-6">
+      <div class="info-item">
+        <label>Veicolo Interessato</label>
+        <div class="veicolo-card">
+          <i class="bi bi-car-front-fill"></i>
+          <div>
+            <p class="targa">{{datiRichiesta.veicolo.targaVeicolo}}</p>
+            <p class="modello">{{datiRichiesta.veicolo.modello}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <label>Dettagli Richiesta</label>
+        <p class="data">
+          <i class="bi bi-calendar-event"></i>
+          Inviata il: {{datiRichiesta.dataRichiesta | date:'dd/MM/yyyy'}}
+        </p>
+        <div class="mt-2">
+          <label class="sub-label">Tipologia Segnalata:</label>
+          <span class="tipo-badge">
+            {{datiRichiesta.tipoManutenzione}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box warning">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>
+        <h4>Attenzione all'approvazione</h4>
+        <p>Approvando questa richiesta, lo stato del veicolo <strong>{{datiRichiesta.veicolo.targaVeicolo}}</strong> verrà impostato su "In Manutenzione" e non sarà disponibile per il noleggio.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-reject" (click)="clickRifiuta()">
+      <i class="bi bi-x-circle"></i> Rifiuta Richiesta
+    </button>
+    <button class="btn btn-approve" (click)="clickAccetta()">
+      <i class="bi bi-check-circle-fill"></i> Approva Intervento
+    </button>
+  </div>
+
+</div>

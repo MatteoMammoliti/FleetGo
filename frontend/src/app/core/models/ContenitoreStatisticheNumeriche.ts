@@ -5,4 +5,7 @@ export interface ContenitoreStatisticheNumeriche {
   veicoliManutenzione:number;
   veicoliNoleggiati: number;
   totaleAziende:number;
+  fattureDaGenerare:number;
+  guadagnoMensile:number;
+
 }
