@@ -1,0 +1,44 @@
+<section class="section-active">
+  <h2 class="section-title text-orange">
+    <i class="bi bi-hourglass-split"></i> Interventi in Corso
+  </h2>
+  <p class="section-description">Veicoli attualmente indisponibili per la flotta.</p>
+
+  @if (listaRichieste.length === 0) {
+    <div class="empty-state">Nessun veicolo attualmente in manutenzione.</div>
+  } @else {
+    <div class="table-wrapper shadow-box">
+      <table class="fleet-table">
+        <thead>
+        <tr>
+          <th>Veicolo</th>
+          <th>Data Inizio</th>
+          <th>Tipo Intervento</th>
+          <th>Stato</th>
+          <th class="text-right">Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (richiesta of listaRichieste; track richiesta.idManutenzione) {
+            <tr class="active-row">
+              <td>
+                <div class="vehicle-info">
+                  <span class="plate">{{ richiesta.veicolo.targaVeicolo }}</span>
+                  <span class="model">{{ richiesta.veicolo.modello }}</span>
+                </div>
+              </td>
+              <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+              <td>{{ richiesta.tipoManutenzione }}</td>
+              <td><span class="badge badge-orange">In Lavorazione</span></td>
+              <td class="text-right">
+                <button class="btn-complete" (click)="onConcludi()">
+                  <i class="bi bi-check-lg"></i> Concludi
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

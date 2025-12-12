@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheManutezioni;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
@@ -35,7 +36,7 @@ public class FleetGoService {
             RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
             List<RichiestaManutenzione> richieste =richiesteManutenzioneDAO.getRichiesteManutenzioneDaAccettare();
             for(RichiestaManutenzione ric :richieste){
-                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric, true);
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric,true);
                 richiesteDTO.add(dto);
             }
         }
@@ -48,7 +49,7 @@ public class FleetGoService {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
             RichiestaManutenzione richiesta = dao.getRichiestaManutenzione(id);
             if(richiesta!=null){
-                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(richiesta, true);
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(richiesta,true);
                 dto.setIdManutenzione(id);
                 return dto;
             }
@@ -85,7 +86,7 @@ public class FleetGoService {
             List<FatturaDTO> fatture = new ArrayList<>();
 
             for(Fattura fattura : f) {
-                fatture.add(new FatturaDTO(fattura, true));
+                fatture.add(new FatturaDTO(fattura,true));
             }
 
             return fatture;
@@ -113,6 +114,36 @@ public class FleetGoService {
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
             fatturaDAO.inserisciFattura(new FatturaDTO(fattura));
+        }
+    }
+    public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            return dao.getStatisticheManutenzioni();
+        }
+    }
+    public List<RichiestaManutenzioneDTO> getRichiesteManutenzioniInCorso() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            List<RichiestaManutenzione> richieste =dao.getRichiesteManutenzioneInCorso();
+            List<RichiestaManutenzioneDTO> richiesteDTO = new ArrayList<>();
+            for(RichiestaManutenzione ric: richieste){
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric,true);
+                richiesteDTO.add(dto);
+            }
+            return richiesteDTO;
+        }
+    }
+    public List<RichiestaManutenzioneDTO> getRichiesteManutenzioniStorico() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            List<RichiestaManutenzione> richieste = dao.getRichiesteManutenzioneStorico();
+            List<RichiestaManutenzioneDTO> richiesteDTO = new ArrayList<>();
+            for(RichiestaManutenzione ric: richieste){
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric,true);
+                richiesteDTO.add(dto);
+            }
+        return richiesteDTO;
         }
     }
 }

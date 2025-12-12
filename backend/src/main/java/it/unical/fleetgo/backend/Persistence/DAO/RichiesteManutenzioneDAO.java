@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheManutezioni;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaManutenzioneProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
@@ -227,6 +228,20 @@ public class RichiesteManutenzioneDAO {
         String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=? AND completata=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,true);
+            st.setBoolean(2,false);
+            estraiRichiesteManutenzione(richieste, st);
+            return richieste;
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<RichiestaManutenzione> getRichiesteManutenzioneStorico(){
+        List<RichiestaManutenzione> richieste = new ArrayList<>();
+        String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=? AND completata=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setBoolean(1,true);
+            st.setBoolean(2,true);
             estraiRichiesteManutenzione(richieste, st);
             return richieste;
         }catch(SQLException e){
@@ -262,6 +277,22 @@ public class RichiesteManutenzioneDAO {
             return richieste;
         }catch(SQLException e){
             throw new RuntimeException(e);
+        }
+    }
+
+    public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() throws SQLException {
+        String query="SELECT " +
+                " (SELECT COUNT(*) FROM richiesta_manutenzione WHERE accettata=true AND completata=false) as attualmente_in_corso," +
+                " (SELECT COUNT(*) FROM richiesta_manutenzione WHERE accettata=true AND completata=true) as interventi_conclusi";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                ContenitoreStatisticheNumericheManutezioni contenitore = new ContenitoreStatisticheNumericheManutezioni();
+                contenitore.setInterventiConclusi(rs.getInt("interventi_conclusi"));
+                contenitore.setAttualmenteInOfficina(rs.getInt("attualmente_in_corso"));
+                return contenitore;
+            }
+            return null;
         }
     }
 

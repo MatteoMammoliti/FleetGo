@@ -24,7 +24,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
 
         this.richiesteManutenzione =
                 (utente.getRichiesteManutenzione() != null) ?
-                utente.getRichiesteManutenzione().stream().map(RichiestaManutenzioneDTO::new).toList()
+                utente.getRichiesteManutenzione().stream().map(r->new RichiestaManutenzioneDTO(r,true)).toList()
                 : null;
 
         this.dipendenti =
