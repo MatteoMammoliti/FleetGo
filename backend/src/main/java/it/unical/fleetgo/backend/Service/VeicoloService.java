@@ -42,7 +42,7 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             List<Veicolo> listaVeicoli =  veicoloDAO.getVeicoliDisponibiliInPiattaforma();
-            return listaVeicoli.stream().map(VeicoloDTO::new).toList();
+            return listaVeicoli.stream().map(v -> new VeicoloDTO(v, true)).toList();
         }
     }
 
@@ -51,7 +51,7 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             Veicolo veicolo = veicoloDAO.getVeicoloByTarga(targa);
-            return new VeicoloDTO(veicolo);
+            return new VeicoloDTO(veicolo, true);
         }
     }
 

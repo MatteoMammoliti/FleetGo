@@ -23,7 +23,7 @@ public class RichiestaNoleggioDTO {
     private UtenteDTO utente;
     private Boolean richiestaAnnullata;
 
-    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta) {
+    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();
         this.idAziendaRiferimento = richiesta.getIdAzienda();
@@ -35,6 +35,8 @@ public class RichiestaNoleggioDTO {
         this.motivazione = richiesta.getMotivazione();
         this.accettata = richiesta.getRichiestaAccettata();
         this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
-        this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
+
+        if(caricaUtente) this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
+        else this.utente = null;
     }
 }

@@ -3,7 +3,6 @@ package it.unical.fleetgo.backend.Service;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
-import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.FatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GeneraFatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiesteManutenzioneDAO;
@@ -86,7 +85,7 @@ public class FleetGoService {
             List<FatturaDTO> fatture = new ArrayList<>();
 
             for(Fattura fattura : f) {
-                fatture.add(new FatturaDTO(fattura));
+                fatture.add(new FatturaDTO(fattura, false));
             }
 
             return fatture;
@@ -102,10 +101,18 @@ public class FleetGoService {
             if(f != null) {
 
                 return this.generatorePdfService.generaPdfFattura(
-                        new FatturaDTO(f)
+                        new FatturaDTO(f, true)
                 );
             }
         }
         return null;
+    }
+
+    public void generaFattura(FatturaDaGenerareDTO fattura) throws SQLException {
+
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            fatturaDAO.inserisciFattura(new FatturaDTO(fattura));
+        }
     }
 }

@@ -19,7 +19,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
         this.idAziendaGestita = utente.getIdAziendaGestita();
         this.richiesteNoleggio =
                 (utente.getRichiesteNoleggio() != null) ?
-                utente.getRichiesteNoleggio().stream().map(RichiestaNoleggioDTO::new).toList()
+                utente.getRichiesteNoleggio().stream().map(r -> new RichiestaNoleggioDTO(r, false)).toList()
                 : null;
 
         this.richiesteManutenzione =
@@ -34,12 +34,12 @@ public class AdminAziendaleDTO extends UtenteDTO {
 
         this.veicoloInGestione =
                 (utente.getVeicoliInGestione() != null) ?
-                utente.getVeicoliInGestione().stream().map(GestioneVeicoloAziendaDTO::new).toList()
+                utente.getVeicoliInGestione().stream().map(g -> new GestioneVeicoloAziendaDTO(g, false, true)).toList()
                 : null;
 
         this.fatture =
                 (utente.getFatture() != null) ?
-                utente.getFatture().stream().map(FatturaDTO::new).toList()
+                utente.getFatture().stream().map(f -> new FatturaDTO(f, false)).toList()
                 : null;
 
         this.luoghiDepositoRitiro =

@@ -20,23 +20,23 @@ public class FatturaDAO {
     }
 
     public boolean inserisciFattura(FatturaDTO fattura){
-        String query = "INSERT INTO fattura(id_fleetgo, id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO fattura(id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura) VALUES (?, ?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, fattura.getIdFleetGo());
-            ps.setInt(2, fattura.getIdAzienda());
-            ps.setBoolean(3, fattura.isFatturaPagata());
-            ps.setInt(4, fattura.getCosto());
-            ps.setInt(5, fattura.getMeseFattura());
-            ps.setInt(6, fattura.getAnnoFattura());
+            ps.setInt(1, fattura.getIdAzienda());
+            ps.setBoolean(2, fattura.isFatturaPagata());
+            ps.setInt(3, fattura.getCosto());
+            ps.setInt(4, fattura.getMeseFattura());
+            ps.setInt(5, fattura.getAnnoFattura());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
     public boolean eliminaFattura(FatturaDTO fattura){
-        String query = "DELETE FROM fattura WHERE id_fleetgo = ? AND id_azienda = ? AND mese_fattura = ? AND anno_fattura = ?";
+        String query = "DELETE FROM fattura WHERE id_azienda = ? AND mese_fattura = ? AND anno_fattura = ?";
         return getFattura(fattura, query);
     }
 
@@ -65,7 +65,6 @@ public class FatturaDAO {
 
             if(rs.next()){
                 Fattura f = new FatturaProxy(new AziendaDAO(connection));
-                f.setFleetGo(rs.getInt("id_fleetgo"));
                 f.setIdAzienda(rs.getInt("id_azienda"));
                 f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
                 f.setCosto(rs.getInt("costo"));
@@ -119,7 +118,6 @@ public class FatturaDAO {
             f.setIdAzienda(rs.getInt("id_azienda"));
             f.setAnnoFattura(rs.getInt("anno_fattura"));
             f.setMeseFattura(rs.getInt("mese_fattura"));
-            f.setFleetGo(rs.getInt("id_fleetgo"));
             f.setCosto(rs.getInt("costo"));
             f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
             fatture.add(f);
@@ -129,10 +127,9 @@ public class FatturaDAO {
 
     private boolean getFattura(FatturaDTO fattura, String query) {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, fattura.getIdFleetGo());
-            ps.setInt(2, fattura.getIdAzienda());
-            ps.setInt(3, fattura.getMeseFattura());
-            ps.setInt(4, fattura.getAnnoFattura());
+            ps.setInt(1, fattura.getIdAzienda());
+            ps.setInt(2, fattura.getMeseFattura());
+            ps.setInt(3, fattura.getAnnoFattura());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new RuntimeException(e);

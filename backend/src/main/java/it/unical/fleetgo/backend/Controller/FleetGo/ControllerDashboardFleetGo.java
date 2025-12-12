@@ -43,6 +43,7 @@ public class ControllerDashboardFleetGo {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     @GetMapping("/richiesteManutezioneDaAccettare")
     public ResponseEntity<List<RichiestaManutenzioneDTO>> getRichiesteManutenzioneDaAccettare(){
         try{
@@ -102,6 +103,13 @@ public class ControllerDashboardFleetGo {
         }
     }
 
-
-
+    @PostMapping("/generaFattura")
+    public ResponseEntity<String> generaFattura(@RequestBody FatturaDaGenerareDTO fattura){
+        try {
+            fleetGoService.generaFattura(fattura);
+            return ResponseEntity.ok("Fattura generata con successo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

@@ -9,11 +9,19 @@
   </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Ricavi Mese Corrente"
+      titolo="Ricavi Anno Corrente"
       [valore]="'€ ' + totaleRicaviAnno"
       icona="bi-cash-coin"
       coloreSfondo="card-green"
-      descrizione="Fatturato questo mese">
+      descrizione="Fatturato questo anno">
+    </app-card-statistiche-dashboard-fleet>
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="Ricavi Stimati Anno Corrente"
+      [valore]="'€ ' + totaleRicaviAnnoStimato"
+      icona="bi-cash-coin"
+      coloreSfondo="card-green"
+      descrizione="Fatturato questo anno stimato">
     </app-card-statistiche-dashboard-fleet>
 
   </div>

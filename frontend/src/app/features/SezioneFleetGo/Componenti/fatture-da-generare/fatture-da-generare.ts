@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, model, Output} from '@angular/core';
 import {DashboardFleetGoService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/dashboardFleetGo-service';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 
@@ -10,8 +10,12 @@ import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
   styleUrl: './fatture-da-generare.css',
 })
 export class FattureDaGenerare {
-  constructor(private fleetGoService:DashboardFleetGoService) {}
+  constructor() {}
 
   @Input() fatture:FatturaDaGenerareDTO[] = []
+  @Output() generaFatturaEvent: EventEmitter<any> = new EventEmitter<any>();
 
+  protected generaFattura(fattura: FatturaDaGenerareDTO) {
+    this.generaFatturaEvent.emit(fattura);
+  }
 }

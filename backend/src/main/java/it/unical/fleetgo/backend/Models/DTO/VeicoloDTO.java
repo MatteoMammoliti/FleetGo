@@ -21,7 +21,7 @@ public class VeicoloDTO {
 
     public VeicoloDTO(){}
 
-    public VeicoloDTO(Veicolo veicolo) {
+    public VeicoloDTO(Veicolo veicolo, boolean caricaLuogo) {
         this.idVeicolo = veicolo.getIdVeicolo();
         this.targaVeicolo = veicolo.getTargaVeicolo();
         this.urlImmagine = veicolo.getUrlImmagine();
@@ -33,7 +33,10 @@ public class VeicoloDTO {
         this.nomeAziendaAffiliata = veicolo.getNomeAziendaAffiliata();
         this.idAziendaAffiliata = veicolo.getIdAziendaAffiliata();
 
-        if(veicolo.getLuogo() != null) this.luogoRitiroDeposito = new LuogoDTO(veicolo.getLuogo());
+        if(caricaLuogo)
+            if(veicolo.getLuogo() != null) this.luogoRitiroDeposito = new LuogoDTO(veicolo.getLuogo());
+            else this.luogoRitiroDeposito = null;
+
         else this.luogoRitiroDeposito = null;
     }
 }

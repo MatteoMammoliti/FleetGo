@@ -24,6 +24,6 @@ public class RichiestaManutenzioneDTO {
         this.tipoManutenzione = richiesta.getTipoManutenzione();
         this.accettata = richiesta.getRichiestaAccettata();
         this.completata = richiesta.getRichiestaCompletata();
-        this.veicolo = new VeicoloDTO(richiesta.getVeicolo());
+        this.veicolo = new VeicoloDTO(richiesta.getVeicolo(), false);
     }
 }

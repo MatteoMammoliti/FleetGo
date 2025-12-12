@@ -8,6 +8,7 @@ import {
   RichiesteManutenzioneDaGestire
 } from '@features/SezioneFleetGo/Componenti/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
+import {FatturaDTO} from '@core/models/FatturaDTO.models';
 
 
 @Injectable({
@@ -42,7 +43,15 @@ export class DashboardFleetGoService{
   accettaRichiestaManutenzione(idManutenzione:number):Observable<string>{
     return this.http.post(`${this.apiUrl}/accettaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
   }
+
   rifiutaRichiestaManutezione(idManutenzione:number):Observable<string>{
     return this.http.post(`${this.apiUrl}/rifiutaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
+  }
+
+  generaFattura(fattura:FatturaDaGenerareDTO): Observable<string> {
+    return this.http.post(`${this.apiUrl}/generaFattura`, fattura, {
+      responseType: 'text',
+      withCredentials: true
+    })
   }
 }

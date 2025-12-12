@@ -13,9 +13,12 @@ public class FatturaDaGenerareDTO {
     Integer numeroNoleggi;
     Integer costoTotale;
 
-    public FatturaDaGenerareDTO() {}
-    public FatturaDaGenerareDTO(Integer idAzienda, String nomeAzienda, String anno,String mese,
-                                Integer numeroNoleggi,Integer costoTotale) {
+    public FatturaDaGenerareDTO(Integer idAzienda,
+                                String nomeAzienda,
+                                String anno,
+                                String mese,
+                                Integer numeroNoleggi,
+                                Integer costoTotale) {
         this.idAzienda = idAzienda;
         this.nomeAzienda = nomeAzienda;
         this.anno = anno;

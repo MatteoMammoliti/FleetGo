@@ -53,6 +53,7 @@ export class DashboardFleetGo {
       error: (err) => console.error("Errore richiesta statistiche:", err)
     });
   }
+
   richiediFattureDaGenerare(){
     this.dashboardService.richiediFattureDaGenerare().subscribe({
       next:(fattura)=>{
@@ -61,6 +62,7 @@ export class DashboardFleetGo {
       error:(err:any)=>(console.error("Errore richiesta fatture da generare",err))
     });
   }
+
   richiediManutenzioniDaGestire(){
     this.dashboardService.richiediManutenzioneDaGestire().subscribe({
       next:(richiesta:RichiestaManutenzioneDTO[])=>{
@@ -70,6 +72,7 @@ export class DashboardFleetGo {
       error:(err:any)=>(console.error("Errore richieste manutenzioni da gestire",err))
     });
   }
+
   caricaRichiestaManutenzione(idManutenzione:number){
     this.dashboardService.richiediInformazioniSuManutenzioneDaGestire(idManutenzione).subscribe({
       next:(risultato:RichiestaManutenzioneDTO)=>{
@@ -89,6 +92,7 @@ export class DashboardFleetGo {
       error:(err:any)=>{console.error("Errore nell'accettare la richiesta di manutenzione",err)}
     });
   }
+
   rifiutaRichiesta(idManutenzione:number){
     this.dashboardService.rifiutaRichiestaManutezione(idManutenzione).subscribe({
       next:(risultato:string)=>{
@@ -102,6 +106,19 @@ export class DashboardFleetGo {
   chiudiFinestraModale(){
     this.richiestaSelezionata=null;
     this.richiediManutenzioniDaGestire();
+  }
+
+  generaFattura(fattura:FatturaDaGenerareDTO){
+
+    console.log("invio fattura", fattura)
+
+    this.dashboardService.generaFattura(fattura).subscribe({
+      next:(risultato:string)=>{
+        console.log(risultato)
+        this.richiediFattureDaGenerare();
+      },
+      error:(err:any)=>{console.error("Errore nella generazione della fattura",err)}
+    })
   }
 
   protected readonly Math = Math;

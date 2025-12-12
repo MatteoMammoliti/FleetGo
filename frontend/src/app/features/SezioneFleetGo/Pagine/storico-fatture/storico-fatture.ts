@@ -34,6 +34,7 @@ export class StoricoFatture {
 
   totaleFattureAnnoSelezionato = 0;
   totaleRicaviAnno = 0;
+  totaleRicaviAnnoStimato = 0;
 
   ngOnInit() {
     this.storicoFattureService.getAnniFatture().subscribe({
@@ -82,8 +83,14 @@ export class StoricoFatture {
     this.totaleFattureAnnoSelezionato = this.fatturePerAnno.length;
 
     this.totaleRicaviAnno = 0;
+    this.totaleRicaviAnnoStimato = 0;
     for(const fattura of this.fatturePerAnno) {
-      this.totaleRicaviAnno += fattura.costo;
+      if(fattura.fatturaPagata) this.totaleRicaviAnno += fattura.costo;
+    }
+
+    this.totaleRicaviAnnoStimato = this.totaleRicaviAnno;
+    for(const fattura of this.fatturePerAnno) {
+      if(!fattura.fatturaPagata) this.totaleRicaviAnnoStimato += fattura.costo;
     }
   }
 

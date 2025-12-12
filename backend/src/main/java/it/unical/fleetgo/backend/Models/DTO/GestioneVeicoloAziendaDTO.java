@@ -15,12 +15,17 @@ public class GestioneVeicoloAziendaDTO {
 
     public GestioneVeicoloAziendaDTO() {}
 
-    public GestioneVeicoloAziendaDTO(GestioneVeicoloAzienda gestione) {
+    public GestioneVeicoloAziendaDTO(GestioneVeicoloAzienda gestione, boolean caricaVeicolo, boolean caricaLuogo) {
         this.idVeicolo = gestione.getIdVeicolo();
-        this.Veicolo = new VeicoloDTO(gestione.getVeicolo());
+
+        if(caricaVeicolo) this.Veicolo = new VeicoloDTO(gestione.getVeicolo(), false);
+        else this.Veicolo = null;
+
         this.idAzienda = gestione.getIdAzienda();
         this.idLuogo = gestione.getIdLuogo();
         this.disponbilePerNoleggio=gestione.isDisponbilePerNoleggio();
-        this.luogo = new LuogoDTO(gestione.getLuogo());
+
+        if(caricaLuogo) this.luogo = new LuogoDTO(gestione.getLuogo());
+        else this.luogo = null;
     }
 }

@@ -48,7 +48,10 @@
     </div>
 
     <div class="colonna-dx">
-      <app-fatture-da-generare [fatture]="fatture"></app-fatture-da-generare>
+      <app-fatture-da-generare
+        [fatture]="fatture"
+        (generaFatturaEvent)="generaFattura($event)">
+      </app-fatture-da-generare>
     </div>
 
   </div>

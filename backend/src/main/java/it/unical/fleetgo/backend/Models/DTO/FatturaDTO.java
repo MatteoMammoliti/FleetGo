@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class FatturaDTO {
     private Integer numeroFattura;
-    private Integer idFleetGo;
     private Integer idAzienda;
     private Integer meseFattura;
     private Integer annoFattura;
@@ -16,13 +15,23 @@ public class FatturaDTO {
     private Integer costo;
     private AziendaDTO azienda;
 
-    public FatturaDTO(Fattura fattura) {
+    public FatturaDTO(Fattura fattura, boolean caricareAzienda) {
         this.numeroFattura = fattura.getNumeroFattura();
         this.idAzienda = fattura.getIdAzienda();
         this.meseFattura = fattura.getMeseFattura();
         this.annoFattura = fattura.getAnnoFattura();
         this.fatturaPagata = fattura.getFatturaPagata();
         this.costo = fattura.getCosto();
-        this.azienda = new AziendaDTO(fattura.getAzienda());
+
+        if(caricareAzienda) this.azienda = new AziendaDTO(fattura.getAzienda());
+        else this.azienda = null;
+    }
+
+    public FatturaDTO(FatturaDaGenerareDTO fattura) {
+        this.idAzienda = fattura.getIdAzienda();
+        this.meseFattura = Integer.parseInt(fattura.getMese());
+        this.annoFattura = Integer.parseInt(fattura.getAnno());
+        this.fatturaPagata = false;
+        this.costo = fattura.getCostoTotale();
     }
 }
