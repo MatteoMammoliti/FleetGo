@@ -10,8 +10,10 @@ public class LuogoDTO {
     private Integer idLuogo;
     private Integer idAzienda;
     private String nomeLuogo;
-    private float longitudine;
-    private float latitudine;
+    private Float longitudine;
+    private Float latitudine;
+
+    public LuogoDTO() {}
 
     public LuogoDTO(LuogoAzienda luogo) {
         this.idLuogo = luogo.getIdLuogo();

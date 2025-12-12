@@ -15,6 +15,8 @@ public class DipendenteDTO extends UtenteDTO {
     private String urlImmagine;
     private boolean patenteAccettata;
 
+    public DipendenteDTO() {}
+
     public DipendenteDTO(Dipendente utente) {
         super(utente);
         this.idAziendaAffiliata = utente.getIdAziendaAffiliata();

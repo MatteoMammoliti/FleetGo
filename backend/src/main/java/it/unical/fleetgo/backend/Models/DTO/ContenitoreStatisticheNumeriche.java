@@ -15,6 +15,8 @@ public class ContenitoreStatisticheNumeriche {
     private int fattureDaGenerare;
     private int guadagnoMensile;
 
+    public ContenitoreStatisticheNumeriche() {}
+
     public ContenitoreStatisticheNumeriche(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende,
                                            int fattureDaGenerare, int guadagnoMensile) {
         this.totaleVeicoli=totaleVeicoli;

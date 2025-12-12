@@ -32,7 +32,10 @@ export class FlottaGlobaleService {
   richiediVeicolo(targa:string|null):Observable<VeicoloDTO>{
     return this.http.get<VeicoloDTO>(`${this.apiUrl}/informazioneVeicolo/${targa}`, {withCredentials:true});
   }
+
   inviaModifiche(veicolo:VeicoloDTO):Observable<string>{
+    console.log("sono qua")
+    console.log("invio", veicolo)
     return this.http.post(`${this.apiUrl}/modificaVeicolo`, veicolo, {responseType: "text", withCredentials:true});
   }
 }

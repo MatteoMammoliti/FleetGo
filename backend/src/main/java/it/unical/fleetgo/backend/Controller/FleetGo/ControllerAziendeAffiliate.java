@@ -61,6 +61,7 @@ public class ControllerAziendeAffiliate {
             return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione dell'azienda");
         }
     }

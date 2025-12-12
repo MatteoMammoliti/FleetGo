@@ -67,9 +67,9 @@ public class GestioneVeicoloAziendaDAO {
 
     public ContenitoreStatisticheNumeriche getStatoVeicoli(Integer idAzienda) {
         String query = "SELECT " +
-                "SUM(CASE WHEN v.status_condizione_veicolo = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
-                "SUM(CASE WHEN v.status_condizione_veicolo = 'In manutenzione' THEN 1 ELSE 0 END) as veicoliInManutenzione," +
-                "SUM(CASE WHEN v.status_condizione_veicolo = 'Libero' THEN 1 ELSE 0 END) as veicoliDisponibili " +
+                "SUM(CASE WHEN v.status_contrattuale = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
+                "SUM(CASE WHEN v.in_manutenzione = true THEN 1 ELSE 0 END) as veicoliInManutenzione," +
+                "SUM(CASE WHEN v.status_contrattuale = 'Disponibile' THEN 1 ELSE 0 END) as veicoliDisponibili " +
                 "FROM veicolo v JOIN gestione_veicolo_azienda g ON g.id_veicolo = v.id_veicolo WHERE g.id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -89,13 +89,12 @@ public class GestioneVeicoloAziendaDAO {
     }
 
     public void contrassegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
-        String query="UPDATE veicolo SET status_condizione_veicolo =? WHERE id_veicolo IN " +
+        String query="UPDATE veicolo SET status_contrattuale =? WHERE id_veicolo IN " +
                 " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g " +
-                "JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)" +
-                " AND status_condizione_veicolo != 'Manutenzione'";
+                "JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
-                st.setString(1, "Libero");
+                st.setString(1, "Disponibile");
                 st.setInt(2, idAdminAzienda);
                 st.executeUpdate();
         }catch (SQLException e){

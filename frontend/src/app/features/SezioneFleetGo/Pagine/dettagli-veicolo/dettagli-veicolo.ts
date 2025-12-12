@@ -1,4 +1,3 @@
-
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
@@ -10,6 +9,7 @@ import {ActivatedRoute,Router} from '@angular/router';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 
 declare var google:any;
+
 @Component({
   selector: 'app-dettagli-veicolo',
   imports: [
@@ -19,6 +19,7 @@ declare var google:any;
   templateUrl: './dettagli-veicolo.html',
   styleUrl: './dettagli-veicolo.css',
 })
+
 export class DettagliVeicolo {
   private veicoloService:FlottaGlobaleService = inject(FlottaGlobaleService);
   private aziendeAssociateService:AziendeAffiliateService = inject(AziendeAffiliateService);
@@ -78,29 +79,36 @@ export class DettagliVeicolo {
 
   }
 
-  salvaModifiche():void{
-    const veicoloDaInviare:VeicoloDTO = {
-      idVeicolo:this.veicolo.idVeicolo,
-      targaVeicolo:this.veicolo.targaVeicolo,
-      idAziendaAffiliata:this.aziendaSelezionata != null ? this.aziendaSelezionata.idAzienda : undefined,
-      nomeAziendaAffiliata:this.aziendaSelezionata != null ? this.aziendaSelezionata.nomeAzienda : undefined,
-      statusContrattualeVeicolo:"",
-      inManutenzione:false
+  salvaModifiche(): void {
+    const veicoloDaInviare: any = {
+      idVeicolo: this.veicolo.idVeicolo,
+      targaVeicolo: this.veicolo.targaVeicolo,
+      urlImmagine: this.veicolo.urlImmagine,
+      modello: this.veicolo.modello,
+      tipoDistribuzioneVeicolo: this.veicolo.tipoDistribuzioneVeicolo,
+      livelloCarburante: this.veicolo.livelloCarburante,
+      statusContrattualeVeicolo: this.veicolo.statusContrattualeVeicolo,
+      inManutenzione: false
+    };
+
+    if (this.aziendaSelezionata != null) {
+      veicoloDaInviare.idAziendaAffiliata = this.aziendaSelezionata.idAzienda;
+      veicoloDaInviare.nomeAziendaAffiliata = this.aziendaSelezionata.nomeAzienda;
     }
-    console.log(veicoloDaInviare);
+
     this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({
       next: (response) => {
-        if (response) {
-          console.log("Modifiche avvenute con successo");
-          this.reset()
-          this.ngOnInit();
-        }
-        }, error:
-        (err) => {
-        this.reset()
-          console.error("Errore nel caricamento:", err);
-    }});
+        console.log("Modifiche avvenute con successo");
+        this.reset();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        this.reset();
+        console.error("Errore nel caricamento:", err);
+      }
+    });
   }
+
 
   tornaIndietro(){
     window.history.back();

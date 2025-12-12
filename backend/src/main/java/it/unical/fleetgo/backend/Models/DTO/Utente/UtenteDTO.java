@@ -14,6 +14,8 @@ public abstract class UtenteDTO {
     private String email;
     private String password;
 
+    public UtenteDTO() {}
+
     public UtenteDTO(Utente utente) {
         this.idUtente = utente.getIdUtente();
         this.nomeUtente = utente.getNomeUtente();

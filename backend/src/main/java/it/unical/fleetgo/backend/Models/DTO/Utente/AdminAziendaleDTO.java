@@ -14,6 +14,10 @@ public class AdminAziendaleDTO extends UtenteDTO {
     private List<FatturaDTO> fatture;
     private List<LuogoDTO> luoghiDepositoRitiro;
 
+    public AdminAziendaleDTO() {
+        super();
+    }
+
     public AdminAziendaleDTO(AdminAziendale utente) {
         super(utente);
         this.idAziendaGestita = utente.getIdAziendaGestita();
@@ -24,7 +28,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
 
         this.richiesteManutenzione =
                 (utente.getRichiesteManutenzione() != null) ?
-                utente.getRichiesteManutenzione().stream().map(RichiestaManutenzioneDTO::new).toList()
+                utente.getRichiesteManutenzione().stream().map(r -> new RichiestaManutenzioneDTO(r, false)).toList()
                 : null;
 
         this.dipendenti =

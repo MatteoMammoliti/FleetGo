@@ -16,6 +16,8 @@ public class AziendaDTO {
     private String sedeAzienda;
     private String pIva;
 
+    public AziendaDTO() {}
+
     public AziendaDTO(Azienda azienda) {
         this.idAzienda = azienda.getIdAzienda();
         this.idAdminAzienda = azienda.getIdAdmin();

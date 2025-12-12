@@ -1,7 +1,5 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
-import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
-import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.VeicoloService;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,7 +57,7 @@ public class ControllerFlottaVeicoli {
     }
 
     @GetMapping(value = "/listaVeicoli")
-    public ResponseEntity<List<VeicoloDTO>> getListaVeicoli(HttpSession session) {
+    public ResponseEntity<List<VeicoloDTO>> getListaVeicoli() {
         try {
             List<VeicoloDTO> listaVeicoli = veicoloService.getListaVeicoli();
             return ResponseEntity.ok(listaVeicoli);
@@ -70,7 +67,7 @@ public class ControllerFlottaVeicoli {
     }
 
     @GetMapping(value = "/informazioneVeicolo/{targa}")
-    public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa, HttpSession session) {
+    public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa) {
         try{
             VeicoloDTO veicolo = veicoloService.getInformazioniVeicolo(targa);
             return ResponseEntity.ok(veicolo);
@@ -80,9 +77,9 @@ public class ControllerFlottaVeicoli {
     }
 
     @PostMapping(value = "/modificaVeicolo")
-    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicoloDTO) {
+    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicolo) {
         try{
-            veicoloService.modificaDati(veicoloDTO);
+            veicoloService.modificaDati(veicolo);
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");

@@ -10,6 +10,6 @@ export interface VeicoloDTO {
   statusContrattualeVeicolo?: string;
   inManutenzione:boolean;
   nomeAziendaAffiliata?:string;
-  luogoRitiroDeposito?:LuogoDTO;
   idAziendaAffiliata?:number;
+  luogoRitiroDeposito?:LuogoDTO;
 }

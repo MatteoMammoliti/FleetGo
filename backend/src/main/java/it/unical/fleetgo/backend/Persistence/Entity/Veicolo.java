@@ -1,6 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.Entity;
 
-import it.unical.fleetgo.backend.Persistence.DAO.LuogoAziendaDAO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +8,7 @@ import lombok.Setter;
 public class Veicolo {
     private Integer idVeicolo;
     private String targaVeicolo;
-    private String UrlImmagine;
+    private String urlImmagine;
     private String modello;
     private String tipoDistribuzioneVeicolo;
     private Integer livelloCarburante;

@@ -1,5 +1,7 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class VeicoloDTO {
 
     public VeicoloDTO(){}
 
+    @JsonIgnore
     public VeicoloDTO(Veicolo veicolo, boolean caricaLuogo) {
         this.idVeicolo = veicolo.getIdVeicolo();
         this.targaVeicolo = veicolo.getTargaVeicolo();
