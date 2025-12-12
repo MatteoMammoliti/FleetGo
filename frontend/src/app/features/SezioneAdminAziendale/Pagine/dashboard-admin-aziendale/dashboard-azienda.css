@@ -1,3 +1,9 @@
+.container-card{
+  display: flex;
+  gap: 1rem;
+}
+
+
 .container {
   display: flex;
   margin: auto;

@@ -13,10 +13,10 @@ import {Router} from '@angular/router';
   styleUrl: './tabella-auto.css',
 })
 export class TabellaAuto {
-  private route = inject(Router);
   @Input() listaVeicoli: VeicoloDTO[] = [];
   @Input() listaAziende: AziendaDTO[] = [];
   @Output() richiestaEliminazione = new EventEmitter<string>();
+  @Output() apriInfoVeicolo=new EventEmitter<string>();
 
   filtroTarga = '';
   filtroModello = '';
@@ -38,7 +38,5 @@ export class TabellaAuto {
     this.richiestaEliminazione.emit(targaVeicolo);
   }
 
-  dettagliVeicolo(targaVeicolo: string) {
-  this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
-  }
+
 }

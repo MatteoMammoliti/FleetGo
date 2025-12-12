@@ -5,6 +5,10 @@ import { ModificaDatiComponent } from '@features/SezioneAdminAziendale/Pagine/mo
 import { GestioneDipendentiComponent} from '@features/SezioneAdminAziendale/Pagine/gestione-dipendenti/gestione-dipendenti';
 import { DettagliDipendente } from '@features/SezioneAdminAziendale/Componenti/dettagli-dipendente/dettagli-dipendente';
 import {FlottaAdminAziendale} from '@features/SezioneAdminAziendale/Pagine/flotta-admin-aziendale/flotta-admin-aziendale';
+import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
+import {
+  DettagliVeicoloAziendale
+} from '@features/SezioneAdminAziendale/Pagine/dettagli-veicolo-aziendale/dettagli-veicolo-aziendale';
 
 
 export const AZIENDA_ROUTES: Routes = [
@@ -20,7 +24,9 @@ export const AZIENDA_ROUTES: Routes = [
       { path: 'dipendenti', component : GestioneDipendentiComponent},
 
       { path: 'dettagli-dipendente/:id', component : DettagliDipendente },
-      { path: 'flotta', component : FlottaAdminAziendale }
+      { path: 'flotta', component : FlottaAdminAziendale },
+      { path: 'dettagli-veicolo/:targa', component: DettagliVeicoloAziendale}
+
     ],
   },
 ];

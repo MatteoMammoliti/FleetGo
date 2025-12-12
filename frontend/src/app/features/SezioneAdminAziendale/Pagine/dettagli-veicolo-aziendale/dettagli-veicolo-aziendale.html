@@ -1,0 +1,11 @@
+<div class="contenitore">
+  @if (!veicolo) {
+    <p>Caricamento veicolo in corso</p>
+  } @else {
+    <div id="map" style="height: 400px;"></div>
+
+    <button (click)="salvaPosizione()">
+      Salva Posizione
+    </button>
+  }
+</div>

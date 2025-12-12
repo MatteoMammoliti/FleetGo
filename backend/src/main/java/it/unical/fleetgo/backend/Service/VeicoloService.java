@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +46,22 @@ public class VeicoloService {
             return listaVeicoli.stream().map(v -> new VeicoloDTO(v, true)).toList();
         }
     }
+
+    public List<VeicoloDTO> getListaVeicoliAziendali(Integer azienda) throws SQLException, RuntimeException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
+            List<Veicolo> listaVeicoli =  veicoloDAO.getVeicoliAssegnatiAzienda(azienda);
+            List<VeicoloDTO> listaVeicoliDTO = new ArrayList<>();
+
+            for(Veicolo v : listaVeicoli) {
+                VeicoloDTO veicoloDTO = new VeicoloDTO(v,false);
+                listaVeicoliDTO.add(veicoloDTO);
+            }
+            return listaVeicoliDTO;
+        }
+    }
+
+
 
     public VeicoloDTO getInformazioniVeicolo(String targa) throws SQLException {
 

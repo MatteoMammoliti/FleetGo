@@ -55,7 +55,7 @@
             <td>{{ auto.nomeAziendaAffiliata }}</td>
 
             <td><button class="bottone-rimuovi" (click)="eliminaVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
-            <td><button class="bottone-rimuovi" (click)="dettagliVeicolo(auto.targaVeicolo)">Info</button></td>
+            <td><button class="bottone-rimuovi" (click)="apriInfoVeicolo.emit(auto.targaVeicolo)">Info</button></td>
           </tr>
         }
 

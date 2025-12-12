@@ -17,6 +17,4 @@ export class FlottaAdminAziendaleService {
     return this.http.get(`${this.apiUrl}/flottaAziendale`, { withCredentials: true });
   }
 
-
-
 }

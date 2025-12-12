@@ -2,11 +2,11 @@
   <h1 class="titolo">Flotta di FleetGo</h1>
 </div>
 
-<app-form-aggiungi-auto 
+<app-form-aggiungi-auto
     (onSalvataggio)="gestisciSalvataggio($event)">
 </app-form-aggiungi-auto>
 
-<app-tabella-auto 
-    [listaVeicoli]="listaVeicoli" 
-    (richiestaEliminazione)="gestisciEliminazione($event)">
+<app-tabella-auto
+    [listaVeicoli]="listaVeicoli"
+    (richiestaEliminazione)="gestisciEliminazione($event)" (apriInfoVeicolo)="dettagliVeicolo($event)">
 </app-tabella-auto>

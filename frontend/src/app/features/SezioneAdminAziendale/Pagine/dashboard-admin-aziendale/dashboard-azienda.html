@@ -1,4 +1,24 @@
-  <div class="container">
+<div class="container-card">
+  <app-card-statistiche-dashboard-fleet
+    titolo="Richieste noleggio"
+    [valore]="settaTotaleRichiesteNoleggio()"
+    icona="bi-car-front"
+    coloreSfondo="card-blue"
+    descrizione="In attesa di approvazione">
+  </app-card-statistiche-dashboard-fleet>
+
+  <app-card-statistiche-dashboard-fleet
+    titolo="Resoconto spesa"
+    [valore]="settaTotaleSpesaMeseCorrente()"
+    icona="bi-car-front"
+    coloreSfondo="card-orange"
+    descrizione="Spesi questo mese">
+  </app-card-statistiche-dashboard-fleet>
+
+</div>
+
+
+<div class="container">
 
   <div class="box-largo"
     titolo="Andamento spese mese corrente">
@@ -8,8 +28,8 @@
     <div titolo="Stato Flotta" >
       <app-grafico-stato-flotta [contenitoreInput]=contenitoreInputGraficoStatoFlotta></app-grafico-stato-flotta>
     </div>
-    <div>
-      <h2>"Attività"</h2>
+    <div style="margin-top: 20px; min-height: 300px;">
+      <app-grafico-a-candela-luoghi [dati]=datiGraficoLuoghi></app-grafico-a-candela-luoghi>
     </div>
   </div>
 </div>
