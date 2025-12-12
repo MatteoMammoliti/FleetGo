@@ -1,30 +1,73 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
 
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
+import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
+import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
+import it.unical.fleetgo.backend.Service.FleetGoService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerDashboardFleetGo {
 
-    @Autowired
-    private UtenteService utenteService;
+    @Autowired private UtenteService utenteService;
+    @Autowired private FleetGoService fleetGoService;
+
 
     @GetMapping("/statistiche")
-    public ResponseEntity<ContenitoreStatisticheNumeriche> getStatisticheNumeriche(HttpSession session){
+    public ResponseEntity<ContenitoreStatisticheNumeriche> getStatisticheNumeriche(){
         try{
             return ResponseEntity.ok(utenteService.getStatisticheNumeriche());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/fattureDaGenerare")
+    public ResponseEntity<List<FatturaDaGenerareDTO>> getFattureDagenerare(){
+        try{
+            return ResponseEntity.ok(fleetGoService.getGeneraFattura());
+        }catch (RuntimeException exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (SQLException sqlException){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @GetMapping("/richiesteManutezioneDaAccettare")
+    public ResponseEntity<List<RichiestaManutenzioneDTO>> getRichiesteManutenzioneDaAccettare(){
+        try{
+            return ResponseEntity.ok(fleetGoService.getRichiesteManutenzioneDaAccettare());
+        }catch (RuntimeException exception){
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/dettagliRichiestaManutenzone/{id}")
+    public ResponseEntity<RichiestaManutenzioneDTO> getDettagliRichiestaManutenzione(@PathVariable Integer id){
+        try{
+            return ResponseEntity.ok(fleetGoService.getRichiesteManutenzioneById(id));
+        }catch (RuntimeException exception){
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+    }
+
 }

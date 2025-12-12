@@ -12,13 +12,18 @@ public class ContenitoreStatisticheNumeriche {
     private int veicoliManutenzione;
     private int veicoliNoleggati;
     private int totaleAziende;
+    private int fattureDaGenerare;
+    private int guadagnoMensile;
 
-    public ContenitoreStatisticheNumeriche(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende){
+    public ContenitoreStatisticheNumeriche(int totaleVeicoli, int veicoliAssegnati, int veicoliDisponibili, int veicoliManutenzione, int totaleAziende,
+                                           int fattureDaGenerare, int guadagnoMensile) {
         this.totaleVeicoli=totaleVeicoli;
         this.veicoliAssegnati=veicoliAssegnati;
         this.veicoliDisponibili=veicoliDisponibili;
         this.veicoliManutenzione=veicoliManutenzione;
         this.totaleAziende=totaleAziende;
+        this.fattureDaGenerare=fattureDaGenerare;
+        this.guadagnoMensile=guadagnoMensile;
     }
 
     public ContenitoreStatisticheNumeriche(int veicoliNoleggati, int veicoliDisponibili, int veicoliManutenzione) {

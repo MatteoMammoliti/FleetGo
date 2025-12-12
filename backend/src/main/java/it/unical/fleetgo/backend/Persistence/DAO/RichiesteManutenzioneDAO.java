@@ -152,6 +152,21 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
+    public RichiestaManutenzione getRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+        String query="SELECT * FROM richiesta_manutenzione WHERE id_manutenzione=?";
+        try(PreparedStatement st =con.prepareStatement(query)){
+            st.setInt(1,idManutenzione);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
+                estraiRichiestaSingolaManutenzione(richiesta,st);
+                return richiesta;
+
+            }
+        }
+        return null;
+    }
+
     /**
      * Ritorna tutte le richieste di manutenzione ancora da dover accettare.
      * @return
@@ -219,11 +234,25 @@ public class RichiesteManutenzioneDAO {
         while(rs.next()){
             RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
             richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
-            richiesta.setIdAdmin(rs.getInt("id_admin"));
+            richiesta.setIdAdmin(rs.getInt("id_admin_azienda"));
             richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
             richiesta.setDataRichiesta(rs.getDate("data_richiesta").toString());
             richiesta.setTipoManutenzione(rs.getString("tipo_manutenzione"));
+            richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
+            richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
             richieste.add(richiesta);
+        }
+    }
+    private void estraiRichiestaSingolaManutenzione(RichiestaManutenzione richiesta, PreparedStatement st) throws SQLException {
+        ResultSet rs = st.executeQuery();
+        if (rs.next()){
+            richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
+            richiesta.setIdAdmin(rs.getInt("id_admin_azienda"));
+            richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
+            richiesta.setDataRichiesta(rs.getDate("data_richiesta").toString());
+            richiesta.setTipoManutenzione(rs.getString("tipo_manutenzione"));
+            richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
+            richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
         }
     }
 }

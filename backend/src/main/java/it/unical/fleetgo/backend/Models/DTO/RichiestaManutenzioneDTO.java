@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,6 @@ public class RichiestaManutenzioneDTO {
     private Boolean accettata;
     private Boolean completata;
     private VeicoloDTO veicolo;
+
+    public RichiestaManutenzioneDTO() {}
 }

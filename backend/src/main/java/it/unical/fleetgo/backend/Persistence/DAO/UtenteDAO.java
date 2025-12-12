@@ -276,9 +276,13 @@ public class UtenteDAO {
                 " (SELECT COUNT(*) FROM veicolo) as veicoli_totali, " +
                 " (SELECT COUNT (*) FROM azienda) as aziende_totali, " +
                 " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Manutenzione') as veicoli_in_manutenzione," +
-                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Noleggiato') as veicoli_assegnati," +
-                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Libero') as veicoli_disponibili";
+                " (SELECT COUNT (*) FROM gestione_veicolo_azienda) as veicoli_assegnati," +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Libero') as veicoli_disponibili, " +
+                " (SELECT COUNT (*) FROM view_fatture_da_generare) as fatture_da_generare , " +
+                " (SELECT SUM(costo) FROM fattura WHERE fattura_pagata=true AND mese_fattura=? AND anno_fattura =?) as guadagno_mensile";
         try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,LocalDate.now().getMonthValue());
+            st.setInt(2,LocalDate.now().getYear());
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 return new ContenitoreStatisticheNumeriche(
@@ -286,7 +290,9 @@ public class UtenteDAO {
                         rs.getInt("veicoli_assegnati"),
                         rs.getInt("veicoli_disponibili"),
                         rs.getInt("veicoli_in_manutenzione"),
-                        rs.getInt("aziende_totali")
+                        rs.getInt("aziende_totali"),
+                        rs.getInt("fatture_da_generare"),
+                        rs.getInt("guadagno_mensile")
                 );
             }
         }catch (Exception e){
