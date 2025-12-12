@@ -37,13 +37,29 @@
     </app-card-statistiche-dashboard-fleet>
 
   </div>
-  <div>
-    <app-fatture-da-generare [fatture]="fatture" ></app-fatture-da-generare>
+
+  <div class="griglia-operativa">
+
+    <div class="colonna-sx">
+      <app-richieste-manutenzione-da-gestire
+        [richiesteManutenzioneDaGestire]="richiesteManutenzione"
+        (inviaRichiesta)="caricaRichiestaManutenzione($event)">
+      </app-richieste-manutenzione-da-gestire>
+    </div>
+
+    <div class="colonna-dx">
+      <app-fatture-da-generare [fatture]="fatture"></app-fatture-da-generare>
+    </div>
+
   </div>
-  <div>
-    <app-richieste-manutenzione-da-gestire [richiesteManutenzioneDaGestire]="richiesteManutenzione" (inviaRichiesta)="caricaRichiestaManutenzione($event)"></app-richieste-manutenzione-da-gestire>
-  </div>
+
   @if(richiestaSelezionata){
-    <app-gestisci-richiesta-manutenzione [datiRichiesta]="richiestaSelezionata" (close)="chiudiFinestraModale()" (accettaRichiesta)="accettaRichiestaManutenzione($event)" (rifiutaRichiesta)="rifiutaRichiesta($event)"></app-gestisci-richiesta-manutenzione>
+    <app-gestisci-richiesta-manutenzione
+      [datiRichiesta]="richiestaSelezionata"
+      (close)="chiudiFinestraModale()"
+      (accettaRichiesta)="accettaRichiestaManutenzione($event)"
+      (rifiutaRichiesta)="rifiutaRichiesta($event)">
+    </app-gestisci-richiesta-manutenzione>
   }
+
 </div>

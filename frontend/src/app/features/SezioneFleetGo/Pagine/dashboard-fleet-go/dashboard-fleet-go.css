@@ -1,33 +1,64 @@
+/* --- CONTENITORE PRINCIPALE --- */
 .dashboard-container {
-  padding: 30px;
-  background-color: #f8f9fa;
-  min-height: 100vh;
+  padding: 25px;
+  max-width: 1600px; /* Larghezza massima per schermi molto larghi */
+  margin: 0 auto;    /* Centra il contenitore */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* --- TITOLO --- */
 .titolo-dashboard {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 1.8rem;
   color: #0b2559;
   margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
-
+/* --- RIGA 1: GRIGLIA KPI (Le 4 Card) --- */
 .griglia-kpi {
   display: grid;
-
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 25px;
+  /* Crea colonne automatiche che non scendono sotto i 240px */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px; /* Spazio prima della sezione successiva */
 }
 
-@media (max-width: 992px) {
-  .griglia-kpi {
-    grid-template-columns: repeat(2, 1fr);
+/* --- RIGA 2: GRIGLIA OPERATIVA (Fatture + Manutenzioni) --- */
+.griglia-operativa {
+  display: grid;
+
+  /* MODIFICA QUI: */
+  /* 2 parti a sinistra (Manutenzioni), 1 parte a destra (Fatture) */
+  grid-template-columns: 1fr 1fr;
+
+  gap: 25px;
+  align-items: start;
+}
+
+/* --- COLONNE --- */
+/* Stili opzionali se vuoi forzare altezze minime o altro */
+.colonna-sx, .colonna-dx {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* --- MEDIA QUERY (Per Tablet e Cellulari) --- */
+@media (max-width: 1024px) {
+  .griglia-operativa {
+    /* Sotto i 1024px è meglio metterli uno sotto l'altro (1 colonna) */
+    /* altrimenti la tabella si schiaccia troppo */
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 600px) {
-  .griglia-kpi {
-    grid-template-columns: 1fr;
+  .dashboard-container {
+    padding: 15px; /* Meno padding sui telefoni */
+  }
+
+  .titolo-dashboard {
+    font-size: 1.5rem;
   }
 }
