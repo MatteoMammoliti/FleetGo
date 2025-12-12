@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {TabellaAutoAdminAzienda} from '@features/SezioneAdminAziendale/Componenti/tabella-auto-admin-azienda/tabella-auto-admin-azienda';
 import {FlottaAdminAziendaleService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
@@ -14,7 +15,7 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 export class FlottaAdminAziendale {
 
 
-  constructor(private service:FlottaAdminAziendaleService) {}
+  constructor(private service:FlottaAdminAziendaleService, private router:Router) {}
 
   listaVeicoli:VeicoloDTO[] = [];
 
@@ -40,6 +41,7 @@ export class FlottaAdminAziendale {
     });
   }
 
-
-
+  apriGestioneVeicolo(targa:string){
+    this.router.navigate(['/dashboardAzienda/dettagli-veicolo', targa]);
+  }
 }

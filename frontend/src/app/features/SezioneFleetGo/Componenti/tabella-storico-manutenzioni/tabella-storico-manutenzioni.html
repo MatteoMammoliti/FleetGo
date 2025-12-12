@@ -1,0 +1,47 @@
+<section class="section-history mt-large">
+  <div class="header-flex">
+    <h2 class="section-title">
+      <i class="bi bi-clock-history"></i> Storico Interventi
+    </h2>
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" [(ngModel)]="filtroTarga" placeholder="Cerca targa...">
+    </div>
+  </div>
+
+  @if (listaStorico.length === 0) {
+    <div class="empty-state">Lo storico è vuoto.</div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="fleet-table history-table">
+        <thead>
+        <tr>
+          <th>Veicolo</th>
+          <th>Data Richiesta</th>
+          <th>Tipo Intervento</th>
+          <th>Esito</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (richiesta of listaStoricoFiltrata; track richiesta.idManutenzione) {
+            <tr>
+              <td>
+                <span class="plate-simple">{{ richiesta.veicolo.targaVeicolo }}</span>
+                <small class="text-muted"> ({{ richiesta.veicolo.modello }})</small>
+              </td>
+              <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+              <td>{{ richiesta.tipoManutenzione }}</td>
+              <td>
+                @if (richiesta.completata) {
+                  <span class="badge badge-green">Completata</span>
+                } @else {
+                  <span class="badge badge-red">Rifiutata</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

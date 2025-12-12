@@ -73,6 +73,27 @@ public class VeicoloDAO {
         }
     }
 
+
+    public List<Veicolo> getVeicoliAssegnatiAzienda(Integer idAzienda) {
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda WHERE a.id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            List<Veicolo> veicoli = new ArrayList<>();
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                veicoli.add(getVeicoloDaResultSet(rs,false,true));
+            }
+            return veicoli;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
 

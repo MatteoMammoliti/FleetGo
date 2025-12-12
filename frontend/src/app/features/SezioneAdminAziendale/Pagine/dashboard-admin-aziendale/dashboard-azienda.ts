@@ -4,12 +4,19 @@ import {GraficoAndamentoUtilizzo} from '@shared/Componenti/Grafici/grafico-andam
 import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dashboard-service';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {ContenitoreDatiGraficoAndamento} from '@core/models/ContenitoreDatiGraficoAndamento.models';
+import {
+  CardStatisticheDashboardFleet
+} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {ContenitoreDatiGraficoLuoghiAuto} from '@core/models/ContenitoreDatiGraficoLuoghiAuto.models';
+import {GraficoACandelaLuoghi} from '@shared/Componenti/Grafici/grafico-a-candela-luoghi/grafico-a-candela-luoghi';
 
 @Component({
   selector: 'app-dashboard-azienda',
   imports: [
     GraficoStatoFlotta,
-    GraficoAndamentoUtilizzo
+    GraficoAndamentoUtilizzo,
+    CardStatisticheDashboardFleet,
+    GraficoACandelaLuoghi
   ],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
@@ -23,6 +30,7 @@ export class DashboardAzienda {
     //SOLO PER TEST
     this.dammiEtichetteMeseCorrente();
     this.caricaDatiGrafico(this.lunghezzaMeseCorrente);
+    this.caricaDatiGraficoLuoghi();
   }
 
 
@@ -47,17 +55,52 @@ export class DashboardAzienda {
     });
   }
 
+  settaTotaleRichiesteNoleggio(){
+    return 12;
+  }
+
+  settaTotaleSpesaMeseCorrente(){
+    return this.totaleSpeseMeseCorrente;
+  }
+
+  //DA COLLEGARE AL BACKEND
+  datiGraficoLuoghi: ContenitoreDatiGraficoLuoghiAuto[] = [];
+  caricaDatiGraficoLuoghi() {
+    this.datiGraficoLuoghi.push({
+      nomeLuogo:"Piazza",
+      numeroVeicoliDisponibili:10,
+      numeroVeicoliOccupati:5
+    });
+    this.datiGraficoLuoghi.push({
+      nomeLuogo:"Villa Comunale",
+      numeroVeicoliDisponibili:6,
+      numeroVeicoliOccupati:5
+    });
+    this.datiGraficoLuoghi.push({
+      nomeLuogo:"Campo Sportivo",
+      numeroVeicoliDisponibili:10,
+      numeroVeicoliOccupati:2
+    });
+    this.datiGraficoLuoghi.push({
+      nomeLuogo:"Via Roma",
+      numeroVeicoliDisponibili:3,
+      numeroVeicoliOccupati:5
+    });
+  }
 
 
   //GRAFICO ANDAMENTO SPESE MENSILE DA COLLEGARE solo test
 
-  lunghezzaMeseCorrente:number=0;
+  lunghezzaMeseCorrente:number=0
+  totaleSpeseMeseCorrente:number=0;
   datiGraficoAndamento: ContenitoreDatiGraficoAndamento = {} as ContenitoreDatiGraficoAndamento;
+
 
   caricaDatiGrafico(numeroGiorni:number){
     const spesaMensilePerGiorni:number[]=[];
     for(let i=0; i<numeroGiorni; i++){
       spesaMensilePerGiorni.push(this.generaNumeroRandom(i*10,(i+1)*10%6));
+      this.totaleSpeseMeseCorrente+=spesaMensilePerGiorni[i];
     }
     this.datiGraficoAndamento.listaSpese=spesaMensilePerGiorni;
   }

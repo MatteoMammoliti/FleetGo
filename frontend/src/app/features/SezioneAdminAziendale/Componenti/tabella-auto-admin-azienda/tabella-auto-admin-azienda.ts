@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -20,6 +20,7 @@ export class TabellaAutoAdminAzienda {
   filtroManutenzione="";
 
   @Input() listaVeicoli:VeicoloDTO[]=[];
+  @Output() apriGestioneVeicolo:EventEmitter<string>=new EventEmitter()
 
 
   get veicoliFiltrati(): VeicoloDTO[] {

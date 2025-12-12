@@ -76,7 +76,6 @@ export class DettagliVeicolo {
         this.disegnaMappa(this.luogo.latitudine, this.luogo.longitudine);
       }, 500);
     });
-
   }
 
   salvaModifiche(): void {

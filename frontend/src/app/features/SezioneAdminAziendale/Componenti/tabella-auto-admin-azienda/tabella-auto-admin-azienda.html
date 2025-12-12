@@ -28,7 +28,6 @@
     <th>Modello</th>
     <th>Stato contrattuale</th>
     <th>Stato veicolo</th>
-    <th>Rimuovi</th>
     <th>Info</th>
   </tr>
   </thead>
@@ -46,8 +45,7 @@
         }
 
 
-        <td><button class="bottone-rimuovi" (click)="rimuoviVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
-        <td><button class="bottone-rimuovi">Info</button></td>
+        <td><button class="bottone-rimuovi" (click)="apriGestioneVeicolo.emit(auto.targaVeicolo)">Gestisci veicolo</button></td>
       </tr>
     }
 

@@ -4,6 +4,7 @@ import {TabellaAuto} from '@features/SezioneFleetGo/Componenti/tabella-auto/tabe
 import {FormAggiungiAuto} from '@features/SezioneFleetGo/Componenti/form-aggiungi-auto/form-aggiungi-auto';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -20,6 +21,7 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 
 export class FlottaGlobale implements OnInit{
   private service= inject(FlottaGlobaleService);
+  private route = inject(Router);
   listaVeicoli:VeicoloDTO[]=[];
 
   ngOnInit(): void {
@@ -59,5 +61,9 @@ export class FlottaGlobale implements OnInit{
         console.error("Errore durante l'eliminazione del veicolo:", err);
       }
     });
+  }
+
+  dettagliVeicolo(targaVeicolo: string) {
+    this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
   }
 }

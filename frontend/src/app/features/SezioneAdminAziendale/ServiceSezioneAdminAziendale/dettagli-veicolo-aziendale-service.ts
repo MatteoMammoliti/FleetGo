@@ -1,0 +1,27 @@
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
+import {environment} from '@env/environment';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class DettagliVeicoloAziendaleService {
+  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+
+  constructor(private http: HttpClient) {}
+
+  public richiediVeicolo(targa:string|null):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/informazioneVeicolo/${targa}`, {withCredentials:true});
+  }
+
+  aggiornaPosizioneVeicolo(veicolo: VeicoloDTO): Observable<string> {
+    return this.http.post(`${this.apiUrl}/aggiornaPosizioneVeicolo`, veicolo, {responseType: 'text',withCredentials: true});
+  }
+
+
+
+}
