@@ -37,12 +37,7 @@ public class AdminAziendaleService {
             List<DipendenteDTO> listaDipendenti = new ArrayList<>();
 
             for(Dipendente d : dipendenti) {
-                DipendenteDTO dipendenteDTO = new DipendenteDTO();
-                dipendenteDTO.setIdUtente(d.getIdUtente());
-                dipendenteDTO.setNomeUtente(d.getNomeUtente());
-                dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
-                dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
-                dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
+                DipendenteDTO dipendenteDTO = new DipendenteDTO(d);
                 listaDipendenti.add(dipendenteDTO);
             }
 

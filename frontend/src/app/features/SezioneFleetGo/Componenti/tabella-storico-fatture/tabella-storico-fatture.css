@@ -1,0 +1,41 @@
+/* Stili specifici per le badge e bottoni */
+.table-container {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Badge personalizzate */
+.badge-success, .badge-warning {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Bottone Download */
+.btn-icon.download {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon.download:hover {
+  background-color: #0284c7;
+  color: white;
+}

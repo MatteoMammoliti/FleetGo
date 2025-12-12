@@ -23,8 +23,7 @@ public class FleetGoService {
     public List<FatturaDaGenerareDTO> getGeneraFattura() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()){
             GeneraFatturaDAO generaFatturaDAO = new GeneraFatturaDAO(connection);
-            List<FatturaDaGenerareDTO> fatture = generaFatturaDAO.generaFatturaDaGenerare();
-            return fatture;
+            return generaFatturaDAO.generaFatturaDaGenerare();
         }
     }
     public List<RichiestaManutenzioneDTO> getRichiesteManutenzioneDaAccettare() throws SQLException {
@@ -33,14 +32,7 @@ public class FleetGoService {
             RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
             List<RichiestaManutenzione> richieste =richiesteManutenzioneDAO.getRichiesteManutenzioneDaAccettare();
             for(RichiestaManutenzione ric :richieste){
-                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO();
-                dto.setIdManutenzione(ric.getIdManutenzione());
-                dto.setAccettata(ric.getRichiestaAccettata());
-                dto.setIdAdminAzienda(ric.getIdAdmin());
-                dto.setCompletata(ric.getRichiestaCompletata());
-                dto.setIdVeicolo(ric.getIdVeicolo());
-                dto.setDataRichiesta(ric.getDataRichiesta());
-                dto.setTipoManutenzione(ric.getTipoManutenzione());
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric);
                 richiesteDTO.add(dto);
             }
         }
@@ -48,28 +40,16 @@ public class FleetGoService {
     }
 
     public RichiestaManutenzioneDTO getRichiesteManutenzioneById(int id) throws SQLException {
-        RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO();
+
         try(Connection connection=this.dataSource.getConnection()){
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
             RichiestaManutenzione richiesta = dao.getRichiestaManutenzione(id);
             if(richiesta!=null){
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(richiesta);
                 dto.setIdManutenzione(id);
-                dto.setIdAdminAzienda(richiesta.getIdAdmin());
-                dto.setIdVeicolo(richiesta.getIdVeicolo());
-                dto.setDataRichiesta(richiesta.getDataRichiesta());
-                dto.setTipoManutenzione(richiesta.getTipoManutenzione());
-                dto.setAccettata(richiesta.getRichiestaAccettata());
-                dto.setCompletata(richiesta.getRichiestaCompletata());
-                Veicolo veicolo = richiesta.getVeicolo();
-                VeicoloDTO veicoloDTO = new VeicoloDTO();
-                veicoloDTO.setTargaVeicolo(veicolo.getTargaVeicolo());
-                veicoloDTO.setModello(veicolo.getModello());
-                veicoloDTO.setNomeAziendaAffiliata(veicolo.getNomeAziendaAffiliata());
-                dto.setVeicolo(veicoloDTO);
                 return dto;
             }
             return null;
         }
     }
-
 }

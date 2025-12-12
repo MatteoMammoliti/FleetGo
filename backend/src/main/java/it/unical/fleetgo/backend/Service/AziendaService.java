@@ -56,12 +56,7 @@ public class AziendaService {
 
             List<AziendaDTO> listaAziende = new ArrayList<>();
             for(Azienda a : elencoAziende) {
-                AziendaDTO aziendaDTO = new AziendaDTO();
-                aziendaDTO.setIdAzienda(a.getIdAzienda());
-                aziendaDTO.setNomeAzienda(a.getNomeAzienda());
-                aziendaDTO.setSedeAzienda(a.getSedeAzienda());
-                aziendaDTO.setPIva(a.getPIva());
-                aziendaDTO.setIdAdminAzienda(a.getIdAdmin());
+                AziendaDTO aziendaDTO = new AziendaDTO(a);
                 listaAziende.add(aziendaDTO);
             }
             return listaAziende;

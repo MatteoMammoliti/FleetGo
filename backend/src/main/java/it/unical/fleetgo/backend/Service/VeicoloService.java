@@ -44,13 +44,7 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             List<Veicolo> listaVeicoli =  veicoloDAO.getVeicoliDisponibiliInPiattaforma();
-            List<VeicoloDTO> listaVeicoliDTO = new ArrayList<>();
-
-            for(Veicolo v : listaVeicoli) {
-                VeicoloDTO veicoloDTO = getVeicoloDTO(v);
-                listaVeicoliDTO.add(veicoloDTO);
-            }
-            return listaVeicoliDTO;
+            return listaVeicoli.stream().map(VeicoloDTO::new).toList();
         }
     }
 
@@ -59,13 +53,7 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             Veicolo veicolo = veicoloDAO.getVeicoloByTarga(targa);
-            VeicoloDTO veicoloDTO = getVeicoloDTO(veicolo);
-            LuogoDTO luogo = new LuogoDTO();
-            luogo.setNomeLuogo(veicolo.getLuogo().getNomeLuogo());
-            luogo.setLatitudine(veicolo.getLuogo().getLatitudine());
-            luogo.setLongitudine(veicolo.getLuogo().getLongitudine());
-            veicoloDTO.setLuogoRitiroDeposito(luogo);
-            return veicoloDTO;
+            return new VeicoloDTO(veicolo);
         }
     }
 
@@ -109,24 +97,5 @@ public class VeicoloService {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             veicoloDAO.cambiaStatusVeicolo(veicolo.getStatusCondizioneVeicolo(), veicolo.getIdVeicolo());
         }
-    }
-
-    private VeicoloDTO getVeicoloDTO(Veicolo v) {
-        VeicoloDTO veicoloDTO = new VeicoloDTO();
-        veicoloDTO.setIdVeicolo(v.getIdVeicolo());
-        veicoloDTO.setTargaVeicolo(v.getTargaVeicolo());
-        veicoloDTO.setUrlImmagine(v.getUrlImmagine());
-        veicoloDTO.setModello(v.getModello());
-        veicoloDTO.setTipoDistribuzioneVeicolo(v.getTipoDistribuzioneVeicolo());
-        veicoloDTO.setLivelloCarburante(v.getLivelloCarburante());
-        veicoloDTO.setStatusCondizioneVeicolo(v.getStatusCondizioneVeicolo());
-        if(v.getNomeAziendaAffiliata()!=null){
-            veicoloDTO.setNomeAziendaAffiliata(v.getNomeAziendaAffiliata());
-            veicoloDTO.setIdAziendaAffiliata(v.getIdAziendaAffiliata());
-        }else {
-            veicoloDTO.setNomeAziendaAffiliata(null);
-            veicoloDTO.setIdAziendaAffiliata(null);
-        }
-        return veicoloDTO;
     }
 }

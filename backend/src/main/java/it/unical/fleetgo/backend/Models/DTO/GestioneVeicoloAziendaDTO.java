@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Models.DTO;
+import it.unical.fleetgo.backend.Persistence.Entity.GestioneVeicoloAzienda;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,4 +11,14 @@ public class GestioneVeicoloAziendaDTO {
     private Integer idAzienda;
     private Integer idLuogo;
     private LuogoDTO luogo;
+
+    public GestioneVeicoloAziendaDTO() {}
+
+    public GestioneVeicoloAziendaDTO(GestioneVeicoloAzienda gestione) {
+        this.idVeicolo = gestione.getIdVeicolo();
+        this.Veicolo = new VeicoloDTO(gestione.getVeicolo());
+        this.idAzienda = gestione.getIdAzienda();
+        this.idLuogo = gestione.getIdLuogo();
+        this.luogo = new LuogoDTO(gestione.getLuogo());
+    }
 }

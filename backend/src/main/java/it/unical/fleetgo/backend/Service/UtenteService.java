@@ -107,13 +107,7 @@ public class UtenteService {
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
             Dipendente d = utenteDAO.getDipendenteDaId(idUtente);
-            DipendenteDTO dipendenteDTO = new DipendenteDTO();
-            dipendenteDTO.setIdUtente(d.getIdUtente());
-            dipendenteDTO.setNomeUtente(d.getNomeUtente());
-            dipendenteDTO.setCognomeUtente(d.getCognomeUtente());
-            dipendenteDTO.setIdAziendaAffiliata(d.getIdAziendaAffiliata());
-            dipendenteDTO.setDataNascitaUtente(d.getDataNascitaUtente().toString());
-            return dipendenteDTO;
+            return new DipendenteDTO(d);
         }
     }
 

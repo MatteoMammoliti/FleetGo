@@ -1,5 +1,8 @@
 package it.unical.fleetgo.backend.Models.DTO.Utente;
 import it.unical.fleetgo.backend.Models.DTO.*;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
+
 import java.util.List;
 
 public class AdminAziendaleDTO extends UtenteDTO {
@@ -10,4 +13,38 @@ public class AdminAziendaleDTO extends UtenteDTO {
     private List<GestioneVeicoloAziendaDTO> veicoloInGestione;
     private List<FatturaDTO> fatture;
     private List<LuogoDTO> luoghiDepositoRitiro;
+
+    public AdminAziendaleDTO(AdminAziendale utente) {
+        super(utente);
+        this.idAziendaGestita = utente.getIdAziendaGestita();
+        this.richiesteNoleggio =
+                (utente.getRichiesteNoleggio() != null) ?
+                utente.getRichiesteNoleggio().stream().map(RichiestaNoleggioDTO::new).toList()
+                : null;
+
+        this.richiesteManutenzione =
+                (utente.getRichiesteManutenzione() != null) ?
+                utente.getRichiesteManutenzione().stream().map(RichiestaManutenzioneDTO::new).toList()
+                : null;
+
+        this.dipendenti =
+                (utente.getDipendenti() != null) ?
+                utente.getDipendenti().stream().map(DipendenteDTO::new).toList()
+                : null;
+
+        this.veicoloInGestione =
+                (utente.getVeicoliInGestione() != null) ?
+                utente.getVeicoliInGestione().stream().map(GestioneVeicoloAziendaDTO::new).toList()
+                : null;
+
+        this.fatture =
+                (utente.getFatture() != null) ?
+                utente.getFatture().stream().map(FatturaDTO::new).toList()
+                : null;
+
+        this.luoghiDepositoRitiro =
+                (utente.getLuoghiDepositoRitiro() != null) ?
+                utente.getLuoghiDepositoRitiro().stream().map(LuogoDTO::new).toList()
+                : null;
+    }
 }

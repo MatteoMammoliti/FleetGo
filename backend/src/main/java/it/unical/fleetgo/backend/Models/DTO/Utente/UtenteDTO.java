@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Models.DTO.Utente;
+import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +13,11 @@ public abstract class UtenteDTO {
     String tipoUtente;
     private String email;
     private String password;
+
+    public UtenteDTO(Utente utente) {
+        this.idUtente = utente.getIdUtente();
+        this.nomeUtente = utente.getNomeUtente();
+        this.cognomeUtente = utente.getCognomeUtente();
+        this.dataNascitaUtente = utente.getDataNascitaUtente().toString();
+    }
 }

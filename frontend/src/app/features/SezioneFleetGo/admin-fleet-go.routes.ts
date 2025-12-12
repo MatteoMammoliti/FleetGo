@@ -4,6 +4,7 @@ import { DashboardFleetGo } from '@features/SezioneFleetGo/Pagine/dashboard-flee
 import { FlottaGlobale } from '@features/SezioneFleetGo/Pagine/flotta-globale/flotta-globale';
 import { AziendeAffiliate } from '@features/SezioneFleetGo/Pagine/aziende-affiliate/aziende-affiliate'
 import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
+import {StoricoFatture} from '@features/SezioneFleetGo/Pagine/storico-fatture/storico-fatture';
 
 export const ADMIN_FLEET_GO_ROUTES: Routes = [
   {
@@ -12,13 +13,15 @@ export const ADMIN_FLEET_GO_ROUTES: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-
       { path: 'dashboard', component: DashboardFleetGo },
 
       { path: 'flotta-globale', component: FlottaGlobale },
 
       { path: 'aziende-affiliate', component: AziendeAffiliate },
-      { path: 'dettagli-veicolo/:targa', component: DettagliVeicolo }
+
+      { path: 'dettagli-veicolo/:targa', component: DettagliVeicolo },
+
+      { path: 'storico-fatture', component: StoricoFatture }
     ]
   }
 ];

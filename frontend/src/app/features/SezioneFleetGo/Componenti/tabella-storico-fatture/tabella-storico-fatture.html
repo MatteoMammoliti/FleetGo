@@ -1,0 +1,41 @@
+<div class="table-container">
+  <table class="fl-table"> <thead>
+  <tr>
+    <th>N. Fattura</th>
+    <th>Azienda</th>
+    <th>Periodo</th>
+    <th>Importo</th>
+    <th>Stato</th>
+    <th class="text-right">Azioni</th>
+  </tr>
+  </thead>
+    <tbody>
+      @for (fattura of fatture; track fattura.numeroFattura) {
+        <tr>
+          <td><span class="fw-bold">#{{ fattura.numeroFattura }}</span></td>
+          <td>{{ fattura.azienda.nomeAzienda }}</td> <td>{{ fattura.meseFattura }}/{{ fattura.annoFattura }}</td>
+          <td class="text-success fw-bold">€ {{ fattura.costo }}</td>
+          <td>
+            @if(fattura.fatturaPagata) {
+              <span class="badge-success">Pagata</span>
+            } @else {
+              <span class="badge-warning">In Attesa</span>
+            }
+          </td>
+          <td class="text-right">
+            <button class="btn-icon download" (click)="onDownload(fattura.numeroFattura)" title="Scarica PDF">
+              <i class="bi bi-file-earmark-pdf-fill"></i>
+            </button>
+          </td>
+        </tr>
+      }
+      @if(fatture.length === 0) {
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            Nessuna fattura trovata per i filtri selezionati.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

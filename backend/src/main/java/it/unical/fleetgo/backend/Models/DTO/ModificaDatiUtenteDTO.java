@@ -15,7 +15,14 @@ public class ModificaDatiUtenteDTO {
     String pIva;
     Integer idUtente;
 
-    public ModificaDatiUtenteDTO(String nome, String cognome, String data, String email, String nomeAzienda, String sedeAzienda, String pIva, Integer idUtente){
+    public ModificaDatiUtenteDTO(String nome,
+                                 String cognome,
+                                 String data,
+                                 String email,
+                                 String nomeAzienda,
+                                 String sedeAzienda,
+                                 String pIva,
+                                 Integer idUtente){
         this.nome=nome;
         this.cognome=cognome;
         this.data=data;
