@@ -114,7 +114,6 @@ export class DashboardFleetGo {
 
     this.dashboardService.generaFattura(fattura).subscribe({
       next:(risultato:string)=>{
-        console.log(risultato)
         this.richiediFattureDaGenerare();
       },
       error:(err:any)=>{console.error("Errore nella generazione della fattura",err)}

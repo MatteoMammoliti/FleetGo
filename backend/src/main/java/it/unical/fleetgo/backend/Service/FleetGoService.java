@@ -85,7 +85,7 @@ public class FleetGoService {
             List<FatturaDTO> fatture = new ArrayList<>();
 
             for(Fattura fattura : f) {
-                fatture.add(new FatturaDTO(fattura, false));
+                fatture.add(new FatturaDTO(fattura, true));
             }
 
             return fatture;
