@@ -35,7 +35,7 @@ public class FleetGoService {
             RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
             List<RichiestaManutenzione> richieste =richiesteManutenzioneDAO.getRichiesteManutenzioneDaAccettare();
             for(RichiestaManutenzione ric :richieste){
-                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric);
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(ric, true);
                 richiesteDTO.add(dto);
             }
         }
@@ -48,7 +48,7 @@ public class FleetGoService {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
             RichiestaManutenzione richiesta = dao.getRichiestaManutenzione(id);
             if(richiesta!=null){
-                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(richiesta);
+                RichiestaManutenzioneDTO dto = new RichiestaManutenzioneDTO(richiesta, true);
                 dto.setIdManutenzione(id);
                 return dto;
             }

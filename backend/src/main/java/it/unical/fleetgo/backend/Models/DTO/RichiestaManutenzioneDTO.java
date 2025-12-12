@@ -16,7 +16,7 @@ public class RichiestaManutenzioneDTO {
     private Boolean completata;
     private VeicoloDTO veicolo;
 
-    public RichiestaManutenzioneDTO(RichiestaManutenzione richiesta) {
+    public RichiestaManutenzioneDTO(RichiestaManutenzione richiesta, boolean caricaVeicolo) {
         this.idManutenzione = richiesta.getIdManutenzione();
         this.idAdminAzienda = richiesta.getIdAdmin();
         this.idVeicolo = richiesta.getIdVeicolo();
@@ -24,6 +24,8 @@ public class RichiestaManutenzioneDTO {
         this.tipoManutenzione = richiesta.getTipoManutenzione();
         this.accettata = richiesta.getRichiestaAccettata();
         this.completata = richiesta.getRichiestaCompletata();
-        this.veicolo = new VeicoloDTO(richiesta.getVeicolo(), false);
+
+        if(caricaVeicolo) this.veicolo = new VeicoloDTO(richiesta.getVeicolo(), false);
+        else this.veicolo = null;
     }
 }
