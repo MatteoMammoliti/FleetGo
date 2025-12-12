@@ -59,7 +59,7 @@ public class AziendaDAO {
     }
 
     public Azienda getAzienda(Integer idAzienda) {
-        String query = "SELECT * FROM azienda WHERE id_admin_azienda = ?";
+        String query = "SELECT * FROM azienda WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);

@@ -45,11 +45,54 @@ public class FatturaDAO {
         return getFattura(fattura, query);
     }
 
-    public List<Fattura> getFattureEmesseDaFleetGo() {
-        String query = "SELECT * FROM fattura";
+    public List<Fattura> getFattureEmesseDaFleetGo(Integer anno) {
+        String query = "SELECT * FROM fattura WHERE anno_fattura = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, anno);
             return creaListaFattura(ps);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Fattura getFatturaByNumeroFattura(Integer numeroFattura) {
+        String query = "SELECT * from fattura WHERE numero_fattura = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, numeroFattura);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                Fattura f = new FatturaProxy(new AziendaDAO(connection));
+                f.setFleetGo(rs.getInt("id_fleetgo"));
+                f.setIdAzienda(rs.getInt("id_azienda"));
+                f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
+                f.setCosto(rs.getInt("costo"));
+                f.setMeseFattura(rs.getInt("mese_fattura"));
+                f.setAnnoFattura(rs.getInt("anno_fattura"));
+                f.setNumeroFattura(numeroFattura);
+                return f;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Integer> getAnniFatture() {
+        String query = "SELECT DISTINCT anno_fattura FROM fattura";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+
+            List<Integer> anni = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                anni.add(rs.getInt("anno_fattura"));
+            }
+
+            return anni;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

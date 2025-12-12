@@ -1,10 +1,13 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
+import it.unical.fleetgo.backend.Persistence.DAO.FatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GeneraFatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiesteManutenzioneDAO;
+import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,9 @@ import java.util.List;
 
 @Service
 public class FleetGoService {
+
     @Autowired private DataSource dataSource;
+    @Autowired private GeneratorePdfService generatorePdfService;
 
     public List<FatturaDaGenerareDTO> getGeneraFattura() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()){
@@ -51,5 +56,42 @@ public class FleetGoService {
             }
             return null;
         }
+    }
+
+    public List<Integer> getAnni() throws SQLException {
+        try(Connection connection=this.dataSource.getConnection()){
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            return fatturaDAO.getAnniFatture();
+        }
+    }
+
+    public List<FatturaDTO> getFatturePerAnno(Integer idAnno) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()){
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            List<Fattura> f = fatturaDAO.getFattureEmesseDaFleetGo(idAnno);
+            List<FatturaDTO> fatture = new ArrayList<>();
+
+            for(Fattura fattura : f) {
+                fatture.add(new FatturaDTO(fattura));
+            }
+
+            return fatture;
+        }
+    }
+
+    public byte[] downloadFattura(Integer idAnno) throws SQLException{
+
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            Fattura f = fatturaDAO.getFatturaByNumeroFattura(idAnno);
+
+            if(f != null) {
+
+                return this.generatorePdfService.generaPdfFattura(
+                        new FatturaDTO(f)
+                );
+            }
+        }
+        return null;
     }
 }

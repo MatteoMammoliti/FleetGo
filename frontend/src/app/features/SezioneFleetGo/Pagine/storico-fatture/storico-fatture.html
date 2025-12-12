@@ -1,1 +1,47 @@
-<p>storico-fatture works!</p>
+<div class="dashboard-container"> <h1 class="titolo-pagina">Storico Fatturazione</h1>
+
+  <div class="griglia-kpi-2 mb-4"> <app-card-statistiche-dashboard-fleet
+    titolo="Fatture Emesse ({{annoSelezionato}})"
+    [valore]="totaleFattureAnnoSelezionato"
+    icona="bi-files"
+    coloreSfondo="card-blue"
+    descrizione="Totale documenti generati">
+  </app-card-statistiche-dashboard-fleet>
+
+    <app-card-statistiche-dashboard-fleet
+      titolo="Ricavi Mese Corrente"
+      [valore]="'€ ' + totaleRicaviAnno"
+      icona="bi-cash-coin"
+      coloreSfondo="card-green"
+      descrizione="Fatturato questo mese">
+    </app-card-statistiche-dashboard-fleet>
+
+  </div>
+
+  <div class="panel-container"> <div class="panel-header d-flex justify-content-between align-items-center">
+    <h3>Elenco Fatture</h3>
+
+    <div class="filtri-container">
+      <select [(ngModel)]="annoSelezionato" (change)="aggiornaFatture()" class="form-select me-2">
+        @for (anno of anniFatture; track anno) {
+          <option [ngValue]="anno">{{ anno }}</option>
+        }
+      </select>
+
+      <select [(ngModel)]="aziendaSelezionata" class="form-select">
+        <option value="">Tutte le Aziende</option>
+        @for (az of listaAziende; track az.idAzienda) {
+          <option [value]="az.nomeAzienda">{{ az.nomeAzienda }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+    <app-tabella-storico-fatture
+      [fatture]="FattureFiltrate"
+      (richiestaDownload)="gestisciDownload($event)">
+    </app-tabella-storico-fatture>
+
+  </div>
+
+</div>
