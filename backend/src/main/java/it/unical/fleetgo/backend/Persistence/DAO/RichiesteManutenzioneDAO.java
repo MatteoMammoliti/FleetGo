@@ -112,15 +112,51 @@ public class RichiesteManutenzioneDAO {
      * @param accettata
      * @return
      */
-    public boolean contrassegnaRichiestaManutenzione(Integer idManutenzione, boolean accettata){
-        String query="UPDATE richiesta_manutenzione SET accettata=? WHERE id_manutenzione=?";
-        try(PreparedStatement st =con.prepareStatement(query)){
-            st.setBoolean(1,accettata);
-            st.setInt(2,idManutenzione);
-            return st.executeUpdate()>0;
-
-        }catch(SQLException e){
-            throw new RuntimeException(e);
+    public boolean contrassegnaRichiestaManutenzione(Integer idManutenzione, boolean accettata) throws SQLException {
+        String recuperoIdVeicolo="SELECT id_veicolo FROM richiesta_manutenzione WHERE id_manutenzione=?";
+        String aggiornoRichiesta="UPDATE richiesta_manutenzione SET accettata=? WHERE id_manutenzione=?";
+        String aggiornoVeicolo="UPDATE veicolo SET in_manutenzione=? WHERE id_veicolo=?";
+        try {
+            con.setAutoCommit(false);
+            Integer idVeicolo = null;
+            try (PreparedStatement st = con.prepareStatement(recuperoIdVeicolo)) {
+                st.setInt(1,idManutenzione);
+                ResultSet rs = st.executeQuery();
+                if(rs.next()){
+                    idVeicolo = rs.getInt(1);
+                }
+                if(idVeicolo==null){
+                    con.rollback();
+                    return false;
+                }
+                try(PreparedStatement st2 = con.prepareStatement(aggiornoRichiesta)){
+                    st2.setBoolean(1,accettata);
+                    st2.setInt(2,idManutenzione);
+                    if(st2.executeUpdate()==0){
+                        con.rollback();
+                        return false;
+                    }
+                }
+                if(accettata){
+                    try(PreparedStatement st3 = con.prepareStatement(aggiornoVeicolo)){
+                        st3.setBoolean(1,accettata);
+                        st3.setInt(2,idVeicolo);
+                        if(st3.executeUpdate()==0){
+                            con.rollback();
+                            return false;
+                        }
+                    }
+                }
+                con.commit();
+                return true;
+            }
+        catch(SQLException e){
+            con.rollback();
+            throw e;
+            }
+        }
+        finally{
+            con.setAutoCommit(true);
         }
     }
 
@@ -173,7 +209,7 @@ public class RichiesteManutenzioneDAO {
      */
     public List<RichiestaManutenzione> getRichiesteManutenzioneDaAccettare(){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
-        String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=?";
+        String  query="SELECT * FROM richiesta_manutenzione WHERE accettata IS NULL";
         try(PreparedStatement st = con.prepareStatement(query)){
             estraiRichiesteManutenzione(richieste, st);
             return richieste;
@@ -205,10 +241,11 @@ public class RichiesteManutenzioneDAO {
      */
     public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
-        String  query="SELECT * FROM richiesta_manutenzione WHERE completata=? AND id_admin_azienda=?";
+        String  query="SELECT * FROM richiesta_manutenzione WHERE completata=?  AND accettata=? AND id_admin_azienda=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,false);
-            st.setInt(2,idAdmin);
+            st.setBoolean(2,true);
+            st.setInt(3,idAdmin);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
@@ -229,7 +266,6 @@ public class RichiesteManutenzioneDAO {
     }
 
     private void estraiRichiesteManutenzione(List<RichiestaManutenzione> richieste, PreparedStatement st) throws SQLException {
-        st.setBoolean(1,false);
         ResultSet rs = st.executeQuery();
         while(rs.next()){
             RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));

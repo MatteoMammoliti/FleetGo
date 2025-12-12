@@ -9,7 +9,6 @@ import it.unical.fleetgo.backend.Persistence.DAO.GeneraFatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiesteManutenzioneDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
-import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +54,21 @@ public class FleetGoService {
                 return dto;
             }
             return null;
+        }
+    }
+
+    public boolean accettaRichiestaManutenzione(Integer idManutenzione)throws SQLException {
+        try(Connection connection=this.dataSource.getConnection()){
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            return dao.contrassegnaRichiestaManutenzione(idManutenzione,true);
+        }
+
+    }
+
+    public boolean rifiutaRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+        try(Connection connection=this.dataSource.getConnection()){
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            return dao.contrassegnaRichiestaManutenzione(idManutenzione,false);
         }
     }
 

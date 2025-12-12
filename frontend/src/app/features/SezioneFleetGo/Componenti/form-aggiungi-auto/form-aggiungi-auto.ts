@@ -21,27 +21,27 @@ export class FormAggiungiAuto {
     urlImmagine: false,
     modello: false,
     tipoDistribuzioneVeicolo: false,
-    statusCondizioneVeicolo: false
+    statusContrattuale: false
   };
 
   targaVeicolo = '';
   urlImmagine: any = null;
   modello = '';
   tipoDistribuzioneVeicolo = '';
-  statusCondizioneVeicolo = 'Disponibile';
+  statusContrattuale = 'Disponibile';
   errore='';
 
   onSubmit() {
     this.reset();
 
-    if (!this.targaVeicolo || !this.urlImmagine || !this.modello || !this.tipoDistribuzioneVeicolo || !this.statusCondizioneVeicolo) {
+    if (!this.targaVeicolo || !this.urlImmagine || !this.modello || !this.tipoDistribuzioneVeicolo || !this.statusContrattuale) {
       this.errore = "Riempi tutti i campi";
 
       if (!this.targaVeicolo) this.mappaErrori.targaVeicolo = true;
       if (!this.urlImmagine) this.mappaErrori.urlImmagine = true;
       if (!this.modello) this.mappaErrori.modello = true;
       if (!this.tipoDistribuzioneVeicolo) this.mappaErrori.tipoDistribuzioneVeicolo = true;
-      if (!this.statusCondizioneVeicolo) this.mappaErrori.statusCondizioneVeicolo = true;
+      if (!this.statusContrattuale) this.mappaErrori.statusContrattuale = true;
       return;
     }
 
@@ -55,7 +55,8 @@ export class FormAggiungiAuto {
       targaVeicolo: this.targaVeicolo,
       modello: this.modello,
       tipoDistribuzioneVeicolo: this.tipoDistribuzioneVeicolo,
-      statusCondizioneVeicolo: this.statusCondizioneVeicolo,
+      statusContrattualeVeicolo: this.statusContrattuale,
+      inManutenzione:false
     }
 
     const formData = new FormData();
@@ -78,7 +79,7 @@ export class FormAggiungiAuto {
       urlImmagine: false,
       modello: false,
       tipoDistribuzioneVeicolo: false,
-      statusCondizioneVeicolo: false
+      statusContrattuale: false
     };
   }
 
@@ -87,6 +88,6 @@ export class FormAggiungiAuto {
     this.urlImmagine = null;
     this.modello = '';
     this.tipoDistribuzioneVeicolo = '';
-    this.statusCondizioneVeicolo = 'Disponibile';
+    this.statusContrattuale = 'Disponibile';
   }
 }

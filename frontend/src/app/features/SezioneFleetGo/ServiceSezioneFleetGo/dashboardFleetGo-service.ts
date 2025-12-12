@@ -38,4 +38,11 @@ export class DashboardFleetGoService{
   richiediInformazioniSuManutenzioneDaGestire(idManutenzione:number):Observable<RichiestaManutenzioneDTO>{
     return this.http.get<RichiestaManutenzioneDTO>(`${this.apiUrl}/dettagliRichiestaManutenzone/${idManutenzione}`,{withCredentials:true});
   }
+
+  accettaRichiestaManutenzione(idManutenzione:number):Observable<string>{
+    return this.http.post(`${this.apiUrl}/accettaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
+  }
+  rifiutaRichiestaManutezione(idManutenzione:number):Observable<string>{
+    return this.http.post(`${this.apiUrl}/rifiutaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
+  }
 }

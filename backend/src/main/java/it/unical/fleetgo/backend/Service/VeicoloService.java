@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.GestioneVeicoloAziendaDTO;
-import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -65,8 +63,8 @@ public class VeicoloService {
             try {
                 if(veicoloDTO.getNomeAziendaAffiliata() != null) {
                     this.inserisciNuovoVeicoloGestito(veicoloDTO);
-                } else if(veicoloDTO.getStatusCondizioneVeicolo() != null) {
-                    this.cambiaStatusVeicolo(veicoloDTO);
+                } else if(veicoloDTO.getInManutenzione() != null) {
+                    this.cambiaStatusManutenzioneVeicolo(veicoloDTO);
                 }
                 connection.commit();
             } catch (Exception e) {
@@ -88,14 +86,14 @@ public class VeicoloService {
             contenitore.setIdVeicolo(veicolo.getIdVeicolo());
             contenitore.setIdAzienda(veicolo.getIdAziendaAffiliata());
             gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(contenitore);
-            veicoloDAO.cambiaStatusVeicolo("Noleggiato",veicolo.getIdVeicolo());
+            veicoloDAO.cambiaStatusContrattualeVeicolo("Noleggiato",veicolo.getIdVeicolo());
         }
     }
-    private void cambiaStatusVeicolo(VeicoloDTO veicolo) throws SQLException {
+    private void cambiaStatusManutenzioneVeicolo(VeicoloDTO veicolo) throws SQLException {
 
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
-            veicoloDAO.cambiaStatusVeicolo(veicolo.getStatusCondizioneVeicolo(), veicolo.getIdVeicolo());
+            veicoloDAO.cambiaStatusManutenzioneVeicolo(veicolo.getInManutenzione(), veicolo.getIdVeicolo());
         }
     }
 }

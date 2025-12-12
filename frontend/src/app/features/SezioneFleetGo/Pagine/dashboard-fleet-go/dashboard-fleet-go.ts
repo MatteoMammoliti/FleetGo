@@ -79,5 +79,30 @@ export class DashboardFleetGo {
     });
   }
 
+  accettaRichiestaManutenzione(idManutenzione:number){
+    this.dashboardService.accettaRichiestaManutenzione(idManutenzione).subscribe({
+      next:(risultato:string)=>{
+        console.log(risultato)
+        this.richiediManutenzioniDaGestire();
+        this.richiestaSelezionata=null;
+      },
+      error:(err:any)=>{console.error("Errore nell'accettare la richiesta di manutenzione",err)}
+    });
+  }
+  rifiutaRichiesta(idManutenzione:number){
+    this.dashboardService.rifiutaRichiestaManutezione(idManutenzione).subscribe({
+      next:(risultato:string)=>{
+        this.richiediManutenzioniDaGestire();
+        this.richiestaSelezionata=null;
+      },
+      error:(err:any)=>{console.error("Errore nel rifiutare la richiesta di mantezione",err)}
+    });
+  }
+
+  chiudiFinestraModale(){
+    this.richiestaSelezionata=null;
+    this.richiediManutenzioniDaGestire();
+  }
+
   protected readonly Math = Math;
 }

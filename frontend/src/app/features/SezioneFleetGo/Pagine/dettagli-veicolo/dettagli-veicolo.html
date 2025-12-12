@@ -81,18 +81,14 @@
               </div>
 
               <div class="mb-4">
-                @if (veicolo.statusCondizioneVeicolo !== 'Manutenzione') {
+                @if (!veicolo.inManutenzione) {
                   <label class="form-label fw-bold">
-                    Stato Attuale: {{ veicolo.statusCondizioneVeicolo }}
+                    Stato Attuale: Nessun problema da segnalare!
                   </label>
-                }
-
-                @if (veicolo.statusCondizioneVeicolo === 'Manutenzione') {
-                  <label class="form-label fw-bold">Cambia Stato</label>
-                  <select class="form-select" name="stato" [(ngModel)]="statusCambiato">
-                    <option value="" disabled selected>-- Seleziona Azione --</option>
-                    <option value="Libero">Rendi DISPONIBILE</option>
-                  </select>
+                } @else if (veicolo.inManutenzione){
+                  <label class="form-label fw-bold">
+                    Stato Attuale: In manutenzione!
+                  </label>
                 }
               </div>
 

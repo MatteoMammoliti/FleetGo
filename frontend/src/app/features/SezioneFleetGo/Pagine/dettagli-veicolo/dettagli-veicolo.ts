@@ -84,7 +84,8 @@ export class DettagliVeicolo {
       targaVeicolo:this.veicolo.targaVeicolo,
       idAziendaAffiliata:this.aziendaSelezionata != null ? this.aziendaSelezionata.idAzienda : undefined,
       nomeAziendaAffiliata:this.aziendaSelezionata != null ? this.aziendaSelezionata.nomeAzienda : undefined,
-      statusCondizioneVeicolo:this.statusCambiato != "" ? this.statusCambiato : undefined
+      statusContrattualeVeicolo:"",
+      inManutenzione:false
     }
     console.log(veicoloDaInviare);
     this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({

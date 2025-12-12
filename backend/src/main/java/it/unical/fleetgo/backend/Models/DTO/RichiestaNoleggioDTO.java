@@ -21,6 +21,7 @@ public class RichiestaNoleggioDTO {
     private String motivazione;
     private boolean accettata;
     private UtenteDTO utente;
+    private Boolean richiestaAnnullata;
 
     public RichiestaNoleggioDTO(RichiestaNoleggio richiesta) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
@@ -33,6 +34,7 @@ public class RichiestaNoleggioDTO {
         this.dataConsegna = richiesta.getDataConsegna().toString();
         this.motivazione = richiesta.getMotivazione();
         this.accettata = richiesta.getRichiestaAccettata();
+        this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
         this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
     }
 }

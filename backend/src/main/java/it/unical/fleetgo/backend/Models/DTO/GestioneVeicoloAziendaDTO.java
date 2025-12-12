@@ -11,6 +11,7 @@ public class GestioneVeicoloAziendaDTO {
     private Integer idAzienda;
     private Integer idLuogo;
     private LuogoDTO luogo;
+    private boolean disponbilePerNoleggio;
 
     public GestioneVeicoloAziendaDTO() {}
 
@@ -19,6 +20,7 @@ public class GestioneVeicoloAziendaDTO {
         this.Veicolo = new VeicoloDTO(gestione.getVeicolo());
         this.idAzienda = gestione.getIdAzienda();
         this.idLuogo = gestione.getIdLuogo();
+        this.disponbilePerNoleggio=gestione.isDisponbilePerNoleggio();
         this.luogo = new LuogoDTO(gestione.getLuogo());
     }
 }

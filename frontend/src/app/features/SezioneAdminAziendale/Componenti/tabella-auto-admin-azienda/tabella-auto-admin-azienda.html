@@ -26,7 +26,8 @@
   <tr>
     <th>Targa</th>
     <th>Modello</th>
-    <th>Stato</th>
+    <th>Stato contrattuale</th>
+    <th>Stato veicolo</th>
     <th>Rimuovi</th>
     <th>Info</th>
   </tr>
@@ -37,7 +38,12 @@
       <tr>
         <td>{{ auto.targaVeicolo }}</td>
         <td>{{ auto.modello }}</td>
-        <td>{{ auto.statusCondizioneVeicolo }}</td>
+        <td>{{ auto.statusContrattualeVeicolo }}</td>
+        @if (auto.inManutenzione) {
+          <td>"In manutenzione"</td>
+        } @else if (!auto.inManutenzione){
+          <td>"Ok"</td>
+        }
 
 
         <td><button class="bottone-rimuovi" (click)="rimuoviVeicolo(auto.targaVeicolo)">Rimuovi</button></td>

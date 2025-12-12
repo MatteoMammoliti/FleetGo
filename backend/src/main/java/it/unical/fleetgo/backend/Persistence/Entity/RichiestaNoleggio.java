@@ -19,4 +19,5 @@ public class RichiestaNoleggio {
     private LocalTime oraFine;
     private String motivazione;
     private Boolean richiestaAccettata;
+    private Boolean richiestaAnnullata;
 }

@@ -17,6 +17,7 @@ export class TabellaAutoAdminAzienda {
   filtroTarga = "";
   filtroModello= "";
   filtroStato = "";
+  filtroManutenzione="";
 
   @Input() listaVeicoli:VeicoloDTO[]=[];
 
@@ -29,12 +30,12 @@ export class TabellaAutoAdminAzienda {
 
       const modello = !this.filtroModello ||
         (veicolo.modello && veicolo.modello.toLowerCase().includes(this.filtroModello.toLowerCase()));
-
       const stato = !this.filtroStato ||
-        (veicolo.statusCondizioneVeicolo && veicolo.statusCondizioneVeicolo.toLowerCase().includes(this.filtroStato.toLowerCase()));
+        (veicolo.statusContrattualeVeicolo && veicolo.statusContrattualeVeicolo.toLowerCase().includes(this.filtroStato.toLowerCase()));
 
+      const manutenzone=!this.filtroManutenzione || veicolo.inManutenzione;
 
-      return targa && modello && stato;
+      return targa && modello && stato && manutenzone;
     });
   }
 

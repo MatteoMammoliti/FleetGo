@@ -18,7 +18,7 @@ public class VeicoloDAO {
     }
 
     public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
-        String query = "INSERT INTO veicolo(targa, immagine_veicolo, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo, status_condizione_veicolo) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO veicolo(targa, immagine_veicolo, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo) VALUES (?, ?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query))  {
             ps.setString(1, veicoloDTO.getTargaVeicolo());
@@ -26,7 +26,6 @@ public class VeicoloDAO {
             ps.setString(3, veicoloDTO.getModello());
             ps.setString(4, veicoloDTO.getTipoDistribuzioneVeicolo());
             ps.setInt(5, veicoloDTO.getLivelloCarburante());
-            ps.setString(6, veicoloDTO.getStatusCondizioneVeicolo());
             return ps.executeUpdate() > 0;
         }
     }
@@ -109,11 +108,22 @@ public class VeicoloDAO {
         return null;
     }
 
-    public void cambiaStatusVeicolo(String nuovoStatus, Integer idVeicolo) {
-        String query = "UPDATE veicolo SET status_condizione_veicolo = ? WHERE id_veicolo = ?";
+    public void cambiaStatusContrattualeVeicolo(String nuovoStatus, Integer idVeicolo) {
+        String query = "UPDATE veicolo SET status_contrattuale = ? WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, nuovoStatus);
+            ps.setInt(2, idVeicolo);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void cambiaStatusManutenzioneVeicolo(Boolean manutenzione, Integer idVeicolo) {
+        String query = "UPDATE veicolo SET in_manutenzione = ? WHERE id_veicolo = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setBoolean(1, manutenzione);
             ps.setInt(2, idVeicolo);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -141,7 +151,8 @@ public class VeicoloDAO {
         v.setModello(rs.getString("modello_veicolo"));
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
         v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
-        v.setStatusCondizioneVeicolo(rs.getString("status_condizione_veicolo"));
+        v.setStatusContrattualeVeicolo(rs.getString("status_contrattuale"));
+        v.setInManutenzione(rs.getBoolean("in_manutenzione"));
         if(conLuogo){
             LuogoAzienda luogo = new LuogoAzienda();
             luogo.setIdLuogo(rs.getInt("id_luogo"));

@@ -10,4 +10,5 @@ public class GestioneVeicoloAzienda {
     private Integer idAzienda;
     private Integer idLuogo;
     private LuogoAzienda luogo;
+    private boolean disponbilePerNoleggio;
 }

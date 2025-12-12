@@ -13,4 +13,5 @@ oraInizio: string;
 oraFine: string;
 motivazione:string;
 richiestaAccettata: boolean;
+richiestaAnnullata:boolean;
 }

@@ -1,12 +1,11 @@
-import { Component,Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-gestisci-richiesta-manutenzione',
   imports: [
-    DatePipe,
-    NgClass
+    DatePipe
   ],
   standalone:true,
   templateUrl: './gestisci-richiesta-manutenzione.html',
@@ -14,8 +13,17 @@ import {DatePipe, NgClass} from '@angular/common';
 })
 export class GestisciRichiestaManutenzione {
   @Input({required:true}) datiRichiesta!:RichiestaManutenzioneDTO;
+  @Output() close = new EventEmitter<void>();
+  @Output() accettaRichiesta= new EventEmitter<number>();
+  @Output() rifiutaRichiesta=new EventEmitter<number>();
 
-  clickRifiuta(){}
-  clickAccetta(){}
-  onClose(){}
+  clickRifiuta(){
+    this.rifiutaRichiesta.emit(this.datiRichiesta.idManutenzione);
+  }
+  clickAccetta(){
+    this.accettaRichiesta.emit(this.datiRichiesta.idManutenzione);
+  }
+  onClose() {
+    this.close.emit();
+  }
 }

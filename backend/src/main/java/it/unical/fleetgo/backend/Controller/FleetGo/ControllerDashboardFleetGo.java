@@ -70,4 +70,38 @@ public class ControllerDashboardFleetGo {
 
     }
 
+    @PostMapping("/accettaRichiestaManutenzione/{id}")
+    public ResponseEntity<String> accettaRichiestaManutenzione(@PathVariable Integer id){
+        try{
+            boolean esitoOperazione = fleetGoService.accettaRichiestaManutenzione(id);
+            if(esitoOperazione){
+                return ResponseEntity.ok("Richiesta accettata con successo");
+            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Richiesta non valida");
+            }
+        }catch (SQLException sqlException){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }catch (RuntimeException runtimeException){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @PostMapping("/rifiutaRichiestaManutenzione/{id}")
+    public ResponseEntity<String> rifiutaRichiestaManutenzione(@PathVariable Integer id){
+        try{
+            boolean esitoOperazione = fleetGoService.rifiutaRichiestaManutenzione(id);
+            if(esitoOperazione){
+                return ResponseEntity.ok("Richiesta rifiutata con successo");
+            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Richiesta non valida");
+            }
+        }catch (SQLException sqlException){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }catch (RuntimeException runtimeException){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
+
 }

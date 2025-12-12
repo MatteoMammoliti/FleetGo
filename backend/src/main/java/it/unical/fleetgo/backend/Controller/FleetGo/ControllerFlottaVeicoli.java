@@ -80,7 +80,7 @@ public class ControllerFlottaVeicoli {
     }
 
     @PostMapping(value = "/modificaVeicolo")
-    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicoloDTO, HttpSession session) {
+    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicoloDTO) {
         try{
             veicoloService.modificaDati(veicoloDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");

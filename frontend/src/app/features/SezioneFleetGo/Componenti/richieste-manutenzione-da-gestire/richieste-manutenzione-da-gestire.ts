@@ -12,7 +12,7 @@ import {DatePipe} from '@angular/common';
   styleUrl: './richieste-manutenzione-da-gestire.css',
 })
 export class RichiesteManutenzioneDaGestire {
-  constructor(private fleetService:DashboardFleetGoService) {}
+  constructor() {}
   @Input() richiesteManutenzioneDaGestire:RichiestaManutenzioneDTO[] = []
   @Output() inviaRichiesta:EventEmitter<number>=new EventEmitter<number>();
 

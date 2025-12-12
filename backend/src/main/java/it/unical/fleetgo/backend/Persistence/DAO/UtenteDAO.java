@@ -275,9 +275,9 @@ public class UtenteDAO {
         String query = "SELECT " +
                 " (SELECT COUNT(*) FROM veicolo) as veicoli_totali, " +
                 " (SELECT COUNT (*) FROM azienda) as aziende_totali, " +
-                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Manutenzione') as veicoli_in_manutenzione," +
-                " (SELECT COUNT (*) FROM gestione_veicolo_azienda) as veicoli_assegnati," +
-                " (SELECT COUNT (*) FROM veicolo WHERE status_condizione_veicolo='Libero') as veicoli_disponibili, " +
+                " (SELECT COUNT (*) FROM veicolo WHERE in_manutenzione=true) as veicoli_in_manutenzione," +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_contrattuale='Noleggiato') as veicoli_assegnati," +
+                " (SELECT COUNT (*) FROM veicolo WHERE status_contrattuale='Disponibile') as veicoli_disponibili, " +
                 " (SELECT COUNT (*) FROM view_fatture_da_generare) as fatture_da_generare , " +
                 " (SELECT SUM(costo) FROM fattura WHERE fattura_pagata=true AND mese_fattura=? AND anno_fattura =?) as guadagno_mensile";
         try(PreparedStatement st = con.prepareStatement(query)){

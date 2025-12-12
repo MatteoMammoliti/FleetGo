@@ -7,7 +7,8 @@ export interface VeicoloDTO {
   modello?: string;
   tipoDistribuzioneVeicolo?: string;
   livelloCarburante?: number;
-  statusCondizioneVeicolo?: string;
+  statusContrattualeVeicolo?: string;
+  inManutenzione:boolean;
   nomeAziendaAffiliata?:string;
   luogoRitiroDeposito?:LuogoDTO;
   idAziendaAffiliata?:number;
