@@ -1,0 +1,90 @@
+/* Container della mappa */
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 500px; /* <--- FONDAMENTALE: Senza questo la mappa non si vede! */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background-color: #e2e8f0; /* Grigio chiaro mentre carica */
+}
+
+/* La mappa vera e propria */
+.google-map-render {
+  width: 100%;
+  height: 100%;
+}
+
+/* Barra di ricerca fluttuante in alto */
+.map-search-input {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  max-width: 90%;
+  z-index: 10; /* Sopra la mappa */
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.map-search-input:focus {
+  width: 400px; /* Si allarga quando scrivi */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* --- Box di Conferma Fluttuante in basso --- */
+.floating-action-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: slideUp 0.3s ease-out;
+}
+
+.preview-box {
+  background: white;
+  padding: 8px 10px;
+  border-radius: 50px; /* Pill shape */
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-confirm {
+  background-color: #10b981; /* Verde moderno */
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-confirm:hover {
+  background-color: #059669;
+  transform: scale(1.05);
+}
+
+.btn-confirm i {
+  font-size: 1.1rem;
+}
+
+/* Animazione di comparsa dal basso */
+@keyframes slideUp {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}

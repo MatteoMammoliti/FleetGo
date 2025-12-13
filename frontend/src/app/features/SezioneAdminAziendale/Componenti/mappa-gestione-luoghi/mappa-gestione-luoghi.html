@@ -1,0 +1,16 @@
+<div class="map-wrapper">
+
+  <input id="search-box" type="text" class="map-search-input"
+         placeholder="Cerca indirizzo da aggiungere..."
+         [hidden]="!modalitaAggiuntaLuogo">
+
+  <div id="google-map" class="google-map-render"></div>
+
+  <div class="floating-action-container" *ngIf="luogoDaAggiungere && modalitaAggiuntaLuogo">
+    <div class="preview-box">
+      <button class="btn-confirm" (click)="confermaLuogoSelezionato()">
+        <i class="bi bi-check-lg"></i> Conferma Aggiunta
+      </button>
+    </div>
+  </div>
+</div>
