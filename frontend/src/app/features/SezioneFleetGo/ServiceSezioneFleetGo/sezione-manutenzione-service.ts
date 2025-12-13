@@ -22,4 +22,8 @@ export class SezioneManutenzioneService{
   public prelevaManutezioniInCorso():Observable<RichiestaManutenzioneDTO[]>{
     return this.http.get<RichiestaManutenzioneDTO[]>(`${this.apiUrl}/manutenzioniInCorso`,{withCredentials:true});
   }
+
+  public prelevaManutenzioniStorico():Observable<RichiestaManutenzioneDTO[]>{
+    return this.http.get<RichiestaManutenzioneDTO[]>(`${this.apiUrl}/manutenzioniStorico`,{withCredentials:true})
+  }
 }
