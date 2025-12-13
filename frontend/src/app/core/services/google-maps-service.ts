@@ -21,7 +21,7 @@ export class GoogleMapsService {
       }
       const script = document.createElement('script');
       script.id = "google-maps-script";
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
       script.onload = () => {

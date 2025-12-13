@@ -19,20 +19,12 @@ import java.util.List;
 
 public class ControllerFlottaAziendale {
 
-    @Autowired
-    private VeicoloService veicoloService;
-
-
+    @Autowired private VeicoloService veicoloService;
 
     @GetMapping(value = "/flottaAziendale")
     public ResponseEntity<List<VeicoloDTO>> getFlottaAziendale( HttpSession session) {
         try{
-            Object idA = session.getAttribute("idAzienda");
-
-            if (idA == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-            Integer idAzienda = Integer.valueOf(idA.toString());
+            Integer idAzienda = (Integer) session.getAttribute("idAzienda");;
             return ResponseEntity.ok(veicoloService.getListaVeicoliAziendali(idAzienda));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

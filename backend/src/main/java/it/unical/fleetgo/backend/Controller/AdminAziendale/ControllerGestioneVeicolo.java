@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 
 public class ControllerGestioneVeicolo {
-    @Autowired
-    private VeicoloService veicoloService;
 
-
+    @Autowired private VeicoloService veicoloService;
 
     @GetMapping(value = "/informazioneVeicolo/{targa}")
-    public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa, HttpSession session) {
+    public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa) {
         try{
             VeicoloDTO veicolo = veicoloService.getInformazioniVeicolo(targa);
             return ResponseEntity.ok(veicolo);

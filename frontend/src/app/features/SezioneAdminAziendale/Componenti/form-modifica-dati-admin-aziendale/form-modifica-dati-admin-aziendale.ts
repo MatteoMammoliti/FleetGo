@@ -1,30 +1,30 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
-import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
+import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-form-modifica-dati-admin-aziendale',
-    imports: [
-      ReactiveFormsModule,
-      FormsModule
-    ],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    NgIf
+  ],
   templateUrl: './form-modifica-dati-admin-aziendale.html',
   styleUrl: './form-modifica-dati-admin-aziendale.css',
 })
-export class FormModificaDatiAdminAziendale {
 
-  private service: ModificaDatiService = inject(ModificaDatiService);
-  private validator: validazione = inject(validazione);
+export class FormModificaDatiAdminAziendale implements OnChanges{
+
+  constructor(private validator:validazione) {}
 
   @Input() datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
-  errore = '';
   @Input() erroreBackend="";
+  @Input() luoghiCorrenti: LuogoDTO[] = [];
 
   @Output() richiestaModifica=new EventEmitter<ModificaDatiUtenteDTO>();
-
-  constructor() {}
 
   nome: string | null = '';
   cognome: string | null = '';
@@ -34,7 +34,7 @@ export class FormModificaDatiAdminAziendale {
   partitaIva: string | null = '';
   sedeAzienda: string | null = '';
 
-
+  errore = '';
 
   mappaErrori= {
     nome: false,
@@ -63,8 +63,6 @@ export class FormModificaDatiAdminAziendale {
     }
   }
 
-
-
   reset() {
     this.errore = '';
     this.mappaErrori = {
@@ -77,7 +75,6 @@ export class FormModificaDatiAdminAziendale {
       partitaIva: false
     };
   }
-
 
   onSalvaModifiche() {
     this.reset();

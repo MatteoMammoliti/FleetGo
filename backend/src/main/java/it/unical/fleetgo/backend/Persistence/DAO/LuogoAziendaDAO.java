@@ -17,7 +17,7 @@ public class LuogoAziendaDAO {
         this.connection = connection;
     }
 
-    public boolean inserisciLuogo(LuogoDTO luogoDTO) {
+    public void inserisciLuogo(LuogoDTO luogoDTO) {
         String query = "INSERT INTO luogo_azienda(id_azienda, nome_luogo, longitudine, latitudine) VALUES (?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -25,7 +25,7 @@ public class LuogoAziendaDAO {
             ps.setString(2, luogoDTO.getNomeLuogo());
             ps.setDouble(3, luogoDTO.getLongitudine());
             ps.setDouble(4, luogoDTO.getLatitudine());
-            return ps.execute();
+            ps.execute();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

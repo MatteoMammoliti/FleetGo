@@ -33,8 +33,6 @@ export class DashboardAzienda {
     this.caricaDatiGraficoLuoghi();
   }
 
-
-
   contenitoreInputGraficoStatoFlotta: ContenitoreStatisticheNumeriche = {
       veicoliAssegnati: 0,
       totaleVeicoli: 0,
@@ -126,8 +124,4 @@ export class DashboardAzienda {
     }
     this.datiGraficoAndamento.listaGiorni=giorni;
   }
-
-
-
-
 }

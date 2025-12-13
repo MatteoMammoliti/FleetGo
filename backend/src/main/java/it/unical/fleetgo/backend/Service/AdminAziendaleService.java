@@ -1,12 +1,11 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
+import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
-import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.RichiestaAffiliazioneAziendaDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.UtenteDAO;
+import it.unical.fleetgo.backend.Persistence.DAO.*;
+import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +64,27 @@ public class AdminAziendaleService {
             GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO =
                     new GestioneVeicoloAziendaDAO(connection);
             return gestioneVeicoloAziendaDAO.getStatoVeicoli(idAzienda);
+        }
+    }
+
+    public List<LuogoDTO> getLuoghiCorrenti(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
+
+            List<LuogoAzienda> l = luogoAziendaDAO.getLuogiDisponibiliPerAzienda(idAzienda);
+            List<LuogoDTO> luoghi = new ArrayList<>();
+
+            for(LuogoAzienda luogo : l) {
+                luoghi.add(new LuogoDTO(luogo));
+            }
+            return luoghi;
+        }
+    }
+
+    public void aggiungiLuogo(LuogoDTO luogo) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
+            luogoAziendaDAO.inserisciLuogo(luogo);
         }
     }
 }
