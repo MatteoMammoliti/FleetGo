@@ -1,11 +1,9 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
-import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DipendenteService {
@@ -41,10 +41,25 @@ public class DipendenteService {
     }
 
     public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente)throws SQLException {
-        System.out.println("Sono nel service");
         try (Connection connection = dataSource.getConnection()) {
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
             return dao.getStatisticheDipendente(idDipendente);
+        }
+    }
+
+    public List<RichiestaNoleggioDTO> getRichiesteNoleggioDipendente(Integer idDipendente) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
+            List<RichiestaNoleggio> richieste =dao.getRichiesteNoleggioDipendente(idDipendente);
+            List<RichiestaNoleggioDTO> richiesteDTO = new ArrayList<>();
+            for (RichiestaNoleggio ric :richieste) {
+                RichiestaNoleggioDTO dto = new RichiestaNoleggioDTO(ric,false);
+                Veicolo veicolo = ric.getVeicolo();
+                VeicoloDTO veicoloDTO = new VeicoloDTO(veicolo,false);
+                dto.setVeicolo(veicoloDTO);
+                richiesteDTO.add(dto);
+            }
+            return richiesteDTO;
         }
     }
 }

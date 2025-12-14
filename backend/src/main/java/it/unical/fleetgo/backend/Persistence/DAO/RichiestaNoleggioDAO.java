@@ -127,13 +127,12 @@ public class RichiestaNoleggioDAO {
             st.setString(2,"Terminata");
             ResultSet rs = st.executeQuery();
             RichiestaNoleggio richiesta = new  RichiestaNoleggioProxy(new UtenteDAO(connection),new VeicoloDAO(connection));
-            this.estraiRichiestaDaResult(rs,richiesta);
+            this.estraiRichiestaDaResult(rs,richiesta,false);
             return richiesta;
         }
     }
 
     public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente) throws SQLException{
-        System.out.println("Sono nel dao");
         String query="SELECT " +
                 "(SELECT COUNT(*) FROM richiesta_noleggio WHERE id_dipendente = ? AND stato_richiesta = 'Terminata' AND EXTRACT(MONTH FROM data_ritiro) = EXTRACT(MONTH FROM CURRENT_DATE) " +
                 " AND EXTRACT(YEAR FROM data_ritiro) = EXTRACT(YEAR FROM CURRENT_DATE)) as viaggi_mese, " +
@@ -145,12 +144,23 @@ public class RichiestaNoleggioDAO {
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 StatisticheDipendenteDTO dto = new StatisticheDipendenteDTO(rs.getInt("viaggi_mese"),rs.getFloat("ore_totali"));
-                System.out.println(rs.getInt("viaggi_mese") + rs.getFloat("ore_totali"));
                 return dto;
             }
         }
-        System.out.println("trovato niente");
         return null;
+    }
+
+    public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente) throws SQLException{
+        this.aggiornaStatiNoleggi();
+        String query="SELECT rn.*,l.nome_luogo FROM richiesta_noleggio rn JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda " +
+                " JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna WHERE rn.id_dipendente=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            ResultSet rs = st.executeQuery();
+            List<RichiestaNoleggio> richiesteNoleggio = new ArrayList<>();
+            this.estraiRichieseaDaResult(rs,richiesteNoleggio,true);
+            return richiesteNoleggio;
+        }
     }
 
     private void aggiornaStatiNoleggi() throws SQLException {
@@ -166,7 +176,7 @@ public class RichiestaNoleggioDAO {
             st2.executeUpdate();
         }
     }
-    private void estraiRichiestaDaResult(ResultSet rs,RichiestaNoleggio richiesta) throws SQLException {
+    private void estraiRichiestaDaResult(ResultSet rs,RichiestaNoleggio richiesta,boolean conLuogo) throws SQLException {
         if (rs.next()){
             richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
             richiesta.setIdUtente(rs.getInt("id_dipendente"));
@@ -181,7 +191,36 @@ public class RichiestaNoleggioDAO {
             richiesta.setRichiestaAnnullata(rs.getBoolean("richiesta_annullata"));
             richiesta.setCosto(rs.getFloat("costo_noleggio"));
             richiesta.setStatoRichiesta(rs.getString("stato_richiesta"));
+            if(conLuogo){
+                richiesta.setNomeLuogo(rs.getString("nome_luogo"));
+            }
 
         }
     }
+
+    private void estraiRichieseaDaResult(ResultSet rs,List<RichiestaNoleggio> richieste,boolean conLuogo) throws SQLException {
+        while (rs.next()){
+            RichiestaNoleggioProxy ric = new RichiestaNoleggioProxy(new UtenteDAO(connection),new VeicoloDAO(connection));
+            ric.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
+            ric.setIdUtente(rs.getInt("id_dipendente"));
+            ric.setIdAzienda(rs.getInt("id_azienda"));
+            ric.setIdVeicolo(rs.getInt("id_veicolo"));
+            ric.setOraInizio(rs.getTime("ora_inizio").toLocalTime().toString());
+            ric.setOraFine(rs.getTime("ora_fine").toLocalTime().toString());
+            ric.setDataRitiro(rs.getDate("data_ritiro").toLocalDate().toString());
+            ric.setDataConsegna(rs.getDate("data_consegna").toLocalDate().toString());
+            ric.setMotivazione(rs.getString("motivazione"));
+            ric.setRichiestaAccettata(rs.getBoolean("accettata"));
+            ric.setRichiestaAnnullata(rs.getBoolean("richiesta_annullata"));
+            ric.setCosto(rs.getFloat("costo_noleggio"));
+            ric.setStatoRichiesta(rs.getString("stato_richiesta"));
+            if(conLuogo){
+                ric.setNomeLuogo(rs.getString("nome_luogo"));
+            }
+            richieste.add(ric);
+
+        }
+    }
+
+
 }

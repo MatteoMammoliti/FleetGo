@@ -23,4 +23,5 @@ public class RichiestaNoleggio {
     private Boolean richiestaAnnullata;
     private Float costo;
     private String statoRichiesta;
+    private String nomeLuogo;
 }
