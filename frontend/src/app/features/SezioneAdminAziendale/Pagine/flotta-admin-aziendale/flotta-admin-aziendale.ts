@@ -3,11 +3,12 @@ import {TabellaAutoAdminAzienda} from '@features/SezioneAdminAziendale/Component
 import {FlottaAdminAziendaleService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Router} from '@angular/router';
+import {CardAutoAziendale} from '@shared/Componenti/Ui/card-auto-aziendale/card-auto-aziendale';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
   imports: [
-    TabellaAutoAdminAzienda
+    CardAutoAziendale
   ],
   templateUrl: './flotta-admin-aziendale.html',
   styleUrl: './flotta-admin-aziendale.css',
@@ -43,5 +44,9 @@ export class FlottaAdminAziendale {
 
   apriGestioneVeicolo(targa:string){
     this.router.navigate(['/dashboardAzienda/dettagli-veicolo', targa]);
+  }
+
+  inviaRichiestaGestione(targa: string) {
+
   }
 }

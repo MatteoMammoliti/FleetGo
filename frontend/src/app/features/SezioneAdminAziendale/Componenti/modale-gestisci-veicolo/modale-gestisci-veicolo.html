@@ -1,0 +1,27 @@
+<div>
+        <div class="contenitore-infoGenerali">
+          <div class="dati">
+            <label>Targa: {{veicolo.targaVeicolo}}</label>
+            <label>Modello: {{veicolo.modello}}</label>
+            <label>Tipo Distribuzione: {{veicolo.tipoDistribuzioneVeicolo}}</label>
+            <label>Livello Carburante: {{veicolo.livelloCarburante}}</label>
+            @if(veicolo.inManutenzione){
+              <label>Status: In Manutenzione</label>
+            }
+            @else{
+              <label>Status: {{veicolo.statusContrattualeVeicolo}}</label>
+            }
+            @if (veicolo.luogoRitiroDeposito){
+            <label>Luogo ritiro: {{veicolo.luogoRitiroDeposito.nomeLuogo}}</label>
+            }
+          </div>
+          <div class="contenitore-foto">
+            @if (veicolo.urlImmagine){
+              <img [src]="veicolo.urlImmagine" alt="Immagine Veicolo">
+            }
+            @else{
+              <p>nessun immagine</p>
+            }
+          </div>
+      </div>
+  </div>

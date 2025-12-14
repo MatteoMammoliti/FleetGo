@@ -16,5 +16,5 @@
 }
 
 .go{
-  color: #00A88D;
+ @apply text-azzurro;
 }

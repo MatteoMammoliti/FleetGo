@@ -1,0 +1,43 @@
+.contenitoreGenerale{
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
+  overflow: hidden;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+.contenitoreGenerale:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.contenitore-dati-foto {
+  justify-content: space-between;
+  padding: 16px;
+  gap: 15px;
+}
+
+.contenitore-dati {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.contenitore-foto {
+  width: 120px;
+  height: 90px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.contenitore-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

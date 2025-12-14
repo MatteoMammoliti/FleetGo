@@ -1,16 +1,19 @@
-<div class="kpi-card" [ngClass]="coloreSfondo">
+<div class="bg-white transition-all group duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-azzurro text-blu font-bold text-lg space-y-4 border-2 border-grigio rounded-2xl p-5 shadow-md shrink-0">
 
-  <div class="card-header">
+  <div class="justify-between flex">
     <span class="card-title">{{ titolo }}</span>
-    <i [class]="'bi ' + icona"></i>
+    <div class="p-3 rounded-xl bg-azzurro/10 group-hover:bg-azzurro transition-colors">
+      <i [class]="'text-azzurro group-hover:text-white text-3xl bi ' + icona"></i>
+    </div>
   </div>
 
-  <div class="card-body">
+  <div class="text-azzurro text-3xl font-bold">
     <h2 class="card-value">{{ valore }}</h2>
   </div>
 
-  <div class="card-footer">
+  <div class="text-xs uppercase tracking-wider font-bold text-testo-s">
     <small>{{ descrizione }}</small>
   </div>
 
 </div>
+

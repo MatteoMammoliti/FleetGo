@@ -1,0 +1,32 @@
+<div class="contenitoreGenerale">
+  <div class="contenitore-dati-foto">
+    <div class="contenitore-dati">
+      <h2>{{veicolo.modello}}</h2>
+      <h3>{{ veicolo.targaVeicolo }}</h3>
+      @if (veicolo.luogoRitiroDeposito){
+        <h4>{{ veicolo.luogoRitiroDeposito.nomeLuogo }}</h4>
+      }
+      @else{
+        <h4>Nessun luogo, assegnane uno</h4>
+      }
+
+    </div>
+    <div class="contenitore-foto">
+      @if (veicolo.urlImmagine){
+        <img [src]="veicolo.urlImmagine" alt="Immagine Veicolo">
+      }
+      @else{
+        <p>nessun immagine</p>
+      }
+      @if (veicolo.inManutenzione){
+        <p>In Manutenzione</p>
+      }
+      @else{
+        <p>{{veicolo.statusContrattualeVeicolo}}</p>
+      }
+    </div>
+  </div>
+  <div class="contenitore-bottone">
+    <button (click)="inviaRichiestaGestione.emit(veicolo.targaVeicolo)">Gestisci Veicolo</button>
+  </div>
+</div>

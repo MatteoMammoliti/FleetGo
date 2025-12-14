@@ -33,6 +33,7 @@ export class DashboardFleetGo {
     guadagnoMensile:0
   };
 
+  percentualeNoleggiati=0;
   richiesteManutenzione:RichiestaManutenzioneDTO[]=[];
   richiestaSelezionata:RichiestaManutenzioneDTO | null = null;
 
@@ -49,6 +50,7 @@ export class DashboardFleetGo {
       next: (contenitore) => {
         console.log(contenitore);
         this.statistiche = contenitore;
+        this.percentualeNoleggiati=(this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100;
       },
       error: (err) => console.error("Errore richiesta statistiche:", err)
     });

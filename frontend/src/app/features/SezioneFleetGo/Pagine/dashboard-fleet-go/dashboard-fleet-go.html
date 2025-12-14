@@ -1,44 +1,40 @@
-<div class="dashboard-container">
+<div class="">
 
-  <h1 class="titolo-dashboard">Panoramica FleetGo</h1>
+  <h1 class="text-blu font-bold text-3xl mb-4 ">Panoramica FleetGo</h1>
 
-  <div class="griglia-kpi">
+  <div class="grid grid-cols-2 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Ricavi mese"
+      titolo="Fatturato"
       [valore]="statistiche.guadagnoMensile"
-      icona="bi-car-front"
-      coloreSfondo="card-blue"
-      descrizione="Guadagni di questo mese">
+      icona="bi-bank"
+      descrizione="Valore generato questo mese">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
       titolo="Da fatturare"
       [valore]="statistiche.fattureDaGenerare"
       icona="bi-briefcase"
-      coloreSfondo="card-green"
       [descrizione]="'Fatture da generare!'">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
-      titolo="Flotta utilizzata"
-      [valore]="Math.floor (statistiche.veicoliAssegnati/statistiche.totaleVeicoli)*100"
-      icona="bi-building"
-      coloreSfondo="card-cyan"
-      descrizione="'{{statistiche.veicoliAssegnati}} su {{statistiche.totaleVeicoli}}'">
+      titolo="Flotta noleggiata"
+      [valore]="percentualeNoleggiati"
+      icona="bi-bar-chart-line"
+      descrizione="Il {{percentualeNoleggiati}}% della flotta è noleggiata">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
       titolo="In Manutenzione"
       [valore]="statistiche.veicoliManutenzione"
       icona="bi-tools"
-      coloreSfondo="card-orange"
       descrizione="Richiede attenzione">
     </app-card-statistiche-dashboard-fleet>
 
   </div>
 
-  <div class="griglia-operativa">
+  <div class="grid grid-cols-2 gap-6 my-10">
 
     <div class="colonna-sx">
       <app-richieste-manutenzione-da-gestire

@@ -1,4 +1,3 @@
-<app-tabella-auto-admin-azienda
-  [listaVeicoli]=listaVeicoli
-  (apriGestioneVeicolo)="apriGestioneVeicolo($event)">
-</app-tabella-auto-admin-azienda>
+@for (veicolo of listaVeicoli; track veicolo.targaVeicolo){
+  <app-card-auto-aziendale [veicolo]="veicolo" (inviaRichiestaGestione)="inviaRichiestaGestione($event)"></app-card-auto-aziendale>
+}
