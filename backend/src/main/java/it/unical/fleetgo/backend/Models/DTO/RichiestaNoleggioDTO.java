@@ -14,15 +14,19 @@ public class RichiestaNoleggioDTO {
     private Integer idDipendente;
     private Integer idAziendaRiferimento;
     private Integer idVeicolo;
+    private VeicoloDTO veicolo;
     private String oraInizio;
     private String oraFine;
     private String dataRitiro;
     private String dataConsegna;
     private String motivazione;
-    private boolean accettata;
+    private Boolean accettata;
     private UtenteDTO utente;
     private Boolean richiestaAnnullata;
+    private Float costoNoleggio;
+    private String statoRichiesta;
 
+    public RichiestaNoleggioDTO() {}
     public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();

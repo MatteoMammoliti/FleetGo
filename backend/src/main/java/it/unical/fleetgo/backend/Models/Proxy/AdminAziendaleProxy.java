@@ -5,6 +5,7 @@ import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +55,7 @@ public class AdminAziendaleProxy extends AdminAziendale {
     }
 
     @Override
-    public List<RichiestaNoleggio> getRichiesteNoleggio(){
+    public List<RichiestaNoleggio> getRichiesteNoleggio() {
         if(!richiesteNoleggioCaricate){
             richiesteNoleggioCaricate= true;
             List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdUtente());

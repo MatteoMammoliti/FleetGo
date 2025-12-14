@@ -1,11 +1,13 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
+import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,11 @@ public class RichiestaNoleggioDAO {
     }
 
     public List<RichiestaNoleggio> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
+        try{
+            this.aggiornaStatiNoleggi();
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
         String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
@@ -92,13 +99,13 @@ public class RichiestaNoleggioDAO {
             List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
 
             while(rs.next()){
-                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(connection));
+                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(connection),new VeicoloDAO(connection));
                 richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
                 richiesta.setIdUtente(rs.getInt("id_dipendente"));
-                richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
-                richiesta.setOraFine(rs.getTime("ora_fine").toLocalTime());
-                richiesta.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
-                richiesta.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
+                richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime().toString());
+                richiesta.setOraFine(rs.getTime("ora_fine").toLocalTime().toString());
+                richiesta.setDataRitiro(rs.getDate("data_ritiro").toLocalDate().toString());
+                richiesta.setDataConsegna(rs.getDate("data_consegna").toLocalDate().toString());
                 richiesta.setMotivazione(rs.getString("motivazione"));
                 richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
                 richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
@@ -108,6 +115,73 @@ public class RichiestaNoleggioDAO {
             return richiesteNoleggio;
         }catch (SQLException e){
             throw new RuntimeException(e);
+        }
+    }
+
+    public RichiestaNoleggio getProssimaRichiestaNoleggioDipendente(Integer idDipendente) throws SQLException{
+        this.aggiornaStatiNoleggi();
+        String query="SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND richiesta_annullata=false AND stato_richiesta !=?" +
+                " ORDER BY data_ritiro ASC LIMIT 1";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            st.setString(2,"Terminata");
+            ResultSet rs = st.executeQuery();
+            RichiestaNoleggio richiesta = new  RichiestaNoleggioProxy(new UtenteDAO(connection),new VeicoloDAO(connection));
+            this.estraiRichiestaDaResult(rs,richiesta);
+            return richiesta;
+        }
+    }
+
+    public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente) throws SQLException{
+        System.out.println("Sono nel dao");
+        String query="SELECT " +
+                "(SELECT COUNT(*) FROM richiesta_noleggio WHERE id_dipendente = ? AND stato_richiesta = 'Terminata' AND EXTRACT(MONTH FROM data_ritiro) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+                " AND EXTRACT(YEAR FROM data_ritiro) = EXTRACT(YEAR FROM CURRENT_DATE)) as viaggi_mese, " +
+                "(SELECT COALESCE(SUM(EXTRACT(EPOCH FROM ((data_consegna + ora_fine) - (data_ritiro + ora_inizio))) / 3600), 0) " +
+                " FROM richiesta_noleggio WHERE id_dipendente = ? AND stato_richiesta = 'Terminata') as ore_totali";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            st.setInt(2,idDipendente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                StatisticheDipendenteDTO dto = new StatisticheDipendenteDTO(rs.getInt("viaggi_mese"),rs.getFloat("ore_totali"));
+                System.out.println(rs.getInt("viaggi_mese") + rs.getFloat("ore_totali"));
+                return dto;
+            }
+        }
+        System.out.println("trovato niente");
+        return null;
+    }
+
+    private void aggiornaStatiNoleggi() throws SQLException {
+        LocalDateTime adesso = LocalDateTime.now();
+        String query1 = "UPDATE richiesta_noleggio SET stato_richiesta = 'In corso' WHERE stato_richiesta = 'Da ritirare' AND (data_ritiro + ora_inizio) <= ?";
+        String query2 = "UPDATE richiesta_noleggio SET stato_richiesta = 'Terminata' WHERE stato_richiesta = 'In corso' AND (data_consegna + ora_fine) <= ?";
+
+        try (PreparedStatement st = connection.prepareStatement(query1);
+             PreparedStatement st2 = connection.prepareStatement(query2)) {
+            st.setObject(1, adesso);
+            st.executeUpdate();
+            st2.setObject(1, adesso);
+            st2.executeUpdate();
+        }
+    }
+    private void estraiRichiestaDaResult(ResultSet rs,RichiestaNoleggio richiesta) throws SQLException {
+        if (rs.next()){
+            richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
+            richiesta.setIdUtente(rs.getInt("id_dipendente"));
+            richiesta.setIdAzienda(rs.getInt("id_azienda"));
+            richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
+            richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime().toString());
+            richiesta.setOraFine(rs.getTime("ora_fine").toLocalTime().toString());
+            richiesta.setDataRitiro(rs.getDate("data_ritiro").toLocalDate().toString());
+            richiesta.setDataConsegna(rs.getDate("data_consegna").toLocalDate().toString());
+            richiesta.setMotivazione(rs.getString("motivazione"));
+            richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
+            richiesta.setRichiestaAnnullata(rs.getBoolean("richiesta_annullata"));
+            richiesta.setCosto(rs.getFloat("costo_noleggio"));
+            richiesta.setStatoRichiesta(rs.getString("stato_richiesta"));
+
         }
     }
 }

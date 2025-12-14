@@ -12,12 +12,15 @@ public class RichiestaNoleggio {
     private Integer idVeicolo;
     private Integer idUtente;
     private Utente utente;
+    private Veicolo veicolo;
     private Integer idAzienda;
-    private LocalDate dataRitiro;
-    private LocalDate dataConsegna;
-    private LocalTime oraInizio;
-    private LocalTime oraFine;
+    private String dataRitiro;
+    private String dataConsegna;
+    private String oraInizio;
+    private String oraFine;
     private String motivazione;
     private Boolean richiestaAccettata;
     private Boolean richiestaAnnullata;
+    private Float costo;
+    private String statoRichiesta;
 }
