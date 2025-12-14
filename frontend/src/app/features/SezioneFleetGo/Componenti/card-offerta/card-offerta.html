@@ -1,0 +1,21 @@
+<div class="offer-card">
+  <div class="card-image-wrapper">
+    <img [src]="offerta.immagineCopertina || 'assets/offer-placeholder.jpg'" alt="Offerta" class="card-img">
+    <div class="discount-badge">-{{ offerta.percentualeSconto }}%</div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-header">
+      <span class="expiry-date">Scade: {{ offerta.scadenza | date:'dd MMM' }}</span>
+    </div>
+
+    <h3>{{ offerta.nomeOfferta }}</h3>
+    <p class="description">{{ offerta.descrizioneOfferta }}</p>
+
+    <div class="card-actions">
+      <button class="btn-delete" (click)="elimina()">
+        <i class="bi bi-trash"></i> Rimuovi
+      </button>
+    </div>
+  </div>
+</div>

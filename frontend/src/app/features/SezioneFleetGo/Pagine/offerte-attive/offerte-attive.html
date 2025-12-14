@@ -1,0 +1,35 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="header-text">
+      <h1>Gestione Offerte</h1>
+      <p>Crea promozioni per i tuoi clienti</p>
+    </div>
+    <button class="btn-add-offer" (click)="apriPaginaInserimentoOfferta()">
+      <i class="bi bi-plus-lg"></i> Nuova Offerta
+    </button>
+  </div>
+
+  <div class="offers-grid">
+
+    @for(offerta of offerteAttive; track offerta.idOfferta) {
+      <app-card-offerta
+        [offerta]=offerta
+        (eliminaOfferta)="onRimuoviOfferta($event)">
+      </app-card-offerta>
+    }
+
+    <div class="add-card-placeholder" (click)="apriPaginaInserimentoOfferta()">
+      <div class="dashed-border">
+        <i class="bi bi-plus-circle"></i>
+        <span>Aggiungi Offerta</span>
+      </div>
+    </div>
+  </div>
+
+  <app-modale-aggiunta-offerta
+    [paginaVisibile]="apriModale"
+    (chiudiPagina)="chiudiPaginaInserimentoOfferta()"
+    (salva)="salvaOfferta($event)">
+  </app-modale-aggiunta-offerta>
+</div>

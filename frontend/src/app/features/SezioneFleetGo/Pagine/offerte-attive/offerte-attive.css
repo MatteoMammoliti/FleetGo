@@ -1,0 +1,38 @@
+.page-container { padding: 30px; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 40px;
+}
+.header-text h1 { margin: 0; color: #0f172a; font-size: 1.8rem; }
+.header-text p { margin: 5px 0 0; color: #64748b; }
+
+.btn-add-offer {
+  background: #3b82f6; color: white; border: none;
+  padding: 12px 25px; border-radius: 50px; font-weight: 600;
+  cursor: pointer; display: flex; gap: 8px; align-items: center;
+  transition: transform 0.2s;
+}
+.btn-add-offer:hover { transform: scale(1.05); background: #2563eb; }
+
+/* GRIGLIA */
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* Placeholder card per aggiungere */
+.add-card-placeholder {
+  height: 100%; min-height: 350px;
+  cursor: pointer; transition: all 0.2s;
+}
+.dashed-border {
+  height: 100%; border: 2px dashed #cbd5e1; border-radius: 16px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  color: #94a3b8; gap: 15px; background: #f8fafc;
+}
+.add-card-placeholder:hover .dashed-border {
+  border-color: #3b82f6; color: #3b82f6; background: #eff6ff;
+}
+.dashed-border i { font-size: 2.5rem; }
