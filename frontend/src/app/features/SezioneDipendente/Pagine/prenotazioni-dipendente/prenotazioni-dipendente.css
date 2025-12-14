@@ -1,0 +1,80 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc; /* Sfondo pagina chiaro */
+  padding: 2rem 3rem; /* Spazioso come nel design */
+  padding-bottom: 150px;
+}
+
+/* Header */
+.page-header { margin-bottom: 2rem; }
+.page-header h2 { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin: 0 0 0.5rem 0; }
+.page-header p { color: #64748b; font-size: 1rem; margin: 0; }
+
+/* Filtri */
+.filters-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  background: #e2e8f0; /* Grigio scuro per lo sfondo del toggle */
+  width: fit-content;
+  padding: 4px;
+  border-radius: 50px;
+}
+
+.filter-pill {
+  border: none;
+  background: transparent;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-pill:hover { color: #0f172a; }
+
+/* Stato Attivo (Nero) */
+.filter-pill.active {
+  background-color: #0f172a;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Container Lista */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Spazio verticale tra le card */
+  max-width: 1000px; /* Evita che le card diventino lunghissime su schermi 4k */
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 20px;
+  border: 1px dashed #cbd5e1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+.empty-img {
+  font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;
+}
+.empty-state h3 { color: #0f172a; margin: 0 0 0.5rem 0; }
+.empty-state p { color: #64748b; margin-bottom: 1.5rem; }
+
+.btn-primary {
+  background: #3b82f6; color: white; border: none;
+  padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  :host { padding: 1.5rem; }
+  .filters-container { width: 100%; justify-content: space-between; }
+  .filter-pill { flex: 1; padding: 8px 0; }
+}

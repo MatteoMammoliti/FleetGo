@@ -18,5 +18,6 @@ export interface RichiestaNoleggioDTO {
   costoNoleggio:number;
   statoRichiesta:string;
   veicolo:VeicoloDTO;
+  nomeLuogo:string;
 
 }
