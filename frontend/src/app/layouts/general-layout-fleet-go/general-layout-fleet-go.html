@@ -1,22 +1,32 @@
 <div class="layout-container">
-  <app-sidebar class="sidebar">
-    <div class="contenitore-sidebar">
+
+  <app-sidebar class="navbar-top">
+
+    <div class="contenitore-navbar-items">
+
       <div class="contenitoreMenu">
         <ul>
           <li><a routerLink="dashboard" routerLinkActive="active">Dashboard</a></li>
-          <li><a routerLink="storico-fatture" routerLinkActive="active">Storico fatture</a></li>
-          <li><a routerLink="sezione-manutenzione" routerLinkActive="active">Richieste manutenzione</a></li>
-          <li><a routerLink="aziende-affiliate" routerLinkActive="active">Aziende Affiliate</a></li>
-          <li><a routerLink="flotta-globale" routerLinkActive="active">Flotta Globale</a></li>
+          <li><a routerLink="storico-fatture" routerLinkActive="active">Storico Fatture</a></li>
+          <li><a routerLink="sezione-manutenzione" routerLinkActive="active">Manutenzioni</a></li>
+          <li><a routerLink="aziende-affiliate" routerLinkActive="active">Aziende</a></li>
+          <li><a routerLink="flotta-globale" routerLinkActive="active">Flotta</a></li>
+          <li><a routerLink="offerte" routerLinkActive="active">Offerte attive</a></li>
         </ul>
       </div>
-    </div>
-    <div class="contenitore-logout">
-      <button class="logout" (click)="logout()">Logout</button>
+
+      <div class="contenitore-logout">
+        <button class="logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
+
     </div>
   </app-sidebar>
 
   <main class="main-content">
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
   </main>
+
 </div>

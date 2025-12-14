@@ -1,41 +1,109 @@
-.barraSuperiore {
-  background-color: #002040;
-  color: black;
+/* --- LAYOUT GENERALE --- */
+.layout-container {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* La finestra non scrolla, scrolla solo main-scroll-area */
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- NAVBAR SUPERIORE --- */
+.public-navbar {
+  height: 80px;
+  background-color: #0f172a; /* Dark Slate (Coerente con Dashboard) */
+  display: flex;
   align-items: center;
-  font-weight: bold;
-  width: 100%;
-
+  justify-content: space-between;
+  padding: 0 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  z-index: 100;
+  flex-shrink: 0; /* Non si schiaccia mai */
 }
 
-
-.barraSuperiore ul {
+/* Area Logo */
+.brand-area {
   display: flex;
-  gap: 20px;
-
-
+  align-items: center;
 }
-.fontLogo{
+
+/* Link di Navigazione */
+.nav-links ul {
   display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #cbd5e1; /* Grigio chiaro */
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* Bottoni Autenticazione */
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.btn-login {
+  text-decoration: none;
   color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 15px;
+  transition: opacity 0.2s;
 }
 
-.go{
-  color: #000000;
+.btn-login:hover {
+  opacity: 0.8;
 }
 
-.bottoniAutenticazione{
+.btn-register {
+  text-decoration: none;
+  background-color: #3b82f6; /* Blu Brand */
+  color: white;
+  padding: 10px 24px;
+  border-radius: 50px; /* Pill Shape */
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.btn-register:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* --- AREA CONTENUTO --- */
+.main-scroll-area {
+  flex: 1; /* Occupa tutto lo spazio sotto la navbar */
+  overflow-y: auto; /* Abilita lo scroll */
+  background-color: #ffffff;
   display: flex;
-  margin-left: auto;
-  gap: 20px;
-}
-.bottone{
-  background-color: white;
-  padding: 5px;
-  min-width: 100px;
-  text-align: center;
-  border-radius: 10px;
-  border: 1px solid black;
+  flex-direction: column;
 }
 
+.page-content {
+  flex: 1; /* Spinge il footer in basso se la pagina è corta */
+  width: 100%;
+  max-width: 100%; /* O 1200px se vuoi limitare la larghezza del contenuto */
+  margin: 0 auto;
+}
+
+/* Responsività Mobile */
+@media (max-width: 900px) {
+  .public-navbar { padding: 0 20px; }
+  .nav-links { display: none; /* Nascondi menu su mobile per ora */ }
+  .btn-login { display: none; }
+}

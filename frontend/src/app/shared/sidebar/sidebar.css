@@ -1,11 +1,26 @@
 .barra_laterale {
-    width: 250px;
-    height: 100%;
-    background-color: #002040;
-    }
+  width: 100%;          /* Occupa tutta la larghezza */
+  height: 70px;         /* Altezza fissa della navbar */
+  background-color: #0f172a; /* Blu notte scuro (Moderno) */
+  display: flex;        /* Flexbox per allineare logo e contenuto */
+  align-items: center;
+  padding: 0 40px;      /* Spazio ai lati */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Ombra leggera sotto */
+  position: relative;
+  z-index: 1000;
+  box-sizing: border-box;
+}
 
+/* Adattiamo l'app-logo per stare bene in orizzontale */
+app-logo {
+  margin-right: 60px; /* Spazio tra logo e link */
+  transform: scale(0.9); /* Leggermente più piccolo se serve */
+}
 
-
-
-
-
+.navigazione {
+  flex: 1; /* Prende tutto lo spazio rimanente */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuisce il contenuto proiettato (ng-content) */
+  height: 100%;
+}

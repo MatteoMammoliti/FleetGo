@@ -12,6 +12,4 @@ import {Logo} from '@shared/Componenti/Ui/logo/logo';
   styleUrl: './sidebar.css',
   standalone: true
 })
-export class Sidebar {
-
-}
+export class Sidebar {}

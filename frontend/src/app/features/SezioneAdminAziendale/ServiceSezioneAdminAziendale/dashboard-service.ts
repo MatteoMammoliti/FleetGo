@@ -13,7 +13,15 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  public getStatoVeicoli(): Observable<ContenitoreStatisticheNumeriche> {
-    return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/statoVeicoli`, { withCredentials: true });
-  }
+  // public getNumeroRichiesteNoleggioInAttesa(): Observable<number> {
+  //
+  // }
+  //
+  // public getNumeroRichiesteAffiliazioneDaAccettare(): Observable<number> {}
+  //
+  // public getNumeroLuoghiImpostati(): Observable<number> {}
+  //
+  // public getSpesaMeseCorrente(): Observable<number> {}
+  //
+  // public getFattureDaPagare(): Observable<number> {}
 }

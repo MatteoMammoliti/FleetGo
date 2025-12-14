@@ -3,10 +3,11 @@ import { Sidebar } from '@shared/sidebar/sidebar';
 import { inject } from '@angular/core';
 import { AuthService } from '@core/auth/auth-service';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Footer} from '@shared/footer/footer';
 
 @Component({
   selector: 'app-general-layout-admin-aziendale',
-  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive, Footer],
   standalone: true,
   templateUrl: './general-layout-admin-aziendale.html',
   styleUrl: './general-layout-admin-aziendale.css',

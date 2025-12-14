@@ -1,19 +1,33 @@
-<div>
-  <nav class="barraSuperiore">
-    <ul>
-      <h1>
-        <app-logo></app-logo>
-      </h1>
-      <li><a href="">Contatti</a></li>
-      <li><a href="">Chi siamo</a>
-    </ul>
-    <div class="bottoniAutenticazione">
-      <button routerLink="/login" class="bottone">Accedi</button>
-      <button routerLink="/registrazione" class="bottone">Registrati</button>
-    </div>
-  </nav>
+<div class="layout-container">
 
-  <main class="main-content">
-    <router-outlet></router-outlet>
+  <header class="public-navbar">
+
+    <div class="brand-area">
+      <app-logo></app-logo>
+    </div>
+
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#">Chi Siamo</a></li>
+        <li><a href="#">Come funziona</a></li>
+        <li><a href="#">Vantaggi</a></li>
+        <li><a href="#">Contatti</a></li>
+      </ul>
+    </nav>
+
+    <div class="auth-buttons">
+      <a routerLink="/login" class="btn-login">Accedi</a>
+      <a routerLink="/registrazione" class="btn-register">Registrati Gratis</a>
+    </div>
+
+  </header>
+
+  <main class="main-scroll-area">
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
   </main>
+
 </div>

@@ -65,29 +65,6 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public ContenitoreStatisticheNumeriche getStatoVeicoli(Integer idAzienda) {
-        String query = "SELECT " +
-                "SUM(CASE WHEN v.status_contrattuale = 'Noleggiato' THEN 1 ELSE 0 END) as veicoliNoleggiati," +
-                "SUM(CASE WHEN v.in_manutenzione = true THEN 1 ELSE 0 END) as veicoliInManutenzione," +
-                "SUM(CASE WHEN v.status_contrattuale = 'Disponibile' THEN 1 ELSE 0 END) as veicoliDisponibili " +
-                "FROM veicolo v JOIN gestione_veicolo_azienda g ON g.id_veicolo = v.id_veicolo WHERE g.id_azienda = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idAzienda);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
-                return new ContenitoreStatisticheNumeriche(
-                        rs.getInt("veicoliNoleggiati"),
-                        rs.getInt("veicoliDisponibili"),
-                        rs.getInt("veicoliInManutenzione")
-                );
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
     public void contrassegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
         String query="UPDATE veicolo SET status_contrattuale =? WHERE id_veicolo IN " +
                 " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g " +

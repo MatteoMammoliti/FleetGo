@@ -4,16 +4,17 @@ import { RegistrazioneComponent } from '@features/SezioneAutenticazione/Pagine/r
 import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
 import {RecuperoPassword} from '@features/SezioneAutenticazione/Pagine/recupero-password/recupero-password';
 import {authGuard} from '@core/auth/auth.guard';
+import {LandingPage} from '@features/SezionePubblica/landing-page/landing-page';
 
 export const routes: Routes = [
  {
     path: '',
     component: GeneralLayoutNoLogin,
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: '', component: LandingPage },
       { path: 'login', component: LoginComponent },
       { path: 'registrazione', component: RegistrazioneComponent },
-      {path: 'recuperoPassword', component: RecuperoPassword}
+      { path: 'recuperoPassword', component: RecuperoPassword}
     ]
   },
 
@@ -40,7 +41,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { ruolo: 'Dipendente' }
   },
-
 
   { path: '**', redirectTo: 'login' }
 ];

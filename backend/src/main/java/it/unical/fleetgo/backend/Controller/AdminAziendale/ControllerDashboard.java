@@ -18,16 +18,10 @@ public class ControllerDashboard {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
 
-    @GetMapping("/statoVeicoli")
-    public ResponseEntity<ContenitoreStatisticheNumeriche> getStatoVeicolo(HttpSession session) {
-        try {
-
-            return ResponseEntity.ok(adminAziendaleService.getStatoVeicolo(
-                    (Integer) session.getAttribute("idAzienda")
-            ));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+//    @GetMapping("/getRichiesteNoleggio")
+//    public ResponseEntity<Integer> getRichiesteNoleggioInAttesa(HttpSession session) {
+//        try {
+//
+//        }
+//    }
 }

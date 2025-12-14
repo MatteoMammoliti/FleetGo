@@ -59,14 +59,6 @@ public class AdminAziendaleService {
         }
     }
 
-    public ContenitoreStatisticheNumeriche getStatoVeicolo(Integer idAzienda) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO =
-                    new GestioneVeicoloAziendaDAO(connection);
-            return gestioneVeicoloAziendaDAO.getStatoVeicoli(idAzienda);
-        }
-    }
-
     public List<LuogoDTO> getLuoghiCorrenti(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
