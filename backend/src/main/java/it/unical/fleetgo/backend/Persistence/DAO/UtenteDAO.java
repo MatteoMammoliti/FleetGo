@@ -30,10 +30,7 @@ public class UtenteDAO {
         try (PreparedStatement st = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             st.setString(1,utente.getNomeUtente());
             st.setString(2,utente.getCognomeUtente());
-
-            Date formatto = Date.valueOf(utente.getDataNascitaUtente());
-            st.setDate(3,formatto);
-
+            st.setDate(3, Date.valueOf(utente.getDataNascitaUtente()));
             st.setString(4,utente.getTipoUtente());
 
             int righe = st.executeUpdate();

@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Service.FleetGoService;
-import it.unical.fleetgo.backend.Service.GeneratorePdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

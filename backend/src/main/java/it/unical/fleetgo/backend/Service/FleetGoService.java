@@ -1,13 +1,12 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheManutezioni;
-import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
-import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
-import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
+import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Persistence.DAO.FatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GeneraFatturaDAO;
+import it.unical.fleetgo.backend.Persistence.DAO.OffertaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiesteManutenzioneDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
+import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -144,6 +143,34 @@ public class FleetGoService {
                 richiesteDTO.add(dto);
             }
         return richiesteDTO;
+        }
+    }
+
+    public void inserisciNuovaOfferta(OffertaDTO offertaDTO) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            OffertaDAO offertaDAO = new OffertaDAO(connection);
+            offertaDAO.inserisciOfferta(offertaDTO);
+        }
+    }
+
+    public void eliminaOfferta(Integer idOfferta) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            OffertaDAO offertaDAO = new OffertaDAO(connection);
+            offertaDAO.eliminaOfferta(idOfferta);
+        }
+    }
+
+    public List<OffertaDTO> getOfferteAttive() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            OffertaDAO offertaDAO = new OffertaDAO(connection);
+            List<Offerta> offerte = offertaDAO.getOfferteAttive();
+            List<OffertaDTO> offerteDTO = new ArrayList<>();
+
+            for(Offerta off : offerte) {
+                offerteDTO.add(new OffertaDTO(off));
+            }
+
+            return offerteDTO;
         }
     }
 }

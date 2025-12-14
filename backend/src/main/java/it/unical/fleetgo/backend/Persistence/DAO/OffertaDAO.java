@@ -1,0 +1,72 @@
+package it.unical.fleetgo.backend.Persistence.DAO;
+
+import it.unical.fleetgo.backend.Models.DTO.OffertaDTO;
+import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class OffertaDAO {
+
+    private final Connection connection;
+
+    public OffertaDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    public boolean inserisciOfferta(OffertaDTO offertaDTO) {
+        String query = "INSERT INTO offerte_attive (nome_offerta, descrizione_offerta, scadenza, percentuale_sconto, immagine_copertina) VALUES(?, ?, ?, ?, ?)";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, offertaDTO.getNomeOfferta());
+            ps.setString(2, offertaDTO.getDescrizioneOfferta());
+            ps.setDate(3, Date.valueOf(offertaDTO.getScadenza()));
+            ps.setInt(4, offertaDTO.getPercentualeSconto());
+            ps.setString(5, offertaDTO.getImmagineCopertina());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Offerta> getOfferteAttive() {
+        String query = "SELECT * FROM offerte_attive";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ResultSet rs = ps.executeQuery();
+            List<Offerta> offerteDisponibili = new ArrayList<>();
+
+            while(rs.next()) {
+                Offerta offerta = new Offerta();
+
+                offerta.setIdOfferta(rs.getInt("id_offerta"));
+                offerta.setDescrizioneOfferta(rs.getString("descrizione_offerta"));
+                offerta.setNomeOfferta(rs.getString("nome_offerta"));
+                offerta.setScadenza(rs.getDate("scadenza").toLocalDate());
+                offerta.setPercentualeSconto(rs.getInt("percentuale_sconto"));
+                offerta.setImmagineCopertina(rs.getString("immagine_copertina"));
+
+                offerteDisponibili.add(offerta);
+            }
+
+            return offerteDisponibili;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean eliminaOfferta(Integer idOfferta) {
+        String query = "DELETE FROM offerte_attive WHERE id_offerta = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idOfferta);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

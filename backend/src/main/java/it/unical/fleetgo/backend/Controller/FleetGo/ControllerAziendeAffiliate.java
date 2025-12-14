@@ -3,22 +3,17 @@ package it.unical.fleetgo.backend.Controller.FleetGo;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiRegistrazioneAzienda;
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
-import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.UtenteService;
-import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerAziendeAffiliate {
 
     @Autowired private AziendaService aziendaService;

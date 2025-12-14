@@ -2,7 +2,6 @@ package it.unical.fleetgo.backend.Controller.FleetGo;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.VeicoloService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerFlottaVeicoli {
 
     @Autowired private VeicoloService veicoloService;
