@@ -5,8 +5,8 @@
     <p>Prenota un veicolo in pochi click o gestisci le tue prenotazioni attive. FleetGo ti accompagna ovunque.</p>
 
     <div class="hero-actions">
-      <button class="btn-primary">Prenota Veicolo</button>
-      <button class="btn-secondary">Le mie Attività</button>
+      <button class="btn-primary" (click)="clickPrenotaVeicolo.emit()" >Prenota Veicolo</button>
+      <button class="btn-secondary" (click)="clickMiePrenotazioni.emit()">Le mie Attività</button>
     </div>
   </div>
 </section>

@@ -2,13 +2,24 @@ import {Routes} from '@angular/router';
 import {GeneralLayoutFleetGo} from '../../layouts/general-layout-fleet-go/general-layout-fleet-go';
 import {DashboardFleetGo} from '@features/SezioneFleetGo/Pagine/dashboard-fleet-go/dashboard-fleet-go';
 import {DashboardDipendente} from '@features/SezioneDipendente/Pagine/dashboard-dipendente/dashboard-dipendente';
+import {GeneralLayoutDipendente} from '../../layouts/general-layout-dipendente/general-layout-dipendente';
+import {CreaPrenotazione} from '@features/SezioneDipendente/Pagine/crea-prenotazione/crea-prenotazione';
+import {
+  PrenotazioniDipendente
+} from '@features/SezioneDipendente/Pagine/prenotazioni-dipendente/prenotazioni-dipendente';
+import {
+  ImpostazioniDipendente
+} from '@features/SezioneDipendente/Pagine/impostazioni-dipendente/impostazioni-dipendente';
 
 export const DIPENDENTE_ROUTES: Routes = [
   {
     path: '',
-    component: GeneralLayoutFleetGo,
+    component: GeneralLayoutDipendente,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardDipendente },
+      { path: '', redirectTo: 'homepage', pathMatch: 'full' },
+      { path: 'homepage', component: DashboardDipendente },
+      {path:'prenotazioni',component:PrenotazioniDipendente},
+      {path:'nuovaPrenotazione',component:CreaPrenotazione},
+      {path:'impostazioni',component:ImpostazioniDipendente}
     ]
   }]

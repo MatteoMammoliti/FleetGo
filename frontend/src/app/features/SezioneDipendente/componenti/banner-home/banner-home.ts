@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-banner-home',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './banner-home.css',
 })
 export class BannerHome {
+  @Output() clickPrenotaVeicolo= new EventEmitter();
+  @Output() clickMiePrenotazioni= new EventEmitter();
 
 }

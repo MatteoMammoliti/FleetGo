@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {BannerHome} from '@features/SezioneDipendente/componenti/banner-home/banner-home';
 import {ProssimoViaggio} from '@features/SezioneDipendente/componenti/prossimo-viaggio/prossimo-viaggio';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
@@ -7,6 +7,8 @@ import {StatisticheDipendenteDTO} from '@core/models/StatisticheDipendenteDTO';
 import {
   StatisticheDipendente
 } from '@features/SezioneDipendente/componenti/statistiche-dipendente/statistiche-dipendente';
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard-dipendente',
@@ -19,7 +21,7 @@ import {
   styleUrl: './dashboard-dipendente.css',
 })
 export class DashboardDipendente {
-  constructor(private service:HomeService) {}
+  constructor(private service:HomeService,private router:Router) {}
     prossimoViaggio:RichiestaNoleggioDTO | undefined;
     statisticheDipendente:StatisticheDipendenteDTO | undefined;
     ngOnInit(){
@@ -44,5 +46,12 @@ export class DashboardDipendente {
         },
         error:(err)=>{console.error("Errore nel caricamento delle statistiche dipendente")}
       })
+    }
+
+    apriPrenotazioni(){
+      this.router.navigate(['/dashboardDipendente/nuovaPrenotazione']);
+    }
+    apriMieAttivita(){
+      this.router.navigate(['/dashboardDipendente/prenotazioni'])
     }
 }
