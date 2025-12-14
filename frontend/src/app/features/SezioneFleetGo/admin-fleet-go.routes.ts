@@ -6,6 +6,7 @@ import { AziendeAffiliate } from '@features/SezioneFleetGo/Pagine/aziende-affili
 import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
 import {StoricoFatture} from '@features/SezioneFleetGo/Pagine/storico-fatture/storico-fatture';
 import {SezioneManutenzioni} from '@features/SezioneFleetGo/Pagine/sezione-manutenzioni/sezione-manutenzioni';
+import {OfferteAttive} from '@features/SezioneFleetGo/Pagine/offerte-attive/offerte-attive';
 
 export const ADMIN_FLEET_GO_ROUTES: Routes = [
   {
@@ -24,7 +25,9 @@ export const ADMIN_FLEET_GO_ROUTES: Routes = [
 
       { path: 'storico-fatture', component: StoricoFatture },
 
-      { path: 'sezione-manutenzione', component: SezioneManutenzioni}
+      { path: 'sezione-manutenzione', component: SezioneManutenzioni},
+
+      { path: 'offerte-attive', component: OfferteAttive}
     ]
   }
 ];

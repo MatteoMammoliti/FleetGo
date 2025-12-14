@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/dashboardAdminAziendale")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
-
 public class ControllerFlottaAziendale {
 
     @Autowired private VeicoloService veicoloService;

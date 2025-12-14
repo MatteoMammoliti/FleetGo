@@ -70,7 +70,7 @@ export class RegistrazioneComponent {
       this.errore = "";
     }
 
-    if (this.validator.checkNome(this.nome) == false) {
+    if (!this.validator.checkNome(this.nome)) {
       this.errore = "Nome non valido";
       this.mappaErrori.nome = true;
       return;

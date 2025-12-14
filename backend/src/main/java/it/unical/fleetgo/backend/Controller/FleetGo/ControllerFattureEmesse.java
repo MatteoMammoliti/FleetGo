@@ -4,10 +4,7 @@ import it.unical.fleetgo.backend.Service.FleetGoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -16,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
+@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerFattureEmesse {
 
     @Autowired private FleetGoService fleetGoService;

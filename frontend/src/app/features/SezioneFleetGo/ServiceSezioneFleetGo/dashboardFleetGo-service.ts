@@ -4,11 +4,7 @@ import {Observable} from 'rxjs';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {environment} from '@env/environment';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
-import {
-  RichiesteManutenzioneDaGestire
-} from '@features/SezioneFleetGo/Componenti/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
 
 
 @Injectable({

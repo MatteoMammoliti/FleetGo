@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
+@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerDashboardFleetGo {
 
     @Autowired private UtenteService utenteService;
