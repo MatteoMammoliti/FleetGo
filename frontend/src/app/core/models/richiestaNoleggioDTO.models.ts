@@ -1,17 +1,22 @@
 import {UtenteDTO} from '@core/models/utenteDTO.model';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 
 
 export interface RichiestaNoleggioDTO {
-idRichiestaNoleggio?:number;
-idVeicolo:number;
-idUtente:number;
-utente: UtenteDTO;
-idAzienda: number;
-dataRitiro: string;
-dataConsegna: string;
-oraInizio: string;
-oraFine: string;
-motivazione:string;
-richiestaAccettata: boolean;
-richiestaAnnullata:boolean;
+  idRichiesta:number;
+  idDipendente:number;
+  idAziendaRiferimento:number;
+  idVeicolo:number;
+  oraInizio:string;
+  oraFine:string;
+  dataRitiro:string;
+  dataConsegna:string;
+  motivazione:string;
+  accettata:boolean;
+  utente:UtenteDTO;
+  richiestaAnnullata:boolean;
+  costoNoleggio:number;
+  statoRichiesta:string;
+  veicolo:VeicoloDTO;
+
 }

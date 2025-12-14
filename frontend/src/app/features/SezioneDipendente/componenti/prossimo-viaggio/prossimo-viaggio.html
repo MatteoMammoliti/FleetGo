@@ -1,0 +1,53 @@
+<div class="card-container">
+  <div class="card-header">
+    <h3><i class="bi bi-calendar-event"></i> Prossimo Viaggio</h3>
+
+    @if (viaggio) {
+      <span class="status-badge approved">{{ viaggio.statoRichiesta }}</span>
+    }
+  </div>
+
+  <div class="card-body">
+    @if (viaggio) {
+      <div class="trip-content">
+
+        <div class="date-box">
+          <span class="day-number">{{ viaggio.dataRitiro }}</span>
+        </div>
+
+        <div class="info-box">
+
+          <div class="header-row">
+            <span class="time-badge"><i class="bi bi-clock"></i> {{ viaggio.oraInizio }}</span>
+            <h4 class="trip-title">{{ viaggio.motivazione }}</h4>
+          </div>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+              <div class="icon-circle small"><i class="bi bi-car-front-fill"></i></div>
+              <div class="text-info">
+                <span class="label">Veicolo</span>
+                <div class="car-info">
+                  <span class="brand">{{ viaggio.veicolo.modello }}</span>
+                  <span class="plate-badge">{{ viaggio.veicolo.targaVeicolo }}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    }
+
+    @else {
+      <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
+        <h4>Nessun viaggio in programma</h4>
+        <p>Non hai prenotazioni attive al momento.</p>
+        <button class="btn-outline-blue">Pianifica Nuovo Viaggio</button>
+      </div>
+    }
+  </div>
+</div>

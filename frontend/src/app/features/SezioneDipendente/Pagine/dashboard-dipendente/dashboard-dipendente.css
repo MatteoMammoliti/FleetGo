@@ -1,0 +1,30 @@
+/* Impostazioni generali della pagina dashboard */
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f1f5f9; /* Colore di sfondo grigio chiaro pagina */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Spazio sotto il banner */
+.banner-area {
+  margin-bottom: 2rem;
+}
+
+/* LA GRIGLIA: Qui si decide il layout */
+.content-grid {
+  display: grid;
+  /* 2fr = 2 frazioni (66%), 1fr = 1 frazione (33%) */
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem; /* Spazio tra i due blocchi */
+  align-items: stretch; /* Forza i componenti ad avere la stessa altezza */
+}
+
+/* --- RESPONSIVE --- */
+/* Se lo schermo è piccolo (tablet/cellulare), metti tutto in una colonna */
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
