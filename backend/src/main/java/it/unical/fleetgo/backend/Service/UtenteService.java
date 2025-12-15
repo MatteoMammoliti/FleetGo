@@ -106,7 +106,7 @@ public class UtenteService {
 
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
-            Dipendente d = utenteDAO.getDipendenteDaId(idUtente);
+            Dipendente d = utenteDAO.getDipendenteById(idUtente);
             return new DipendenteDTO(d);
         }
     }

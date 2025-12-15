@@ -120,4 +120,18 @@ public class AdminAziendaleService {
             return gestioneVeicoloAziendaDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
         }
     }
+
+    public String getNomeAziendaGestita(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            AziendaDAO aziendaDAO = new AziendaDAO(connection);
+            return aziendaDAO.getNomeAziendaById(idAzienda);
+        }
+    }
+
+    public String getNomeCognomeAdmin(Integer idUtente) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            return utenteDAO.getNomeCognomeAdminById(idUtente);
+        }
+    }
 }

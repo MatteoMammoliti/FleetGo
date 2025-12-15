@@ -14,16 +14,12 @@ export const AZIENDA_ROUTES: Routes = [
     component: GeneralLayoutAdminAziendale,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-
       { path: 'dashboard', component: DashboardAzienda },
-
       { path: 'impostazioni', component: ModificaDatiComponent },
       { path: 'dipendenti', component : GestioneDipendentiComponent},
-
       { path: 'dettagli-dipendente/:id', component : DettagliDipendente },
       { path: 'flotta', component : FlottaAdminAziendale },
       { path: 'dettagli-veicolo/:targa', component: DettagliVeicoloAziendale}
-
     ],
   },
 ];

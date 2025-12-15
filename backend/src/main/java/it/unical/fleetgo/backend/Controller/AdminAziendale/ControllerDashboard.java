@@ -83,4 +83,30 @@ public class ControllerDashboard {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/getNomeCognomeAdmin")
+    public ResponseEntity<String> getNomeCognomeAdmin(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getNomeCognomeAdmin(
+                            (Integer) session.getAttribute("idUtente")
+                    )
+            );
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getNomeAziendaGestita")
+    public ResponseEntity<String> getNomeAziendaGestita(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getNomeAziendaGestita(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

@@ -15,7 +15,7 @@ public class RichiestaAffiliazioneAziendaProxy extends RichiestaAffiliazioneAzie
     @Override
     public Utente getUtente() {
         if(!utenteCaricato){
-            Utente u = utenteDAO.getDipendenteDaId(super.getIdUtente());
+            Utente u = utenteDAO.getDipendenteById(super.getIdUtente());
             utenteCaricato = true;
             super.setUtente(u);
         }

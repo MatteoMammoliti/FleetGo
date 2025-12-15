@@ -22,7 +22,7 @@ public class FatturaProxy extends Fattura {
     @Override
     public Azienda getAzienda() {
         if(!aziendaCaricata) {
-            Azienda azienda = aziendaDAO.getAzienda(super.getIdAzienda());
+            Azienda azienda = aziendaDAO.getAziendaById(super.getIdAzienda());
             super.setAzienda(azienda);
             aziendaCaricata = true;
         }

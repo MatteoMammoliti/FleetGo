@@ -32,4 +32,18 @@ export class DashboardService {
   getNumeroNoleggi(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggi`, { withCredentials:true })
   }
+
+  getNomeAziendaGestita(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/getNomeAziendaGestita`, {
+      withCredentials: true,
+      responseType: 'text'
+    });
+  }
+
+  getNomeCognomeAdmin(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/getNomeCognomeAdmin`, {
+      withCredentials: true,
+      responseType: 'text'
+    });
+  }
 }

@@ -1,50 +1,89 @@
 <div class="dashboard-container">
 
-  <div class="dashboard-header">
-    <div>
-      <h1>Panoramica Aziendale</h1>
-      <p>Monitora le tue offerte e le richieste in arrivo.</p>
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="company-badge">
+        <i class="bi bi-building-fill"></i> {{ nomeAziendaGestita }}
+      </div>
+
+      <div class="title-wrapper">
+        <h1>Bentornato, {{ nomeECognomeAdmin }}! 👋</h1>
+
+        @if(sommaRichieste > 0) {
+          <div class="action-badge">Hai {{ sommaRichieste}} nuove attività!</div>
+        }
+      </div>
+
+      <p class="subtitle">Ecco cosa richiede la tua attenzione oggi.</p>
     </div>
-  </div>
+  </header>
 
-  <div class="dashboard-grid">
+  <main class="dashboard-grid">
 
-    <div class="main-widget-area">
-      <h3 class="section-title">Offerte riservate per te</h3>
+    <div class="grid-item main-widget">
+      <h3 class="section-title">Richieste in Arrivo</h3>
+      <app-carosello-richieste-miste
+        [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
+        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio">
+      </app-carosello-richieste-miste>
+    </div>
+
+    <div class="grid-item side-widget">
+      <h3 class="section-title">Affiliazioni Dipendenti</h3>
+
+      <div class="employee-requests-card">
+        <div class="card-header-simple">
+          <span class="count-bubble">{{ richiesteDipendentiSimulate }}</span>
+          <span>Richieste in attesa</span>
+        </div>
+
+        <ul class="employee-list">
+          <li>
+            <div class="emp-avatar">MV</div>
+            <div class="emp-info">
+              <span class="name">Mario Verdi</span>
+              <span class="role">Logistica</span>
+            </div>
+            <button class="btn-icon-check"><i class="bi bi-check-lg"></i></button>
+          </li>
+          <li>
+            <div class="emp-avatar">GL</div>
+            <div class="emp-info">
+              <span class="name">Giulia Leoni</span>
+              <span class="role">Amministrazione</span>
+            </div>
+            <button class="btn-icon-check"><i class="bi bi-check-lg"></i></button>
+          </li>
+        </ul>
+
+        <button class="btn-view-all">Vedi tutti</button>
+      </div>
+    </div>
+
+    <div class="grid-item main-widget">
+      <h3 class="section-title">Offerte Attive</h3>
       <app-carosello-offerte
         [offerte]="offerteAttive">
       </app-carosello-offerte>
     </div>
 
-    <div class="side-widget-area">
-      <h3 class="section-title">In Attesa</h3>
+    <div class="grid-item side-widget stats-stack">
+      <h3 class="section-title">Statistiche Rapide</h3>
 
-      <app-carosello-richieste-miste
-        [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
-        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio">
-      </app-carosello-richieste-miste>
+      <app-card-statistiche-dashboard
+        titolo="Spesa Mensile"
+        [valore]="statisticheGuadagno | currency:'EUR'"
+        icona="bi-wallet2"
+        colore="blue">
+      </app-card-statistiche-dashboard>
 
-      <div class="stats-grid-vertical">
-
-        <div class="stat-card-compact blue">
-          <div class="icon-box">
-            <i class="bi bi-wallet2"></i> </div>
-          <div class="text-box">
-            <span class="stat-value">€ {{ statisticheGuadagno }}</span>
-            <span class="stat-label">Spesa Mensile</span>
-          </div>
-        </div>
-
-        <div class="stat-card-compact green">
-          <div class="icon-box">
-            <i class="bi bi-speedometer2"></i> </div>
-          <div class="text-box">
-            <span class="stat-value">{{ statisticheFlotta }} Veicoli</span>
-            <span class="stat-label">Attualmente Noleggiati</span>
-          </div>
-        </div>
-
-      </div>
+      <app-card-statistiche-dashboard
+        titolo="Veicoli Noleggiati"
+        [valore]="statisticheFlotta"
+        icona="bi-car-front"
+        colore="green">
+      </app-card-statistiche-dashboard>
     </div>
-  </div>
+
+  </main>
 </div>

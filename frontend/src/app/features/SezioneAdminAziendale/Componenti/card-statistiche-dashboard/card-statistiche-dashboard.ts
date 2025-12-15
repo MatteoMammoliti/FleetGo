@@ -2,14 +2,14 @@ import {Component, Input, input} from '@angular/core';
 import {NgClass} from '@angular/common';
 
 @Component({
-  selector: 'app-card-stastiche-dashboard',
+  selector: 'app-card-statistiche-dashboard',
   imports: [
     NgClass
   ],
-  templateUrl: './card-stastiche-dashboard.html',
-  styleUrl: './card-stastiche-dashboard.css',
+  templateUrl: './card-statistiche-dashboard.html',
+  styleUrl: './card-statistiche-dashboard.css',
 })
-export class CardStasticheDashboard {
+export class CardStatisticheDashboard {
 
   @Input() colore: any;
   @Input() icona: any;

@@ -16,7 +16,7 @@ public class RichiestaNoleggioProxy extends RichiestaNoleggio {
     @Override
     public Utente getUtente() {
         if (!utenteCaricato) {
-            Utente utente = utenteDAO.getDipendenteDaId(this.getIdUtente());
+            Utente utente = utenteDAO.getDipendenteById(this.getIdUtente());
             if (utente != null) {
                 utenteCaricato = true;
                 super.setUtente(utente);
