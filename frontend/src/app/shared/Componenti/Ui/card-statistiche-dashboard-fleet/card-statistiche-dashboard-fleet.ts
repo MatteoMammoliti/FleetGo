@@ -3,7 +3,7 @@ import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-card-statistiche-dashboard-fleet',
-  imports: [NgClass],
+  imports: [],
   standalone:true,
   templateUrl: './card-statistiche-dashboard-fleet.html',
   styleUrl: './card-statistiche-dashboard-fleet.css',

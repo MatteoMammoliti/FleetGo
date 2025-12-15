@@ -1,3 +1,36 @@
-<div class="container-card">
+<div class="dashboard-container">
 
+  <div class="dashboard-header">
+    <div>
+      <h1>Panoramica Aziendale</h1>
+      <p>Monitora le tue offerte e le richieste in arrivo.</p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="main-widget-area">
+      <h3 class="section-title">Offerte riservate per te</h3>
+      <app-carosello-offerte
+        [offerte]="offerteAttive">
+      </app-carosello-offerte>
+    </div>
+
+    <div class="side-widget-area">
+      <h3 class="section-title">In Attesa</h3>
+      <app-carosello-richieste-miste
+        [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
+        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio">
+      </app-carosello-richieste-miste>
+
+      <div class="quick-stat-card">
+        <div class="icon-stat"><i class="bi bi-graph-up-arrow"></i></div>
+        <div>
+          <span class="stat-value">98%</span>
+          <span class="stat-label">Efficienza Flotta</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

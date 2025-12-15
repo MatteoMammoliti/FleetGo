@@ -1,0 +1,112 @@
+/* Container Generale */
+.dashboard-container {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: #0f172a;
+  margin: 0 0 5px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.btn-action-header {
+  background-color: #0f172a;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+.btn-action-header:hover {
+  transform: translateY(-2px);
+  background-color: #1e293b;
+}
+
+/* GRIGLIA DASHBOARD */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Sinistra larga (2), Destra stretta (1) */
+  gap: 30px;
+  align-items: start; /* Allinea in alto */
+}
+
+/* Titoli delle sezioni */
+.section-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+/* Widget Laterali */
+.side-widget-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card Statistica Extra (Esempio decorativo) */
+.quick-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid #f1f5f9;
+}
+
+.icon-stat {
+  width: 45px; height: 45px;
+  background-color: #ecfdf5; color: #10b981;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+
+.stat-value { font-size: 1.4rem; font-weight: 800; color: #0f172a; display: block; line-height: 1; }
+.stat-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+
+/* RESPONSIVE: Su mobile tutto in colonna */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container {
+    padding: 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

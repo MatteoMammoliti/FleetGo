@@ -110,4 +110,18 @@ public class RichiestaNoleggioDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer getNumRichiesteNoleggio(Integer idAzienda) {
+        String query = "SELECT COUNT(*) as somma FROM richiesta_noleggio WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getInt("somma");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

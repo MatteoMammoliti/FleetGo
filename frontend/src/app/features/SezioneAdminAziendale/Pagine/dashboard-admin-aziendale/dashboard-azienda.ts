@@ -1,30 +1,50 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {GraficoStatoFlotta} from '@shared/Componenti/Grafici/grafico-stato-flotta/grafico-stato-flotta';
-import {GraficoAndamentoUtilizzo} from '@shared/Componenti/Grafici/grafico-andamento-utilizzo/grafico-andamento-utilizzo';
+import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dashboard-service';
-import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
-import {ContenitoreDatiGraficoAndamento} from '@core/models/ContenitoreDatiGraficoAndamento.models';
-import {
-  CardStatisticheDashboardFleet
-} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
-import {ContenitoreDatiGraficoLuoghiAuto} from '@core/models/ContenitoreDatiGraficoLuoghiAuto.models';
-import {GraficoACandelaLuoghi} from '@shared/Componenti/Grafici/grafico-a-candela-luoghi/grafico-a-candela-luoghi';
+import {CaroselloOfferte} from '@features/SezioneAdminAziendale/Componenti/carosello-offerte/carosello-offerte';
+import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Componenti/carosello-richieste-miste/carosello-richieste-miste';
 
 @Component({
   selector: 'app-dashboard-azienda',
-  imports: [
-    GraficoStatoFlotta,
-    GraficoAndamentoUtilizzo,
-    CardStatisticheDashboardFleet,
-    GraficoACandelaLuoghi
-  ],
+  imports: [CaroselloOfferte, CaroselloRichiesteMiste],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
 
 export class DashboardAzienda implements OnInit{
 
-  constructor(private service:DashboardService) {}
+  constructor(private dashboardService:DashboardService) {}
 
-  ngOnInit(){}
+  offerteAttive: OffertaDTO[] = [];
+  contatoreRichiesteAffiliazione = 0;
+  contatoreRichiesteNoleggio = 0;
+
+  ngOnInit(){
+    this.caricaOfferteAttive();
+    this.caricaContatori();
+  }
+
+  caricaOfferteAttive() {
+    this.dashboardService.getOfferteAttive().subscribe({
+      next: value => {
+        if(value) this.offerteAttive = value;
+      }, error: err => { console.error(err); }
+    })
+  }
+
+  caricaContatori() {
+    this.dashboardService.getContatoreRichiesteAffiliazione().subscribe({
+      next: value => {
+        console.log("affiliazione", value)
+        if(value) this.contatoreRichiesteAffiliazione = value;
+      }, error: error => { console.error(error); }
+    })
+
+    this.dashboardService.getContatoreRichiesteNoleggio().subscribe({
+      next: value => {
+        console.log("noleggio", value)
+        if(value) this.contatoreRichiesteNoleggio = value;
+      }, error: error => { console.error(error); }
+    })
+  }
 }
