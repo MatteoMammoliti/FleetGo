@@ -1,9 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
-import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
-import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
-import it.unical.fleetgo.backend.Models.DTO.OffertaDTO;
+import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
@@ -107,6 +104,20 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaAffiliazioneAziendaDAO richiesteAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
             return richiesteAffiliazioneAziendaDAO.getNumRichiesteAffiliazione(idAzienda);
+        }
+    }
+
+    public Float getSpesaMensile(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            GeneraFatturaDAO generaFatturaDAO = new GeneraFatturaDAO(connection);
+            return generaFatturaDAO.getSpesaMensileAzienda(idAzienda);
+        }
+    }
+
+    public Integer getVeicoliNoleggiati(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
+            return gestioneVeicoloAziendaDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
         }
     }
 }

@@ -110,3 +110,75 @@
     gap: 15px;
   }
 }
+
+/* Contenitore verticale per le card statistiche */
+.stats-grid-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Spazio tra le due card */
+  margin-top: 20px;
+}
+
+/* Stile della Card Compatta */
+.stat-card-compact {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card-compact:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Box Icona (Quadrato Arrotondato) */
+.icon-box {
+  width: 55px;
+  height: 55px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+/* Temi Colore */
+/* Blu */
+.stat-card-compact.blue .icon-box {
+  background-color: #eff6ff; /* Sfondo chiarissimo */
+  color: #3b82f6;            /* Icona Blu */
+}
+
+/* Verde */
+.stat-card-compact.green .icon-box {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+/* Testi */
+.text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 4px;
+}

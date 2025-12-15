@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -52,6 +54,32 @@ public class ControllerDashboard {
                     )
             );
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getSpesaMensile")
+    public ResponseEntity<Float> getSpesaMensile(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getSpesaMensile(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getNumeroNoleggi")
+    public ResponseEntity<Integer> getNumeroNoleggi(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getVeicoliNoleggiati(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

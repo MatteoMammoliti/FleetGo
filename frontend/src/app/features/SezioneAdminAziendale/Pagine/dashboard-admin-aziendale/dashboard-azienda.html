@@ -18,19 +18,33 @@
 
     <div class="side-widget-area">
       <h3 class="section-title">In Attesa</h3>
+
       <app-carosello-richieste-miste
         [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
         [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio">
       </app-carosello-richieste-miste>
 
-      <div class="quick-stat-card">
-        <div class="icon-stat"><i class="bi bi-graph-up-arrow"></i></div>
-        <div>
-          <span class="stat-value">98%</span>
-          <span class="stat-label">Efficienza Flotta</span>
+      <div class="stats-grid-vertical">
+
+        <div class="stat-card-compact blue">
+          <div class="icon-box">
+            <i class="bi bi-wallet2"></i> </div>
+          <div class="text-box">
+            <span class="stat-value">€ {{ statisticheGuadagno }}</span>
+            <span class="stat-label">Spesa Mensile</span>
+          </div>
         </div>
+
+        <div class="stat-card-compact green">
+          <div class="icon-box">
+            <i class="bi bi-speedometer2"></i> </div>
+          <div class="text-box">
+            <span class="stat-value">{{ statisticheFlotta }} Veicoli</span>
+            <span class="stat-label">Attualmente Noleggiati</span>
+          </div>
+        </div>
+
       </div>
     </div>
-
   </div>
 </div>

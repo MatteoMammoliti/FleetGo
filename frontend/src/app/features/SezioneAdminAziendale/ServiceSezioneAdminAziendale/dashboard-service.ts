@@ -24,4 +24,12 @@ export class DashboardService {
   getContatoreRichiesteNoleggio(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteNoleggio`, { withCredentials:true })
   }
+
+  getSpesaMensile(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getSpesaMensile`, { withCredentials:true })
+  }
+
+  getNumeroNoleggi(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggi`, { withCredentials:true })
+  }
 }
