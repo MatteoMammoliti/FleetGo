@@ -26,7 +26,7 @@ public class FleetGoService {
     public List<FatturaDaGenerareDTO> getGeneraFattura() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()){
             GeneraFatturaDAO generaFatturaDAO = new GeneraFatturaDAO(connection);
-            return generaFatturaDAO.generaFatturaDaGenerare();
+            return generaFatturaDAO.getFatturaDaGenerare();
         }
     }
     public List<RichiestaManutenzioneDTO> getRichiesteManutenzioneDaAccettare() throws SQLException {
@@ -85,23 +85,22 @@ public class FleetGoService {
             List<FatturaDTO> fatture = new ArrayList<>();
 
             for(Fattura fattura : f) {
-                fatture.add(new FatturaDTO(fattura,true));
+                fatture.add(new FatturaDTO(fattura, true, false));
             }
 
             return fatture;
         }
     }
 
-    public byte[] downloadFattura(Integer idAnno) throws SQLException{
+    public byte[] downloadFattura(Integer numeroFattura) throws SQLException{
 
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
-            Fattura f = fatturaDAO.getFatturaByNumeroFattura(idAnno);
+            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura);
 
             if(f != null) {
-
                 return this.generatorePdfService.generaPdfFattura(
-                        new FatturaDTO(f, true)
+                        new FatturaDTO(f, true, true)
                 );
             }
         }
@@ -112,15 +111,22 @@ public class FleetGoService {
 
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
+
+            if(fattura.getOffertaApplicata() != null) {
+                Float sconto = (fattura.getCostoTotale() * fattura.getOffertaApplicata().getPercentualeSconto()) / 100;
+                fattura.setCostoTotale(fattura.getCostoTotale() - sconto);
+            }
             fatturaDAO.inserisciFattura(new FatturaDTO(fattura));
         }
     }
+
     public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
             return dao.getStatisticheManutenzioni();
         }
     }
+
     public List<RichiestaManutenzioneDTO> getRichiesteManutenzioniInCorso() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
@@ -133,6 +139,7 @@ public class FleetGoService {
             return richiesteDTO;
         }
     }
+
     public List<RichiestaManutenzioneDTO> getRichiesteManutenzioniStorico() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);

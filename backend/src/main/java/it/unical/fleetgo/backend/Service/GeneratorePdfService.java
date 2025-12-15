@@ -48,6 +48,13 @@ public class GeneratorePdfService {
 
             document.add(new Paragraph("\n"));
 
+            if (fattura.getOffertaApplicata() != null) {
+                document.add(new Paragraph("Offerta applicata: " + fattura.getOffertaApplicata().getNomeOfferta()));
+                document.add(new Paragraph("Sconto applicato: " + fattura.getOffertaApplicata().getPercentualeSconto() + "%"));
+            }
+
+            document.add(new Paragraph("\n"));
+
             Font fontImporto = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
             Paragraph importo = new Paragraph("Totale da pagare: € " + fattura.getCosto(), fontImporto);
             importo.setAlignment(Element.ALIGN_RIGHT);

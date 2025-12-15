@@ -1,0 +1,68 @@
+@if(modaleVisibile) {
+  <div class="modal-overlay">
+
+    @if(fattura){
+      <div class="modal-container">
+
+        <div class="modal-header">
+          <h2>Generazione Fattura</h2>
+          <button class="close-btn" (click)="chiudiModale()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="info-group">
+            <h3>Dettagli Fatturazione</h3>
+            <p><strong>Azienda:</strong> {{ fattura.nomeAzienda }}</p>
+            <p><strong>Periodo:</strong> {{ fattura.mese }}/{{ fattura.anno }}</p>
+            <p><strong>Noleggi effettuati:</strong> {{ fattura.numeroNoleggi }}</p>
+          </div>
+
+          <div class="offer-selection">
+            <label for="offertaSelect">Applica Promozione (Opzionale)</label>
+            <select id="offertaSelect" [(ngModel)]="offertaSelezionata" (change)="calcolaSconto()" class="form-select">
+              <option [ngValue]="null">Nessuna promozione</option>
+
+              @for(offerta of offerteAttive; track offerta.idOfferta) {
+                <option [ngValue]="offerta">{{ offerta.nomeOfferta }} (-{{ offerta.percentualeSconto }}%)</option>
+              }
+
+            </select>
+
+            @if(offertaSelezionata) {
+              <div class="offer-details">
+                <small>{{ offertaSelezionata.descrizioneOfferta }}</small>
+              </div>
+            }
+          </div>
+
+          <div class="price-recap">
+            <div class="price-row">
+              <span>Imponibile:</span>
+              <span>€ {{ fattura.costoTotale | number:'1.2-2' }}</span>
+            </div>
+
+            @if(offertaSelezionata) {
+              <div class="price-row discount">
+                <span>Sconto ({{ offertaSelezionata.percentualeSconto }}%):</span>
+                <span>- € {{ scontoDaSottrarre | number:'1.2-2' }}</span>
+              </div>
+            }
+
+            <div class="price-row total">
+              <span>Totale da Fatturare:</span>
+              <span>€ {{ prezzoScontato | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="chiudiModale()">Annulla</button>
+          <button class="btn-primary" (click)="confermaGenerazioneFattura()">Genera Fattura</button>
+        </div>
+
+      </div>
+    }
+  </div>
+}

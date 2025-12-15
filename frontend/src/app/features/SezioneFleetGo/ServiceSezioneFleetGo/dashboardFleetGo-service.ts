@@ -5,6 +5,7 @@ import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatistic
 import {environment} from '@env/environment';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
+import {OffertaDTO} from '@core/models/offertaDTO.models';
 
 
 @Injectable({
@@ -49,5 +50,9 @@ export class DashboardFleetGoService{
       responseType: 'text',
       withCredentials: true
     })
+  }
+
+  getOfferteAttive(): Observable<OffertaDTO[]> {
+    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, { withCredentials: true})
   }
 }

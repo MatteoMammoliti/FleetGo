@@ -17,7 +17,7 @@ public class OffertaDAO {
         this.connection = connection;
     }
 
-    public boolean inserisciOfferta(OffertaDTO offertaDTO) {
+    public void inserisciOfferta(OffertaDTO offertaDTO) {
         String query = "INSERT INTO offerte_attive (nome_offerta, descrizione_offerta, scadenza, percentuale_sconto, immagine_copertina) VALUES(?, ?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -26,7 +26,7 @@ public class OffertaDAO {
             ps.setDate(3, Date.valueOf(offertaDTO.getScadenza()));
             ps.setInt(4, offertaDTO.getPercentualeSconto());
             ps.setString(5, offertaDTO.getImmagineCopertina());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -59,14 +59,37 @@ public class OffertaDAO {
         }
     }
 
-    public boolean eliminaOfferta(Integer idOfferta) {
+    public void eliminaOfferta(Integer idOfferta) {
         String query = "DELETE FROM offerte_attive WHERE id_offerta = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idOfferta);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Offerta getOffertaById(Integer idOfferta) {
+        String query = "SELECT * from offerte_attive WHERE id_offerta = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idOfferta);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                Offerta o = new Offerta();
+                o.setIdOfferta(rs.getInt("id_offerta"));
+                o.setNomeOfferta(rs.getString("nome_offerta"));
+                o.setDescrizioneOfferta(rs.getString("descrizione_offerta"));
+                o.setScadenza(rs.getDate("scadenza").toLocalDate());
+                o.setPercentualeSconto(rs.getInt("percentuale_sconto"));
+                o.setImmagineCopertina(rs.getString("immagine_copertina"));
+                return o;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

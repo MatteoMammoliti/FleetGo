@@ -46,7 +46,7 @@
     <div class="colonna-dx">
       <app-fatture-da-generare
         [fatture]="fatture"
-        (generaFatturaEvent)="generaFattura($event)">
+        (generaFatturaEvent)="riceviFatturaDaGenerare($event)">
       </app-fatture-da-generare>
     </div>
 
@@ -60,5 +60,14 @@
       (rifiutaRichiesta)="rifiutaRichiesta($event)">
     </app-gestisci-richiesta-manutenzione>
   }
+
+  <app-modale-generazione-fattura
+  [modaleVisibile]="apriPaginaGenerazioneOfferte"
+  [fattura]="fatturaDaGenerare"
+  [offerteAttive]="offerteAttive"
+  (chiudiPagina)="chiudiFinestraModaleGenerazioneFattura()"
+  (confermaGenerazione)="generaFattura($event)">
+
+  </app-modale-generazione-fattura>
 
 </div>

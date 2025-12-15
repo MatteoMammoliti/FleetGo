@@ -12,10 +12,12 @@ public class FatturaDTO {
     private Integer meseFattura;
     private Integer annoFattura;
     private boolean fatturaPagata;
-    private Integer costo;
+    private Float costo;
     private AziendaDTO azienda;
+    private Integer idOffertaApplicata;
+    private OffertaDTO offertaApplicata;
 
-    public FatturaDTO(Fattura fattura, boolean caricareAzienda) {
+    public FatturaDTO(Fattura fattura, boolean caricareAzienda, boolean caricaOfferta) {
         this.numeroFattura = fattura.getNumeroFattura();
         this.idAzienda = fattura.getIdAzienda();
         this.meseFattura = fattura.getMeseFattura();
@@ -25,6 +27,9 @@ public class FatturaDTO {
 
         if(caricareAzienda) this.azienda = new AziendaDTO(fattura.getAzienda());
         else this.azienda = null;
+
+        if(caricaOfferta) this.offertaApplicata = new OffertaDTO(fattura.getOffertaApplicata());
+        else this.offertaApplicata = null;
     }
 
     public FatturaDTO(FatturaDaGenerareDTO fattura) {
@@ -33,5 +38,7 @@ public class FatturaDTO {
         this.annoFattura = Integer.parseInt(fattura.getAnno());
         this.fatturaPagata = false;
         this.costo = fattura.getCostoTotale();
+        this.idOffertaApplicata = fattura.getIdOffertaApplicata();
+        this.offertaApplicata = null;
     }
 }

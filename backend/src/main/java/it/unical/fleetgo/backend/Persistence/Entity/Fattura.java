@@ -11,6 +11,8 @@ public class Fattura {
     private Integer meseFattura;
     private Integer fleetGo;
     private Azienda azienda;
-    private Integer costo;
+    private Float costo;
     private Boolean fatturaPagata;
+    private Integer idOffertaApplicata;
+    private Offerta offertaApplicata;
 }
