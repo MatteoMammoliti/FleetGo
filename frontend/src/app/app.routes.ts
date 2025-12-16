@@ -42,5 +42,5 @@ export const routes: Routes = [
     data: { ruolo: 'Dipendente' }
   },
 
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: '' }
 ];

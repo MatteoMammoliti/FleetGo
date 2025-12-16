@@ -1,0 +1,47 @@
+<header class="h-20 bg-blu flex items-center justify-between px-6 md:px-10 shadow-lg sticky top-0 z-50">
+
+  <div class="flex items-center scale-90 origin-left">
+    <app-logo></app-logo>
+  </div>
+
+  <nav>
+    <ul class="flex gap-8 list-none m-0 p-0">
+      <li>
+        <a routerLink="/" fragment="chi-siamo" 
+           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
+           Chi Siamo
+        </a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="come-funziona" 
+           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
+           Come funziona
+        </a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="vantaggi" 
+           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
+           Vantaggi
+        </a>
+      </li>
+      <li>
+        <a routerLink="/" fragment="contatti" 
+           class="text-grigio font-medium text-[0.95rem] no-underline transition-colors duration-200 hover:text-white">
+           Contatti
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div>
+    <a routerLink="/login" 
+       class="text-white font-semibold text-[0.95rem] px-4 py-2 no-underline hover:opacity-80 transition-opacity">
+       Accedi
+    </a>
+
+    <a routerLink="/registrazione" 
+       class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro">
+       Registrati
+    </a>
+  </div>
+</header>

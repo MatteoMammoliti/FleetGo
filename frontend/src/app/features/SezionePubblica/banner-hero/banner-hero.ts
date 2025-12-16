@@ -1,11 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-banner-hero',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './banner-hero.html',
   styleUrl: './banner-hero.css',
 })
-export class BannerHero {
+export class BannerHero implements OnInit {
 
+  veicoliGestiti: string = "2500+";
+  prenotazioniMensili: string = "40k";
+
+  constructor() {}
+
+  ngOnInit(): void {
+      this.caricaDati();
+  }
+
+  caricaDati() {}
 }

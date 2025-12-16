@@ -15,6 +15,8 @@ module.exports = {
 
         grigio: '#F1F5F9',
 
+        'grigio-scuro': '#828282',
+
         'testo-p': '#1E293B',
 
         'testo-s': '#64748B',     }
