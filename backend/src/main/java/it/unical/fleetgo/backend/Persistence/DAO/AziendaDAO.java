@@ -58,7 +58,7 @@ public class AziendaDAO {
         return null;
     }
 
-    public Azienda getAzienda(Integer idAzienda) {
+    public Azienda getAziendaById(Integer idAzienda) {
         String query = "SELECT * FROM azienda WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -74,6 +74,22 @@ public class AziendaDAO {
                 a.setPIva(rs.getString("p_iva"));
                 return a;
             }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getNomeAziendaById(Integer idAzienda) {
+        String query = "SELECT nome_azienda FROM azienda WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getString("nome_azienda");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

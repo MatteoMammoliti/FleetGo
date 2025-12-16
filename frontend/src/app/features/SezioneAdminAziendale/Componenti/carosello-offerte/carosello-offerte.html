@@ -1,0 +1,35 @@
+@if (offerte.length > 0) {
+  <div class="carousel-container">
+
+    @for (off of offerte; track off.idOfferta; let i = $index) {
+      <div class="carousel-slide"
+           [class.active]="i === indiceCorrente">
+
+        <div class="offer-card-hero">
+          <img [src]="off.immagineCopertina || 'assets/placeholder-car.jpg'" alt="Offerta">
+          <div class="offer-overlay">
+            <span class="badge-sconto">-{{ off.percentualeSconto }}%</span>
+            <h3>{{ off.nomeOfferta }}</h3>
+            <p>{{ off.descrizioneOfferta }}</p>
+            <button class="btn-detail">Vedi Dettagli</button>
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <button class="nav-btn prev" (click)="arretraCarosello()"><i class="bi bi-chevron-left"></i></button>
+    <button class="nav-btn next" (click)="avanzaCarosello()"><i class="bi bi-chevron-right"></i></button>
+
+    <div class="indicators">
+      @for (off of offerte; track off.idOfferta; let i = $index) {
+        <span (click)="vaiAdOffertaSpecifica(i)"
+              [class.active-dot]="i === indiceCorrente">
+        </span>
+      }
+    </div>
+
+  </div>
+} @else {
+  <div class="empty-state">Nessuna offerta attiva al momento.</div>
+}

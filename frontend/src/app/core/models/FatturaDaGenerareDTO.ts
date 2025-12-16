@@ -1,3 +1,5 @@
+import {OffertaDTO} from '@core/models/offertaDTO.models';
+
 export interface FatturaDaGenerareDTO{
   idAzienda:number;
   nomeAzienda:string;
@@ -5,4 +7,6 @@ export interface FatturaDaGenerareDTO{
   mese:string;
   numeroNoleggi:number;
   costoTotale:number;
+  idOffertaApplicata?: number;
+  offertaApplicata?: OffertaDTO;
 }

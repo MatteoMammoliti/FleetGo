@@ -1,0 +1,35 @@
+<div class="widget-card" (click)="naviga()"
+     [ngClass]="slides[indiceCorrente].colore"
+     [class.clickable]="slides[indiceCorrente].tipo !== 'VUOTO'">
+
+  <div class="slide-content fade-in"> <div class="icon-circle">
+    <i class="bi" [class]="slides[indiceCorrente].icona"></i>
+  </div>
+
+    <div class="info-area">
+      @if (slides[indiceCorrente].tipo !== 'VUOTO') {
+        <span class="count-number">{{ slides[indiceCorrente].contatore }}</span>
+        <span class="label-text">{{ slides[indiceCorrente].titolo }}</span>
+        <span class="sub-label">In attesa di approvazione</span>
+      } @else {
+        <span class="empty-title">Nessuna Attività</span>
+        <span class="empty-sub">Hai gestito tutte le richieste!</span>
+      }
+    </div>
+
+    @if (slides[indiceCorrente].tipo !== 'VUOTO') {
+      <div class="arrow-indicator">
+        <i class="bi bi-chevron-right"></i>
+      </div>
+    }
+
+  </div>
+
+  @if (slides.length > 1) {
+    <div class="dots-container">
+      @for (slide of slides; track $index) {
+        <span class="dot" [class.active]="$index === indiceCorrente"></span>
+      }
+    </div>
+  }
+</div>

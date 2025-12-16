@@ -46,10 +46,8 @@ public class ControllerDashboardFleetGo {
         try{
             return ResponseEntity.ok(fleetGoService.getRichiesteManutenzioneDaAccettare());
         }catch (RuntimeException exception){
-            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch (SQLException sqlException){
-            sqlException.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -59,10 +57,8 @@ public class ControllerDashboardFleetGo {
         try{
             return ResponseEntity.ok(fleetGoService.getRichiesteManutenzioneById(id));
         }catch (RuntimeException exception){
-            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch (SQLException sqlException){
-            sqlException.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 
@@ -103,6 +99,7 @@ public class ControllerDashboardFleetGo {
     @PostMapping("/generaFattura")
     public ResponseEntity<String> generaFattura(@RequestBody FatturaDaGenerareDTO fattura){
         try {
+            System.out.printf("ho ricevuto" + fattura.getIdOffertaApplicata());
             fleetGoService.generaFattura(fattura);
             return ResponseEntity.ok("Fattura generata con successo");
         } catch (Exception e) {

@@ -43,7 +43,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
 
         this.fatture =
                 (utente.getFatture() != null) ?
-                utente.getFatture().stream().map(f -> new FatturaDTO(f, false)).toList()
+                utente.getFatture().stream().map(f -> new FatturaDTO(f, false, false)).toList()
                 : null;
 
         this.luoghiDepositoRitiro =

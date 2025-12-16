@@ -1,25 +1,22 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardStatisticheDashboardFleet} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
-import {RouterLink} from '@angular/router';
 import {DashboardFleetGoService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/dashboardFleetGo-service';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {FattureDaGenerare} from '@features/SezioneFleetGo/Componenti/fatture-da-generare/fatture-da-generare';
-import {
-  RichiesteManutenzioneDaGestire
-} from '@features/SezioneFleetGo/Componenti/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
+import {RichiesteManutenzioneDaGestire} from '@features/SezioneFleetGo/Componenti/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {
-  GestisciRichiestaManutenzione
-} from '@features/SezioneFleetGo/Componenti/gestisci-richiesta-manutenzione/gestisci-richiesta-manutenzione';
+import {GestisciRichiestaManutenzione} from '@features/SezioneFleetGo/Componenti/gestisci-richiesta-manutenzione/gestisci-richiesta-manutenzione';
+import {ModaleGenerazioneFattura} from '@features/SezioneFleetGo/Componenti/modale-generazione-fattura/modale-generazione-fattura';
+import {OffertaDTO} from '@core/models/offertaDTO.models';
 
 @Component({
   selector: 'app-dashboard-fleet-go',
-  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione],
+  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura],
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })
-export class DashboardFleetGo {
+export class DashboardFleetGo implements OnInit{
   constructor(private dashboardService:DashboardFleetGoService) {}
 
   statistiche: ContenitoreStatisticheNumeriche = {
@@ -37,7 +34,11 @@ export class DashboardFleetGo {
   richiesteManutenzione:RichiestaManutenzioneDTO[]=[];
   richiestaSelezionata:RichiestaManutenzioneDTO | null = null;
 
+  apriPaginaGenerazioneOfferte = false;
+
   fatture:FatturaDaGenerareDTO[]=[];
+  offerteAttive: OffertaDTO[] = [];
+  fatturaDaGenerare: FatturaDaGenerareDTO = {} as FatturaDaGenerareDTO;
 
   ngOnInit(): void {
     this.richiediStatistiche();
@@ -110,17 +111,36 @@ export class DashboardFleetGo {
     this.richiediManutenzioniDaGestire();
   }
 
+  riceviFatturaDaGenerare(fattura: FatturaDaGenerareDTO) {
+    this.fatturaDaGenerare = fattura;
+    console.log("ho ricevuto", this.fatturaDaGenerare)
+    this.onClickGeneraFattura();
+  }
+
   generaFattura(fattura:FatturaDaGenerareDTO){
-
-    console.log("invio fattura", fattura)
-
+    console.log("sto inviando al back", fattura)
     this.dashboardService.generaFattura(fattura).subscribe({
-      next:(risultato:string)=>{
+      next:()=>{
         this.richiediFattureDaGenerare();
+        this.chiudiFinestraModaleGenerazioneFattura();
       },
       error:(err:any)=>{console.error("Errore nella generazione della fattura",err)}
     })
   }
+
+  caricaOfferte() {
+    this.dashboardService.getOfferteAttive().subscribe({
+      next: value => {this.offerteAttive = value;},
+      error: err => { console.error(err); }
+    })
+  }
+
+  onClickGeneraFattura() {
+    this.apriPaginaGenerazioneOfferte = true;
+    this.caricaOfferte();
+  }
+
+  chiudiFinestraModaleGenerazioneFattura() { this.apriPaginaGenerazioneOfferte = false; }
 
   protected readonly Math = Math;
 }

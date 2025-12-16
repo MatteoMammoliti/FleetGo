@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {environment} from '@env/environment';
+import {OffertaDTO} from '@core/models/offertaDTO.models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +13,41 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  // public getNumeroRichiesteNoleggioInAttesa(): Observable<number> {
-  //
-  // }
-  //
-  // public getNumeroRichiesteAffiliazioneDaAccettare(): Observable<number> {}
-  //
-  // public getNumeroLuoghiImpostati(): Observable<number> {}
-  //
-  // public getSpesaMeseCorrente(): Observable<number> {}
-  //
-  // public getFattureDaPagare(): Observable<number> {}
+  getOfferteAttive(): Observable<OffertaDTO[]> {
+    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, { withCredentials:true })
+  }
+
+  getContatoreRichiesteAffiliazione(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteAffiliazione`, { withCredentials:true })
+  }
+
+  getContatoreRichiesteNoleggio(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteNoleggio`, { withCredentials:true })
+  }
+
+  getSpesaMensile(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getSpesaMensile`, { withCredentials:true })
+  }
+
+  getNumeroNoleggi(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggi`, { withCredentials:true })
+  }
+
+  getNomeAziendaGestita(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/getNomeAziendaGestita`, {
+      withCredentials: true,
+      responseType: 'text'
+    });
+  }
+
+  getNomeCognomeAdmin(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/getNomeCognomeAdmin`, {
+      withCredentials: true,
+      responseType: 'text'
+    });
+  }
+
+  getNumPatentiDaAccettare(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getNumeroPatentiDaAccettare`, { withCredentials:true })
+  }
 }

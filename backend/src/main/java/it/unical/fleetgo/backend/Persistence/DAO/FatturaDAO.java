@@ -4,10 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.Proxy.FatturaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,25 +16,26 @@ public class FatturaDAO {
         this.connection = connection;
     }
 
-    public boolean inserisciFattura(FatturaDTO fattura){
-        String query = "INSERT INTO fattura(id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura) VALUES (?, ?, ?, ?, ?)";
+    public void inserisciFattura(FatturaDTO fattura){
+        String query = "INSERT INTO fattura(id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura, id_offerta_applicata) VALUES (?, ?, ?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, fattura.getIdAzienda());
             ps.setBoolean(2, fattura.isFatturaPagata());
-            ps.setInt(3, fattura.getCosto());
+            ps.setDouble(3, fattura.getCosto());
             ps.setInt(4, fattura.getMeseFattura());
             ps.setInt(5, fattura.getAnnoFattura());
-            return ps.executeUpdate() > 0;
+
+            if (fattura.getIdOffertaApplicata() != null && fattura.getIdOffertaApplicata() != 0) {
+                ps.setInt(6, fattura.getIdOffertaApplicata());
+            } else {
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
+
+            ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
-    }
-
-    public boolean eliminaFattura(FatturaDTO fattura){
-        String query = "DELETE FROM fattura WHERE id_azienda = ? AND mese_fattura = ? AND anno_fattura = ?";
-        return getFattura(fattura, query);
     }
 
     public boolean pagaFattura(FatturaDTO fattura) {
@@ -64,13 +62,14 @@ public class FatturaDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
-                Fattura f = new FatturaProxy(new AziendaDAO(connection));
+                Fattura f = new FatturaProxy(new AziendaDAO(connection), new OffertaDAO(connection));
                 f.setIdAzienda(rs.getInt("id_azienda"));
                 f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
-                f.setCosto(rs.getInt("costo"));
+                f.setCosto(rs.getFloat("costo"));
                 f.setMeseFattura(rs.getInt("mese_fattura"));
                 f.setAnnoFattura(rs.getInt("anno_fattura"));
                 f.setNumeroFattura(numeroFattura);
+                f.setIdOffertaApplicata(rs.getInt("id_offerta_applicata"));
                 return f;
             }
             return null;
@@ -113,13 +112,14 @@ public class FatturaDAO {
         List<Fattura> fatture = new ArrayList<>();
 
         while(rs.next()) {
-            Fattura f = new FatturaProxy(new AziendaDAO(connection));
+            Fattura f = new FatturaProxy(new AziendaDAO(connection), new OffertaDAO(connection));
             f.setNumeroFattura(rs.getInt("numero_fattura"));
             f.setIdAzienda(rs.getInt("id_azienda"));
             f.setAnnoFattura(rs.getInt("anno_fattura"));
             f.setMeseFattura(rs.getInt("mese_fattura"));
-            f.setCosto(rs.getInt("costo"));
+            f.setCosto(rs.getFloat("costo"));
             f.setFatturaPagata(rs.getBoolean("fattura_pagata"));
+            f.setIdOffertaApplicata(rs.getInt("id_offerta_applicata"));
             fatture.add(f);
         }
         return fatture;

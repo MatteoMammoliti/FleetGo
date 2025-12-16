@@ -78,4 +78,18 @@ public class GestioneVeicoloAziendaDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer getVeicoliNoleggiatiByIdAzienda(Integer idAzienda){
+        String query = "SELECT COUNT(*) as numero_noleggi FROM gestione_veicolo_azienda WHERE id_azienda = ? AND disponibile_per_noleggio = false";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getInt("numero_noleggi");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

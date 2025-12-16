@@ -129,4 +129,20 @@ public class CredenzialiDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer getNumeroDipendentiConPatentiDaAccettare(Integer idAzienda) {
+        String query = "SELECT COUNT(r.id_dipendente) as numero_richiesta FROM richiesta_affiliazione_azienda r " +
+                "JOIN credenziali_utente c ON c.id_utente = r.id_dipendente WHERE r.id_azienda = ? AND c.patente = false AND r.accettata = true";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getInt("numero_richiesta");
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

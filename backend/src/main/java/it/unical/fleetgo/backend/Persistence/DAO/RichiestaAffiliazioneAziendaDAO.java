@@ -154,6 +154,20 @@ public class RichiestaAffiliazioneAziendaDAO {
         return null;
     }
 
+    public Integer getNumRichiesteAffiliazione(Integer idAzienda) {
+        String query = "SELECT COUNT(*) as somma FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getInt("somma");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     private DipendenteProxy creaDipendenteProxy(){
         return new DipendenteProxy(
                 new RichiestaAffiliazioneAziendaDAO(connection),

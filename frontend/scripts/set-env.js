@@ -6,7 +6,6 @@ const targetPath = path.join(__dirname, '../src/environments/environment.ts');
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY || '';
 const apiUrl = process.env.API_URL || 'http://localhost:8080';
 
-// 3. Crea il contenuto del file
 const envConfigFile = `
 export const environment = {
   production: false,

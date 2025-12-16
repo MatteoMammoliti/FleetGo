@@ -1,3 +1,63 @@
-<div class="container-card">
+<div class="dashboard-container">
 
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="company-badge">
+        <i class="bi bi-building-fill"></i> {{ nomeAziendaGestita }}
+      </div>
+
+      <div class="title-wrapper">
+        <h1>Bentornato, {{ nomeECognomeAdmin }}! 👋</h1>
+
+        @if(sommaRichieste > 0) {
+          <div class="action-badge">Hai {{ sommaRichieste }} attività in sospeso</div>
+        }
+      </div>
+
+      <p class="subtitle">Ecco il riepilogo delle attività e lo stato della tua flotta.</p>
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <h3 class="section-title">Centro Notifiche e Richieste</h3>
+
+    <div class="hero-widget-wrapper">
+      <app-carosello-richieste-miste
+        [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
+        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio"
+        [contatorePatentiDaAccettare]="contatorePatentiDaAccettare">
+      </app-carosello-richieste-miste>
+    </div>
+  </section>
+
+  <div class="content-grid">
+
+    <div class="main-content">
+      <h3 class="section-title">Offerte Attive</h3>
+      <app-carosello-offerte
+        [offerte]="offerteAttive">
+      </app-carosello-offerte>
+    </div>
+
+    <aside class="sidebar-content">
+      <h3 class="section-title">Statistiche Rapide</h3>
+
+      <div class="stats-stack">
+        <app-card-statistiche-dashboard
+          titolo="Spesa Mensile"
+          [valore]="statisticheGuadagno | currency:'EUR'"
+          icona="bi-wallet2"
+          colore="blue">
+        </app-card-statistiche-dashboard>
+
+        <app-card-statistiche-dashboard
+          titolo="Veicoli Noleggiati"
+          [valore]="statisticheFlotta"
+          icona="bi-car-front"
+          colore="green">
+        </app-card-statistiche-dashboard>
+      </div>
+    </aside>
+
+  </div>
 </div>

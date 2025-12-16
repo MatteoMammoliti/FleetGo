@@ -45,25 +45,24 @@ public class UtenteDAO {
     }
     /**
      * Elimina l'utente associato ad idUtente.
+     *
      * @param idUtente
-     * @return
      */
-    public boolean eliminaUtente(Integer idUtente){
+    public void eliminaUtente(Integer idUtente){
         String query="DELETE FROM Utente WHERE id_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
         }
-        return false;
     }
     /**
      * Dato un id Restituisce il DIPENDENTE associato.
      * @param idUtente
      * @return ritorna il proxy del dipendente, null se non esiste.
      */
-    public Dipendente getDipendenteDaId(Integer idUtente){
+    public Dipendente getDipendenteById(Integer idUtente){
         String query="SELECT * FROM utente WHERE id_utente=? AND tipo_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
@@ -293,6 +292,21 @@ public class UtenteDAO {
                 );
             }
         }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getNomeCognomeAdminById(Integer idUtente) {
+        String query = "SELECT nome_utente, cognome FROM utente WHERE id_utente = ?";
+
+        try(PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, idUtente);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getString("nome_utente") + " " + rs.getString("cognome");
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
