@@ -6,6 +6,7 @@ import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
@@ -110,7 +111,8 @@ public class AdminAziendaleService {
     public Float getSpesaMensile(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             GeneraFatturaDAO generaFatturaDAO = new GeneraFatturaDAO(connection);
-            return generaFatturaDAO.getSpesaMensileAzienda(idAzienda);
+            Float totale = generaFatturaDAO.getSpesaMensileAzienda(idAzienda);
+            return (totale != null) ? totale : (float) 0.0;
         }
     }
 
@@ -132,6 +134,13 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
             return utenteDAO.getNomeCognomeAdminById(idUtente);
+        }
+    }
+
+    public Integer getNumeroPatentiDaAccettare(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            return credenzialiDAO.getNumeroDipendentiConPatentiDaAccettare(idAzienda);
         }
     }
 }

@@ -20,15 +20,19 @@ export class DashboardAzienda implements OnInit{
   offerteAttive: OffertaDTO[] = [];
   contatoreRichiesteAffiliazione = 0;
   contatoreRichiesteNoleggio = 0;
-
-  richiesteDipendentiSimulate = 2;
-  sommaRichieste = 0;
+  contatorePatentiDaAccettare = 0;
 
   statisticheGuadagno = 0;
   statisticheFlotta = 0;
 
   nomeAziendaGestita = "";
   nomeECognomeAdmin = "";
+
+  get sommaRichieste(): number {
+    return this.contatoreRichiesteAffiliazione +
+      this.contatoreRichiesteNoleggio +
+      this.contatorePatentiDaAccettare;
+  }
 
   ngOnInit(){
     this.caricaOfferteAttive();
@@ -73,7 +77,12 @@ export class DashboardAzienda implements OnInit{
       }, error: error => { console.error(error); }
     })
 
-    this.sommaRichieste = this.contatoreRichiesteAffiliazione + this.contatoreRichiesteNoleggio + this.richiesteDipendentiSimulate;
+    this.dashboardService.getNumPatentiDaAccettare().subscribe({
+      next: value => {
+        console.log(value)
+        if(value) this.contatorePatentiDaAccettare = value;
+      }, error: err => { console.error(err); }
+    })
   }
 
   inizializzaStatistiche() {

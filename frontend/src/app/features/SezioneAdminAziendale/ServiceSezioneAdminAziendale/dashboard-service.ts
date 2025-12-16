@@ -46,4 +46,8 @@ export class DashboardService {
       responseType: 'text'
     });
   }
+
+  getNumPatentiDaAccettare(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getNumeroPatentiDaAccettare`, { withCredentials:true })
+  }
 }

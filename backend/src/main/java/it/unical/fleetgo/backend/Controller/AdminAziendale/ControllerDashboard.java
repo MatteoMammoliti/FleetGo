@@ -109,4 +109,17 @@ public class ControllerDashboard {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/getNumeroPatentiDaAccettare")
+    public ResponseEntity<Integer> getNumeroPatentiDaAccettare(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getNumeroPatentiDaAccettare(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

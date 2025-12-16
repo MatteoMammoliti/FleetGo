@@ -155,7 +155,7 @@ public class RichiestaAffiliazioneAziendaDAO {
     }
 
     public Integer getNumRichiesteAffiliazione(Integer idAzienda) {
-        String query = "SELECT COUNT(*) as somma FROM richiesta_affiliazione_azienda WHERE id_azienda = ?";
+        String query = "SELECT COUNT(*) as somma FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, idAzienda);

@@ -10,80 +10,54 @@
         <h1>Bentornato, {{ nomeECognomeAdmin }}! 👋</h1>
 
         @if(sommaRichieste > 0) {
-          <div class="action-badge">Hai {{ sommaRichieste}} nuove attività!</div>
+          <div class="action-badge">Hai {{ sommaRichieste }} attività in sospeso</div>
         }
       </div>
 
-      <p class="subtitle">Ecco cosa richiede la tua attenzione oggi.</p>
+      <p class="subtitle">Ecco il riepilogo delle attività e lo stato della tua flotta.</p>
     </div>
   </header>
 
-  <main class="dashboard-grid">
+  <section class="hero-section">
+    <h3 class="section-title">Centro Notifiche e Richieste</h3>
 
-    <div class="grid-item main-widget">
-      <h3 class="section-title">Richieste in Arrivo</h3>
+    <div class="hero-widget-wrapper">
       <app-carosello-richieste-miste
         [contatoreRichiesteAffiliazioneInAttesa]="contatoreRichiesteAffiliazione"
-        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio">
+        [contatoreRichiesteNoleggioInAttesa]="contatoreRichiesteNoleggio"
+        [contatorePatentiDaAccettare]="contatorePatentiDaAccettare">
       </app-carosello-richieste-miste>
     </div>
+  </section>
 
-    <div class="grid-item side-widget">
-      <h3 class="section-title">Affiliazioni Dipendenti</h3>
+  <div class="content-grid">
 
-      <div class="employee-requests-card">
-        <div class="card-header-simple">
-          <span class="count-bubble">{{ richiesteDipendentiSimulate }}</span>
-          <span>Richieste in attesa</span>
-        </div>
-
-        <ul class="employee-list">
-          <li>
-            <div class="emp-avatar">MV</div>
-            <div class="emp-info">
-              <span class="name">Mario Verdi</span>
-              <span class="role">Logistica</span>
-            </div>
-            <button class="btn-icon-check"><i class="bi bi-check-lg"></i></button>
-          </li>
-          <li>
-            <div class="emp-avatar">GL</div>
-            <div class="emp-info">
-              <span class="name">Giulia Leoni</span>
-              <span class="role">Amministrazione</span>
-            </div>
-            <button class="btn-icon-check"><i class="bi bi-check-lg"></i></button>
-          </li>
-        </ul>
-
-        <button class="btn-view-all">Vedi tutti</button>
-      </div>
-    </div>
-
-    <div class="grid-item main-widget">
+    <div class="main-content">
       <h3 class="section-title">Offerte Attive</h3>
       <app-carosello-offerte
         [offerte]="offerteAttive">
       </app-carosello-offerte>
     </div>
 
-    <div class="grid-item side-widget stats-stack">
+    <aside class="sidebar-content">
       <h3 class="section-title">Statistiche Rapide</h3>
 
-      <app-card-statistiche-dashboard
-        titolo="Spesa Mensile"
-        [valore]="statisticheGuadagno | currency:'EUR'"
-        icona="bi-wallet2"
-        colore="blue">
-      </app-card-statistiche-dashboard>
+      <div class="stats-stack">
+        <app-card-statistiche-dashboard
+          titolo="Spesa Mensile"
+          [valore]="statisticheGuadagno | currency:'EUR'"
+          icona="bi-wallet2"
+          colore="blue">
+        </app-card-statistiche-dashboard>
 
-      <app-card-statistiche-dashboard
-        titolo="Veicoli Noleggiati"
-        [valore]="statisticheFlotta"
-        icona="bi-car-front"
-        colore="green">
-      </app-card-statistiche-dashboard>
-    </div>
+        <app-card-statistiche-dashboard
+          titolo="Veicoli Noleggiati"
+          [valore]="statisticheFlotta"
+          icona="bi-car-front"
+          colore="green">
+        </app-card-statistiche-dashboard>
+      </div>
+    </aside>
 
-  </main>
+  </div>
 </div>

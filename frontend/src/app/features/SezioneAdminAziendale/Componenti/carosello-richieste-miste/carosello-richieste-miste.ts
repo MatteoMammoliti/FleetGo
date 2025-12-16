@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {NgClass} from '@angular/common';
 
 interface ItemCarosello{
-  tipo: "NOLEGGIO" | "AFFILIAZIONE" | "VUOTO";
+  tipo: "NOLEGGIO" | "AFFILIAZIONE" | "VUOTO" | "PATENTI";
   titolo: string;
   contatore: number;
   colore: string;
@@ -26,6 +26,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
 
   @Input() contatoreRichiesteNoleggioInAttesa = 0;
   @Input() contatoreRichiesteAffiliazioneInAttesa = 0;
+  @Input() contatorePatentiDaAccettare = 0;
 
   slides: ItemCarosello[] = [];
   indiceCorrente = 0;
@@ -75,6 +76,19 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         colore: "purple-theme",
         icona: "bi-car-front-fill",
         rotta: '/dashboardAdminAziendale/richieste-noleggio'
+      }
+
+      this.slides.push(item);
+    }
+
+    if(this.contatorePatentiDaAccettare > 0) {
+      const item: ItemCarosello = {
+        tipo: "PATENTI",
+        titolo: "Numero di patenti da approvare",
+        contatore: this.contatorePatentiDaAccettare,
+        colore: "red-theme",
+        icona: "bi-car-front-fill",
+        rotta: '/dashboardAdminAziendale/richieste-affiliazione'
       }
 
       this.slides.push(item);
