@@ -5,7 +5,6 @@ import {Logo} from '@shared/Componenti/Ui/logo/logo';
 @Component({
   selector: 'app-footer',
   imports: [
-    RouterLink,
     Logo
   ],
   templateUrl: './footer.html',

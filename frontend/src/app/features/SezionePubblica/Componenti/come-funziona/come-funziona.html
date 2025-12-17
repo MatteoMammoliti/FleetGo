@@ -1,56 +1,50 @@
-<section class="py-24 bg-white">
-  <div class="container mx-auto px-6 md:px-12 text-center">
-    
-    <div class="max-w-2xl mx-auto mb-20">
-      <h2 class="text-3xl md:text-5xl font-bold text-azzurro-scuro mb-6">
-        Come funziona
+<section class="py-24 bg-white relative overflow-hidden">
+
+  <div class="container mx-auto px-6 md:px-12 relative z-10">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
+        Come FleetGo rivoluziona <br> il tuo lavoro.
       </h2>
-      <p class="text-grigio-scuro text-lg">
-        Niente burocrazia inutile. <br> FleetGo è progettato per portarti 
-        dal login alla guida nel minor tempo possibile:
-      </p>
+
+      <div class="inline-flex bg-slate-100 p-1.5 rounded-full relative shadow-inner">
+
+        <div class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-white rounded-full shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+             [ngClass]="activeTab === 'DIPENDENTE' ? 'translate-x-full' : 'translate-x-0'">
+        </div>
+
+        <button (click)="setTab('AZIENDA')"
+                class="relative z-10 px-8 py-3 rounded-full text-sm font-bold tracking-wide transition-colors duration-300 w-48"
+                [ngClass]="activeTab === 'AZIENDA' ? 'text-azzurro' : 'text-slate-500 hover:text-slate-700'">
+          Per le Aziende
+        </button>
+
+        <button (click)="setTab('DIPENDENTE')"
+                class="relative z-10 px-8 py-3 rounded-full text-sm font-bold tracking-wide transition-colors duration-300 w-48"
+                [ngClass]="activeTab === 'DIPENDENTE' ? 'text-azzurro' : 'text-slate-500 hover:text-slate-700'">
+          Per i Dipendenti
+        </button>
+
+      </div>
     </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">      
-      <div class="flex flex-col items-center group">
-        <div class="w-20 h-20 rounded-full bg-grigio flex items-center justify-center text-azzurro text-3xl mb-6 group-hover:bg-azzurro group-hover:text-white">
-          <i class="bi-person-plus"></i>
-        </div>
-        <h3 class="text-xl font-bold text-blu mb-3">Registrazione</h3>
-        <p class="text-grigio-scuro text-base leading-relaxed max-w-xs mx-auto">
-          Crea il tuo account aziendale o dipendente in pochi secondi.
-        </p>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 transition-opacity duration-500"
+         [class.opacity-100]="true"> @for (feature of featuresCorrenti; track feature.titolo) {
+      <div class="group bg-white p-10 rounded-[2rem] border border-slate-100 hover:border-azzurro/20 hover:shadow-2xl hover:shadow-azzurro/10 hover:-translate-y-2 transition-all duration-300 cursor-default">
 
-      <div class="flex flex-col items-center group">
-        <div class="w-20 h-20 rounded-full bg-grigio flex items-center justify-center text-azzurro text-3xl mb-6 group-hover:bg-azzurro group-hover:text-white">
-          <i class="bi-shield-check"></i>
+        <div class="w-16 h-16 rounded-2xl bg-azzurro/10 text-azzurro flex items-center justify-center text-3xl mb-6 mx-auto group-hover:bg-azzurro group-hover:text-white transition-colors duration-300">
+          <i class="bi" [class]="feature.icon"></i>
         </div>
-        <h3 class="text-xl font-bold text-blu mb-3">Approvazione</h3>
-        <p class="text-grigio-scuro text-base leading-relaxed max-w-xs mx-auto">
-          Attendiamo la verifica rapida dei tuoi documenti per la sicurezza.
-        </p>
-      </div>
 
-      <div class="flex flex-col items-center group">
-        <div class="w-20 h-20 rounded-full bg-grigio flex items-center justify-center text-azzurro text-3xl mb-6 group-hover:bg-azzurro group-hover:text-white">
-          <i class="bi-calendar-check"></i>
-        </div>
-        <h3 class="text-xl font-bold text-blu mb-3">Prenotazione</h3>
-        <p class="text-grigio-scuro text-base leading-relaxed max-w-xs mx-auto">
-          Scegli il veicolo adatto alle tue esigenze e bloccalo per le date richieste.
+        <h3 class="text-xl font-bold text-slate-900 mb-4 text-center">
+          {{ feature.titolo }}
+        </h3>
+        <p class="text-slate-500 leading-relaxed text-center">
+          {{ feature.descrizione }}
         </p>
-      </div>
 
-      <div class="flex flex-col items-center group">
-        <div class="w-20 h-20 rounded-full bg-grigio flex items-center justify-center text-azzurro text-3xl mb-6 group-hover:bg-azzurro group-hover:text-white">
-          <i class="bi-car-front-fill"></i>
-        </div>
-        <h3 class="text-xl font-bold text-blu mb-3">Ritiro e Viaggio</h3>
-        <p class="text-grigio-scuro text-base leading-relaxed max-w-xs mx-auto">
-          Sblocca l'auto tramite app e parti. <br> Buon viaggio!
-        </p>
       </div>
+    }
 
     </div>
 

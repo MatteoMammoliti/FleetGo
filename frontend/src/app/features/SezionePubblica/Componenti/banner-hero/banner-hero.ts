@@ -11,14 +11,9 @@ import { RouterLink } from '@angular/router';
 })
 export class BannerHero implements OnInit {
 
-  veicoliGestiti: string = "2500+";
-  prenotazioniMensili: string = "40k";
+  veicoliGestiti: string = "50+";
 
   constructor() {}
 
-  ngOnInit(): void {
-      this.caricaDati();
-  }
-
-  caricaDati() {}
+  ngOnInit() {}
 }

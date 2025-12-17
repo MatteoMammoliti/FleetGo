@@ -9,8 +9,6 @@ import { NavbarNoLog } from '@shared/Componenti/Ui/navbar-no-log/navbar-no-log';
   selector: 'app-general-layout-no-login',
   standalone: true,
   imports: [
-    RouterLink,
-    Logo,
     RouterOutlet,
     Footer,
     NavbarNoLog
@@ -18,6 +16,4 @@ import { NavbarNoLog } from '@shared/Componenti/Ui/navbar-no-log/navbar-no-log';
   templateUrl: './general-layout-no-login.html',
   styleUrl: './general-layout-no-login.css',
 })
-export class GeneralLayoutNoLogin {
-
-}
+export class GeneralLayoutNoLogin {}

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {BannerHero} from '@features/SezionePubblica/banner-hero/banner-hero';
+import {BannerHero} from '@features/SezionePubblica/Componenti/banner-hero/banner-hero';
 import { ChiSiamo } from '../Componenti/chi-siamo/chi-siamo';
 import { ComeFunziona } from '../Componenti/come-funziona/come-funziona';
-import { Contatti } from '../Componenti/contatti/contatti';
 import { Vantaggi } from '../Componenti/vantaggi/vantaggi';
+import {FormContatto} from '@shared/Componenti/form-contatto/form-contatto';
 
 @Component({
   selector: 'app-landing-page',
@@ -11,12 +11,10 @@ import { Vantaggi } from '../Componenti/vantaggi/vantaggi';
     BannerHero,
     ChiSiamo,
     ComeFunziona,
-    Contatti,
-    Vantaggi
+    Vantaggi,
+    FormContatto
   ],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css',
 })
-export class LandingPage {
-
-}
+export class LandingPage {}
