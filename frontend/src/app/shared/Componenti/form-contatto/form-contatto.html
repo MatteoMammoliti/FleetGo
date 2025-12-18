@@ -1,80 +1,99 @@
-<div>
-  <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
-    {{ titolo }}
-  </h2>
+<section class="min-h-screen bg-grigio flex items-center justify-center p-6">
 
-  <h3 class="text-4xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
-    {{ sottotitolo }}
-  </h3>
-</div>
+  <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24">
 
-<div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-100 max-w-lg mx-auto">
-
-  @if (messaggioInviato) {
-    <div class="text-center py-10">
-      <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
-        <i class="bi bi-check-lg"></i>
+    <div class="w-full lg:w-5/12 text-center lg:text-left space-y-6">
+      <h2 class="text-4xl md:text-5xl font-bold text-blu leading-tight">
+        {{ titolo }}
+      </h2>
+      <h3 class="text-lg md:text-xl text-grigio-scuro leading-relaxed">
+        {{ sottotitolo }}
+      </h3>
       </div>
 
-      @if(modalita === 'FLEETGO') {
-        <h3 class="text-2xl font-bold text-slate-800 mb-2">Messaggio Inviato!</h3>
-        <p class="text-slate-500 mb-6">Riceverai presto un'email di riepilogo. Ti risponderemo il prima possibile.</p>
-        <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:underline">
-          Invia un altro messaggio
-        </button>
-      } @else {
-        <h3 class="text-2xl font-bold text-slate-800 mb-2">Messaggio Inviato!</h3>
-        <p class="text-slate-500 mb-6">Ti risponderemo il prima possibile.</p>
-        <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:underline">
-          Invia un altro messaggio
-        </button>
-      }
-    </div>
+    <div class="w-full lg:w-6/12">
+      <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10 w-full border border-white">
 
-  } @else {
+        @if (messaggioInviato) {
+          <div class="text-center py-10">
+            
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+              <i class="bi bi-check-lg"></i>
+            </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
-
-      @if (modalita === 'PUBLIC') {
-        <div class="grid grid-cols-2 gap-4">
-          <div class="space-y-1">
-            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Nome</label>
-            <input formControlName="nomeMittente" type="text" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 outline-none transition-all" placeholder="Mario Rossi">
+            @if(modalita === 'FLEETGO') {
+              <h3 class="text-2xl font-bold text-blu mb-2">Messaggio Inviato!</h3>
+              <p class="text-testo-s mb-6">Riceverai presto un'email di riepilogo. Ti risponderemo il prima possibile.</p>
+              <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:underline">
+                Invia un altro messaggio
+              </button>
+            } @else {
+              <h3 class="text-2xl font-bold text-blu mb-2">Messaggio Inviato!</h3>
+              <p class="text-testo-s mb-6">Ti risponderemo il prima possibile.</p>
+              <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:underline">
+                Invia un altro messaggio
+              </button>
+            }
           </div>
-          <div class="space-y-1">
-            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Email</label>
-            <input formControlName="emailMittente" type="email" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 outline-none transition-all" placeholder="mario@email.com">
-          </div>
-        </div>
-      }
 
-      <div class="space-y-1">
-        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Oggetto</label>
-        <input formControlName="oggettoMessaggio" type="text" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 outline-none transition-all" placeholder="Prenotazione appuntamento">
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Messaggio</label>
-        <textarea formControlName="corpoMessaggio" rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 outline-none transition-all resize-none" placeholder="Scrivi qui la tua richiesta..."></textarea>
-      </div>
-
-      @if (erroreInvio) {
-        <div class="bg-red-50 text-red-600 text-sm p-3 rounded-lg flex items-center gap-2">
-          <i class="bi bi-exclamation-circle-fill"></i> Errore durante l'invio. Riprova.
-        </div>
-      }
-
-      <button type="submit"
-              [disabled]="form.invalid || invioInCorso"
-              class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-lg shadow-slate-900/20">
-        @if (invioInCorso) {
-          <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-          Invio in corso...
         } @else {
-          Invia Messaggio <i class="bi bi-send-fill"></i>
-        }
-      </button>
 
-    </form>
-  }
-</div>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+
+            @if (modalita === 'PUBLIC') {
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> 
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-black uppercase tracking-wide">Nome</label>
+                  <input formControlName="nomeMittente" type="text" 
+                         class="w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition-all border-transparent focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20" 
+                         placeholder="Kristian Reale">
+                </div>
+                
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-black uppercase">Email</label>
+                  <input formControlName="emailMittente" type="email" 
+                         class="w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition-all border-transparent focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20" 
+                         placeholder="ciao@email.com">
+                </div>
+              </div>
+            }
+
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-black uppercase">Oggetto</label>
+              <input formControlName="oggettoMessaggio" type="text" 
+                     class="w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition-all border-transparent focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20" 
+                     placeholder="Prenotazione appuntamento">
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-black uppercase tracking-wide">Messaggio</label>
+              <textarea formControlName="corpoMessaggio" rows="5" 
+                        class="w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition-all border-transparent focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 resize-none" 
+                        placeholder="Scrivi qui la tua richiesta..."></textarea>
+            </div>
+
+            @if (erroreInvio) {
+              <div class="bg-red-50 text-red-600 text-sm p-3 rounded-lg flex items-center gap-2 border border-red-100">
+                <i class="bi bi-exclamation-circle-fill"></i> Errore durante l'invio. Riprova.
+              </div>
+            }
+
+            <button type="submit"
+                    [disabled]="form.invalid || invioInCorso"
+                    class="w-full py-4 bg-azzurro text-white font-bold rounded-xl hover:bg-azzurro-scuro transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 shadow-lg shadow-azzurro/20">
+              @if (invioInCorso) {
+                <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <span class="text-white">Invio in corso...</span>
+              } @else {
+                <span class="text-white">Invia Messaggio</span>
+                <i class="bi-send-fill"></i>
+              }
+            </button>
+
+          </form>
+        }
+      </div>
+    </div>
+    
+  </div>
+</section>

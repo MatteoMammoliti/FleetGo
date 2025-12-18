@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@core/auth/auth-service';
 import { DipendenteDTO } from '@core/models/dipendenteDTO.models';
-import {Router} from '@angular/router';
+import {Router,RouterLink} from '@angular/router';
 import {validazione} from '@core/utils/validazione';
 import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,RouterLink],
   templateUrl: './registrazione.component.html',
   styleUrl: './registrazione.component.css',
 })

@@ -1,25 +1,103 @@
-<div class="form-autenticazione">
+<div class="min-h-screen flex w-full bg-grigio">
 
-<div class="form-autenticazione">
-  <h2>"Accedi al tuo account FleetGo"</h2>
-    <div class="form-group">
-      <label> Email </label>
-      <input type="email" [(ngModel)]="email" placeholder="Inserisci la tua email"
-      [class.bordo-rosso]="mappaErrori.email">
+  <div class="hidden lg:flex w-1/2 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-azzurro/60 to-blu-notte/90 z-10"></div>
+    <img src="immagine_login.png" class="absolute inset-0 w-full h-full object-cover">
+    
+    <div class="relative z-20 flex flex-col justify-center h-full px-16 text-white">
+      <h1 class="text-5xl font-bold mb-6">Bentornato!<br>Il futuro della tua flotta è qui.</h1>
+      <p class="text-lg opacity-90 max-w-md leading-relaxed">
+        Controlla veicoli, costi e manutenzioni da un unico pannello di controllo intelligente.
+      </p>
     </div>
-    <div class="form-group">
-      <label> Password </label>
-      <input id="password" type="password" [(ngModel)]="password"  placeholder="Inserisci la tua password"
-      [class.bordo-rosso]="mappaErrori.password">
-    </div>
-    <div>
-      @if(errore){
-        <p class="messaggioErrore">{{ errore }}</p>
-      }
-      <button type="submit" class="bottoneLogin" (click)="onSubmit()">Login</button>
-      <div>
-        <label (click)="recuperoPassword()">Password dimenticata? Recuperala qui</label>
+
+    <a routerLink="/" class="absolute bottom-10 left-10 z-30 flex items-center gap-3 text-white/70 hover:text-white transition-all group cursor-pointer">
+      <div class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-grigio-scuro transition-all">
+         <i class="bi-arrow-left text-lg"></i>
       </div>
+      <span class="font-bold text-xs">TORNA INDIETRO</span>
+    </a>
+    </div>
+
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
+    
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10 w-full max-w-[500px] border border-white">
+      
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-blu">Accedi</h2>
+        <p class="text-grigio-scuro mt-2">Accedi al tuo profilo FleetGo</p>
+      </div>
+
+      <div class="space-y-5">
+
+        <div class="space-y-1">
+          <label class="text-xs font-bold text-black uppercase">Email Aziendale</label>
+          <input type="email" 
+                 [(ngModel)]="email" placeholder="nome@azienda.it"
+                 class="w-full px-4 py-3.5 rounded-xl border bg-gray-50 outline-none transition-all"
+                 [class.border-red-500]="mappaErrori.email"
+                 [class.bg-red-50]="mappaErrori.email"
+                 [class.focus:ring-red-200]="mappaErrori.email"
+                 [class.focus:ring-4]="mappaErrori.email"
+                 [class.border-gray-200]="!mappaErrori.email"
+                 [class.focus:bg-white]="!mappaErrori.email"
+                 [class.focus:border-azzurro]="!mappaErrori.email"
+                 [class.focus:ring-azzurro]="!mappaErrori.email"
+                 [class.focus:ring-1]="!mappaErrori.email">
+          @if (mappaErrori.email) {
+            <p class="text-red-500 text-xs mt-1 font-medium">Campo obbligatorio!</p>
+          }
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold text-black uppercase">Password</label>
+          </div>
+          <input type="password" 
+                 [(ngModel)]="password" placeholder="**********"
+                 class="w-full px-4 py-3.5 rounded-xl border bg-gray-50 outline-none transition-all"
+                 [class.border-red-500]="mappaErrori.password"
+                 [class.bg-red-50]="mappaErrori.password"
+                 [class.focus:ring-red-200]="mappaErrori.password"
+                 [class.focus:ring-4]="mappaErrori.password"
+                 [class.border-gray-200]="!mappaErrori.password"
+                 [class.focus:bg-white]="!mappaErrori.password"
+                 [class.focus:border-azzurro]="!mappaErrori.password"
+                 [class.focus:ring-azzurro]="!mappaErrori.password"
+                 [class.focus:ring-1]="!mappaErrori.password">
+          @if (mappaErrori.password) {
+            <p class="text-red-500 text-xs mt-1 font-medium">Campo obbligatorio!</p>
+          }
+        </div>
+
+        <div class="flex justify-end pt-1">
+          <button (click)="recuperoPassword()" class="text-sm font-semibold hover:underline text-azzurro hover:text-azzurro-scuro">
+            Hai dimenticato la password?
+          </button>
+        </div>
+
+        @if (errore) {
+          <div class="text-red-600">
+            <span>{{ errore }}</span>
+          </div>
+        }
+
+        <button (click)="onSubmit()" 
+                class="w-full py-4 bg-azzurro text-white font-bold rounded-xl hover:bg-azzurro-scuro hover:shadow-lg flex justify-center items-center gap-2 mt-4">
+          Accedi
+        </button>
+
+        <div class="text-center pt-6 border-t border-gray-100 mt-6">
+          <p class="text-testo-s text-sm">
+            Non hai un Account? 
+            <a routerLink="/registrazione" class="text-azzurro font-bold hover:underline hover:text-azzurro-scuro cursor-pointer">
+              Crea un Account
+            </a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
   </div>
-  </div>
-  </div>
+</div>

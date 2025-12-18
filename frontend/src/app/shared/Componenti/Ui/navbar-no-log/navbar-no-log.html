@@ -1,47 +1,35 @@
-<header class="h-20 bg-blu flex items-center justify-between px-6 md:px-10 shadow-lg sticky top-0 z-50">
+<header class="bg-blu min-h-[80px] py-6 lg:py-0 flex flex-col lg:flex-row items-center justify-between px-6 lg:px-10 shadow-lg sticky top-0 z-50 transition-all duration-300">
 
-  <div class="flex items-center scale-90 origin-left">
+  <div class="flex items-center scale-90 origin-left z-50 shrink-0 mb-6 lg:mb-0">
     <app-logo></app-logo>
   </div>
 
-  <nav>
-    <ul class="flex gap-8 list-none m-0 p-0">
-      <li>
-        <a routerLink="/" fragment="chi-siamo" 
-           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
-           Chi Siamo
-        </a>
-      </li>
-      <li>
-        <a routerLink="/" fragment="come-funziona" 
-           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
-           Come funziona
-        </a>
-      </li>
-      <li>
-        <a routerLink="/" fragment="vantaggi" 
-           class="text-grigio font-medium text-[0.95rem] no-underline hover:text-white">
-           Vantaggi
-        </a>
-      </li>
-      <li>
-        <a routerLink="/" fragment="contatti" 
-           class="text-grigio font-medium text-[0.95rem] no-underline transition-colors duration-200 hover:text-white">
-           Contatti
+  <nav class="w-full lg:w-auto mb-6 lg:mb-0">
+    <ul class="flex flex-col lg:flex-row items-center gap-4 lg:gap-8 list-none m-0 p-0">
+      <li *ngFor="let item of [
+          { link: '/', frag: 'chi-siamo', label: 'Chi Siamo' },
+          { link: '/', frag: 'come-funziona', label: 'Come funziona' },
+          { link: '/', frag: 'vantaggi', label: 'Vantaggi' },
+          { link: '/', frag: 'contatti', label: 'Contatti' }]">
+          
+        <a [routerLink]="item.link" [fragment]="item.frag"
+           class="text-grigio font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300 
+                  hover:text-white hover:bg-white/10 no-underline cursor-pointer whitespace-nowrap">
+          {{ item.label }}
         </a>
       </li>
     </ul>
   </nav>
 
-  <div>
+  <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0 w-full lg:w-auto justify-center">
     <a routerLink="/login" 
-       class="text-white font-semibold text-[0.95rem] px-4 py-2 no-underline hover:opacity-80 transition-opacity">
+       class="text-white font-semibold text-[0.95rem] px-4 py-2 rounded-lg no-underline hover:opacity-80 transition-opacity whitespace-nowrap">
        Accedi
     </a>
-
     <a routerLink="/registrazione" 
-       class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro">
+       class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro hover:scale-105 active:scale-95 transition-all duration-300 no-underline whitespace-nowrap">
        Registrati
     </a>
   </div>
+
 </header>
