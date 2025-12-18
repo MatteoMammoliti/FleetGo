@@ -1,0 +1,40 @@
+<div class="car-card" [class.unavailable]="veicolo.statoAttuale === 'Non_disponibile'">
+
+  <div class="image-area">
+    <span class="status-badge" [ngClass]="veicolo.statoAttuale === 'Disponibile' ? 'available' : 'unavailable'">
+      {{ veicolo.statoAttuale }}
+    </span>
+
+    <img [src]="veicolo.urlImmagine" alt="{{ veicolo.modello }}" class="car-img">
+
+    <span class="fuel-badge">
+      <i class="bi bi-lightning-charge-fill"></i> {{ veicolo.tipoDistribuzioneVeicolo }}
+    </span>
+  </div>
+
+  <div class="card-body">
+
+    <div class="card-header-row">
+      <div class="title-group">
+        <h3 class="car-model">{{ veicolo.modello }}</h3>
+        <span class="car-brand">{{ veicolo.modello }} • {{ veicolo.targaVeicolo }}</span>
+      </div>
+    </div>
+
+    <div class="specs-row">
+      <div class="spec-item">
+        <i class="bi bi-geo-alt"></i> {{ veicolo.luogoRitiroDeposito?.nomeLuogo }}
+      </div>
+      <div class="spec-item">
+        <i class="bi bi-battery-charging"></i> {{ veicolo.livelloCarburante }}% Battery
+      </div>
+    </div>
+
+    <button class="btn-action"
+            [disabled]="veicolo.statoAttuale === 'Non_disponbile'"
+            (click)="prenota()">
+      {{ veicolo.statoAttuale === 'Disponibile' ? 'Prenota Ora' : 'Non Disponibile' }}
+    </button>
+  </div>
+
+</div>

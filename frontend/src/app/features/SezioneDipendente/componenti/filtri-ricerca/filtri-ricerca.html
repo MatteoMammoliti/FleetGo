@@ -1,0 +1,23 @@
+<div class="search-bar-container">
+
+  <div class="input-group">
+    <label>RITIRO</label>
+    <div class="input-wrapper">
+      <i class="bi bi-calendar-event"></i>
+      <input type="datetime-local" [(ngModel)]="dataRitiroCompleta">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label>CONSEGNA</label>
+    <div class="input-wrapper">
+      <i class="bi bi-calendar-check"></i>
+      <input type="datetime-local" [(ngModel)]="dataConsegnaCompleta">
+    </div>
+  </div>
+
+  <button class="btn-cerca" (click)="cerca()">
+    CERCA
+  </button>
+
+</div>

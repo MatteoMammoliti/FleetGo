@@ -16,6 +16,8 @@ export class PrenotazioniDipendente {
   constructor(private service:PrenotazioniService,private router:Router) {
   }
   prenotazioni:RichiestaNoleggioDTO[]=[];
+  daVisualizzare:RichiestaNoleggioDTO[]=[]
+  filtroAttivo:string="Tutte"
 
   ngOnInit(){
     this.getRichiesteDipendente();
@@ -25,6 +27,7 @@ export class PrenotazioniDipendente {
     this.service.richiediPrenotazioniDipendente().subscribe({
       next:(risposta:RichiestaNoleggioDTO[])=>{
         this.prenotazioni=risposta
+        this.daVisualizzare=risposta
     },
       error:(err)=>console.log("Errore nel caricare i noleggi dei dipendente")
     });
@@ -34,4 +37,18 @@ export class PrenotazioniDipendente {
     this.router.navigate(['/dashboardDipendente/nuovaPrenotazione'])
   }
 
+  impostaFiltro(categoria: string) {
+    this.filtroAttivo=categoria;
+    if(categoria==="Tutte"){
+      this.daVisualizzare=this.prenotazioni;
+    }else if (categoria==="Terminata"){
+      this.daVisualizzare = this.prenotazioni.filter(p => p.statoRichiesta === 'Terminata');
+    }else if (categoria==="In corso"){
+      this.daVisualizzare=this.prenotazioni.filter(p=>p.statoRichiesta==='In corso');
+    }else if(categoria==="Da ritirare"){
+      this.daVisualizzare=this.prenotazioni.filter(p=>p.statoRichiesta==='Da ritirare');
+    }
+
+
+  }
 }

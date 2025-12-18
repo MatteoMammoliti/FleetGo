@@ -6,29 +6,51 @@
   </div>
 
   <div class="filters-container">
-    <button class="filter-pill active">Tutte</button>
-    <button class="filter-pill">In Arrivo</button>
-    <button class="filter-pill">Passate</button>
-  </div>
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Tutte'"
+            (click)="impostaFiltro('Tutte')">
+      Tutte
+    </button>
 
-  <div class="list-container">
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'In corso'"
+            (click)="impostaFiltro('In corso')">
+      In corso
+    </button>
 
-    @if (prenotazioni.length > 0) {
-      @for (prenotazione of prenotazioni; track prenotazione.idRichiesta) {
-        <app-prenotazione-card [prenotazione]="prenotazione"></app-prenotazione-card>
-      }
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Da ritirare'"
+            (click)="impostaFiltro('Da ritirare')">
+      Da ritirare
+    </button>
+
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Terminata'"
+            (click)="impostaFiltro('Terminata')">
+      Terminate
+    </button>
+  </div> <div class="list-container">
+
+  @if (daVisualizzare.length > 0) {
+
+    @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
+      <app-prenotazione-card [prenotazione]="prenotazione"></app-prenotazione-card>
     }
 
-    @else {
-      <div class="empty-state">
-        <div class="empty-img">
-          <i class="bi bi-journal-x"></i>
-        </div>
-        <h3>Nessuna prenotazione trovata</h3>
-        <p>Non hai ancora effettuato richieste di noleggio o lo storico è vuoto.</p>
-        <button class="btn-primary"(click)="clickNuovaPrenotazione()" >Nuova Prenotazione</button>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-img">
+        <i class="bi bi-journal-x"></i>
       </div>
-    }
+      <h3>Nessuna prenotazione {{filtroAttivo === 'Tutte' ? '' : filtroAttivo}}</h3>
+      <p>Non ci sono richieste in questa categoria.</p>
 
-  </div>
-</div>
+      @if(filtroAttivo === 'Tutte') {
+        <button class="btn-primary" (click)="clickNuovaPrenotazione()">Nuova Prenotazione</button>
+      } @else {
+        <button class="btn-secondary" (click)="impostaFiltro('Tutte')">Mostra Tutte</button>
+      }
+    </div>
+  }
+
+</div> </div>

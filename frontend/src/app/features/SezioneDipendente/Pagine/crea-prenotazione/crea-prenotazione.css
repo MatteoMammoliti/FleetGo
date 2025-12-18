@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem 3rem;
+  padding-bottom: 150px; /* IMPORTANTE: Per non finire sotto il footer */
+}
+
+/* Header */
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2rem;
+}
+.header-texts h1 { font-size: 1.8rem; font-weight: 800; margin: 0 0 5px 0; color: #0f172a; }
+.header-texts p { color: #64748b; margin: 0; }
+
+.location-selector {
+  background: white; border: 1px solid #e2e8f0;
+  padding: 8px 16px; border-radius: 50px;
+  display: flex; align-items: center; gap: 10px;
+  color: #0f172a; font-weight: 600;
+}
+.location-selector select { border: none; font-weight: 600; outline: none; background: transparent; }
+
+/* Griglia */
+.vehicles-grid {
+  display: grid;
+  /* Crea colonne automatiche larghe almeno 300px */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :host { padding: 1.5rem; padding-bottom: 120px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .location-selector { width: 100%; justify-content: space-between; }
+}
