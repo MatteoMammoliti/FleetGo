@@ -1,12 +1,12 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.*;
+import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
-import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
@@ -19,6 +19,7 @@ import java.util.List;
 public class AdminAziendaleService {
 
     @Autowired private DataSource dataSource;
+    @Autowired private EmailService emailService;
 
     public void modificaDati(ModificaDatiUtenteDTO dati) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
@@ -141,6 +142,18 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
             return credenzialiDAO.getNumeroDipendentiConPatentiDaAccettare(idAzienda);
+        }
+    }
+
+    public void richiediAppuntamento(Integer idUtente) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            AdminAziendaleDTO admin = new AdminAziendaleDTO(utenteDAO.getAdminAziendaDaId(idUtente), true, true);
+
+            this.emailService.inviaMailRichiestaAppuntamento(
+                    admin,
+                    "matti.mm04@gmail.com"
+            );
         }
     }
 }

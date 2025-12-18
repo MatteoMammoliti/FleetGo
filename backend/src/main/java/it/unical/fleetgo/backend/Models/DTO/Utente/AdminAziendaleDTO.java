@@ -1,54 +1,72 @@
 package it.unical.fleetgo.backend.Models.DTO.Utente;
 import it.unical.fleetgo.backend.Models.DTO.*;
+import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Utente;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class AdminAziendaleDTO extends UtenteDTO {
     private Integer idAziendaGestita;
-    private List<RichiestaNoleggioDTO> richiesteNoleggio;
-    private List<RichiestaManutenzioneDTO> richiesteManutenzione;
-    private List<DipendenteDTO> dipendenti;
-    private List<GestioneVeicoloAziendaDTO> veicoloInGestione;
-    private List<FatturaDTO> fatture;
-    private List<LuogoDTO> luoghiDepositoRitiro;
+    private AziendaDTO aziendaGestita;
+    private String email;
+//    private List<RichiestaNoleggioDTO> richiesteNoleggio;
+//    private List<RichiestaManutenzioneDTO> richiesteManutenzione;
+//    private List<DipendenteDTO> dipendenti;
+//    private List<GestioneVeicoloAziendaDTO> veicoloInGestione;
+//    private List<FatturaDTO> fatture;
+//    private List<LuogoDTO> luoghiDepositoRitiro;
 
     public AdminAziendaleDTO() {
         super();
     }
 
-    public AdminAziendaleDTO(AdminAziendale utente) {
+    public AdminAziendaleDTO(AdminAziendale utente, boolean caricaInformazioniAzienda, boolean caricaEmail) {
         super(utente);
-        this.idAziendaGestita = utente.getIdAziendaGestita();
-        this.richiesteNoleggio =
-                (utente.getRichiesteNoleggio() != null) ?
-                utente.getRichiesteNoleggio().stream().map(r -> new RichiestaNoleggioDTO(r, false)).toList()
-                : null;
 
-        this.richiesteManutenzione =
-                (utente.getRichiesteManutenzione() != null) ?
-                utente.getRichiesteManutenzione().stream().map(r -> new RichiestaManutenzioneDTO(r, false)).toList()
-                : null;
+        if(caricaInformazioniAzienda){
+            this.idAziendaGestita = utente.getIdAziendaGestita();
+            this.aziendaGestita = new AziendaDTO(utente.getAziendaGestita());
+        } else {
+            this.idAziendaGestita = null;
+            this.aziendaGestita = null;
+        }
 
-        this.dipendenti =
-                (utente.getDipendenti() != null) ?
-                utente.getDipendenti().stream().map(DipendenteDTO::new).toList()
-                : null;
+        if(caricaEmail) this.email = utente.getEmail();
+        else this.email = null;
 
-        this.veicoloInGestione =
-                (utente.getVeicoliInGestione() != null) ?
-                utente.getVeicoliInGestione().stream().map(g -> new GestioneVeicoloAziendaDTO(g, false, true)).toList()
-                : null;
-
-        this.fatture =
-                (utente.getFatture() != null) ?
-                utente.getFatture().stream().map(f -> new FatturaDTO(f, false, false)).toList()
-                : null;
-
-        this.luoghiDepositoRitiro =
-                (utente.getLuoghiDepositoRitiro() != null) ?
-                utente.getLuoghiDepositoRitiro().stream().map(LuogoDTO::new).toList()
-                : null;
+//        this.richiesteNoleggio =
+//                (utente.getRichiesteNoleggio() != null) ?
+//                utente.getRichiesteNoleggio().stream().map(r -> new RichiestaNoleggioDTO(r, false)).toList()
+//                : null;
+//
+//        this.richiesteManutenzione =
+//                (utente.getRichiesteManutenzione() != null) ?
+//                utente.getRichiesteManutenzione().stream().map(r -> new RichiestaManutenzioneDTO(r, false)).toList()
+//                : null;
+//
+//        this.dipendenti =
+//                (utente.getDipendenti() != null) ?
+//                utente.getDipendenti().stream().map(DipendenteDTO::new).toList()
+//                : null;
+//
+//        this.veicoloInGestione =
+//                (utente.getVeicoliInGestione() != null) ?
+//                utente.getVeicoliInGestione().stream().map(g -> new GestioneVeicoloAziendaDTO(g, false, true)).toList()
+//                : null;
+//
+//        this.fatture =
+//                (utente.getFatture() != null) ?
+//                utente.getFatture().stream().map(f -> new FatturaDTO(f, false, false)).toList()
+//                : null;
+//
+//        this.luoghiDepositoRitiro =
+//                (utente.getLuoghiDepositoRitiro() != null) ?
+//                utente.getLuoghiDepositoRitiro().stream().map(LuogoDTO::new).toList()
+//                : null;
     }
 }

@@ -17,21 +17,24 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private final GestioneVeicoloAziendaDAO  gestioneVeicoloAziendaDAO;
     private final FatturaDAO fatturaDAO;
     private final LuogoAziendaDAO luogoAziendaDAO;
-    private boolean aziendaCaricata= false;
+    private final CredenzialiDAO credenzialiDAO;
+    private boolean emailCaricata = false;
+    private boolean aziendaCaricata = false;
+    private boolean idAziendaGestitaCaricato = false;
     private boolean richiesteNoleggioCaricate = false;
-    private boolean richiesteManutenzioniCaricate= false;
+    private boolean richiesteManutenzioniCaricate = false;
     private boolean dipendentiCaricati = false;
     private boolean gestioneVeicoloCaricate= false;
     private boolean fatturaCaricate= false;
     private boolean luogoCaricate= false;
     private boolean richiesteAffiliazioneCaricate= false;
 
-    public AdminAziendaleProxy(AziendaDAO aziendaDAO,RichiestaNoleggioDAO richiestaNoleggioDAO,
+    public AdminAziendaleProxy(AziendaDAO aziendaDAO, RichiestaNoleggioDAO richiestaNoleggioDAO,
                                RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO,
                                GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO,
                                FatturaDAO fatturaDAO,
                                LuogoAziendaDAO luogoAziendaDAO,
-                               RichiesteManutenzioneDAO richiesteManutenzioneDAO) {
+                               RichiesteManutenzioneDAO richiesteManutenzioneDAO, CredenzialiDAO credenzialiDAO) {
 
         this.aziendaDAO = aziendaDAO;
         this.richiestaNoleggioDAO = richiestaNoleggioDAO;
@@ -40,17 +43,36 @@ public class AdminAziendaleProxy extends AdminAziendale {
         this.gestioneVeicoloAziendaDAO = gestioneVeicoloAziendaDAO;
         this.luogoAziendaDAO = luogoAziendaDAO;
         this.richiesteManutenzioneDAO = richiesteManutenzioneDAO;
+        this.credenzialiDAO = credenzialiDAO;
     }
 
     @Override
     public Integer getIdAziendaGestita(){
-        if(!aziendaCaricata){
-            aziendaCaricata= true;
+        if(!idAziendaGestitaCaricato){
+            idAziendaGestitaCaricato = true;
             super.setIdAziendaGestita(aziendaDAO.getIdAziendaGestita(
                     this.getIdUtente()
             ));
         }
         return super.getIdAziendaGestita();
+    }
+
+    @Override
+    public String getEmail() {
+        if(!emailCaricata) {
+            emailCaricata = true;
+            super.setEmail(credenzialiDAO.getCredenzialiUtente(this.getIdUtente()).getEmail());
+        }
+        return super.getEmail();
+    }
+
+    @Override
+    public Azienda getAziendaGestita(){
+        if(!aziendaCaricata) {
+            aziendaCaricata = true;
+            super.setAziendaGestita(aziendaDAO.getAziendaById(this.getIdAziendaGestita()));
+        }
+        return super.getAziendaGestita();
     }
 
     @Override

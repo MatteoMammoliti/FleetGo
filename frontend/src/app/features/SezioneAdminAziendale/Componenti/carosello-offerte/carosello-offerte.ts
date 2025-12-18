@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 
 @Component({
@@ -10,6 +10,7 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
 export class CaroselloOfferte implements OnInit, OnDestroy {
 
   @Input() offerte: OffertaDTO[] = [];
+  @Output() offertaSelezionata = new EventEmitter<OffertaDTO>();
 
   indiceCorrente = 0;
   intervalloDiCambioCarosello: any;
@@ -46,4 +47,7 @@ export class CaroselloOfferte implements OnInit, OnDestroy {
     this.startRotation();
   }
 
+  richiediDettagli(offertaSelezionata: OffertaDTO){
+    this.offertaSelezionata.emit(offertaSelezionata);
+  }
 }

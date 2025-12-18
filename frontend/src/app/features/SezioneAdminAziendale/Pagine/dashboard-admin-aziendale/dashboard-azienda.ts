@@ -5,10 +5,12 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Componenti/carosello-richieste-miste/carosello-richieste-miste';
 import {CardStatisticheDashboard} from '@features/SezioneAdminAziendale/Componenti/card-statistiche-dashboard/card-statistiche-dashboard';
 import {CurrencyPipe} from '@angular/common';
+import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-azienda',
-  imports: [CaroselloOfferte, CaroselloRichiesteMiste, CurrencyPipe, CardStatisticheDashboard],
+  imports: [CaroselloOfferte, CaroselloRichiesteMiste, CurrencyPipe, CardStatisticheDashboard, ModaleRichiestaAppuntamento],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
@@ -27,6 +29,11 @@ export class DashboardAzienda implements OnInit{
 
   nomeAziendaGestita = "";
   nomeECognomeAdmin = "";
+
+  offertaSelezionata: OffertaDTO = {} as OffertaDTO;
+  modaleAppuntamentoVisibile = false;
+  appuntamentoRichiesto = false;
+
 
   get sommaRichieste(): number {
     return this.contatoreRichiesteAffiliazione +
@@ -96,6 +103,29 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getNumeroNoleggi().subscribe({
       next: value => {
         if(value) this.statisticheFlotta = value;
+      }, error: err => { console.error(err); }
+    })
+  }
+
+  apriModaleRichiestaAppuntamento(offerta: OffertaDTO) {
+    this.modaleAppuntamentoVisibile = true;
+    this.offertaSelezionata = offerta;
+  }
+
+  chiudiModaleRichiestaAppuntamento() {
+    this.modaleAppuntamentoVisibile = false;
+    this.offertaSelezionata = {} as OffertaDTO;
+  }
+
+  richiediAppuntamento() {
+    this.dashboardService.inoltraRichiestaDiAppuntamento().subscribe({
+      next: value => {
+        if(value) {
+          this.appuntamentoRichiesto = true;
+          setInterval( () => {
+            this.chiudiModaleRichiestaAppuntamento();
+          }, 3000)
+        }
       }, error: err => { console.error(err); }
     })
   }

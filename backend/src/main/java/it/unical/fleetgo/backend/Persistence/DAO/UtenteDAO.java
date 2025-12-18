@@ -315,7 +315,7 @@ public class UtenteDAO {
     private AdminAziendaleProxy creoAdminAziendaleProxy(){
         return new AdminAziendaleProxy(new AziendaDAO(con),new RichiestaNoleggioDAO(con),new RichiestaAffiliazioneAziendaDAO(con),
                 new GestioneVeicoloAziendaDAO(con),new FatturaDAO(con),new LuogoAziendaDAO(con),
-                new RichiesteManutenzioneDAO(con));
+                new RichiesteManutenzioneDAO(con), new CredenzialiDAO(con));
     }
     private DipendenteProxy creoDipendenteProxy(){
         return new DipendenteProxy(new RichiestaAffiliazioneAziendaDAO(con),new CredenzialiDAO(con),
