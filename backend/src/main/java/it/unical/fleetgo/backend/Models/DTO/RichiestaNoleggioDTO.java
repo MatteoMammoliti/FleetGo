@@ -22,6 +22,8 @@ public class RichiestaNoleggioDTO {
     private boolean accettata;
     private UtenteDTO utente;
     private Boolean richiestaAnnullata;
+    private String statoRichiesta;
+    private Integer costoNoleggio;
 
     public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
@@ -35,6 +37,8 @@ public class RichiestaNoleggioDTO {
         this.motivazione = richiesta.getMotivazione();
         this.accettata = richiesta.getRichiestaAccettata();
         this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
+        this.statoRichiesta = richiesta.getStatoRichiesta();
+        this.costoNoleggio = richiesta.getCostoNoleggio();
 
         if(caricaUtente) this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
         else this.utente = null;

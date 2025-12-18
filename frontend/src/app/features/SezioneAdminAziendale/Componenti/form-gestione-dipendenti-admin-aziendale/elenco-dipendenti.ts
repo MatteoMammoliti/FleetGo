@@ -2,19 +2,20 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import { RouterLink } from '@angular/router';
+import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card-dipendente/card-dipendente';
 
 @Component({
-  selector: 'app-form-gestione-dipendenti-admin-aziendale',
-  imports: [FormsModule, RouterLink],
+  selector: 'app-elenco-dipendenti',
+  imports: [FormsModule, CardDipendente],
   standalone: true,
-  templateUrl: './form-gestione-dipendenti-admin-aziendale.html',
-  styleUrl: './form-gestione-dipendenti-admin-aziendale.css',
+  templateUrl: './elenco-dipendenti.html',
+  styleUrl: './elenco-dipendenti.css',
 })
-export class FormGestioneDipendentiAdminAziendale {
+export class ElencoDipendenti {
   cercaDipendente: string = '';
   @Input() listaDipendenti: DipendenteDTO[] = [];
-  @Output() richiestaRimozioneDipendente=new EventEmitter<number>();
-
+  @Output() richiestaRimozioneDipendente= new EventEmitter<number>();
+  @Output() apriDettagliDipendente = new EventEmitter<DipendenteDTO>();
 
   get dipendentiFiltrati(): DipendenteDTO[] {
     if (!this.cercaDipendente) {
@@ -27,13 +28,11 @@ export class FormGestioneDipendentiAdminAziendale {
     );
   }
 
-
   rimuoviDipendente(idDipendente:number | undefined) {
     this.richiestaRimozioneDipendente.emit(idDipendente);
   }
 
-
-
-
-
+  apriDettagli(dipendente: DipendenteDTO) {
+    this.apriDettagliDipendente.emit(dipendente);
+  }
 }

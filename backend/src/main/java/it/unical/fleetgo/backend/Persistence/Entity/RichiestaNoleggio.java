@@ -20,4 +20,6 @@ public class RichiestaNoleggio {
     private String motivazione;
     private Boolean richiestaAccettata;
     private Boolean richiestaAnnullata;
+    private Integer costoNoleggio;
+    private String statoRichiesta;
 }

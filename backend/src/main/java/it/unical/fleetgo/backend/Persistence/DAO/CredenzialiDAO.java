@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
@@ -144,5 +145,16 @@ public class CredenzialiDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public void approvaPatente(Integer idUtente){
+        String query = "UPDATE credenziali_utente SET patente = true WHERE id_utente = ?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, idUtente);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

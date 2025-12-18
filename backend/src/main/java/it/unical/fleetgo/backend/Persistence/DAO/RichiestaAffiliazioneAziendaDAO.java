@@ -68,7 +68,6 @@ public class RichiestaAffiliazioneAziendaDAO {
             ResultSet rs = st.executeQuery();
 
             while(rs.next()){
-
                 DipendenteProxy dipendente = creaDipendenteProxy();
                 dipendente.setIdUtente(rs.getInt("id_utente"));
                 dipendente.setNomeUtente(rs.getString("nome_utente"));

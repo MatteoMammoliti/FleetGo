@@ -6,6 +6,7 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class AdminAziendaleService {
 
             for(Dipendente d : dipendenti) {
                 DipendenteDTO dipendenteDTO = new DipendenteDTO(d);
+                dipendenteDTO.setEmail(d.getCredenziali().getEmail());
                 listaDipendenti.add(dipendenteDTO);
             }
 
@@ -148,12 +150,31 @@ public class AdminAziendaleService {
     public void richiediAppuntamento(Integer idUtente) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
-            AdminAziendaleDTO admin = new AdminAziendaleDTO(utenteDAO.getAdminAziendaDaId(idUtente), true, true);
+            AdminAziendaleDTO admin = new AdminAziendaleDTO(utenteDAO.getAdminAziendaDaId(idUtente), true);
 
             this.emailService.inviaMailRichiestaAppuntamento(
                     admin,
-                    "matti.mm04@gmail.com"
+                    "fleetgo@fleetgo.com"
             );
+        }
+    }
+
+    public void approvaPatente(Integer idUtente) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            credenzialiDAO.approvaPatente(idUtente);
+        }
+    }
+    public List<RichiestaNoleggioDTO> getRichiesteNoleggio(Integer idDipendente) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
+            List<RichiestaNoleggioDTO> richiesteNoleggio = new ArrayList<>();
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdDipendente(idDipendente);
+
+            for(RichiestaNoleggio richiesta: richieste) {
+                richiesteNoleggio.add(new RichiestaNoleggioDTO(richiesta, false));
+            }
+            return richiesteNoleggio;
         }
     }
 }

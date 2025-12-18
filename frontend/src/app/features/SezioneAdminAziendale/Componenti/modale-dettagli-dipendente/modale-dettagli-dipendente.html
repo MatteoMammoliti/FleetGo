@@ -1,0 +1,189 @@
+@if(paginaVisibile) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
+
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden animate-fade-in-up relative flex flex-col max-h-[90vh]">
+
+      <button (click)="chiudiPagina.emit()" class="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/80 hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors shadow-sm border border-slate-100">
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+      <div class="bg-slate-50 pt-10 pb-0 border-b border-slate-200">
+        <div class="px-8 pb-8 flex items-center gap-6">
+          <div class="w-24 h-24 rounded-2xl bg-white border-2 border-white shadow-lg flex items-center justify-center text-slate-700 font-extrabold text-3xl flex-shrink-0 relative overflow-hidden">
+            {{ iniziali }}
+          </div>
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <h2 class="text-3xl font-extrabold text-slate-900">
+                {{ dipendente?.nomeUtente }} {{ dipendente?.cognomeUtente }}
+              </h2>
+            </div>
+            <p class="text-slate-500 text-sm">Dipendente Aziendale</p>
+          </div>
+        </div>
+
+        <div class="flex px-8 gap-8">
+          <button (click)="impostaTab('INFO')"
+                  class="pb-4 text-sm font-bold border-b-2 transition-all duration-200"
+                  [ngClass]="tabAttiva === 'INFO' ? 'border-azzurro text-azzurro' : 'border-transparent text-slate-500 hover:text-slate-700'">
+            <i class="bi bi-person-vcard mr-2"></i> Dati & Documenti
+          </button>
+
+          <button (click)="impostaTab('STORICO')"
+                  class="pb-4 text-sm font-bold border-b-2 transition-all duration-200"
+                  [ngClass]="tabAttiva === 'STORICO' ? 'border-azzurro text-azzurro' : 'border-transparent text-slate-500 hover:text-slate-700'">
+            <i class="bi bi-clock-history mr-2"></i> Storico Noleggi
+          </button>
+        </div>
+      </div>
+
+      <div class="p-8 overflow-y-auto custom-scrollbar bg-white flex-1">
+
+        @if(tabAttiva === 'INFO') {
+          <div class="animate-fade-in">
+
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Informazioni Personali</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 mb-10">
+              <div>
+                <span class="block text-slate-400 text-xs font-semibold mb-1">Email Aziendale</span>
+                <div class="text-slate-800 font-medium text-lg flex items-center gap-2">
+                  <i class="bi bi-envelope text-slate-400"></i> {{ dipendente?.email }}
+                </div>
+              </div>
+              <div>
+                <span class="block text-slate-400 text-xs font-semibold mb-1">Data di Nascita</span>
+                <div class="text-slate-800 font-medium text-lg">
+                  {{ dipendente?.dataNascitaUtente | date:'dd MMMM yyyy' }}
+                </div>
+              </div>
+              <div>
+                <span class="block text-slate-400 text-xs font-semibold mb-1">ID Dipendente</span>
+                <div class="text-slate-800 font-medium text-lg font-mono">
+                  #{{ dipendente?.idUtente }}
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 relative overflow-hidden">
+              <div class="flex justify-between items-start mb-6 relative z-10">
+                <div>
+                  <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="bi bi-card-heading text-azzurro"></i> Patente di Guida
+                  </h3>
+                  <p class="text-slate-500 text-sm mt-1">Documentazione necessaria per l'assegnazione veicoli.</p>
+                </div>
+                @if(!dipendente?.patenteAccettata) {
+                  <div class="px-3 py-1 bg-yellow-100 text-yellow-700 border border-yellow-200 rounded-lg text-sm font-bold flex items-center gap-2">
+                    <i class="bi bi-exclamation-circle-fill"></i> Da Approvare
+                  </div>
+                } @else {
+                  <div class="px-3 py-1 bg-green-100 text-green-700 border border-green-200 rounded-lg text-sm font-bold flex items-center gap-2">
+                    <i class="bi bi-check-circle-fill"></i> Verificata
+                  </div>
+                }
+              </div>
+
+              <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-full md:w-1/2 h-48 bg-white rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm group cursor-pointer relative">
+                  @if(!dipendente?.urlImmagine) {
+                    <div class="text-center text-slate-400">
+                      <i class="bi bi-image text-4xl mb-2 block"></i>
+                      <span class="text-sm">Nessuna scansione caricata</span>
+                    </div>
+                  } @else {
+                    <img [src]="dipendente?.urlImmagine" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                  }
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col gap-4">
+                  @if(!dipendente?.patenteAccettata && dipendente?.urlImmagine) {
+                    <button (click)="approvaPatenteDipendente(dipendente?.idUtente)"
+                            [disabled]="approvazioneInCorso"
+                            class="mt-2 w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                      @if(approvazioneInCorso){
+                        <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                      }
+                      {{ approvazioneInCorso ? 'Salvataggio...' : 'Approva Validità Patente' }}
+                      @if(!approvazioneInCorso) { <i class="bi bi-check-lg"></i> }
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if(tabAttiva === 'STORICO') {
+          <div class="animate-fade-in">
+
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-lg font-bold text-slate-800">Storico Viaggi</h3>
+              <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold border border-slate-200">
+                {{ storicoNoleggi.length }} Noleggi Totali
+              </span>
+            </div>
+
+            @if(storicoNoleggi.length === 0) {
+              <div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-slate-300 text-2xl">
+                  <i class="bi bi-car-front"></i>
+                </div>
+                <p class="text-slate-500 font-medium">Nessun noleggio effettuato finora.</p>
+              </div>
+            } @else {
+              <div class="overflow-x-auto rounded-xl border border-slate-200">
+                <table class="w-full text-sm text-left">
+                  <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th class="px-6 py-4 font-bold tracking-wider">Veicolo</th>
+                    <th class="px-6 py-4 font-bold tracking-wider">Data Inizio</th>
+                    <th class="px-6 py-4 font-bold tracking-wider">Data Fine</th>
+                    <th class="px-6 py-4 font-bold tracking-wider text-center">Stato</th>
+                    <th class="px-6 py-4 font-bold tracking-wider text-center">Costo</th>
+                  </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for(noleggio of storicoNoleggi; track noleggio.idRichiesta) {
+                      <tr class="bg-white hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 font-medium text-slate-900">
+                          {{ noleggio.idVeicolo }}
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-600">
+                          {{ noleggio.dataRitiro | date:'dd/MM/yyyy HH:mm' }}
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">
+                          {{ noleggio.dataConsegna | date:'dd/MM/yyyy HH:mm' }}
+                        </td>
+
+                        <td class="px-6 py-4 text-center">
+                          @if(noleggio.statoRichiesta === 'In corso') {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                              In corso
+                            </span>
+                          } @else if(noleggio.statoRichiesta === 'Da ritirare') {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">
+                              Auto da ritirare
+                            </span>
+                          } @else {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
+                              Terminata
+                            </span>
+                          }
+                        </td>
+
+                        <td class="px-6 py-4 font-medium text-slate-900">
+                          {{ noleggio.costoNoleggio }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

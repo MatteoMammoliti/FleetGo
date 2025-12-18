@@ -1,10 +1,13 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
+import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -40,13 +43,23 @@ public class ControllerGestioneDipendenti {
         }
     }
 
-    @GetMapping("/getDipendente")
-    public ResponseEntity<DipendenteDTO> getDipendente(@RequestBody Integer idUtente) {
+    @PostMapping("/approvaPatente")
+    public ResponseEntity<String> approvaPatente(@RequestBody Integer idUtente) {
         try {
-            DipendenteDTO d = utenteService.getDipendente(idUtente);
-            return ResponseEntity.ok(d);
+            adminAziendaleService.approvaPatente(idUtente);
+            return ResponseEntity.ok("Patente approvata con successo");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body("Patente non approvata");
+        }
+    }
+
+    @GetMapping("/getRichiesteNoleggio/{idDipendente}")
+    public ResponseEntity<List<RichiestaNoleggioDTO>> getRichiesteNoleggio(@PathVariable Integer idDipendente) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminAziendaleService.getRichiesteNoleggio(idDipendente));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

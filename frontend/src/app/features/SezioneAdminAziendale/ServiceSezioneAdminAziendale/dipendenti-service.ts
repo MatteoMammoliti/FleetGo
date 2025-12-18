@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {environment} from '@env/environment';
+import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +21,12 @@ export class DipendentiService {
   public rimuoviDipendente(idUtente: number | undefined): Observable<any> {
     return this.http.post(`${this.apiUrl}/rimuoviDipendente`, idUtente, { responseType: 'text', withCredentials: true});
   }
-  public getDipendenteID(id: string): Observable<DipendenteDTO> {
-    return this.http.get<DipendenteDTO>(`${this.apiUrl}/getDipendente/${id}`, { withCredentials: true });
+
+  public approvaPatente(idUtente: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/approvaPatente`, idUtente, { responseType: 'text', withCredentials: true});
   }
-  public aggiornaDipendente(dipendente: DipendenteDTO): Observable<any> {
-    return this.http.post(`${this.apiUrl}/aggiornaDipendente`, dipendente, { responseType: 'text', withCredentials: true });
+
+  public getRichiesteNoleggio(idDipendente: number | undefined): Observable<RichiestaNoleggioDTO[]> {
+    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getRichiesteNoleggio/${idDipendente}`, { withCredentials: true });
   }
 }

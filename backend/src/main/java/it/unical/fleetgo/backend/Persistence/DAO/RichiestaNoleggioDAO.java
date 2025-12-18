@@ -25,7 +25,7 @@ public class RichiestaNoleggioDAO {
      */
     public Integer aggiungiRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio){
         String query="INSERT INTO richiesta_noleggio (id_dipendente,id_azienda,ora_inizio,ora_fine,data_ritiro, " +
-                " data_consegna, motivazione) VALUES (?,?,?,?,?,?,?)";
+                " data_consegna, motivazione, id_veicolo, costo_noleggio) VALUES (?,?,?,?,?,?,?, ?)";
 
         String dataInizio=richiestaNoleggio.getDataRitiro();
         String dataFine=richiestaNoleggio.getDataConsegna();
@@ -40,6 +40,7 @@ public class RichiestaNoleggioDAO {
             st.setDate(5, Date.valueOf(LocalDate.parse(dataInizio)));
             st.setDate(6, Date.valueOf(LocalDate.parse(dataFine)));
             st.setString(7, richiestaNoleggio.getMotivazione());
+            st.setInt(8, richiestaNoleggio.getIdVeicolo());
             st.executeUpdate();
             ResultSet idGenerato = st.getGeneratedKeys();
 
@@ -69,10 +70,25 @@ public class RichiestaNoleggioDAO {
      * @param accettata
      * @return
      */
-    public boolean contrassegnaRichiestaNoleggio(Integer idRichiesta,boolean accettata){
-        String query="UPDATE richiesta_noleggio SET accettata=? WHERE id_richiesta=?";
+    public boolean accettaRichiestaNoleggio(Integer idRichiesta){
+        String query="UPDATE richiesta_noleggio SET accettata=? AND stato_richiesta = ? WHERE id_richiesta=?";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setBoolean(1,accettata);
+            st.setBoolean(1, true);
+            st.setString(2, "Da ritirare");
+            st.setInt(2,idRichiesta);
+            return st.executeUpdate()>0;
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean rifiutaRichiestaNoleggio(Integer idRichiesta){
+        String query="UPDATE richiesta_noleggio SET accettata=? WHERE id_richiesta=?";
+
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setBoolean(1, false);
             st.setInt(2,idRichiesta);
             return st.executeUpdate()>0;
 
@@ -123,5 +139,37 @@ public class RichiestaNoleggioDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdDipendente(Integer idDipendente) {
+        String query = "SELECT * FROM richiesta_noleggio WHERE id_dipendente = ? AND accettata = true";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idDipendente);
+
+            ResultSet rs = ps.executeQuery();
+            List<RichiestaNoleggio> richieste = new ArrayList<>();
+
+            while (rs.next()) {
+                RichiestaNoleggio r = new RichiestaNoleggio();
+                r.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
+                r.setIdUtente(rs.getInt("id_dipendente"));
+                r.setIdAzienda(rs.getInt("id_azienda"));
+                r.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
+                r.setOraFine(rs.getTime("ora_fine").toLocalTime());
+                r.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
+                r.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
+                r.setMotivazione(rs.getString("motivazione"));
+                r.setIdVeicolo(rs.getInt("id_veicolo"));
+                r.setCostoNoleggio(rs.getInt("costo_noleggio"));
+                r.setRichiestaAccettata(rs.getBoolean("accettata"));
+                r.setStatoRichiesta(rs.getString("stato_richiesta"));
+                richieste.add(r);
+            }
+
+            return richieste;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

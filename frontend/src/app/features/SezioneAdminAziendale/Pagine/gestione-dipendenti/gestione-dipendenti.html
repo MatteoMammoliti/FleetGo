@@ -1,5 +1,24 @@
-<div>
-  <h1 class="titolo-pagina">Gestione Dipendenti Aziendali</h1>
-</div>
+<div class="dashboard-container p-8 min-h-screen bg-slate-50">
 
-<app-form-gestione-dipendenti-admin-aziendale [listaDipendenti]=listaDipendentiAzienda (richiestaRimozioneDipendente)=rimuoviDipendente($event) ></app-form-gestione-dipendenti-admin-aziendale>
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Il tuo Team</h1>
+      <p class="text-slate-500">Gestisci i dipendenti, monitora le patenti e le assegnazioni.</p>
+    </div>
+  </div>
+
+  <app-elenco-dipendenti
+    [listaDipendenti]=listaDipendentiAzienda
+    (richiestaRimozioneDipendente)=rimuoviDipendente($event)
+    (apriDettagliDipendente)="apriDettagliDipendente($event)">
+  </app-elenco-dipendenti>
+
+  <app-modale-dettagli-dipendente
+    [dipendente]="dipendenteDaVisualizzare"
+    [paginaVisibile]="modaleDettaglioDipendenteVisibile"
+    (chiudiPagina)="chiudiModale()"
+    (approvaPatente)="approvaPatente($event)"
+    [storicoNoleggi]="richiesteNoleggio">
+  </app-modale-dettagli-dipendente>
+
+</div>

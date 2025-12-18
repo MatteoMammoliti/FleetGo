@@ -102,15 +102,6 @@ public class UtenteService {
         }
     }
 
-    public DipendenteDTO getDipendente(Integer idUtente) throws SQLException {
-
-        try(Connection connection = this.dataSource.getConnection()) {
-            UtenteDAO utenteDAO = new UtenteDAO(connection);
-            Dipendente d = utenteDAO.getDipendenteById(idUtente);
-            return new DipendenteDTO(d);
-        }
-    }
-
     public ContenitoreStatisticheNumeriche getStatisticheNumeriche() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
