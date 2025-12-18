@@ -1,5 +1,4 @@
 <div class="dashboard-container">
-
   <header class="dashboard-header">
     <div class="header-content">
       <div class="company-badge">
@@ -35,7 +34,8 @@
     <div class="main-content">
       <h3 class="section-title">Offerte Attive</h3>
       <app-carosello-offerte
-        [offerte]="offerteAttive">
+        [offerte]="offerteAttive"
+        (offertaSelezionata)="apriModaleRichiestaAppuntamento($event)">
       </app-carosello-offerte>
     </div>
 
@@ -58,6 +58,13 @@
         </app-card-statistiche-dashboard>
       </div>
     </aside>
-
   </div>
 </div>
+
+<app-modale-richiesta-appuntamento
+  [paginaVisibile]="modaleAppuntamentoVisibile"
+  [offertaSelezionata]="offertaSelezionata"
+  [appuntamentoRichiesto]="appuntamentoRichiesto"
+  (chiudiPagina)="chiudiModaleRichiestaAppuntamento()"
+  (richiediAppuntamento)="richiediAppuntamento()">
+</app-modale-richiesta-appuntamento>

@@ -11,7 +11,7 @@
             <span class="badge-sconto">-{{ off.percentualeSconto }}%</span>
             <h3>{{ off.nomeOfferta }}</h3>
             <p>{{ off.descrizioneOfferta }}</p>
-            <button class="btn-detail">Vedi Dettagli</button>
+            <button (click)="richiediDettagli(off)" class="btn-detail">Vedi Dettagli</button>
           </div>
         </div>
 

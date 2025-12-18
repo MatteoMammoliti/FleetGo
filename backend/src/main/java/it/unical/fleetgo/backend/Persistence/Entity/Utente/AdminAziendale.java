@@ -10,6 +10,8 @@ import java.util.Set;
 @Getter
 public class AdminAziendale extends Utente {
     private Integer idAziendaGestita;
+    private Azienda aziendaGestita;
+    private String email;
     private List<RichiestaNoleggio> richiesteNoleggio;
     private List<RichiestaManutenzione> richiesteManutenzione;
     private List<RichiestaAffiliazioneAzienda> richiesteAffiliazione;
