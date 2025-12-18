@@ -42,6 +42,7 @@ public class RichiestaNoleggioDTO {
         this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
         this.nomeLuogo = richiesta.getNomeLuogo();
         this.costoNoleggio = richiesta.getCosto();
+        this.statoRichiesta=richiesta.getStatoRichiesta();
 
         if(caricaUtente) this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
         else this.utente = null;

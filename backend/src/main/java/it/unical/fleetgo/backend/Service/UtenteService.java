@@ -82,6 +82,13 @@ public class UtenteService {
         }
     }
 
+    public Integer getAziendaAssociataDipendente(Integer idUtente) throws SQLException {
+        try(Connection connection = dataSource.getConnection()) {
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            return utenteDAO.getAziendaAssociataDipendente(idUtente);
+        }
+    }
+
     public void invioCodice(String email) throws SQLException {
 
         try(Connection connection = this.dataSource.getConnection()) {

@@ -1,4 +1,10 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
-public class VeicoloPrenotazioneDTO {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class VeicoloPrenotazioneDTO extends VeicoloDTO {
+    private String statoAttuale;
 }

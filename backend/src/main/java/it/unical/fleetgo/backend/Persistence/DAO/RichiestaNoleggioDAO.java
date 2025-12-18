@@ -152,7 +152,7 @@ public class RichiestaNoleggioDAO {
 
     public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente) throws SQLException{
         this.aggiornaStatiNoleggi();
-        String query="SELECT rn.*,l.nome_luogo FROM richiesta_noleggio rn JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda " +
+        String query="SELECT rn.*,l.nome_luogo FROM richiesta_noleggio rn JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda AND rn.id_veicolo=g.id_veicolo " +
                 " JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna WHERE rn.id_dipendente=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
@@ -163,7 +163,7 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    private void aggiornaStatiNoleggi() throws SQLException {
+    public void aggiornaStatiNoleggi() throws SQLException {
         LocalDateTime adesso = LocalDateTime.now();
         String query1 = "UPDATE richiesta_noleggio SET stato_richiesta = 'In corso' WHERE stato_richiesta = 'Da ritirare' AND (data_ritiro + ora_inizio) <= ?";
         String query2 = "UPDATE richiesta_noleggio SET stato_richiesta = 'Terminata' WHERE stato_richiesta = 'In corso' AND (data_consegna + ora_fine) <= ?";
