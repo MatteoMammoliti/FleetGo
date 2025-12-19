@@ -1,0 +1,11 @@
+<div class="h-full min-h-[230px] flex flex-col justify-center items-center group">
+  <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
+    <i class="text-white text-{{tagliaIcona}} bi {{icona}}"></i>
+  </div>
+  <div class="text-azzurro text-l font-bold text-center">
+    <p>{{testoPrimario}}</p>
+    @if (testoSecondario){
+      <p>{{testoSecondario}}</p>
+    }
+  </div>
+</div>

@@ -1,46 +1,32 @@
-<div class="flex flex-col h-full bg-white rounded-2xl border border-grigio shadow-sm overflow-hidden">
 
-  <div class="p-6 border-b border-grigio flex  flex-col justify-between ">
-    <h3 class="text-blu font-bold text-xl md:text-2xl ">Gestione Manutenzioni</h3>
-    <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Gestisci la salute della tua flotta.</small>
-  </div>
-
+<app-template-titolo-sottotitolo titolo="Gestione Manutenzioni" sottotitolo="Gestisci la salute della tua flotta.">
   <div>
     @if (!richiesteManutenzioneDaGestire) {
-      <div class="min-h-[200px] flex flex-col justify-center items-center group">
-        <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
-          <i class="text-white text-3xl bi bi-hourglass-split"></i>
-        </div>
-        <p class="text-azzurro text-l font-bold">Caricamento richieste in corso...</p>
-      </div>
-}
-
-    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
-      <div class="min-h-[200px] flex flex-col justify-center items-center group">
-        <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
-          <i class="text-white text-3xl bi bi-check"></i>
-        </div>
-        <p class="text-azzurro text-l font-bold text-center">La tua flotta è in salute!<br>Nessuna richiesta di manutenzione</p>
-      </div>
+      <app-messaggio-card-vuota testoPrimario="Caricamento richieste in corso..." tagliaIcona="3xl" icona="bi-hourglass-split"></app-messaggio-card-vuota>
     }
 
+    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
+      <app-messaggio-card-vuota testoPrimario="La tua flotta è in salute!" testoSecondario="Nessuna richiesta di manutenzione" icona="bi-check" tagliaIcona="3xl"></app-messaggio-card-vuota>
+    }
+
+
     @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length > 0) {
-      <div class="table-auto flex flex-col  justify-between max-h-[310px] overflow-y-auto px-2">
+      <div class="table-auto flex flex-col  justify-between max-h-[330px] overflow-y-auto px-2">
         <table class="w-full border-separate border-spacing-y-3">
           <thead class="sticky top-0 z-10 bg-white">
-            <tr class="text-left text-testo-s">
+          <tr class="text-left text-testo-s">
             <th class="pl-6">Veicolo</th>
-              <th >Data Richiesta</th>
-              <th >Tipologia Intervento</th>
-              <th>Stato Attuale</th>
-              <th class="pr-6">Azioni</th>
-            </tr>
+            <th >Data Richiesta</th>
+            <th >Tipologia Intervento</th>
+            <th>Stato Attuale</th>
+            <th class="pr-6">Azioni</th>
+          </tr>
           </thead>
 
           <tbody>
             @for (richiesta of richiesteManutenzioneDaGestire; track richiesta.idManutenzione) {
 
-                <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p items-center">
+              <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p items-center">
                 <td  class="py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors">
                   <div>
                     <span>{{ richiesta.idVeicolo }}</span>
@@ -57,17 +43,11 @@
                   <span>In Attesa</span>
                 </td>
                 <td  class="py-3 pr-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors">
-                  <button
-                    (click)="gestisciRichiesta(richiesta.idManutenzione)"
-                    class="flex items-center gap-1.5 hover:bg-azzurro-scuro hover:text-grigio text-sm font-medium
-                    px-2 py-[2px] rounded-xl border border-transparent shadow-sm transition-all duration-300 ease-out
-                     bg-white text-azzurro border-azzurro hover:shadow-lg hover:-translate-y-0.5
-                      focus:outline-none focus:ring-2 focus:ring-azzurro/40 ">
 
+                  <app-bottone-chiaro (click)="gestisciRichiesta(richiesta.idManutenzione)">
                     <span>Gestisci</span>
                     <i class="bi bi-gear text-base transition-transform duration-300 group-hover:rotate-90"></i>
-
-                  </button>
+                  </app-bottone-chiaro>
                 </td>
               </tr>
             }
@@ -78,4 +58,4 @@
     }
   </div>
 
-</div>
+</app-template-titolo-sottotitolo>

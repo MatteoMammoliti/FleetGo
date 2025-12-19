@@ -1,8 +1,4 @@
-<div class="flex flex-col h-full bg-white rounded-2xl border border-grigio shadow-sm overflow-hidden">
-<div class="p-6 border-b border-grigio flex  flex-col justify-between ">
-    <h3 class="text-blu font-bold text-xl md:text-2xl ">Fatture da Generare</h3>
-    <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Cura la tua contabilità.</small>
-</div>
+<app-template-titolo-sottotitolo titolo="Fatture da Generare" sottotitolo="Cura la tua contabilità.">
   <div class="">
 
     <div class="px-2 ">
@@ -15,21 +11,14 @@
             </div>
             <span class="text-xs text-testo-s">{{ fattura.numeroNoleggi }} noleggi effettuati</span>
             <span class="text-azzurro text-m font-bold">€ {{ fattura.costoTotale }}</span>
-            <button class="flex items-center gap-1.5 hover:bg-azzurro-scuro hover:text-grigio text-sm font-medium  px-2 py-1 rounded-xl border border-transparent shadow-sm transition-all duration-300 ease-out  bg-white text-azzurro border-azzurro hover:shadow-lg hover:-translate-y-0.5
-           focus:outline-none focus:ring-2 focus:ring-azzurro/40" (click)="generaFattura(fattura)"><span>Emetti</span> <i class="bi bi-file-earmark-check"></i> </button>
+            <app-bottone-chiaro (click)="generaFattura(fattura)"><span>Emetti</span> <i class="bi bi-file-earmark-check"></i></app-bottone-chiaro>
         </div>
       }
 
       @if (fatture.length === 0) {
-        <div class="min-h-[200px] flex flex-col justify-center items-center group">
-          <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
-            <i class="text-white text-xl bi bi-calendar-check"></i>
-          </div>
-          <p class="text-azzurro text-l font-bold text-center">La contabilità è in ordine!<br>Tutte le fatture sono state emesse</p>
-        </div>
+          <app-messaggio-card-vuota testoPrimario="La contabilità è in ordine!" testoSecondario="Tutte le fatture sono state emesse" icona="bi-calendar-check"></app-messaggio-card-vuota>
       }
     </div>
 
   </div>
-
-</div>
+</app-template-titolo-sottotitolo>
