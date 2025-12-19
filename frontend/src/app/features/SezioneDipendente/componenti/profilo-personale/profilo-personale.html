@@ -1,0 +1,35 @@
+<div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-slate-100">
+
+  <h2 class="text-xl font-bold text-blu mb-2">Dati Personali</h2>
+  <p class="text-testo-s text-sm mb-8">Gestisci le tue informazioni di contatto e anagrafiche.</p>
+
+  <form (ngSubmit)="salva()" class="space-y-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-bold text-testo-p">Nome</label>
+        <input type="text" [(ngModel)]="datiForm.nome" name="nome"
+               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-blu focus:outline-none focus:border-azzurro focus:ring-1 focus:ring-azzurro transition-all">
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-bold text-testo-p">Cognome</label>
+        <input type="text" [(ngModel)]="datiForm.cognome" name="cognome"
+               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-blu focus:outline-none focus:border-azzurro focus:ring-1 focus:ring-azzurro transition-all">
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-bold text-testo-p">Email</label>
+      <input type="email" [(ngModel)]="datiForm.email" name="email"
+             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-blu focus:outline-none focus:border-azzurro focus:ring-1 focus:ring-azzurro transition-all">
+    </div>
+
+    <div class="flex justify-end pt-4">
+      <button type="submit"
+              class="bg-azzurro hover:bg-azzurro-scuro text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-blue-200 transition-transform active:scale-95">
+        Salva Modifiche
+      </button>
+    </div>
+
+  </form>
+</div>
