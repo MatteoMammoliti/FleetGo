@@ -43,7 +43,12 @@
 /* --- BODY --- */
 .card-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
 
-.card-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.card-header-row {
+  display: flex;
+  justify-content: space-between; /* Spinge titolo a SX e prezzo a DX */
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
 .car-model { margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a; }
 .car-brand { font-size: 0.85rem; color: #64748b; }
 
@@ -64,6 +69,26 @@
   cursor: pointer;
   background: #0f172a; color: white;
   transition: background 0.2s;
+}
+.price-group {
+  text-align: right; /* Allinea il testo a destra */
+  display: flex;
+  flex-direction: column;
+}
+.price-value {
+  font-size: 1.4rem; /* Bello grande */
+  font-weight: 800;
+  color: #333; /* O il tuo colore primario */
+  line-height: 1;
+}
+
+.price-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
 }
 .btn-action:hover { background: #1e293b; }
 .btn-action:disabled { background: #94a3b8; cursor: not-allowed; }

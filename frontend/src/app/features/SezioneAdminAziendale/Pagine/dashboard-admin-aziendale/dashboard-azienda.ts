@@ -12,12 +12,7 @@ import {GraficoACandelaLuoghi} from '@shared/Componenti/Grafici/grafico-a-candel
 
 @Component({
   selector: 'app-dashboard-azienda',
-  imports: [
-    GraficoStatoFlotta,
-    GraficoAndamentoUtilizzo,
-    CardStatisticheDashboardFleet,
-    GraficoACandelaLuoghi
-  ],
+  imports: [],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })

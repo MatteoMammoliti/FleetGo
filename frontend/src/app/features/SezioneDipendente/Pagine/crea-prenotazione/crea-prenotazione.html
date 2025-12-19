@@ -24,8 +24,14 @@
 
   <div class="vehicles-grid">
     @for (auto of listaVeicoli; track auto.idVeicolo) {
-      <app-veicolo-card [veicolo]="auto"></app-veicolo-card>
+      <app-veicolo-card [costoStimato]="costoStimato" [veicolo]="auto" (apriForm)="clickPrenotaOra($event)"></app-veicolo-card>
     }
   </div>
+  @if (mostraModale) {
+    <app-richiesta-noleggio-form
+      (confermaRegistrazione)="inviaPrenotazione($event)" [dati]="mostraModale" [costoStimato]="costoStimato" (chiudi)="chiudiModale()">
+
+    </app-richiesta-noleggio-form>
+  }
 
 </div>

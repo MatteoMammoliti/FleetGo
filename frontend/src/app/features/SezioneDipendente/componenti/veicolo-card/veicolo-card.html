@@ -19,6 +19,13 @@
         <h3 class="car-model">{{ veicolo.modello }}</h3>
         <span class="car-brand">{{ veicolo.modello }} • {{ veicolo.targaVeicolo }}</span>
       </div>
+
+      <div class="price-group">
+        <div class="price-value">
+          {{ costoStimato | currency:'EUR':'symbol':'1.0-0' }}
+        </div>
+        <div class="price-label">COSTO STIMATO</div>
+      </div>
     </div>
 
     <div class="specs-row">
@@ -32,7 +39,7 @@
 
     <button class="btn-action"
             [disabled]="veicolo.statoAttuale === 'Non_disponbile'"
-            (click)="prenota()">
+            (click)="clickPrenota()">
       {{ veicolo.statoAttuale === 'Disponibile' ? 'Prenota Ora' : 'Non Disponibile' }}
     </button>
   </div>

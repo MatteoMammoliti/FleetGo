@@ -1,13 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
-import {NgClass} from '@angular/common';
+import {CurrencyPipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-veicolo-card',
   imports: [
-    NgClass
+    NgClass,
+    CurrencyPipe
   ],
   templateUrl: './veicolo-card.html',
   styleUrl: './veicolo-card.css',
@@ -15,7 +14,11 @@ import {NgClass} from '@angular/common';
 export class VeicoloCard {
 
   @Input() veicolo:VeicoloPrenotazioneDTO={} as VeicoloPrenotazioneDTO;
-  prenota(){}
+  @Input() costoStimato:number=0;
+  @Output() apriForm= new EventEmitter<VeicoloPrenotazioneDTO>()
+  clickPrenota(){
+    this.apriForm.emit(this.veicolo);
+  }
 
 }
 

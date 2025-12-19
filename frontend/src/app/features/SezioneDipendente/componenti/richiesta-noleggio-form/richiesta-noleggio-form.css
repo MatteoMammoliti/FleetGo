@@ -1,0 +1,250 @@
+/* --- SFONDO SCURO (OVERLAY) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Sfondo semi-trasparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Sopra tutto */
+  backdrop-filter: blur(4px); /* Effetto sfocato dietro (figo) */
+  animation: fadeIn 0.3s ease;
+}
+
+/* --- IL BOX BIANCO --- */
+.modal-container {
+  background: white;
+  width: 90%;
+  max-width: 500px; /* Larghezza massima */
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  overflow: hidden; /* Per i bordi arrotondati */
+  animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HEADER --- */
+.modal-header {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.btn-close:hover {
+  color: #333;
+}
+
+/* --- BODY --- */
+.modal-body {
+  padding: 25px;
+}
+
+/* Riepilogo Veicolo */
+.vehicle-summary {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.vehicle-img img {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.vehicle-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.vehicle-info .badge {
+  background-color: #e9ecef;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #495057;
+  margin-right: 10px;
+}
+
+.vehicle-info .location {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Griglia Date */
+.dates-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.date-box label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+.date-value {
+  font-weight: 700;
+  color: #333;
+  font-size: 1rem;
+}
+
+.time-value {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.arrow-icon {
+  color: #ccc;
+  font-size: 1.5rem;
+}
+
+/* Form Motivazione */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.required {
+  color: #dc3545;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border 0.3s;
+  box-sizing: border-box; /* Importante per non sbordare */
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* --- FOOTER --- */
+.modal-footer {
+  padding: 20px 25px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btn-secondary {
+  background: #f1f3f5;
+  color: #495057;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.btn-primary:disabled {
+  background: #a0cbf7;
+  cursor: not-allowed;
+}
+
+/* Animazioni */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+/* --- BOX COSTO STIMATO --- */
+.cost-box {
+  background-color: #f8f9fa; /* Grigio molto chiaro */
+  border: 1px dashed #ced4da; /* Bordo tratteggiato elegante */
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 20px; /* Spazio prima della motivazione */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cost-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6c757d;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cost-value {
+  font-size: 1.5rem; /* Molto grande */
+  font-weight: 800;
+  color: #198754; /* Verde soldi (Bootstrap success color) */
+}

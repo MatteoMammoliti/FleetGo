@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
+import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFormNuovaRichiestaNoleggio';
 
 @Injectable({
   providedIn:'root'
@@ -31,7 +32,11 @@ export class CreaPrenotazioneService{
       params:params,
       withCredentials:true
     })
-
-
+  }
+  inviaRichiestaNoleggio(dati:RichiestaNoleggioDTO):Observable<string>{
+    return this.http.post(`${this.apiUrl}/inviaRichiesta`, dati,{
+      responseType:'text',
+      withCredentials:true
+    });
   }
 }

@@ -29,6 +29,11 @@
             (click)="impostaFiltro('Terminata')">
       Terminate
     </button>
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'In attesa'"
+            (click)="impostaFiltro('In attesa')">
+      In attesa di accettazione
+    </button>
   </div> <div class="list-container">
 
   @if (daVisualizzare.length > 0) {

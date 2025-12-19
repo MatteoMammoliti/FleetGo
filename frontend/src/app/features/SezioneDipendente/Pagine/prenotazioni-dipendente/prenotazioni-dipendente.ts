@@ -47,6 +47,8 @@ export class PrenotazioniDipendente {
       this.daVisualizzare=this.prenotazioni.filter(p=>p.statoRichiesta==='In corso');
     }else if(categoria==="Da ritirare"){
       this.daVisualizzare=this.prenotazioni.filter(p=>p.statoRichiesta==='Da ritirare');
+    }else if(categoria==="In attesa"){
+      this.daVisualizzare=this.prenotazioni.filter(p=>p.statoRichiesta==='In attesa');
     }
 
 
