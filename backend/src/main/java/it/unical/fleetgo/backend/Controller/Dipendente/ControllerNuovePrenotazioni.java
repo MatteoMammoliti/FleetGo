@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Controller.Dipendente;
 
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
+import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloPrenotazioneDTO;
 import it.unical.fleetgo.backend.Service.PrenotazioniDipendentiService;
 import jakarta.servlet.http.HttpSession;
@@ -51,6 +52,32 @@ public class ControllerNuovePrenotazioni {
         }catch (RuntimeException e){
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/inviaRichiesta")
+    public ResponseEntity<String> inviaNuovaRichiesta(@RequestBody RichiestaNoleggioDTO richiesta,HttpSession session){
+        Integer idDipendente= (Integer) session.getAttribute("idUtente");
+        Integer idAzienda=(Integer) session.getAttribute("idAziendaAssociata");
+        if(idDipendente==null || idAzienda==null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        richiesta.setIdDipendente(idDipendente);
+        richiesta.setIdAziendaRiferimento(idAzienda);
+        try{
+            Integer richiestaGenerata=this.service.inviaRichiestaNoleggio(richiesta);
+            if(richiestaGenerata!=null){
+                return new ResponseEntity<>("Richiesta generata con successo", HttpStatus.CREATED);
+            }else
+            {
+                return new ResponseEntity<>("Richiesta non valido", HttpStatus.BAD_REQUEST);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

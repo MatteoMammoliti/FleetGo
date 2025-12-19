@@ -25,9 +25,25 @@ public class RichiestaNoleggioDAO {
      * @param richiestaNoleggio
      * @return restituisce l'id della richiesta, null se qualcosa va storto.
      */
-    public Integer aggiungiRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio){
+    public Integer aggiungiRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio, Double costoNoleggio){
+        LocalDateTime nuovoInizio = LocalDateTime.parse(richiestaNoleggio.getDataRitiro() + "T" + richiestaNoleggio.getOraInizio());
+        LocalDateTime nuovaFine = LocalDateTime.parse(richiestaNoleggio.getDataConsegna() + "T" + richiestaNoleggio.getOraFine());
+        String checkRichiestaConflitt="SELECT COUNT (*) FROM richiesta_noleggio WHERE id_dipendente=? AND richiesta_annullata=false " +
+                " AND stato_richiesta!='Terminata' AND ((data_ritiro + ora_inizio) < ? AND (data_consegna + ora_fine) > ?)";
+        try(PreparedStatement st =connection.prepareStatement(checkRichiestaConflitt)){
+            st.setInt(1,richiestaNoleggio.getIdDipendente());
+            st.setObject(2, Timestamp.valueOf(nuovaFine));
+            st.setObject(3,Timestamp.valueOf(nuovoInizio));
+            ResultSet rs = st.executeQuery();
+            if(rs.next() && rs.getInt(1) != 0){
+                throw new RuntimeException("Hai già una prenotazione in corso/in attesa per le date selezionate");
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
         String query="INSERT INTO richiesta_noleggio (id_dipendente,id_azienda,ora_inizio,ora_fine,data_ritiro, " +
-                " data_consegna, motivazione) VALUES (?,?,?,?,?,?,?)";
+                " data_consegna, motivazione,id_veicolo,costo_noleggio) VALUES (?,?,?,?,?,?,?,?,?)";
 
         String dataInizio=richiestaNoleggio.getDataRitiro();
         String dataFine=richiestaNoleggio.getDataConsegna();
@@ -42,6 +58,8 @@ public class RichiestaNoleggioDAO {
             st.setDate(5, Date.valueOf(LocalDate.parse(dataInizio)));
             st.setDate(6, Date.valueOf(LocalDate.parse(dataFine)));
             st.setString(7, richiestaNoleggio.getMotivazione());
+            st.setInt(8, richiestaNoleggio.getIdVeicolo());
+            st.setDouble(9,costoNoleggio);
             st.executeUpdate();
             ResultSet idGenerato = st.getGeneratedKeys();
 

@@ -1,14 +1,17 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+
 public class RichiestaNoleggioDTO {
     private Integer idRichiesta;
     private Integer idDipendente;
@@ -28,6 +31,7 @@ public class RichiestaNoleggioDTO {
     private String nomeLuogo;
 
     public RichiestaNoleggioDTO() {}
+    @JsonIgnore
     public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();
