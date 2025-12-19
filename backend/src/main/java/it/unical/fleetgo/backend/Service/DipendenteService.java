@@ -1,9 +1,7 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
-import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
-import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
-import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
+import it.unical.fleetgo.backend.Models.DTO.*;
+import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.LuogoAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
@@ -12,6 +10,7 @@ import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,13 @@ public class DipendenteService {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
             Dipendente utente = utenteDAO.getDipendenteDaId(idDipendente);
             return utente.getNomeUtente();
+        }
+    }
+
+    public ModificaDatiUtenteDTO getDatiUtente(Integer idDipendente) throws SQLException{
+        try(Connection connection = dataSource.getConnection()){
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            return utenteDAO.getDatiUtente(idDipendente);
         }
     }
 
@@ -86,6 +92,13 @@ public class DipendenteService {
                 luoghiDTO.add(dto);
             }
             return luoghiDTO;
+        }
+    }
+
+    public void modificaDatiDipendente(ModificaDatiUtenteDTO dati) throws SQLException {
+        try(Connection connection = dataSource.getConnection()){
+            UtenteDAO dao = new UtenteDAO(connection);
+            dao.modificaDatiUtente(dati);
         }
     }
 }
