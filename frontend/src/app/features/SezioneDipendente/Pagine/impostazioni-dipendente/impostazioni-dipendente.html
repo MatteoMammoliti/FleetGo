@@ -1,0 +1,48 @@
+<div class="min-h-screen bg-grigio p-6 md:p-10">
+
+  <h1 class="text-3xl font-extrabold text-blu mb-8">Impostazioni</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+    <div class="lg:col-span-3 flex flex-col gap-2">
+
+      <button (click)="cambiaTab('Profilo')"
+              class="flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-200 text-left"
+              [ngClass]="tabSelezionata === 'Profilo' ? 'bg-white text-azzurro shadow-sm' : 'text-testo-s hover:bg-white/50'">
+        <i class="bi bi-person text-lg"></i>
+        Profilo Personale
+      </button>
+
+      <button (click)="cambiaTab('Patente')"
+              class="flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-200 text-left"
+              [ngClass]="tabSelezionata === 'Patente' ? 'bg-white text-azzurro shadow-sm' : 'text-testo-s hover:bg-white/50'">
+        <i class="bi bi-shield-check text-lg"></i>
+        Patente & Documenti
+      </button>
+
+      <button (click)="cambiaTab('Azienda')"
+              class="flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-200 text-left"
+              [ngClass]="tabSelezionata === 'Azienda' ? 'bg-white text-azzurro shadow-sm' : 'text-testo-s hover:bg-white/50'">
+        <i class="bi bi-building text-lg"></i>
+        Azienda
+      </button>
+
+    </div>
+
+    <div class="lg:col-span-9">
+      @if (sezione === 'Profilo') {
+        <app-profilo-personale (clickSalva)="inviaModifiche($event)" [utente]="utente" ></app-profilo-personale>
+      }
+      @else if (sezione === 'Azienda'){
+        <app-affiliazione-azienda></app-affiliazione-azienda>
+      }
+      @else {
+        <div class="bg-white rounded-3xl p-8 shadow-sm flex flex-col items-center justify-center min-h-[400px]">
+          <i class="bi bi-cone-striped text-4xl text-slate-300 mb-4"></i>
+          <p class="text-testo-s">Sezione Documenti in lavorazione.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

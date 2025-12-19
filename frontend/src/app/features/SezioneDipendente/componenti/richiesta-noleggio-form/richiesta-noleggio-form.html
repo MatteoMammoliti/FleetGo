@@ -1,0 +1,74 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>Conferma Prenotazione</h3>
+      <button class="btn-close" (click)="onClose()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="vehicle-summary">
+        <div class="vehicle-img">
+          <img [src]="dati.veicolo.urlImmagine || 'assets/placeholder-car.png'" alt="Veicolo">
+        </div>
+        <div class="vehicle-info">
+          <h4>{{ dati.veicolo.modello }}</h4>
+          <span class="badge">{{ dati.veicolo.targaVeicolo }}</span>
+          <p class="location"><i class="bi bi-geo-alt-fill"></i> {{ dati.veicolo.luogoRitiroDeposito?.nomeLuogo }}</p>
+        </div>
+      </div>
+
+      <div class="dates-grid">
+        <div class="date-box">
+          <label>RITIRO</label>
+          <div class="date-value">{{ dati.dataInizio }}</div>
+          <div class="time-value">{{ dati.oraInizio }}</div>
+        </div>
+
+        <div class="arrow-icon">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+
+        <div class="date-box">
+          <label>CONSEGNA</label>
+          <div class="date-value">{{ dati.dataFine }}</div>
+          <div class="time-value">{{ dati.oraFine }}</div>
+        </div>
+      </div>
+
+      <div class="cost-box">
+        <div class="cost-label">
+          <i class="bi bi-cash-coin"></i> COSTO STIMATO
+        </div>
+        <div class="cost-value">
+          {{ costoStimato | currency:'EUR':'symbol':'1.2-2' }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="motivazione">Motivazione Noleggio <span class="required">*</span></label>
+        <textarea
+          id="motivazione"
+          rows="3"
+          placeholder="Es. Trasferta cliente Milano..."
+          [(ngModel)]="motivazione">
+        </textarea>
+        <small class="hint">Campo obbligatorio per l'approvazione.</small>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="onClose()">Annulla</button>
+      <button
+        class="btn-primary"
+        [disabled]="motivazione.trim().length < 5"
+        (click)="onConfirm()">
+        Conferma e Prenota
+      </button>
+    </div>
+
+  </div>
+</div>

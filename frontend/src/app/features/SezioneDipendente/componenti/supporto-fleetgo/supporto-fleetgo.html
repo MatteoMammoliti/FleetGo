@@ -1,0 +1,29 @@
+<div class="bg-azzurro rounded-3xl p-8 shadow-lg text-white relative overflow-hidden flex flex-col justify-between min-h-[200px]">
+
+  <div class="absolute -top-6 -right-6 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl pointer-events-none"></div>
+
+  <div class="relative z-10">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="p-2 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+        <i class="bi bi-life-preserver text-xl"></i>
+      </div>
+      <h3 class="font-bold text-xl tracking-wide">Supporto FleetGo</h3>
+    </div>
+
+    <p class="text-blue-100 text-sm leading-relaxed mb-6">
+      Hai problemi con un veicolo, un guasto o una prenotazione attiva? Siamo qui per aiutarti.
+    </p>
+  </div>
+
+  <div class="relative z-10">
+    <button
+      (click)="contatta()"
+      class="w-full bg-white text-azzurro hover:bg-blue-50 font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group">
+
+      <i class="bi bi-headset group-hover:scale-110 transition-transform"></i>
+      <span>Contatta Admin</span>
+
+    </button>
+  </div>
+
+</div>

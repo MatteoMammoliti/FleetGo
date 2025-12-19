@@ -1,0 +1,23 @@
+<div class="bg-blu rounded-3xl p-8 shadow-xl text-white flex flex-col justify-between min-h-[320px]">
+
+  <div class="flex items-center gap-3 mb-6">
+    <i class="bi bi-graph-up-arrow text-azzurro text-xl"></i>
+    <h3 class="font-bold text-lg">Le tue Statistiche</h3>
+  </div>
+
+  <div class="space-y-8">
+    <div>
+      <span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Viaggi questo mese</span>
+      <div class="text-5xl font-bold mt-2">{{ statistiche.viaggiMensili }}</div>
+    </div>
+
+    <div>
+      <span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Ore totali di guida</span>
+      <div class="text-5xl font-bold mt-2 flex items-baseline gap-1">
+        {{ statistiche.oreTotaliDiGuida | number:'1.0-1' }}
+        <span class="text-2xl text-slate-500 font-normal">h</span>
+      </div>
+    </div>
+  </div>
+
+</div>

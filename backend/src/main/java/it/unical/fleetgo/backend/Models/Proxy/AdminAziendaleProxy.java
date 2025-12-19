@@ -3,11 +3,6 @@ package it.unical.fleetgo.backend.Models.Proxy;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
-import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class AdminAziendaleProxy extends AdminAziendale {
 
@@ -16,7 +11,6 @@ public class AdminAziendaleProxy extends AdminAziendale {
     private boolean idAziendaGestitaCaricato = false;
 
     public AdminAziendaleProxy(AziendaDAO aziendaDAO) {
-
         this.aziendaDAO = aziendaDAO;
     }
 

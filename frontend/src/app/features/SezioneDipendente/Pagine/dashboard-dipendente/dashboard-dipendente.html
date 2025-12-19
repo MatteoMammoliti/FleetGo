@@ -1,1 +1,33 @@
-<p>dashboard-dipendente works!</p>
+<div class="min-h-screen bg-grigio p-6 md:p-8">
+
+  <div class="mb-8">
+    <app-banner-home [nomeDipendente]="nomeDipendente"
+      (clickPrenotaVeicolo)="apriPrenotazioni()"
+      (clickMiePrenotazioni)="apriMieAttivita()">
+    </app-banner-home>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+    <div class="lg:col-span-3 flex flex-col gap-8">
+
+      <app-prossimo-viaggio [viaggio]="prossimoViaggio"></app-prossimo-viaggio>
+
+      <div class="w-full h-96 bg-blu rounded-3xl overflow-hidden shadow-xl relative">
+        <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col gap-6">
+
+      @if (statisticheDipendente) {
+        <app-statistiche-dipendente [statistiche]="statisticheDipendente"></app-statistiche-dipendente>
+      }
+
+      <app-supporto-fleetgo></app-supporto-fleetgo>
+
+    </div>
+
+  </div>
+</div>

@@ -13,14 +13,15 @@ public class RichiestaNoleggio {
     private Integer idUtente;
     private Utente utente;
     private Integer idAzienda;
-    private LocalDate dataRitiro;
-    private LocalDate dataConsegna;
-    private LocalTime oraInizio;
-    private LocalTime oraFine;
+    private String dataRitiro;
+    private String dataConsegna;
+    private String oraInizio;
+    private String oraFine;
     private String motivazione;
     private Boolean richiestaAccettata;
     private Boolean richiestaAnnullata;
-    private Integer costoNoleggio;
     private String statoRichiesta;
     private Veicolo veicolo;
+    private String nomeLuogo;
+    private Float costo;
 }

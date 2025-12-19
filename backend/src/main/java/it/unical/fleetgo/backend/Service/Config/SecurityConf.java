@@ -83,6 +83,16 @@ public class SecurityConf {
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
+                            }else if (ruoloPulito.equals("Dipendente")) {
+                                Integer idAziendaAssociata=null;
+                                try {
+                                    idAziendaAssociata= utenteService.getAziendaAssociataDipendente(contenitoreCredenziali.getIdUtente());
+                                    if(idAziendaAssociata!=null){
+                                        session.setAttribute("idAziendaAssociata",idAziendaAssociata);
+                                    }
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
 
                             response.setStatus(HttpServletResponse.SC_OK);

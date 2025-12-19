@@ -126,6 +126,18 @@ public class UtenteDAO {
         }
     }
 
+    public Integer getAziendaAssociataDipendente(Integer idUtente) throws SQLException{
+        String query="SELECT id_azienda FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND accettata=true";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getInt("id_azienda");
+            }
+        }
+        return null;
+    }
+
     public String getRuoloDaId(Integer idUtente){
         String query = "SELECT tipo_utente FROM utente WHERE id_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){

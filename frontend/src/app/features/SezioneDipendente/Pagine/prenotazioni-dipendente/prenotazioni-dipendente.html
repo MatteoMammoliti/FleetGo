@@ -1,0 +1,61 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Le mie Prenotazioni</h2>
+    <p>Gestisci lo storico e i futuri noleggi della flotta.</p>
+  </div>
+
+  <div class="filters-container">
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Tutte'"
+            (click)="impostaFiltro('Tutte')">
+      Tutte
+    </button>
+
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'In corso'"
+            (click)="impostaFiltro('In corso')">
+      In corso
+    </button>
+
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Da ritirare'"
+            (click)="impostaFiltro('Da ritirare')">
+      Da ritirare
+    </button>
+
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'Terminata'"
+            (click)="impostaFiltro('Terminata')">
+      Terminate
+    </button>
+    <button class="filter-pill"
+            [class.active]="filtroAttivo === 'In attesa'"
+            (click)="impostaFiltro('In attesa')">
+      In attesa di accettazione
+    </button>
+  </div> <div class="list-container">
+
+  @if (daVisualizzare.length > 0) {
+
+    @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
+      <app-prenotazione-card [prenotazione]="prenotazione"></app-prenotazione-card>
+    }
+
+  } @else {
+    <div class="empty-state">
+      <div class="empty-img">
+        <i class="bi bi-journal-x"></i>
+      </div>
+      <h3>Nessuna prenotazione {{filtroAttivo === 'Tutte' ? '' : filtroAttivo}}</h3>
+      <p>Non ci sono richieste in questa categoria.</p>
+
+      @if(filtroAttivo === 'Tutte') {
+        <button class="btn-primary" (click)="clickNuovaPrenotazione()">Nuova Prenotazione</button>
+      } @else {
+        <button class="btn-secondary" (click)="impostaFiltro('Tutte')">Mostra Tutte</button>
+      }
+    </div>
+  }
+
+</div> </div>

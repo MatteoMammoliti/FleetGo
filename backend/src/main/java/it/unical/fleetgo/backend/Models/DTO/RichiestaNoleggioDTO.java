@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
@@ -9,11 +10,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class RichiestaNoleggioDTO {
     private Integer idRichiesta;
     private Integer idDipendente;
     private Integer idAziendaRiferimento;
     private Integer idVeicolo;
+    private VeicoloDTO veicolo;
     private String oraInizio;
     private String oraFine;
     private String dataRitiro;
@@ -22,11 +25,14 @@ public class RichiestaNoleggioDTO {
     private boolean accettata;
     private UtenteDTO utente;
     private Boolean richiestaAnnullata;
+    private Float costoNoleggio;
     private String statoRichiesta;
-    private Integer costoNoleggio;
-    private VeicoloDTO veicolo;
+    private String nomeLuogo;
 
-    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente, boolean caricaVeicolo) {
+    public RichiestaNoleggioDTO() {}
+
+    @JsonIgnore
+    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();
         this.idAziendaRiferimento = richiesta.getIdAzienda();
@@ -38,8 +44,9 @@ public class RichiestaNoleggioDTO {
         this.motivazione = richiesta.getMotivazione();
         this.accettata = richiesta.getRichiestaAccettata();
         this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
+        this.nomeLuogo = richiesta.getNomeLuogo();
+        this.costoNoleggio = richiesta.getCosto();
         this.statoRichiesta = richiesta.getStatoRichiesta();
-        this.costoNoleggio = richiesta.getCostoNoleggio();
 
         if(caricaVeicolo) this.veicolo = new VeicoloDTO(richiesta.getVeicolo(), true);
 

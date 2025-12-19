@@ -1,0 +1,37 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="header-texts">
+      <h1>Nuova Prenotazione</h1>
+      <p>Cerca il veicolo perfetto per la tua prossima trasferta.</p>
+    </div>
+
+    <div class="location-selector">
+      <i class="bi bi-geo-alt"></i>
+
+      <select [(ngModel)]="nomeLuogoSelezionato" (change)="clickCambioLuogo()">
+
+        @for (luogo of listaLuoghi; track luogo.idLuogo) {
+          <option [ngValue]="luogo.nomeLuogo">
+            {{ luogo.nomeLuogo }}
+          </option>
+        }
+
+      </select>
+    </div>
+  </div>
+  <app-filtri-ricerca  (clickRicerca)="clickApplicaFiltri($event)"></app-filtri-ricerca>
+
+  <div class="vehicles-grid">
+    @for (auto of listaVeicoli; track auto.idVeicolo) {
+      <app-veicolo-card [costoStimato]="costoStimato" [veicolo]="auto" (apriForm)="clickPrenotaOra($event)"></app-veicolo-card>
+    }
+  </div>
+  @if (mostraModale) {
+    <app-richiesta-noleggio-form
+      (confermaRegistrazione)="inviaPrenotazione($event)" [dati]="mostraModale" [costoStimato]="costoStimato" (chiudi)="chiudiModale()">
+
+    </app-richiesta-noleggio-form>
+  }
+
+</div>

@@ -1,0 +1,109 @@
+/* --- IL CONTENITORE PRINCIPALE --- */
+.search-bar-container {
+  display: flex;
+  align-items: center; /* Allinea verticalmente al centro */
+  justify-content: space-between;
+  gap: 20px; /* Spazio tra gli elementi */
+
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border-radius: 100px; /* Bordo molto arrotondato (Pill shape) */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Ombra morbida per staccarlo dal fondo */
+
+  max-width: 900px; /* Larghezza massima per non farlo esplodere su schermi enormi */
+  margin: -40px auto 30px auto; /* Margine negativo per sovrapporlo all'header (opzionale) */
+  position: relative;
+  z-index: 10;
+}
+
+/* --- GRUPPI DI INPUT (Label + Wrapper) --- */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1; /* Occupa tutto lo spazio disponibile */
+}
+
+.input-group label {
+  font-size: 0.75rem; /* Testo piccolo */
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #888; /* Grigio non troppo scuro */
+  text-transform: uppercase;
+  margin-left: 10px; /* Allineamento visivo col testo sotto */
+}
+
+/* --- IL WRAPPER DELL'INPUT (Per fare il bordo carino) --- */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #f7f9fc; /* Grigio chiarissimo */
+  border: 1px solid #e1e5eb;
+  border-radius: 50px; /* Arrotondato */
+  padding: 5px 20px;
+  transition: all 0.3s ease;
+}
+
+/* Effetto quando clicchi sull'input */
+.input-wrapper:focus-within {
+  border-color: #007bff; /* Blu quando attivo */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  background-color: #fff;
+}
+
+.input-wrapper i {
+  color: #007bff;
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* --- L'INPUT VERO E PROPRIO --- */
+.input-wrapper input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  padding: 10px 0;
+  outline: none; /* Rimuove il bordo blu di default del browser */
+  font-family: inherit; /* Usa il font del sito */
+}
+
+/* --- IL BOTTONE CERCA --- */
+.btn-cerca {
+  background-color: #007bff; /* Blu primario (cambia col tuo colore aziendale) */
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Impedisce al testo di andare a capo */
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  height: 100%; /* Si adatta all'altezza degli input */
+  margin-top: 18px; /* Compensazione visiva per allinearlo agli input (visto che hanno la label sopra) */
+}
+
+.btn-cerca:hover {
+  background-color: #0056b3; /* Blu più scuro al passaggio del mouse */
+  transform: translateY(-2px); /* Effetto sollevamento */
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.btn-cerca:active {
+  transform: translateY(1px); /* Effetto click */
+}
+
+/* --- RESPONSIVE (Per cellulari) --- */
+@media (max-width: 768px) {
+  .search-bar-container {
+    flex-direction: column; /* Impila tutto in verticale */
+    border-radius: 20px;
+    padding: 20px;
+    gap: 15px;
+    margin: 20px 10px;
+
+  }}

@@ -1,0 +1,62 @@
+<div class="booking-card">
+
+  <div class="car-icon-area">
+    <i class="bi bi-car-front"></i>
+  </div>
+
+  <div class="card-content">
+
+    <div class="content-header">
+      <h3 class="booking-title">{{ prenotazione.motivazione }}</h3>
+
+      <span class="status-badge" [ngClass]="prenotazione.statoRichiesta ? prenotazione.statoRichiesta.toLowerCase() : ''">
+    {{ prenotazione.statoRichiesta }}
+  </span>
+    </div>
+
+    <p class="car-details">
+      {{ prenotazione.veicolo?.modello }} <span class="dot">•</span> <span class="plate">{{ prenotazione.veicolo?.targaVeicolo }}</span>
+    </p>
+
+    <div class="details-grid">
+
+      <div class="detail-item">
+        <i class="bi bi-calendar-event"></i>
+        <div class="detail-text">
+          <span class="label">Periodo</span>
+          <span class="value">{{ prenotazione.dataRitiro }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <i class="bi bi-clock"></i>
+        <div class="detail-text">
+          <span class="label">Orario</span>
+          <span class="value">{{ prenotazione.oraInizio }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <i class="bi bi-geo-alt"></i>
+        <div class="detail-text">
+          <span class="label">Ritiro</span>
+          <span class="value">{{ prenotazione.nomeLuogo }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <i class="bi bi-geo-alt-fill"></i> <div class="detail-text">
+        <span class="label">Consegna</span>
+        <span class="value">{{ prenotazione.nomeLuogo }}</span>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="price-area">
+    <span class="price">€{{ prenotazione.costoNoleggio }}</span>
+    <span class="price-label">COSTO STIMATO</span>
+  </div>
+
+</div>
