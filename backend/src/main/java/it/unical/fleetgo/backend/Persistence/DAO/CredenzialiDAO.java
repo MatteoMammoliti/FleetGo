@@ -1,7 +1,5 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -40,7 +38,7 @@ public class CredenzialiDAO {
      * @param idUtente
      * @return
      */
-    public CredenzialiUtente getCredenzialiUtente(Integer idUtente){
+    public CredenzialiUtente getCredenzialiUtenteById(Integer idUtente){
         String query = "SELECT email,patente,immagine_patente FROM credenziali_utente WHERE id_utente=?";
 
         try(PreparedStatement st = conn.prepareStatement(query)){

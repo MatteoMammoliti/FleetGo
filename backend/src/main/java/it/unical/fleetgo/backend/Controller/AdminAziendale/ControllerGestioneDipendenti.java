@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
+import it.unical.fleetgo.backend.Models.DTO.RichiestaAffiliazioneAziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
@@ -18,7 +19,6 @@ import java.util.List;
 public class ControllerGestioneDipendenti {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
-    @Autowired private UtenteService utenteService;
 
     @GetMapping("/getDipendenti")
     public ResponseEntity<List<DipendenteDTO>> getDipendenti(HttpSession session) {
@@ -58,8 +58,30 @@ public class ControllerGestioneDipendenti {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminAziendaleService.getRichiesteNoleggio(idDipendente));
         } catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/getRichiesteAffiliazione")
+    public ResponseEntity<List<RichiestaAffiliazioneAziendaDTO>> getRichiesteAffiliazione(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getRichiesteAffiliazioneDaAccettare(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/rispondiAffiliazione/{idDipendente}")
+    public ResponseEntity<String> rispondiAffiliazione(@PathVariable Integer idDipendente, @RequestBody boolean risposta, HttpSession session) {
+        try {
+            adminAziendaleService.rispondiRichiestaAffiliazione(idDipendente, (Integer) session.getAttribute("idAzienda"), risposta);
+            return ResponseEntity.ok("Richiesta approvata con successo");
+        } catch (Exception e){
+            return ResponseEntity.status(500).body("Richiesta non approvata");
         }
     }
 }

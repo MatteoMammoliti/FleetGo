@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {environment} from '@env/environment';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,13 @@ export class DipendentiService {
 
   public getRichiesteNoleggio(idDipendente: number | undefined): Observable<RichiestaNoleggioDTO[]> {
     return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getRichiesteNoleggio/${idDipendente}`, { withCredentials: true });
+  }
+
+  public getRichiesteAffiliazione(): Observable<RichiestaAffiliazioneAziendaDTO[]> {
+    return this.http.get<RichiestaAffiliazioneAziendaDTO[]>(`${this.apiUrl}/getRichiesteAffiliazione`, { withCredentials: true });
+  }
+
+  public rispondiRichiesta(idDipendente: number, risposta: boolean): Observable<string> {
+    return this.http.post(`${this.apiUrl}/rispondiAffiliazione/${idDipendente}`, risposta, { responseType: 'text', withCredentials: true});
   }
 }

@@ -4,11 +4,10 @@ import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaAffiliazioneAziendaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+import org.springframework.security.core.parameters.P;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,19 +87,17 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idAzienda
      * @return
      */
-    public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazioneDaValutare(Integer idAzienda){
-        String query="SELECT * FROM richiesta_affiliazione_azienda WHERE id_azienda=? AND accettata=? AND data_accettazione=?";
+    public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazioneDaAccettare(Integer idAzienda){
+        String query="SELECT * FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false AND data_risposta IS NULL";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
-            st.setBoolean(2,false);
-            st.setDate(3,null);
             ResultSet rs = st.executeQuery();
 
             List<RichiestaAffiliazioneAzienda> richiesteAffiliazione=new ArrayList<>();
 
             while(rs.next()){
-                RichiestaAffiliazioneAziendaProxy richiesta = creaRichiestaAffiliazioneAziendaProxy();
-                richiesta.setIdUtente(rs.getInt("id_utente"));
+                RichiestaAffiliazioneAziendaProxy richiesta = new RichiestaAffiliazioneAziendaProxy(new UtenteDAO(connection));
+                richiesta.setIdUtente(rs.getInt("id_dipendente"));
                 richiesta.setIdAzienda(rs.getInt("id_azienda"));
                 richiesteAffiliazione.add(richiesta);
             }
@@ -111,23 +108,15 @@ public class RichiestaAffiliazioneAziendaDAO {
         }
     }
 
-    /**
-     * Permette di contrassegnare una richiesta di affiliazione come accettata o rifiutata
-     * in base al valore del valre booleano accettata.
-     * @param idAzienda
-     * @param idDipendente
-     * @param accettata
-     * @return
-     */
-    public boolean contrassegnaVisionataAffiliazioneAzienda(Integer idAzienda,Integer idDipendente,boolean accettata){
-        String query="UPDATE richiesta_affiliazione_azienda SET accettata=?,data_accettazione=CURRENT_DATE " +
+    public void rispondiRichiestaAffiliazione(Integer idAzienda, Integer idDipendente, boolean risposta){
+        String query="UPDATE richiesta_affiliazione_azienda SET accettata = ?, data_risposta = CURRENT_DATE " +
         "WHERE id_azienda=? AND id_dipendente=?";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setBoolean(1,accettata);
+            st.setBoolean(1, risposta);
             st.setInt(2,idAzienda);
             st.setInt(3,idDipendente);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -170,11 +159,7 @@ public class RichiestaAffiliazioneAziendaDAO {
     private DipendenteProxy creaDipendenteProxy(){
         return new DipendenteProxy(
                 new RichiestaAffiliazioneAziendaDAO(connection),
-                new CredenzialiDAO(connection),
-                new RichiestaNoleggioDAO(connection)
+                new CredenzialiDAO(connection)
         );
-    }
-    private RichiestaAffiliazioneAziendaProxy creaRichiestaAffiliazioneAziendaProxy(){
-        return new RichiestaAffiliazioneAziendaProxy(new UtenteDAO(connection));
     }
 }

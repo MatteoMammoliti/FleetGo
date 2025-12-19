@@ -7,6 +7,14 @@
     </div>
   </div>
 
+  <app-banner-richieste-affiliazione
+    [richiesteAffiliazione]="richiesteAffiliazione[0]"
+    [numRichiesteInAttesa]="richiesteAffiliazione.length"
+    (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
+    (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)"
+    (apriModaleRichieste)="apriModaleRichiesteAffiliazione()">
+  </app-banner-richieste-affiliazione>
+
   <app-elenco-dipendenti
     [listaDipendenti]=listaDipendentiAzienda
     (richiestaRimozioneDipendente)=rimuoviDipendente($event)
@@ -20,5 +28,13 @@
     (approvaPatente)="approvaPatente($event)"
     [storicoNoleggi]="richiesteNoleggio">
   </app-modale-dettagli-dipendente>
+
+  <app-modale-richieste-affiliazione
+    [modaleVisibile]="modaleRichiesteAffiliazione"
+    [richiesteAffiliazione]="richiesteAffiliazione"
+    (chiudiModale)="chiudiModaleRichiestaAffiliazione()"
+    (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
+    (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)">
+  </app-modale-richieste-affiliazione>
 
 </div>
