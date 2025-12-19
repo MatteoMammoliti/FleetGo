@@ -1,9 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {StatisticheDipendenteDTO} from '@core/models/StatisticheDipendenteDTO';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-statistiche-dipendente',
-  imports: [],
+  imports: [
+    DecimalPipe
+  ],
   standalone:true,
   templateUrl: './statistiche-dipendente.html',
   styleUrl: './statistiche-dipendente.css',

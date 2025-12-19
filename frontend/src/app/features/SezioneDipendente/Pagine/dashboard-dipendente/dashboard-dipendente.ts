@@ -8,6 +8,9 @@ import {
   StatisticheDipendente
 } from '@features/SezioneDipendente/componenti/statistiche-dipendente/statistiche-dipendente';
 import {Router} from '@angular/router';
+import {MappaHub} from '@features/SezioneDipendente/componenti/mappa-hub/mappa-hub';
+import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/supporto-fleetgo/supporto-fleetgo';
 
 
 @Component({
@@ -15,7 +18,9 @@ import {Router} from '@angular/router';
   imports: [
     BannerHome,
     ProssimoViaggio,
-    StatisticheDipendente
+    StatisticheDipendente,
+    MappaHub,
+    SupportoFleetgo
   ],
   templateUrl: './dashboard-dipendente.html',
   styleUrl: './dashboard-dipendente.css',
@@ -24,12 +29,26 @@ export class DashboardDipendente {
   constructor(private service:HomeService,private router:Router) {}
     prossimoViaggio:RichiestaNoleggioDTO | undefined;
     statisticheDipendente:StatisticheDipendenteDTO | undefined;
+    luoghiAzienda:LuogoDTO[]=[]
+    nomeDipendente=""
+
     ngOnInit(){
+      this.richiediNomeDipendente();
       this.richiediProssimoViaggio();
       this.richiediStatisticheDipendente();
+      this.richiediLuoghiAzienda();
     }
 
-  richiediProssimoViaggio(){
+    richiediNomeDipendente(){
+      this.service.richiediNomeDipendente().subscribe({
+        next:(risposta:string)=>{
+          this.nomeDipendente=risposta;
+        },
+        error:(err)=>console.error("Errore nel caricmento del nome dipendente")
+      })
+    }
+
+    richiediProssimoViaggio(){
       this.service.richiediProssimoViaggio().subscribe({
         next:(risposta:RichiestaNoleggioDTO)=>{
           console.log(risposta);
@@ -45,6 +64,15 @@ export class DashboardDipendente {
           this.statisticheDipendente=risposta;
         },
         error:(err)=>{console.error("Errore nel caricamento delle statistiche dipendente")}
+      })
+    }
+
+    richiediLuoghiAzienda(){
+      this.service.richiediLuoghiAzienda().subscribe({
+        next:(risposta:LuogoDTO[])=>{
+          this.luoghiAzienda=risposta;
+        },
+        error:(err)=>console.log("Errore nel caricamento dei luoghi")
       })
     }
 
