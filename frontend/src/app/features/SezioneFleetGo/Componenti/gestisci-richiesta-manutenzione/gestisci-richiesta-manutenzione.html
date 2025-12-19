@@ -1,63 +1,50 @@
-<div class="modal-backdrop" (click)="onClose()"></div>
+<div class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-50 flex items-center justify-center p-4"
+     (click)="onClose()">
 
-<div class="modal-container animate-pop-in">
+  <div class="animate-pop-in bg-white w-full max-w-xl rounded-lg shadow-xl overflow-hidden"
+       (click)="$event.stopPropagation()">
 
-  <div class="modal-header">
-    <div class="header-title">
-      <i class="bi bi-tools icon-header"></i>
-      <h2>Gestione Richiesta #{{datiRichiesta.idManutenzione}}</h2>
-    </div>
-    <button class="btn-close" (click)="onClose()" title="Chiudi">
-      <span>&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-
-    <div class="info-grid mb-6">
-      <div class="info-item">
-        <label>Veicolo Interessato</label>
-        <div class="veicolo-card">
-          <i class="bi bi-car-front-fill"></i>
-          <div>
-            <p class="targa">{{datiRichiesta.veicolo.targaVeicolo}}</p>
-            <p class="modello">{{datiRichiesta.veicolo.modello}}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="info-item">
-        <label>Dettagli Richiesta</label>
-        <p class="data">
-          <i class="bi bi-calendar-event"></i>
-          Inviata il: {{datiRichiesta.dataRichiesta | date:'dd/MM/yyyy'}}
+    <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50">
+      <div class="flex flex-col">
+        <span class="font-bold text-gray-800">Gestisci manutenzione veicolo</span>
+        <p class="text-xs uppercase tracking-wider text-gray-500 font-medium">
+          Manutenzione N°{{datiRichiesta.idManutenzione}}
+          @if(datiRichiesta.dataRichiesta) { del {{datiRichiesta.dataRichiesta | date:'dd/MM/yyyy'}} }
         </p>
-        <div class="mt-2">
-          <label class="sub-label">Tipologia Segnalata:</label>
-          <span class="tipo-badge">
-            {{datiRichiesta.tipoManutenzione}}
-          </span>
+      </div>
+      <button class="bg-white rounded-full w-6 h-6 flex justify-center items-center hover:bg-gray-300  transition-all" (click)="onClose()" title="Chiudi">
+        <span class="font-bold text-m leading-none mb-[2px]">&times;</span>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-6 text-testo-p">
+      <div class="grid grid-flow-col">
+        <div class="flex flex-col w-2/3 gap-y-2">
+            <div class="flex flex-col">
+              <small class="text-xs text-gray-500 uppercase tracking-wide">Modello</small>
+              <span>{{datiRichiesta.veicolo.modello}}</span>
+            </div>
+            <div class="flex flex-col">
+              <small class="test-[7px] text-gray-500">Targa</small>
+              <span>{{datiRichiesta.veicolo.targaVeicolo}}</span>
+            </div>
+            <div class="flex flex-col w-full">
+              <small class="test-[7px] text-gray-500">Descrizione</small>
+              <span class="text-s w-full">{{datiRichiesta.tipoManutenzione}}</span>
+            </div>
+          </div>
+          <div class="flex justify-end w-full">
+              <img class="object-contain w-fit" [src]="datiRichiesta.veicolo.urlImmagine" alt="Foto veicolo">
+          </div>
+
         </div>
-      </div>
-    </div>
 
-    <div class="alert-box warning">
-      <i class="bi bi-exclamation-triangle-fill"></i>
-      <div>
-        <h4>Attenzione all'approvazione</h4>
-        <p>Approvando questa richiesta, lo stato del veicolo <strong>{{datiRichiesta.veicolo.targaVeicolo}}</strong> verrà impostato su "In Manutenzione" e non sarà disponibile per il noleggio.</p>
-      </div>
-    </div>
 
+
+        </div>
+    <div class="flex justify-end gap-x-4 mt-4 bg-gray-50 p-3 text-s">
+        <button class="bg-white border text-testo-p border-gray-100 hover:bg-gray-200 hover:shadow-md hover:translate-y-0.5 shadow-sm px-2 py-[1px] rounded-xl transition-all" (click)="clickRifiuta()">Rifiuta</button>
+        <button class="bg-azzurro hover:bg-azzurro-scuro hover:shadow-md hover:translate-y-0.5 text-grigio shadow-sm px-2 py-[1px] border rounded-xl transition-all" (click)="clickAccetta()">Approva</button>
   </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-reject" (click)="clickRifiuta()">
-      <i class="bi bi-x-circle"></i> Rifiuta Richiesta
-    </button>
-    <button class="btn btn-approve" (click)="clickAccetta()">
-      <i class="bi bi-check-circle-fill"></i> Approva Intervento
-    </button>
-  </div>
-
 </div>
+
