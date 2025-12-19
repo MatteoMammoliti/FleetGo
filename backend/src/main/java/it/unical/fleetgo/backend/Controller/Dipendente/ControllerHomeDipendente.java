@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.Dipendente;
 
+import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Service.DipendenteService;
@@ -38,6 +39,39 @@ public class ControllerHomeDipendente {
     public ResponseEntity<StatisticheDipendenteDTO> getStatisticheDipendente(HttpSession session){
         try{
             return ResponseEntity.ok(this.dipendenteService.getStatisticheDipendente((Integer) session.getAttribute("idUtente")));
+        }catch (SQLException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+    @GetMapping("/luoghiAzienda")
+    public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session){
+        Integer idAziendaAssociata=(Integer) session.getAttribute("idAziendaAssociata");
+        if(idAziendaAssociata==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        try{
+            return ResponseEntity.ok(this.dipendenteService.getLuoghiAziendaAssociata(idAziendaAssociata));
+        }catch (SQLException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/richiediNome")
+    public  ResponseEntity<String> getRichiediNome(HttpSession session){
+        Integer idDipendente=(Integer) session.getAttribute("idUtente");
+        if(idDipendente==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        try{
+            return ResponseEntity.ok(this.dipendenteService.getNomeDipendente(idDipendente));
         }catch (SQLException e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

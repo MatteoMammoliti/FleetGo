@@ -49,7 +49,7 @@ public class LuogoAziendaDAO {
             ps.setInt(1, idAzienda);
 
             ResultSet rs = ps.executeQuery();
-            List<LuogoAzienda> luogi = new ArrayList<>();
+            List<LuogoAzienda> luoghi = new ArrayList<>();
 
             while(rs.next()) {
                 LuogoAzienda l = new LuogoAzienda();
@@ -58,9 +58,9 @@ public class LuogoAziendaDAO {
                 l.setNomeLuogo(rs.getString("nome_luogo"));
                 l.setLongitudine((float) rs.getDouble("longitudine"));
                 l.setLatitudine((float) rs.getDouble("latitudine"));
-                luogi.add(l);
+                luoghi.add(l);
             }
-            return luogi;
+            return luoghi;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
