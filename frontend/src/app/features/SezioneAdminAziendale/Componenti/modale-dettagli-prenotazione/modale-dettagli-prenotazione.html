@@ -1,0 +1,115 @@
+@if (paginaVisibile && prenotazione) {
+  <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" (click)="chiudiPagina.emit()"></div>
+
+    <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+      <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
+
+        <div class="bg-indigo-600 px-4 py-4 sm:px-6 flex justify-between items-center">
+          <h3 class="text-lg font-semibold leading-6 text-white" id="modal-title">
+            Dettaglio Prenotazione #{{ prenotazione.idRichiesta }}
+          </h3>
+          <button (click)="chiudiPagina.emit()" class="text-indigo-200 hover:text-white">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="px-4 py-6 sm:px-6">
+
+          <div class="flex justify-between items-center mb-6 pb-6 border-b border-gray-100">
+            <div>
+              <p class="text-sm text-gray-500">Stato Richiesta</p>
+              <span class="inline-flex items-center rounded-md px-2 py-1 text-sm font-medium ring-1 ring-inset mt-1"
+                    [ngClass]="{
+                      'bg-green-50 text-green-700 ring-green-600/20': prenotazione.statoRichiesta === 'In corso',
+                      'bg-yellow-50 text-yellow-800 ring-yellow-600/20': prenotazione.statoRichiesta === 'Da ritirare',
+                      'bg-red-50 text-red-700 ring-red-600/10': prenotazione.statoRichiesta === 'Terminata'
+                    }">
+                    {{ prenotazione.statoRichiesta }}
+                  </span>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-500">Costo Totale Noleggio</p>
+              <p class="text-2xl font-bold text-gray-900">€ {{ prenotazione.costoNoleggio | number:'1.2-2' }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+
+            <div>
+              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-indigo-500"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 00-13.074.003z"/></svg>
+                Dati Dipendente
+              </h4>
+              <dl class="space-y-2 text-sm">
+                <div>
+                  <dt class="text-gray-500">Nominativo</dt>
+                  <dd class="font-medium text-gray-900">{{ prenotazione.utente?.nomeUtente }} {{ prenotazione.utente?.cognomeUtente }}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-500">Email</dt>
+                  <dd class="font-medium text-gray-900">{{ prenotazione.utente?.email }}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-500">ID Dipendente</dt>
+                  <dd class="font-medium text-gray-900">#{{ prenotazione.utente?.idUtente }}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-indigo-500"><path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 014.25 2h11.5A2.25 2.25 0 0118 4.25v8.5A2.25 2.25 0 0115.75 15h-3.105a3.501 3.501 0 001.73-2.613c.111-.63-.376-1.191-1.016-1.191h-6.73c-.64 0-1.127.56-1.016 1.191a3.501 3.501 0 001.73 2.613H4.25A2.25 2.25 0 012 12.75v-8.5zm5.733 8.256a2.001 2.001 0 002.534 0 2.518 2.518 0 01-2.534 0zM11.5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                Veicolo Prenotato
+              </h4>
+              <dl class="space-y-2 text-sm">
+                <div>
+                  <dt class="text-gray-500">Modello</dt>
+                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.modello }}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-500">Targa</dt>
+                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.targaVeicolo }}</dd>
+                </div>
+                <div>
+                  <dt class="text-gray-500">Alimentazione</dt>
+                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.tipoDistribuzioneVeicolo }}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="col-span-1 sm:col-span-2 mt-2 pt-4 border-t border-gray-100">
+              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-indigo-500"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.54l.062.029.006.003.002.001.001.001zm-3.69-9a3 3 0 116 0 3 3 0 01-6 0z" clip-rule="evenodd"/></svg>
+                Dettagli Viaggio
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-3 rounded-lg">
+                  <p class="text-xs text-gray-500 uppercase">Ritiro</p>
+                  <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataRitiro | date:'dd/MM/yyyy HH:mm' }}</p>
+                  <p class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg">
+                  <p class="text-xs text-gray-500 uppercase">Consegna</p>
+                  <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataConsegna | date:'dd/MM/yyyy HH:mm' }}</p>
+                  <p class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+          <button type="button" (click)="chiudiPagina.emit()"
+                  class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+            Chiudi
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

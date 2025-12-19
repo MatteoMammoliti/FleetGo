@@ -22,4 +22,5 @@ public class RichiestaNoleggio {
     private Boolean richiestaAnnullata;
     private Integer costoNoleggio;
     private String statoRichiesta;
+    private Veicolo veicolo;
 }

@@ -93,7 +93,6 @@ public class VeicoloDAO {
         }
     }
 
-
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
         String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
 
@@ -104,6 +103,28 @@ public class VeicoloDAO {
 
             if(rs.next()){
                 return getVeicoloDaResultSet(rs,false,false);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Veicolo getVeicoloDaIdConLuogo(Integer idVeicolo) {
+        String query = "SELECT v.*, l.*, a.nome_azienda, a.id_azienda " +
+                "FROM veicolo v " +
+                "LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo " +
+                "LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo " +
+                "LEFT JOIN azienda a ON g.id_azienda = a.id_azienda " +
+                "WHERE v.id_veicolo = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idVeicolo);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return getVeicoloDaResultSet(rs, true, false);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

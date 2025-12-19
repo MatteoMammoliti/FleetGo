@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
+import org.springframework.security.core.parameters.P;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -76,7 +77,7 @@ public class RichiestaNoleggioDAO {
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setBoolean(1, true);
             st.setString(2, "Da ritirare");
-            st.setInt(2,idRichiesta);
+            st.setInt(3,idRichiesta);
             return st.executeUpdate()>0;
 
         }catch (SQLException e){
@@ -85,11 +86,10 @@ public class RichiestaNoleggioDAO {
     }
 
     public boolean rifiutaRichiestaNoleggio(Integer idRichiesta){
-        String query="UPDATE richiesta_noleggio SET accettata=? WHERE id_richiesta=?";
+        String query="UPDATE richiesta_noleggio SET richiesta_annullata = true WHERE id_richiesta=?";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setBoolean(1, false);
-            st.setInt(2,idRichiesta);
+            st.setInt(1,idRichiesta);
             return st.executeUpdate()>0;
 
         }catch (SQLException e){
@@ -97,28 +97,17 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    public List<RichiestaNoleggio> getRichiesteNoleggioAziendaDaAccettare(Integer idAzienda){
-        String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=?";
+    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdAzienda(Integer idAzienda){
+        String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND richiesta_annullata = false AND accettata = true";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idAzienda);
-            st.setBoolean(2,false);
             ResultSet rs = st.executeQuery();
 
             List<RichiestaNoleggio> richiesteNoleggio=new ArrayList<>();
 
             while(rs.next()){
-                RichiestaNoleggioProxy richiesta=new RichiestaNoleggioProxy(new UtenteDAO(connection));
-                richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
-                richiesta.setIdUtente(rs.getInt("id_dipendente"));
-                richiesta.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
-                richiesta.setOraFine(rs.getTime("ora_fine").toLocalTime());
-                richiesta.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
-                richiesta.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
-                richiesta.setMotivazione(rs.getString("motivazione"));
-                richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
-                richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
-                richiesteNoleggio.add(richiesta);
+                richiesteNoleggio.add(creaRichiestaNoleggio(rs));
             }
 
             return richiesteNoleggio;
@@ -128,7 +117,7 @@ public class RichiestaNoleggioDAO {
     }
 
     public Integer getNumRichiesteNoleggio(Integer idAzienda) {
-        String query = "SELECT COUNT(*) as somma FROM richiesta_noleggio WHERE id_azienda = ?";
+        String query = "SELECT COUNT(*) as somma FROM richiesta_noleggio WHERE accettata = false AND richiesta_annullata = false AND stato_richiesta = 'In attesa' AND id_azienda = ? ";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, idAzienda);
@@ -151,19 +140,7 @@ public class RichiestaNoleggioDAO {
             List<RichiestaNoleggio> richieste = new ArrayList<>();
 
             while (rs.next()) {
-                RichiestaNoleggio r = new RichiestaNoleggio();
-                r.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
-                r.setIdUtente(rs.getInt("id_dipendente"));
-                r.setIdAzienda(rs.getInt("id_azienda"));
-                r.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
-                r.setOraFine(rs.getTime("ora_fine").toLocalTime());
-                r.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
-                r.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
-                r.setMotivazione(rs.getString("motivazione"));
-                r.setIdVeicolo(rs.getInt("id_veicolo"));
-                r.setCostoNoleggio(rs.getInt("costo_noleggio"));
-                r.setRichiestaAccettata(rs.getBoolean("accettata"));
-                r.setStatoRichiesta(rs.getString("stato_richiesta"));
+                RichiestaNoleggio r = creaRichiestaNoleggio(rs);
                 richieste.add(r);
             }
 
@@ -171,5 +148,56 @@ public class RichiestaNoleggioDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public RichiestaNoleggio getRichiestaNoleggioById(Integer idRichiesta) {
+        String query = "SELECT * FROM richiesta_noleggio WHERE id_richiesta = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idRichiesta);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                return creaRichiestaNoleggio(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public List<RichiestaNoleggio> getRichiesteDaAccettare(Integer idAzienda) {
+        String query = "SELECT * FROM richiesta_noleggio WHERE accettata = false AND richiesta_annullata = false AND stato_richiesta = 'In attesa' AND id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            List<RichiestaNoleggio> richieste = new ArrayList<>();
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                richieste.add(creaRichiestaNoleggio(rs));
+            }
+            return richieste;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private RichiestaNoleggio creaRichiestaNoleggio(ResultSet rs) throws SQLException {
+        RichiestaNoleggio r = new RichiestaNoleggioProxy(new UtenteDAO(connection), new VeicoloDAO(connection));
+        r.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
+        r.setIdUtente(rs.getInt("id_dipendente"));
+        r.setIdAzienda(rs.getInt("id_azienda"));
+        r.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
+        r.setOraFine(rs.getTime("ora_fine").toLocalTime());
+        r.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
+        r.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
+        r.setMotivazione(rs.getString("motivazione"));
+        r.setIdVeicolo(rs.getInt("id_veicolo"));
+        r.setCostoNoleggio(rs.getInt("costo_noleggio"));
+        r.setRichiestaAccettata(rs.getBoolean("accettata"));
+        r.setStatoRichiesta(rs.getString("stato_richiesta"));
+        return r;
     }
 }

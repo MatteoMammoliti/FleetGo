@@ -173,7 +173,7 @@ public class AdminAziendaleService {
             List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdDipendente(idDipendente);
 
             for(RichiestaNoleggio richiesta: richieste) {
-                richiesteNoleggio.add(new RichiestaNoleggioDTO(richiesta, false));
+                richiesteNoleggio.add(new RichiestaNoleggioDTO(richiesta, false, false));
             }
             return richiesteNoleggio;
         }
@@ -197,6 +197,41 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
             richiestaAffiliazioneAziendaDAO.rispondiRichiestaAffiliazione(idAzienda, idUtente, risposta);
+        }
+    }
+
+    public List<RichiestaNoleggioDTO> getPrenotazioni(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
+
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdAzienda(idAzienda);
+            List<RichiestaNoleggioDTO> richiesteDTO = new ArrayList<>();
+
+            for(RichiestaNoleggio richiesta : richieste) {
+                richiesteDTO.add(new RichiestaNoleggioDTO(richiesta, false, false));
+            }
+            return richiesteDTO;
+        }
+    }
+
+    public RichiestaNoleggioDTO getRichiestaNoleggio(Integer idRichiesta) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
+            RichiestaNoleggio r = richiestaNoleggioDAO.getRichiestaNoleggioById(idRichiesta);
+            return new RichiestaNoleggioDTO(r, true, true);
+        }
+    }
+
+    public List<RichiestaNoleggioDTO> getRichiesteDaAccettare(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
+            List<RichiestaNoleggioDTO> richiesteDTO = new ArrayList<>();
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteDaAccettare(idAzienda);
+
+            for(RichiestaNoleggio r : richieste) {
+                richiesteDTO.add(new RichiestaNoleggioDTO(r, true, true));
+            }
+            return richiesteDTO;
         }
     }
 }

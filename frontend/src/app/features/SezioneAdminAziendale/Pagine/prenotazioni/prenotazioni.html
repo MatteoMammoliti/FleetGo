@@ -1,0 +1,19 @@
+<div class="p-8 min-h-screen bg-slate-50">
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Prenotazioni Noleggio</h1>
+    <p class="text-slate-500">Visualizza lo storico e le richieste di noleggio dei tuoi dipendenti.</p>
+  </div>
+
+  <app-tabella-prenotazioni
+    [richiesteNoleggio]="richiesteNoleggio"
+    (apriDettaglio)="apriModale($event)">
+  </app-tabella-prenotazioni>
+
+  <app-modale-dettagli-prenotazione
+    [prenotazione]="dettaglioDellaPrenotazione"
+    [paginaVisibile]="modaleDettaglioAperto"
+    (chiudiPagina)="chiudiModale()">
+  </app-modale-dettagli-prenotazione>
+
+</div>

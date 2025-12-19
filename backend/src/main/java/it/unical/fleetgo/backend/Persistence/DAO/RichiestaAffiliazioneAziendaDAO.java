@@ -67,7 +67,7 @@ public class RichiestaAffiliazioneAziendaDAO {
             ResultSet rs = st.executeQuery();
 
             while(rs.next()){
-                DipendenteProxy dipendente = creaDipendenteProxy();
+                DipendenteProxy dipendente =new DipendenteProxy(this, new CredenzialiDAO(connection));
                 dipendente.setIdUtente(rs.getInt("id_utente"));
                 dipendente.setNomeUtente(rs.getString("nome_utente"));
                 dipendente.setDataNascitaUtente(rs.getDate("data_nascita").toLocalDate());
@@ -143,7 +143,7 @@ public class RichiestaAffiliazioneAziendaDAO {
     }
 
     public Integer getNumRichiesteAffiliazione(Integer idAzienda) {
-        String query = "SELECT COUNT(*) as somma FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false";
+        String query = "SELECT COUNT(*) as somma FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false AND data_risposta IS NULL";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, idAzienda);
@@ -154,12 +154,5 @@ public class RichiestaAffiliazioneAziendaDAO {
             throw new RuntimeException(e);
         }
         return null;
-    }
-
-    private DipendenteProxy creaDipendenteProxy(){
-        return new DipendenteProxy(
-                new RichiestaAffiliazioneAziendaDAO(connection),
-                new CredenzialiDAO(connection)
-        );
     }
 }

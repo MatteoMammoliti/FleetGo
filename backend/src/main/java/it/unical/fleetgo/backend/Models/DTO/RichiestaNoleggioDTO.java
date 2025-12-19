@@ -24,8 +24,9 @@ public class RichiestaNoleggioDTO {
     private Boolean richiestaAnnullata;
     private String statoRichiesta;
     private Integer costoNoleggio;
+    private VeicoloDTO veicolo;
 
-    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
+    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente, boolean caricaVeicolo) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();
         this.idAziendaRiferimento = richiesta.getIdAzienda();
@@ -39,6 +40,8 @@ public class RichiestaNoleggioDTO {
         this.richiestaAnnullata = richiesta.getRichiestaAnnullata();
         this.statoRichiesta = richiesta.getStatoRichiesta();
         this.costoNoleggio = richiesta.getCostoNoleggio();
+
+        if(caricaVeicolo) this.veicolo = new VeicoloDTO(richiesta.getVeicolo(), true);
 
         if(caricaUtente) this.utente = new DipendenteDTO((Dipendente) richiesta.getUtente());
         else this.utente = null;

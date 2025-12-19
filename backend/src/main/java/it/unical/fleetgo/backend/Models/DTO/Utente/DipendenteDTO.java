@@ -20,8 +20,14 @@ public class DipendenteDTO extends UtenteDTO {
     public DipendenteDTO(Dipendente utente) {
         super(utente);
         this.idAziendaAffiliata = utente.getIdAziendaAffiliata();
-        this.urlImmagine = utente.getCredenziali().getImgPatente();
-        this.patenteAccettata = utente.getCredenziali().isPatente();
-        this.setEmail(utente.getCredenziali().getEmail());
+
+        if (utente.getCredenziali() != null) {
+            this.urlImmagine = utente.getCredenziali().getImgPatente();
+            this.patenteAccettata = utente.getCredenziali().isPatente();
+            this.setEmail(utente.getCredenziali().getEmail());
+        } else {
+            this.setEmail("");
+            this.patenteAccettata = false;
+        }
     }
 }
