@@ -1,8 +1,8 @@
-<div class="">
+<div class="p-5 bg-gray-50">
 
   <h1 class="text-blu font-bold text-3xl mb-4 ">Panoramica FleetGo</h1>
 
-  <div class="grid grid-cols-2 gap-6 md:grid-cols-2 xl:grid-cols-4">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
     <app-card-statistiche-dashboard-fleet
       titolo="Fatturato"
@@ -12,6 +12,7 @@
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
+      (click)="sezioneFatturazione()"
       titolo="Da fatturare"
       [valore]="statistiche.fattureDaGenerare"
       icona="bi-briefcase"
@@ -19,32 +20,35 @@
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
+      (click)="sezioneFlotta()"
       titolo="Flotta noleggiata"
+      percentuale="si"
       [valore]="percentualeNoleggiati"
       icona="bi-bar-chart-line"
-      descrizione="Il {{percentualeNoleggiati}}% della flotta è noleggiata">
+      [descrizione]="descrizionePercentuale">
     </app-card-statistiche-dashboard-fleet>
 
     <app-card-statistiche-dashboard-fleet
+      (click)=sezioneManutenzione()
       titolo="In Manutenzione"
       [valore]="statistiche.veicoliManutenzione"
       icona="bi-tools"
-      descrizione="Richiede attenzione">
+      descrizione="Veicoli non ancora a lavoro">
     </app-card-statistiche-dashboard-fleet>
 
   </div>
 
-  <div class="grid grid-cols-2 gap-6 my-10">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
 
     <div class="colonna-sx">
-      <app-richieste-manutenzione-da-gestire
+      <app-richieste-manutenzione-da-gestire id="sezioneManutezione"
         [richiesteManutenzioneDaGestire]="richiesteManutenzione"
         (inviaRichiesta)="caricaRichiestaManutenzione($event)">
       </app-richieste-manutenzione-da-gestire>
     </div>
 
     <div class="colonna-dx">
-      <app-fatture-da-generare
+      <app-fatture-da-generare id="sezioneFatture"
         [fatture]="fatture"
         (generaFatturaEvent)="riceviFatturaDaGenerare($event)">
       </app-fatture-da-generare>

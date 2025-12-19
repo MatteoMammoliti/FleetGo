@@ -3,7 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth; 
-  scroll-padding-top: 100px; 
+@layer components {
+
+  .card-dashboard {
+    @apply bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-azzurro  font-bold text-lg space-y-4 border-2 border-grigio rounded-2xl p-5 shadow-md shrink-0
+  }
+
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
 }

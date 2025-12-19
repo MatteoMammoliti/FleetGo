@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DashboardFleetGoService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/dashboardFleetGo-service';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {DatePipe} from '@angular/common';
+import {DatePipe, SlicePipe} from '@angular/common';
 
 @Component({
   selector: 'app-richieste-manutenzione-da-gestire',
   imports: [
-    DatePipe
+    DatePipe,
+    SlicePipe
   ],
   templateUrl: './richieste-manutenzione-da-gestire.html',
   styleUrl: './richieste-manutenzione-da-gestire.css',

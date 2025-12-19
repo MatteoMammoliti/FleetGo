@@ -1,61 +1,76 @@
-<div class="main-container">
+<div class="flex flex-col h-full bg-white rounded-2xl border border-grigio shadow-sm overflow-hidden">
 
-  <div class="header-section">
-    <h1 class="titolo-pagina">Gestione Manutenzioni</h1>
-    <p class="sottotitolo">Visualizza e gestisci le richieste di intervento dalla flotta.</p>
+  <div class="p-6 border-b border-grigio flex  flex-col justify-between ">
+    <h3 class="text-blu font-bold text-xl md:text-2xl ">Gestione Manutenzioni</h3>
+    <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Gestisci la salute della tua flotta.</small>
   </div>
 
   <div>
-
     @if (!richiesteManutenzioneDaGestire) {
-      <div class="loading-state">
-        <div class="spinner"></div>
-        <p>Caricamento richieste...</p>
+      <div class="min-h-[200px] flex flex-col justify-center items-center group">
+        <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
+          <i class="text-white text-3xl bi bi-hourglass-split"></i>
+        </div>
+        <p class="text-azzurro text-l font-bold">Caricamento richieste in corso...</p>
       </div>
-    }
+}
 
     @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
-      <div class="empty-state">
-        <i class="bi bi-check-circle-fill"></i>
-        <p>Tutto in ordine! Nessuna richiesta di manutenzione in attesa.</p>
+      <div class="min-h-[200px] flex flex-col justify-center items-center group">
+        <div class="w-12 h-12 mb-2 rounded-full flex justify-center items-center bg-azzurro transition-colors shadow-sm group-hover:animate-bounce">
+          <i class="text-white text-3xl bi bi-check"></i>
+        </div>
+        <p class="text-azzurro text-l font-bold text-center">La tua flotta è in salute!<br>Nessuna richiesta di manutenzione</p>
       </div>
     }
 
     @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length > 0) {
-      <div class="table-responsive">
-        <table class="fl-table">
-          <thead>
-          <tr>
-            <th>Veicolo</th>
-            <th>Data Richiesta</th>
-            <th>Tipologia Intervento</th>
-            <th>Stato Attuale</th>
-            <th class="text-right">Azioni</th>
-          </tr>
+      <div class="table-auto flex flex-col  justify-between max-h-[310px] overflow-y-auto px-2">
+        <table class="w-full border-separate border-spacing-y-3">
+          <thead class="sticky top-0 z-10 bg-white">
+            <tr class="text-left text-testo-s">
+            <th class="pl-6">Veicolo</th>
+              <th >Data Richiesta</th>
+              <th >Tipologia Intervento</th>
+              <th>Stato Attuale</th>
+              <th class="pr-6">Azioni</th>
+            </tr>
           </thead>
+
           <tbody>
             @for (richiesta of richiesteManutenzioneDaGestire; track richiesta.idManutenzione) {
-              <tr>
-                <td>
-                  <div class="veicolo-info">
-                    <span class="targa">{{ richiesta.idVeicolo }}</span>
+
+                <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p items-center">
+                <td  class="py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors">
+                  <div>
+                    <span>{{ richiesta.idVeicolo }}</span>
                   </div>
                 </td>
-                <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
-                <td>
-                  <span class="tipo-badge">{{ richiesta.tipoManutenzione }}</span>
+                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">
+                  <span [title]="richiesta.tipoManutenzione" >
+                    {{ richiesta.tipoManutenzione | slice:0:18 }}
+                    {{ richiesta.tipoManutenzione.length > 18 ? '...' : ''}}
+                  </span>
                 </td>
-                <td>
-                  <span class="status-badge warning">In Attesa</span>
+                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors font-bold text-s text-azzurro hover:text-azzurro-scuro">
+                  <span>In Attesa</span>
                 </td>
-                <td class="azioni-cell">
-                  <button class="btn-icon check" (click)="gestisciRichiesta(richiesta.idManutenzione)">Gestisci
-                    <i class="bi bi-check-lg"></i>
+                <td  class="py-3 pr-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors">
+                  <button
+                    (click)="gestisciRichiesta(richiesta.idManutenzione)"
+                    class="flex items-center gap-1.5 hover:bg-azzurro-scuro hover:text-grigio text-sm font-medium  px-2 py-[2px] rounded-xl border border-transparent shadow-sm transition-all duration-300 ease-out  bg-white text-azzurro border-azzurro hover:shadow-lg hover:-translate-y-0.5
+           focus:outline-none focus:ring-2 focus:ring-azzurro/40">
+
+                    <span>Gestisci</span>
+                    <i class="bi bi-gear text-base transition-transform duration-300 group-hover:rotate-90"></i>
+
                   </button>
                 </td>
               </tr>
             }
           </tbody>
+
         </table>
       </div>
     }

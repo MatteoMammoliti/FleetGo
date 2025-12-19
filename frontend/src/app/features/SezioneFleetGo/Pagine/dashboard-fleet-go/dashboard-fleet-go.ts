@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CardStatisticheDashboardFleet} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {Router} from '@angular/router';
 import {DashboardFleetGoService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/dashboardFleetGo-service';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
@@ -17,7 +18,7 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
   styleUrl: './dashboard-fleet-go.css',
 })
 export class DashboardFleetGo implements OnInit{
-  constructor(private dashboardService:DashboardFleetGoService) {}
+  constructor(private dashboardService:DashboardFleetGoService,private router: Router) {}
 
   statistiche: ContenitoreStatisticheNumeriche = {
     totaleVeicoli: 0,
@@ -31,6 +32,8 @@ export class DashboardFleetGo implements OnInit{
   };
 
   percentualeNoleggiati=0;
+  descrizionePercentuale:string=""
+
   richiesteManutenzione:RichiestaManutenzioneDTO[]=[];
   richiestaSelezionata:RichiestaManutenzioneDTO | null = null;
 
@@ -51,7 +54,14 @@ export class DashboardFleetGo implements OnInit{
       next: (contenitore) => {
         console.log(contenitore);
         this.statistiche = contenitore;
-        this.percentualeNoleggiati=(this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100;
+
+        if(this.statistiche.veicoliAssegnati==0){
+          this.descrizionePercentuale="Nessun Veicolo Noleggiato"
+        }
+        else {
+          this.descrizionePercentuale="Noleggiati "+this.statistiche.veicoliAssegnati+ " veicoli su "+ this.statistiche.totaleVeicoli;
+        }
+        this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
       },
       error: (err) => console.error("Errore richiesta statistiche:", err)
     });
@@ -75,6 +85,7 @@ export class DashboardFleetGo implements OnInit{
       error:(err:any)=>(console.error("Errore richieste manutenzioni da gestire",err))
     });
   }
+
 
   caricaRichiestaManutenzione(idManutenzione:number){
     this.dashboardService.richiediInformazioniSuManutenzioneDaGestire(idManutenzione).subscribe({
@@ -142,5 +153,21 @@ export class DashboardFleetGo implements OnInit{
 
   chiudiFinestraModaleGenerazioneFattura() { this.apriPaginaGenerazioneOfferte = false; }
 
-  protected readonly Math = Math;
+  sezioneManutenzione(){
+    const tabellaManutenzione = document.getElementById('sezioneManutezione');
+    if (tabellaManutenzione) {
+      tabellaManutenzione.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  sezioneFatturazione() {
+    const tabellaFatturazione = document.getElementById('sezioneFatture');
+    if (tabellaFatturazione) {
+      tabellaFatturazione.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+  }
+
+  sezioneFlotta(){
+    this.router.navigate(['/dashboardFleetGo/flotta-globale']);
+  }
 }

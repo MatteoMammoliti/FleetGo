@@ -1,4 +1,4 @@
-import { Component,Input } from '@angular/core';
+import {booleanAttribute, Component, Input} from '@angular/core';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -14,4 +14,5 @@ export class CardStatisticheDashboardFleet {
   @Input() descrizione:string ="";
   @Input() icona:string ="";
   @Input() coloreSfondo:string = 'bg-primary'
+  @Input() percentuale:string="";
 }
