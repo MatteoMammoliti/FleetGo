@@ -10,6 +10,5 @@ import java.util.List;
 @Setter
 public class Dipendente extends Utente {
     private Integer idAziendaAffiliata;
-    private List<RichiestaNoleggio> richiesteNoleggio;
     private CredenzialiUtente credenziali;
 }

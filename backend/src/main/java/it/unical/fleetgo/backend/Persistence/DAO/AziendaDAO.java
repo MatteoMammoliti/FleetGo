@@ -97,22 +97,6 @@ public class AziendaDAO {
         return null;
     }
 
-    public String getPIvaAziendaById(Integer idAzienda) {
-        String query = "SELECT p_iva FROM azienda WHERE id_azienda = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idAzienda);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) return rs.getString("p_iva");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
     public List<Azienda> getAziendeInPiattaforme() {
         String query = "SELECT * FROM azienda";
         List<Azienda> aziende = new ArrayList<>();

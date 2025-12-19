@@ -69,7 +69,7 @@ public class UtenteDAO {
             st.setString(2,"Dipendente");
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                Dipendente dipendente = creoDipendenteProxy();
+                Dipendente dipendente = new DipendenteProxy(new RichiestaAffiliazioneAziendaDAO(con),new CredenzialiDAO(con));
                 dipendente.setNomeUtente(rs.getString("nome_utente"));
                 dipendente.setCognomeUtente(rs.getString("cognome"));
                 dipendente.setIdUtente(rs.getInt("id_utente"));
@@ -310,10 +310,5 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
         return null;
-    }
-
-    private DipendenteProxy creoDipendenteProxy(){
-        return new DipendenteProxy(new RichiestaAffiliazioneAziendaDAO(con),new CredenzialiDAO(con),
-                new RichiestaNoleggioDAO(con));
     }
 }

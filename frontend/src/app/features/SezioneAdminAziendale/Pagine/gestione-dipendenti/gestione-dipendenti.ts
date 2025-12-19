@@ -2,15 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/form-gestione-dipendenti-admin-aziendale/elenco-dipendenti';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {DipendentiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dipendenti-service';
-import {
-  ModaleDettagliDipendente
-} from '@features/SezioneAdminAziendale/Componenti/modale-dettagli-dipendente/modale-dettagli-dipendente';
+import {ModaleDettagliDipendente} from '@features/SezioneAdminAziendale/Componenti/modale-dettagli-dipendente/modale-dettagli-dipendente';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {BannerRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/banner-richieste-affiliazione/banner-richieste-affiliazione';
+import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
+import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modale-richieste-affiliazione/modale-richieste-affiliazione';
 
 @Component({
   selector: 'app-gestione-dipendenti',
   standalone: true,
-  imports: [ElencoDipendenti, ModaleDettagliDipendente],
+  imports: [ElencoDipendenti, ModaleDettagliDipendente, BannerRichiesteAffiliazione, ModaleRichiesteAffiliazione],
   templateUrl: './gestione-dipendenti.html',
   styleUrl: './gestione-dipendenti.css'
 })
@@ -19,13 +20,19 @@ export class GestioneDipendentiComponent implements OnInit{
 
   constructor(private service: DipendentiService) { }
 
-  ngOnInit() { this.getDipendenti();}
-
   listaDipendentiAzienda: DipendenteDTO[] = [];
   richiesteNoleggio: RichiestaNoleggioDTO[] = [];
+  richiesteAffiliazione: RichiestaAffiliazioneAziendaDTO[] = [];
 
   modaleDettaglioDipendenteVisibile = false;
   dipendenteDaVisualizzare: DipendenteDTO = {} as DipendenteDTO;
+
+  modaleRichiesteAffiliazione = false;
+
+  ngOnInit() {
+    this.getDipendenti();
+    this.getRichiesteAffiliazione();
+  }
 
   getDipendenti() {
     this.service.getDipendenti().subscribe({
@@ -52,6 +59,14 @@ export class GestioneDipendentiComponent implements OnInit{
         console.error(err);
         this.richiesteNoleggio = [];
       }
+    })
+  }
+
+  getRichiesteAffiliazione() {
+    this.service.getRichiesteAffiliazione().subscribe({
+      next: value => {
+        if(value) this.richiesteAffiliazione = value || [];
+      }, error: err => { console.error(err); }
     })
   }
 
@@ -85,5 +100,36 @@ export class GestioneDipendentiComponent implements OnInit{
         }
       }
     })
+  }
+
+  accettaRichiestaAffiliazione(idDipendente: number){
+    this.service.rispondiRichiesta(idDipendente, true).subscribe({
+      next: value => {
+        if(value) {
+          this.getRichiesteAffiliazione();
+          this.getDipendenti();
+        }
+      }, error: error => {console.error(error); }
+    })
+  }
+
+  rifiutaRichiestaAffiliazione(idDipendente: number){
+    this.service.rispondiRichiesta(idDipendente, false).subscribe({
+      next: value => {
+        if(value) {
+          this.getRichiesteAffiliazione();
+          this.getDipendenti();
+        }
+      }, error: error => {console.error(error); }
+    })
+  }
+
+  apriModaleRichiesteAffiliazione() {
+    this.modaleRichiesteAffiliazione = true;
+    this.getRichiesteAffiliazione();
+  }
+
+  chiudiModaleRichiestaAffiliazione() {
+    this.modaleRichiesteAffiliazione = false;
   }
 }

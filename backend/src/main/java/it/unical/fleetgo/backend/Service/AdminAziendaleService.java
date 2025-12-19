@@ -6,6 +6,7 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
+import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +176,27 @@ public class AdminAziendaleService {
                 richiesteNoleggio.add(new RichiestaNoleggioDTO(richiesta, false));
             }
             return richiesteNoleggio;
+        }
+    }
+
+    public List<RichiestaAffiliazioneAziendaDTO> getRichiesteAffiliazioneDaAccettare(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
+
+            List<RichiestaAffiliazioneAzienda> richieste = richiestaAffiliazioneAziendaDAO.getRichiesteAffiliazioneDaAccettare(idAzienda);
+            List<RichiestaAffiliazioneAziendaDTO> richiesteDTO = new ArrayList<>();
+
+            for(RichiestaAffiliazioneAzienda richiesta : richieste) {
+                richiesteDTO.add(new RichiestaAffiliazioneAziendaDTO(richiesta, true));
+            }
+            return richiesteDTO;
+        }
+    }
+
+    public void rispondiRichiestaAffiliazione(Integer idUtente, Integer idAzienda, boolean risposta) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
+            richiestaAffiliazioneAziendaDAO.rispondiRichiestaAffiliazione(idAzienda, idUtente, risposta);
         }
     }
 }

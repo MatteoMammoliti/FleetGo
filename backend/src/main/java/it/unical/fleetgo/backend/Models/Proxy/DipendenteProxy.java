@@ -11,24 +11,12 @@ import java.util.List;
 public class DipendenteProxy extends Dipendente {
     private final RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao;
     private final CredenzialiDAO credenzialiDAO;
-    private final RichiestaNoleggioDAO noleggioDAO;
-    private boolean richiesteNoleggioCaricate = false;
     private boolean idAziendaCaricato= false;
     private boolean credenzialiCaricato = false;
 
-    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao, CredenzialiDAO credenzialiDAO, RichiestaNoleggioDAO noleggioDAO) {
+    public DipendenteProxy(RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDao, CredenzialiDAO credenzialiDAO) {
         this.richiestaAffiliazioneAziendaDao = richiestaAffiliazioneAziendaDao;
         this.credenzialiDAO = credenzialiDAO;
-        this.noleggioDAO = noleggioDAO;
-    }
-
-    @Override
-    public List<RichiestaNoleggio> getRichiesteNoleggio() {
-        if(!richiesteNoleggioCaricate) {
-            richiesteNoleggioCaricate = true;
-            super.setRichiesteNoleggio(noleggioDAO.getRichiesteNoleggioAziendaDaAccettare(super.getIdAziendaAffiliata()));
-        }
-        return super.getRichiesteNoleggio();
     }
 
     @Override
@@ -44,7 +32,7 @@ public class DipendenteProxy extends Dipendente {
     public CredenzialiUtente getCredenziali() {
         if(!credenzialiCaricato) {
             credenzialiCaricato = true;
-            super.setCredenziali(credenzialiDAO.getCredenzialiUtente(this.getIdUtente()));
+            super.setCredenziali(credenzialiDAO.getCredenzialiUtenteById(this.getIdUtente()));
         }
         return super.getCredenziali();
     }
