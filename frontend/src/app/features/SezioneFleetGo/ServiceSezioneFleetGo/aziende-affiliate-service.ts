@@ -23,7 +23,7 @@ export class AziendeAffiliateService {
       azienda: azienda
     }
 
-    return this.http.post(`${this.apiUrl}/registraAzienda&Admin`, contenitore, { withCredentials: true,  responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitore, { withCredentials: true,  responseType: 'text' });
   }
 
   richiediAziende(): Observable<AziendaDTO[]>{

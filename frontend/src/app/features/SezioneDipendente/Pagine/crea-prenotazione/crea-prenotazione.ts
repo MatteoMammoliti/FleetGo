@@ -52,7 +52,8 @@ export class CreaPrenotazione {
         this.nomeLuogoSelezionato=this.listaLuoghi[0].nomeLuogo;
         this.getRichiediVeicolo(this.dataInizio,this.dataFine,this.oraInizio,this.oraFine)
       },
-      error:(err)=>console.error("Errore nel caricamento dei luoghi")
+      error:(err)=>{
+        console.error("Errore nel caricamento dei luoghi")}
     })
   }
 

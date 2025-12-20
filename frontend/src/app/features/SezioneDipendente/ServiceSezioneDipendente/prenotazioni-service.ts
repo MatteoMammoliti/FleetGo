@@ -18,4 +18,9 @@ export class PrenotazioniService{
       withCredentials:true
     })
   }
+  eliminaPrenotazione(idRichiesta:number):Observable<any>{
+    return this.http.post(`${this.apiUrl}/eliminaRichiesta`,idRichiesta, {
+      withCredentials:true
+    })
+  }
 }

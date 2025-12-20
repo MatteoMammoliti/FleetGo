@@ -1,4 +1,5 @@
 import {UtenteDTO} from '@core/models/utenteDTO.model';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 
 
 export interface RichiestaNoleggioDTO {
@@ -18,5 +19,4 @@ export interface RichiestaNoleggioDTO {
   statoRichiesta?:string;
   veicolo?:VeicoloDTO;
   nomeLuogo?:string;
-  veicolo?: VeicoloDTO;
 }

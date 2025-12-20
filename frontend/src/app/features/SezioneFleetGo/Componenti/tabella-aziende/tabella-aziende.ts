@@ -16,6 +16,10 @@ export class TabellaAziendeComponent {
 
   elimina(idAdmin: number | undefined) {
     console.log("sono in elimina figlio" + idAdmin);
-    this.richiediEliminazione.emit(idAdmin);
+    const conferma=confirm("Eliminando questa azienda tutti i veicoli ad essa associati saranno" +
+      "contrassegnati come liberi e tutti i dipendenti verranno dissociati dall'azienda, continuare? L'OPERAZIONE è IRREVERSIBILE")
+    if(conferma){
+      this.richiediEliminazione.emit(idAdmin);
+    }
   }
 }

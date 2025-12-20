@@ -28,8 +28,19 @@ export class PrenotazioniDipendente {
       next:(risposta:RichiestaNoleggioDTO[])=>{
         this.prenotazioni=risposta
         this.daVisualizzare=risposta
+        this.impostaFiltro(this.filtroAttivo);
     },
       error:(err)=>console.log("Errore nel caricare i noleggi dei dipendente")
+    });
+  }
+
+  eliminaPrenotazione(idPrenotazione:number){
+    this.service.eliminaPrenotazione(idPrenotazione).subscribe({
+      next:(risposta:any)=>{
+        this.getRichiesteDipendente()
+        console.log("Eliminata")
+      },
+      error:(err)=>console.log("Errore durante l'eliminazione")
     });
   }
 

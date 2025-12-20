@@ -10,8 +10,8 @@
       <h3 class="booking-title">{{ prenotazione.motivazione }}</h3>
 
       <span class="status-badge" [ngClass]="prenotazione.statoRichiesta ? prenotazione.statoRichiesta.toLowerCase() : ''">
-    {{ prenotazione.statoRichiesta }}
-  </span>
+        {{ prenotazione.statoRichiesta }}
+      </span>
     </div>
 
     <p class="car-details">
@@ -45,18 +45,28 @@
       </div>
 
       <div class="detail-item">
-        <i class="bi bi-geo-alt-fill"></i> <div class="detail-text">
-        <span class="label">Consegna</span>
-        <span class="value">{{ prenotazione.nomeLuogo }}</span>
-      </div>
+        <i class="bi bi-geo-alt-fill"></i>
+        <div class="detail-text">
+          <span class="label">Consegna</span>
+          <span class="value">{{ prenotazione.nomeLuogo }}</span>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <div class="price-area">
+  <div class="price-area flex flex-col items-end justify-between"> <div>
     <span class="price">€{{ prenotazione.costoNoleggio }}</span>
     <span class="price-label">COSTO STIMATO</span>
+  </div>
+
+    @if (prenotazione.statoRichiesta === 'In attesa') {
+      <button (click)="onAnnulla()"
+              class="mt-4 flex items-center gap-1 text-red-500 bg-red-50 hover:bg-red-100 border border-red-100 font-semibold py-1.5 px-3 rounded-lg text-sm transition-colors">
+        <i class="bi bi-trash3"></i> Annulla
+      </button>
+    }
+
   </div>
 
 </div>
