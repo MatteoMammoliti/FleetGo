@@ -24,8 +24,12 @@ public class ControllerHomeDipendente {
 
     @GetMapping("/prossimoViaggio")
     public ResponseEntity<RichiestaNoleggioDTO> getProssimoNoleggioDipendente(HttpSession session){
+        Integer idAzienda=(Integer )session.getAttribute("idAziendaAssociata");
+        if(idAzienda==null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         try{
-            return ResponseEntity.ok(this.dipendenteService.getProssimoNoleggioDipendente((Integer) session.getAttribute("idUtente")));
+            return ResponseEntity.ok(this.dipendenteService.getProssimoNoleggioDipendente((Integer) session.getAttribute("idUtente"),idAzienda));
         }catch(SQLException e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -37,8 +41,12 @@ public class ControllerHomeDipendente {
 
     @GetMapping("/statisticheDipendente")
     public ResponseEntity<StatisticheDipendenteDTO> getStatisticheDipendente(HttpSession session){
+        Integer idAzienda=(Integer) session.getAttribute("idAziendaAssociata");
+        if(idAzienda==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         try{
-            return ResponseEntity.ok(this.dipendenteService.getStatisticheDipendente((Integer) session.getAttribute("idUtente")));
+            return ResponseEntity.ok(this.dipendenteService.getStatisticheDipendente((Integer) session.getAttribute("idUtente"),idAzienda));
         }catch (SQLException e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

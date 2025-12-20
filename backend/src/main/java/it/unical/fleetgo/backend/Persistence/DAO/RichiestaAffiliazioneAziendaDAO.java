@@ -39,14 +39,12 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idDipendente
      * @param idAzienda
      */
-    public void rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda){
+    public void rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda) throws SQLException{
         String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);
             st.executeUpdate();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
         }
     }
 

@@ -32,7 +32,7 @@ public class RichiestaNoleggioDTO {
     public RichiestaNoleggioDTO() {}
 
     @JsonIgnore
-    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente) {
+    public RichiestaNoleggioDTO(RichiestaNoleggio richiesta, boolean caricaUtente,boolean caricaVeicolo) {
         this.idRichiesta = richiesta.getIdRichiestaNoleggio();
         this.idDipendente = richiesta.getIdUtente();
         this.idAziendaRiferimento = richiesta.getIdAzienda();

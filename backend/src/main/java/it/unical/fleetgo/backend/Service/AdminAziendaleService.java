@@ -55,11 +55,29 @@ public class AdminAziendaleService {
         }
     }
 
-    public void rimuoviDipendente(Integer idUtente, Integer idAzienda) throws SQLException {
+    public boolean rimuoviDipendente(Integer idUtente, Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
-            RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO =
-                    new RichiestaAffiliazioneAziendaDAO(connection);
-            richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(idUtente, idAzienda);
+            connection.setAutoCommit(false);
+            try{
+                RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO =
+                        new RichiestaAffiliazioneAziendaDAO(connection);
+                RichiestaNoleggioDAO daoNoleggio=new RichiestaNoleggioDAO(connection);
+                daoNoleggio.aggiornaStatiNoleggi();
+                if(daoNoleggio.controlloRichiestaInCorsoDipendente(idUtente)){
+                    connection.rollback();
+                    return false;
+                }
+                daoNoleggio.eliminaRichiesteNoleggioDipendenteEliminato(idUtente,idAzienda);
+                richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(idUtente, idAzienda);
+                connection.commit();
+                return true;
+            }catch(SQLException e){
+                connection.rollback();
+                e.printStackTrace();
+                throw new SQLException(e);
+            }finally{
+                connection.setAutoCommit(true);
+            }
         }
     }
 
@@ -170,6 +188,7 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
             List<RichiestaNoleggioDTO> richiesteNoleggio = new ArrayList<>();
+            richiestaNoleggioDAO.aggiornaStatiNoleggi();
             List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdDipendente(idDipendente);
 
             for(RichiestaNoleggio richiesta: richieste) {

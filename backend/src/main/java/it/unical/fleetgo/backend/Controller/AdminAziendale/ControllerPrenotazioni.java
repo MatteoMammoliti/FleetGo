@@ -29,6 +29,7 @@ public class ControllerPrenotazioni {
                     )
             );
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -56,4 +57,5 @@ public class ControllerPrenotazioni {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 }

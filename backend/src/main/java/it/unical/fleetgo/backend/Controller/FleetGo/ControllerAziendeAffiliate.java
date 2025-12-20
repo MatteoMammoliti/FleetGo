@@ -20,8 +20,9 @@ public class ControllerAziendeAffiliate {
     @Autowired private AziendaService aziendaService;
     @Autowired private UtenteService utenteService;
 
-    @PostMapping("/registraAzienda&Admin")
+    @PostMapping("/registraAziendaAdmin")
     public ResponseEntity<String> registraAziendaEAdmin(@RequestBody ContenitoreDatiRegistrazioneAzienda contenitoreDati) {
+        System.out.println("registraAziendaEAdmin");
 
         AziendaDTO azienda = contenitoreDati.getAzienda();
         AdminAziendaleDTO adminAziendale = contenitoreDati.getAdminAziendale();
@@ -32,10 +33,13 @@ public class ControllerAziendeAffiliate {
             aziendaService.registraAzienda(azienda);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione avvenuta con successo");
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email già utilizzata");
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registrazione non avvenuta");
         } catch (SQLException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");
         }
     }

@@ -323,4 +323,22 @@ public class UtenteDAO {
         }
         return null;
     }
+
+    public Dipendente getDipendenteDaId(Integer idDipendente) throws SQLException {
+        String query="SELECT * FROM utente WHERE id_utente=? AND tipo_utente=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            st.setString(2,"Dipendente");
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                Dipendente dipendente = new Dipendente();
+                dipendente.setIdUtente(rs.getInt("id_utente"));
+                dipendente.setNomeUtente(rs.getString("nome_utente"));
+                dipendente.setCognomeUtente(rs.getString("cognome"));
+                dipendente.setDataNascitaUtente(LocalDate.parse(rs.getDate("data_nascita").toString()));
+                return dipendente;
+            }
+        }
+        return null;
+    }
 }

@@ -36,7 +36,9 @@ public class ControllerGestioneDipendenti {
     public ResponseEntity<String> eliminaUtente(HttpSession sessione, @RequestBody Integer idUtente) {
         try {
             int idAzienda = (int) sessione.getAttribute("idAzienda");
-            adminAziendaleService.rimuoviDipendente(idUtente, idAzienda);
+            if(!adminAziendaleService.rimuoviDipendente(idUtente, idAzienda)){
+                return ResponseEntity.badRequest().body("Risultano prenotazioni in corso o già approvate per il dipendente selezionato");
+            }
             return ResponseEntity.ok("Utente eliminato con successo");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Errore durante l'eliminazione dell'utente");

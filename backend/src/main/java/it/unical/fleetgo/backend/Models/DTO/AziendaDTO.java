@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class AziendaDTO {
 
     public AziendaDTO() {}
 
+    @JsonIgnore
     public AziendaDTO(Azienda azienda) {
         this.idAzienda = azienda.getIdAzienda();
         this.idAdminAzienda = azienda.getIdAdmin();

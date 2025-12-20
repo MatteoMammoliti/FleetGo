@@ -163,7 +163,8 @@ public class RichiestaNoleggioDAO {
         return null;
     }
 
-    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdDipendente(Integer idDipendente) {
+    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdDipendente(Integer idDipendente) throws SQLException {
+        this.aggiornaStatiNoleggi();
         String query = "SELECT * FROM richiesta_noleggio WHERE id_dipendente = ? AND accettata = true";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -183,7 +184,8 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    public RichiestaNoleggio getRichiestaNoleggioById(Integer idRichiesta) {
+    public RichiestaNoleggio getRichiestaNoleggioById(Integer idRichiesta) throws SQLException {
+        this.aggiornaStatiNoleggi();
         String query = "SELECT * FROM richiesta_noleggio WHERE id_richiesta = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -199,7 +201,8 @@ public class RichiestaNoleggioDAO {
         return null;
     }
 
-    public List<RichiestaNoleggio> getRichiesteDaAccettare(Integer idAzienda) {
+    public List<RichiestaNoleggio> getRichiesteDaAccettare(Integer idAzienda) throws SQLException {
+        this.aggiornaStatiNoleggi();
         String query = "SELECT * FROM richiesta_noleggio WHERE accettata = false AND richiesta_annullata = false AND stato_richiesta = 'In attesa' AND id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
@@ -222,25 +225,26 @@ public class RichiestaNoleggioDAO {
         r.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
         r.setIdUtente(rs.getInt("id_dipendente"));
         r.setIdAzienda(rs.getInt("id_azienda"));
-        r.setOraInizio(rs.getTime("ora_inizio").toLocalTime());
-        r.setOraFine(rs.getTime("ora_fine").toLocalTime());
-        r.setDataRitiro(rs.getDate("data_ritiro").toLocalDate());
-        r.setDataConsegna(rs.getDate("data_consegna").toLocalDate());
+        r.setOraInizio(String.valueOf(rs.getTime("ora_inizio").toLocalTime()));
+        r.setOraFine(String.valueOf(rs.getTime("ora_fine").toLocalTime()));
+        r.setDataRitiro(String.valueOf(rs.getDate("data_ritiro").toLocalDate()));
+        r.setDataConsegna(String.valueOf(rs.getDate("data_consegna").toLocalDate()));
         r.setMotivazione(rs.getString("motivazione"));
         r.setIdVeicolo(rs.getInt("id_veicolo"));
-        r.setCostoNoleggio(rs.getInt("costo_noleggio"));
+        r.setCosto(rs.getFloat("costo_noleggio"));
         r.setRichiestaAccettata(rs.getBoolean("accettata"));
         r.setStatoRichiesta(rs.getString("stato_richiesta"));
         return r;
     }
 
-    public RichiestaNoleggio getProssimaRichiestaNoleggioDipendente(Integer idDipendente) throws SQLException{
+    public RichiestaNoleggio getProssimaRichiestaNoleggioDipendente(Integer idDipendente,Integer idAzienda) throws SQLException{
         this.aggiornaStatiNoleggi();
-        String query="SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND richiesta_annullata=false AND stato_richiesta !=?" +
+        String query="SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND richiesta_annullata=false AND stato_richiesta !=? AND id_azienda=?" +
                 " ORDER BY data_ritiro ASC LIMIT 1";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setString(2,"Terminata");
+            st.setInt(3,idAzienda);
             ResultSet rs = st.executeQuery();
             RichiestaNoleggio richiesta = new  RichiestaNoleggioProxy(new UtenteDAO(connection),new VeicoloDAO(connection));
             this.estraiRichiestaDaResult(rs,richiesta,false);
@@ -248,15 +252,17 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente) throws SQLException{
+    public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente,Integer idAzienda) throws SQLException{
         String query="SELECT " +
-                "(SELECT COUNT(*) FROM richiesta_noleggio WHERE id_dipendente = ? AND stato_richiesta = 'Terminata' AND EXTRACT(MONTH FROM data_ritiro) = EXTRACT(MONTH FROM CURRENT_DATE) " +
+                "(SELECT COUNT(*) FROM richiesta_noleggio WHERE id_dipendente = ? AND id_azienda=? AND stato_richiesta = 'Terminata' AND EXTRACT(MONTH FROM data_ritiro) = EXTRACT(MONTH FROM CURRENT_DATE) " +
                 " AND EXTRACT(YEAR FROM data_ritiro) = EXTRACT(YEAR FROM CURRENT_DATE)) as viaggi_mese, " +
                 "(SELECT COALESCE(SUM(EXTRACT(EPOCH FROM ((data_consegna + ora_fine) - (data_ritiro + ora_inizio))) / 3600), 0) " +
-                " FROM richiesta_noleggio WHERE id_dipendente = ? AND stato_richiesta = 'Terminata') as ore_totali";
+                " FROM richiesta_noleggio WHERE id_dipendente = ? AND id_azienda=? AND stato_richiesta = 'Terminata') as ore_totali";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
-            st.setInt(2,idDipendente);
+            st.setInt(2,idAzienda);
+            st.setInt(3,idDipendente);
+            st.setInt(4,idAzienda);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 StatisticheDipendenteDTO dto = new StatisticheDipendenteDTO(rs.getInt("viaggi_mese"),rs.getFloat("ore_totali"));
@@ -266,12 +272,13 @@ public class RichiestaNoleggioDAO {
         return null;
     }
 
-    public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente) throws SQLException{
+    public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente,Integer idAzienda) throws SQLException{
         this.aggiornaStatiNoleggi();
         String query="SELECT rn.*,l.nome_luogo FROM richiesta_noleggio rn JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda AND rn.id_veicolo=g.id_veicolo " +
-                " JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna WHERE rn.id_dipendente=?";
+                " JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna WHERE rn.id_dipendente=? AND rn.id_azienda=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
+            st.setInt(2,idAzienda);
             ResultSet rs = st.executeQuery();
             List<RichiestaNoleggio> richiesteNoleggio = new ArrayList<>();
             this.estraiRichieseaDaResult(rs,richiesteNoleggio,true);
@@ -292,6 +299,48 @@ public class RichiestaNoleggioDAO {
             st2.executeUpdate();
         }
     }
+
+
+    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdAzienda(Integer idAzienda) throws SQLException {
+        List<RichiestaNoleggio> richiesteNoleggio = new ArrayList<>();
+        String query="SELECT * FROM richiesta_noleggio WHERE id_azienda=? AND accettata=? AND richiesta_annullata=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idAzienda);
+            st.setBoolean(2,true);
+            st.setBoolean(3,false);
+            ResultSet rs = st.executeQuery();
+            this.estraiRichieseaDaResult(rs,richiesteNoleggio,false);
+            return richiesteNoleggio;
+        }
+
+    }
+
+    public boolean controlloRichiestaInCorsoDipendente(Integer idDipendente) throws SQLException{
+        String query="SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND richiesta_annullata=? AND" +
+                " (stato_richiesta=? OR stato_richiesta=?)";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            st.setBoolean(2,false);
+            st.setString(3,"In corso");
+            st.setString(4,"Da ritirare");
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void eliminaRichiesteNoleggioDipendenteEliminato(Integer idDipendente,Integer idAzienda) throws SQLException{
+        String query="DELETE FROM richiesta_noleggio WHERE id_dipendente=? AND stato_richiesta=? AND id_azienda=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1,idDipendente);
+            st.setString(2,"In attesa");
+            st.setInt(3,idAzienda);
+            st.executeUpdate();
+        }
+    }
+
     private void estraiRichiestaDaResult(ResultSet rs,RichiestaNoleggio richiesta,boolean conLuogo) throws SQLException {
         if (rs.next()){
             richiesta.setIdRichiestaNoleggio(rs.getInt("id_richiesta"));
@@ -337,6 +386,5 @@ public class RichiestaNoleggioDAO {
 
         }
     }
-
 
 }

@@ -39,10 +39,10 @@ public class DipendenteService {
         }
     }
 
-    public RichiestaNoleggioDTO getProssimoNoleggioDipendente(Integer idDipendente) throws SQLException {
+    public RichiestaNoleggioDTO getProssimoNoleggioDipendente(Integer idDipendente,Integer idAzienda) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            RichiestaNoleggio richiesta = dao.getProssimaRichiestaNoleggioDipendente(idDipendente);
+            RichiestaNoleggio richiesta = dao.getProssimaRichiestaNoleggioDipendente(idDipendente,idAzienda);
             if(richiesta != null) {
                 RichiestaNoleggioDTO dto = new RichiestaNoleggioDTO();
                 dto.setDataRitiro(richiesta.getDataRitiro());
@@ -60,20 +60,20 @@ public class DipendenteService {
         return null;
     }
 
-    public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente)throws SQLException {
+    public StatisticheDipendenteDTO getStatisticheDipendente(Integer idDipendente,Integer idAzienda)throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            return dao.getStatisticheDipendente(idDipendente);
+            return dao.getStatisticheDipendente(idDipendente,idAzienda);
         }
     }
 
-    public List<RichiestaNoleggioDTO> getRichiesteNoleggioDipendente(Integer idDipendente) throws SQLException {
+    public List<RichiestaNoleggioDTO> getRichiesteNoleggioDipendente(Integer idDipendente,Integer idAzienda) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            List<RichiestaNoleggio> richieste =dao.getRichiesteNoleggioDipendente(idDipendente);
+            List<RichiestaNoleggio> richieste =dao.getRichiesteNoleggioDipendente(idDipendente,idAzienda);
             List<RichiestaNoleggioDTO> richiesteDTO = new ArrayList<>();
             for (RichiestaNoleggio ric :richieste) {
-                RichiestaNoleggioDTO dto = new RichiestaNoleggioDTO(ric,false);
+                RichiestaNoleggioDTO dto = new RichiestaNoleggioDTO(ric,false,false);
                 Veicolo veicolo = ric.getVeicolo();
                 VeicoloDTO veicoloDTO = new VeicoloDTO(veicolo,false);
                 dto.setVeicolo(veicoloDTO);

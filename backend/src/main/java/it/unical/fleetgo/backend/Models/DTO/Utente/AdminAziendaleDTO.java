@@ -1,4 +1,5 @@
 package it.unical.fleetgo.backend.Models.DTO.Utente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.AdminAziendale;
@@ -18,6 +19,7 @@ public class AdminAziendaleDTO extends UtenteDTO {
         super();
     }
 
+    @JsonIgnore
     public AdminAziendaleDTO(AdminAziendale utente, boolean caricaInformazioniAzienda) {
         super(utente);
 

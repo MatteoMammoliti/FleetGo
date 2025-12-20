@@ -68,6 +68,13 @@ public class PrenotazioniDipendentiService {
         }
     }
 
+    public boolean eliminaRichiesta(Integer idRichiestaNoleggio) throws SQLException {
+        try(Connection connection=dataSource.getConnection()){
+            RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
+            return dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio);
+        }
+    }
+
 
     private Double calcoloPrezzoRichiesta(RichiestaNoleggioDTO richiesta){
         LocalDateTime inizio = LocalDateTime.parse(richiesta.getDataRitiro() + "T" + richiesta.getOraInizio());
@@ -79,4 +86,5 @@ public class PrenotazioniDipendentiService {
         return minutiTotali * this.tariffa;
 
     }
+
 }
