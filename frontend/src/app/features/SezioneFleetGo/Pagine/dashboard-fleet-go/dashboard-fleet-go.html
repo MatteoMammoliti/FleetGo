@@ -65,13 +65,14 @@
     </app-gestisci-richiesta-manutenzione>
   }
 
+  @if(apriPaginaGenerazioneOfferte){
   <app-modale-generazione-fattura
   [modaleVisibile]="apriPaginaGenerazioneOfferte"
   [fattura]="fatturaDaGenerare"
   [offerteAttive]="offerteAttive"
   (chiudiPagina)="chiudiFinestraModaleGenerazioneFattura()"
   (confermaGenerazione)="generaFattura($event)">
-
   </app-modale-generazione-fattura>
+  }
 
 </div>

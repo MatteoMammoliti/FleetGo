@@ -3,12 +3,14 @@ import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-generazione-fattura',
   imports: [
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    TemplateFinestraModale
   ],
   templateUrl: './modale-generazione-fattura.html',
   styleUrl: './modale-generazione-fattura.css',
@@ -23,6 +25,9 @@ export class ModaleGenerazioneFattura {
   offertaSelezionata: OffertaDTO | null = null;
   prezzoScontato = 0;
   scontoDaSottrarre = 0;
+  ngOnInit(){
+    this.calcolaSconto();
+  }
 
   chiudiModale() { this.chiudiPagina.emit(); }
 

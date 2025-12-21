@@ -1,68 +1,54 @@
-@if(modaleVisibile) {
-  <div class="modal-overlay">
+<app-template-finestra-modale (chiudi)="chiudiModale()" (conferma)="confermaGenerazioneFattura()" (annulla)="chiudiModale()" titolo="Emetti fattura" tastoBianco="Annulla" tastoBlu="Emetti">
+        <div class="px-6 py-3 space-y-4 text-testo-p">
+          <div class="bg-grigio rounded-xl shadow-md p-4 flex justify-between items-center ">
+              <div>
+                <p class="text-xl font-bold"> {{ fattura.nomeAzienda }}</p>
+              </div>
 
-    @if(fattura){
-      <div class="modal-container">
+              <div>
+                <p class="text-xs font-bold uppercase text-gray-400 tracking-wide">Mese</p>
+                <p class="text-xs font-bold">{{ fattura.mese }}/{{fattura.anno}}</p>
+              </div>
 
-        <div class="modal-header">
-          <h2>Generazione Fattura</h2>
-          <button class="close-btn" (click)="chiudiModale()">&times;</button>
-        </div>
-
-        <div class="modal-body">
-
-          <div class="info-group">
-            <h3>Dettagli Fatturazione</h3>
-            <p><strong>Azienda:</strong> {{ fattura.nomeAzienda }}</p>
-            <p><strong>Periodo:</strong> {{ fattura.mese }}/{{ fattura.anno }}</p>
-            <p><strong>Noleggi effettuati:</strong> {{ fattura.numeroNoleggi }}</p>
           </div>
-
-          <div class="offer-selection">
-            <label for="offertaSelect">Applica Promozione (Opzionale)</label>
-            <select id="offertaSelect" [(ngModel)]="offertaSelezionata" (change)="calcolaSconto()" class="form-select">
-              <option [ngValue]="null">Nessuna promozione</option>
+          <div class="border-b-2 py-3">
+            <label for="offertaSelect" class="font-bold">Promozione: </label>
+            <select id="offertaSelect" [(ngModel)]="offertaSelezionata" (change)="calcolaSconto()" class="">
+              <option [ngValue]="null">Seleziona promozione</option>
 
               @for(offerta of offerteAttive; track offerta.idOfferta) {
                 <option [ngValue]="offerta">{{ offerta.nomeOfferta }} (-{{ offerta.percentualeSconto }}%)</option>
               }
-
             </select>
 
             @if(offertaSelezionata) {
-              <div class="offer-details">
+              <div class="bg-azzurro/10 px-3 py-1 w-fit rounded-xl gap-1 flex items-center mt-2">
+                <i class="bi bi-info-circle text-s text-azzurro-scuro"></i>
                 <small>{{ offertaSelezionata.descrizioneOfferta }}</small>
               </div>
             }
           </div>
 
-          <div class="price-recap">
-            <div class="price-row">
-              <span>Imponibile:</span>
-              <span>€ {{ fattura.costoTotale | number:'1.2-2' }}</span>
-            </div>
-
-            @if(offertaSelezionata) {
-              <div class="price-row discount">
-                <span>Sconto ({{ offertaSelezionata.percentualeSconto }}%):</span>
-                <span>- € {{ scontoDaSottrarre | number:'1.2-2' }}</span>
+          <div class="mr-3">
+              <div class="flex justify-between">
+                <span>Consumo:</span>
+                <span> € {{ fattura.costoTotale | number:'1.2-2' }}</span>
               </div>
-            }
 
-            <div class="price-row total">
-              <span>Totale da Fatturare:</span>
+              @if(offertaSelezionata) {
+                <div class="text-green-600 py-3 text-xs font-bold flex justify-between">
+                  <span>Sconto ({{ offertaSelezionata.percentualeSconto }}%): </span>
+                  <span>- € {{ scontoDaSottrarre | number:'1.2-2' }}</span>
+                </div>
+              }
+
+            <div class="text-s text-testo-p mt-3 flex justify-between">
+              <span class="font-bold ">Totale da Fatturare: </span>
               <span>€ {{ prezzoScontato | number:'1.2-2' }}</span>
             </div>
           </div>
 
         </div>
 
-        <div class="modal-footer">
-          <button class="btn-secondary" (click)="chiudiModale()">Annulla</button>
-          <button class="btn-primary" (click)="confermaGenerazioneFattura()">Genera Fattura</button>
-        </div>
 
-      </div>
-    }
-  </div>
-}
+</app-template-finestra-modale>

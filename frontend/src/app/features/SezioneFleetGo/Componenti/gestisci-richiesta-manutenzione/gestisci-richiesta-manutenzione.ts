@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe, NgClass} from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-gestisci-richiesta-manutenzione',
   imports: [
-    DatePipe
+    DatePipe,
+    TemplateFinestraModale
   ],
   standalone:true,
   templateUrl: './gestisci-richiesta-manutenzione.html',
