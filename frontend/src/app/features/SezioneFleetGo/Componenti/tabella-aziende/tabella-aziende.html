@@ -1,29 +1,79 @@
-<div class="contenitore-tabella">
+<div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm">
+  
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-bold tracking-wider">
+          <th class="p-4 py-5">Azienda</th>
+          <th class="p-4 py-5">Partita IVA</th>
+          <th class="p-4 py-5">Sede Operativa</th>
+          <th class="p-4 py-5 text-center">Ref. Admin</th>
+          <th class="p-4 py-5 text-right">Azioni</th>
+        </tr>
+      </thead>
 
-  <h2>Elenco Aziende Affiliate</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Nome Azienda</th>
-    <th>Partita IVA</th>
-    <th>Sede</th>
-    <th>Id Admin</th>
-    <th>Azioni</th>
-  </tr>
-  </thead>
-  <tbody>
+      <tbody class="divide-y divide-slate-100">
 
-    @for (azienda of listaAziende; track azienda.pIva) {
-      <tr>
-        <td>{{ azienda.nomeAzienda }}</td>
-        <td>{{ azienda.pIva }}</td>
-        <td>{{ azienda.sedeAzienda }}</td>
-        <td>{{ azienda.idAdminAzienda }}</td>
-        <td>
-          <button class="bottone-elimina" (click)="elimina(azienda.idAdminAzienda)">Elimina</button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+        @for (azienda of listaAziende; track $index) {
+          <tr class="group hover:bg-blue-50/50 transition-all duration-200">
+            
+            <td class="p-4">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+                  {{ azienda.nomeAzienda ? azienda.nomeAzienda.charAt(0).toUpperCase() : '?' }}
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-semibold text-slate-700 text-[0.95rem]">
+                    {{ azienda.nomeAzienda || 'Nome non disponibile' }}
+                  </span>
+                </div>
+              </div>
+            </td>
+
+            <td class="p-4">
+              <span class="font-mono text-slate-500 text-sm bg-slate-100 px-2 py-1 rounded">
+                {{ azienda.pIva }}
+              </span>
+            </td>
+
+            <td class="p-4 text-slate-600">
+              <div class="flex items-center gap-2 text-sm">
+                {{ azienda.sedeAzienda }}
+              </div>
+            </td>
+
+            <td class="p-4 text-center">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-blu border border-indigo-100">
+                #{{ azienda.idAdminAzienda }}
+              </span>
+            </td>
+
+            <td class="p-4 text-right">
+              <button (click)="elimina(azienda.idAdminAzienda)" 
+                      class="text-slate-400 hover:text-red-600 hover:bg-red-50 w-8 h-8 rounded-lg transition-all flex items-center justify-center ml-auto"
+                      title="Elimina Azienda">
+                <i class="bi-trash3 text-lg"></i>
+              </button>
+            </td>
+
+          </tr>
+        }
+
+        @if (listaAziende.length === 0) {
+          <tr>
+            <td colspan="5" class="p-12 text-center">
+              <div class="flex flex-col items-center justify-center gap-3 text-slate-400">
+                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-2">
+                  <i class="bi-buildings text-3xl opacity-50"></i>
+                </div>
+                <p class="text-lg font-medium text-slate-600">Nessuna azienda trovata</p>
+              </div>
+            </td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
 </div>

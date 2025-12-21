@@ -1,96 +1,22 @@
-/* --- LAYOUT GENERALE --- */
 .layout-container {
   display: flex;
-  flex-direction: column; /* Barra sopra, contenuto sotto */
-  height: 100vh; /* Occupa tutto lo schermo */
-  overflow: hidden; /* Evita doppi scroll */
+  flex-direction: column; 
+  height: 100vh; 
+  overflow: hidden; 
 }
 
-/* --- ZONA CONTENUTO + FOOTER --- */
 .main-content {
-  flex: 1; /* Prende tutto lo spazio rimanente */
-  background-color: #f8f9fa;
-
-  /* ABILITA LO SCROLL QUI */
+  flex: 1; 
+  background-color: #f8f9fa; 
   overflow-y: auto;
   overflow-x: hidden;
-
-  /* Flex per gestire il footer "sticky" in fondo al contenuto */
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
-/* Wrapper del contenuto della pagina */
 .page-content-wrapper {
-  flex: 1; /* Questo è il trucco: spinge il footer in basso se la pagina è corta */
-  padding-bottom: 40px; /* Un po' di spazio prima del footer */
+  flex: 1; 
+  padding-bottom: 40px; 
   width: 100%;
-}
-
-/* --- STILE NAVBAR (Invariato) --- */
-.contenitore-navbar-items {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.contenitoreMenu ul {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.contenitoreMenu li { margin: 0; }
-
-.contenitoreMenu a {
-  text-decoration: none;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding-bottom: 5px;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.contenitoreMenu a:hover,
-.contenitoreMenu a.active {
-  color: #ffffff;
-  font-weight: 600;
-  border-bottom: 2px solid #3b82f6;
-}
-
-.contenitore-logout {
-  margin-left: 20px;
-  border: none;
-}
-
-.logout {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-}
-
-.logout:hover {
-  background-color: #ef4444;
-  border-color: #ef4444;
-}
-
-@media (max-width: 1000px) {
-  .contenitoreMenu ul { gap: 15px; }
-  .contenitoreMenu a { font-size: 0.85rem; }
-  .logout span { display: none; }
 }

@@ -1,10 +1,11 @@
-import {Component, SimpleChanges, ViewChild} from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common'; // <--- AGGIUNTO PER GRAFICA
 import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabella-aziende/tabella-aziende';
-import {FormAggiungiAdminAzienda} from '@features/SezioneFleetGo/Componenti/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
-import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
-import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo'; // <--- AGGIUNTO PER GRAFICA
+import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
+import { AziendaDTO } from '@core/models/aziendaDTO';
 
 @Component({
   selector: 'app-aziende-affiliate',
@@ -12,50 +13,58 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
   imports: [
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,             
     TabellaAziendeComponent,
-    FormAggiungiAdminAzienda
+    FormAggiungiAdminAzienda,
+    TemplateTitoloSottotitolo 
   ],
   templateUrl: './aziende-affiliate.html',
   styleUrl: './aziende-affiliate.css',
 })
+export class AziendeAffiliate implements OnInit {
+  mostraModale = false;
 
-export class AziendeAffiliate {
-  constructor(private aziendeService: AziendeAffiliateService) {
+  apriModaleAggiunta() {
+    this.mostraModale = true;
+  }
+
+  chiudiModale() {
+    this.mostraModale = false;
   }
 
   @ViewChild('tabellaAziende') tabella!: TabellaAziendeComponent;
-
   @ViewChild('formAggiungiAdminAzienda') formAggiunta!: FormAggiungiAdminAzienda;
+
+  listaAziende: AziendaDTO[] = [];
+
+  constructor(private aziendeService: AziendeAffiliateService) {}
 
   ngOnInit() {
     this.aggiornaDati();
   }
 
-
-
-
-
-  listaAziende:AziendaDTO[]=[];
-
-  onAziendaAggiunta(mod:any) {
+  onAziendaAggiunta(mod: any) {
     this.aziendeService.registraAzienda(mod.adminAziendale, mod.azienda).subscribe({
       next: (res) => {
         console.log("Azienda registrata!", res);
+        
         this.aggiornaDati();
-        this.formAggiunta.pulisciForm();
+        this.chiudiModale(); 
+        
+        if(this.formAggiunta) this.formAggiunta.pulisciForm();
       },
       error: (err) => {
         console.error("Errore", err);
+        alert("Errore durante il salvataggio: " + (err.error?.message || "Errore sconosciuto"));
       }
     });
   }
 
-
   aggiornaDati() {
     this.aziendeService.richiediAziende().subscribe({
       next: (data) => {
-        console.log("ho ricevuto")
-        if(data) {
+        console.log("ho ricevuto");
+        if (data) {
           this.listaAziende = data;
           console.log("Dati caricati:", this.listaAziende);
         }
@@ -66,19 +75,20 @@ export class AziendeAffiliate {
     });
   }
 
-  elimina(idAdmin: number | undefined) {
-    console.log("sono in elimina padre" + idAdmin);
-    this.aziendeService.eliminaAzienda(idAdmin).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.aggiornaDati();
-      },
-      error: (err) => {
-        console.error("Errore nell'eliminazione:", err);
-      }
-    });
+  elimina(idAdmin: number | undefined) { 
+    if(!idAdmin) return;
+    
+    if(confirm("Sei sicuro di voler eliminare questa azienda?")) {
+        console.log("sono in elimina padre" + idAdmin);
+        this.aziendeService.eliminaAzienda(idAdmin).subscribe({
+          next: (data) => {
+            console.log(data);
+            this.aggiornaDati();
+          },
+          error: (err) => {
+            console.error("Errore nell'eliminazione:", err);
+          }
+        });
+    }
   }
-
-
-
 }

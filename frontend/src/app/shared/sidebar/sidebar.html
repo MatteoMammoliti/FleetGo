@@ -1,6 +1,27 @@
-<div class="barra_laterale">
-    <app-logo></app-logo>
-    <nav class="navigazione">
-        <ng-content></ng-content>
+<header class="bg-blu h-[80px] flex items-center justify-between px-6 lg:px-10 shadow-lg sticky top-0 z-50 relative">
+
+    <div class="flex items-center scale-90 origin-left z-50 shrink-0">
+        <app-logo></app-logo>
+    </div>
+
+    <nav class="navigazione transition-all duration-300 border-l border-white/10"
+         [class.mobile-open]="isSidebarOpen">
+         
+         <div class="lg:hidden flex justify-end p-4 mb-4">
+             <button (click)="toggleSidebar()" class="text-white">
+                 <i class="bi-x-lg text-3xl"></i>
+             </button>
+         </div>
+
+         <ng-content></ng-content>
     </nav>
-</div>
+
+    <button (click)="toggleSidebar()" class="lg:hidden text-white p-2 focus:outline-none z-50 ml-auto">
+        <i *ngIf="!isSidebarOpen" class="bi bi-list text-4xl"></i>
+    </button>
+
+    <div *ngIf="isSidebarOpen" (click)="toggleSidebar()" 
+         class="fixed inset-0 bg-black/50 z-40 lg:hidden">
+    </div>
+
+</header>

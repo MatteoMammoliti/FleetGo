@@ -1,8 +1,51 @@
-<div class="contenitore-principale">
-  <div class="form-container">
-    <app-form-aggiungi-admin-azienda #formAggiungiAdminAzienda (aziendaAggiunta)="onAziendaAggiunta($event)"></app-form-aggiungi-admin-azienda>
+<div class="flex flex-col gap-8 p-6 fade-in relative">
+
+  <app-template-titolo-sottotitolo
+    [titolo]="'Aziende Affiliate'">
+  </app-template-titolo-sottotitolo>
+
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="relative w-full md:w-96">
+      <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <input type="text" placeholder="Cerca azienda..." 
+             class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm">
+    </div>
+
+    <button (click)="apriModaleAggiunta()"
+            class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95">
+      <i class="bi-plus-lg text-lg"></i>
+      <span>Nuova Azienda</span>
+    </button>
   </div>
-  <div class="tabella-container">
-    <app-tabella-aziende #tabellaAziende  [listaAziende]="listaAziende" (richiediEliminazione)="elimina($event)"></app-tabella-aziende>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <app-tabella-aziende 
+      #tabellaAziende
+      [listaAziende]="listaAziende"
+      (richiediEliminazione)="elimina($event)">
+    </app-tabella-aziende>
   </div>
+
+  <div *ngIf="mostraModale" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div (click)="chiudiModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
+
+    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-jump-in">
+      
+      <div class="sticky top-0 bg-white z-10 flex items-center justify-between p-6 border-b border-slate-100">
+        <h2 class="text-xl font-bold text-slate-800">Nuova Partnership</h2>
+        <button (click)="chiudiModale()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-red-500 transition-colors">
+          <i class="bi bi-x-lg text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <app-form-aggiungi-admin-azienda 
+          #formAggiungiAdminAzienda
+          (aziendaAggiunta)="onAziendaAggiunta($event)">
+        </app-form-aggiungi-admin-azienda>
+      </div>
+
+    </div>
+  </div>
+
 </div>

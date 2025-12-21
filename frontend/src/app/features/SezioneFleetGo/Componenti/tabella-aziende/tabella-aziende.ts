@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {AziendaDTO} from '@core/models/aziendaDTO';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-tabella-aziende',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './tabella-aziende.html',
   styleUrl: './tabella-aziende.css'
 })

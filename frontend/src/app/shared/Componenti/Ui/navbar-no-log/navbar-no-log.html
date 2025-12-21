@@ -1,11 +1,14 @@
-<header class="bg-blu min-h-[80px] py-6 lg:py-0 flex flex-col lg:flex-row items-center justify-between px-6 lg:px-10 shadow-lg sticky top-0 z-50 transition-all duration-300">
-
-  <div class="flex items-center scale-90 origin-left z-50 shrink-0 mb-6 lg:mb-0">
-    <app-logo></app-logo>
+<header class="bg-blu w-full h-[80px] flex items-center justify-between px-6 lg:px-12 shadow-md relative z-50">
+  
+  <div class="flex items-center gap-3">
+    <div class="bg-white/10 p-2 rounded-lg">
+      <i class="bi bi-truck text-white text-2xl"></i>
+    </div>
+    <span class="text-white text-xl font-bold tracking-wide">Fleet<span class="text-azzurro">Go</span></span>
   </div>
 
-  <nav class="w-full lg:w-auto mb-6 lg:mb-0">
-    <ul class="flex flex-col lg:flex-row items-center gap-4 lg:gap-8 list-none m-0 p-0">
+  <nav class="hidden lg:block">
+    <ul class="flex gap-8 list-none m-0 p-0">
       <li *ngFor="let item of [
           { link: '/', frag: 'chi-siamo', label: 'Chi Siamo' },
           { link: '/', frag: 'come-funziona', label: 'Come funziona' },
@@ -13,23 +16,57 @@
           { link: '/', frag: 'contatti', label: 'Contatti' }]">
           
         <a [routerLink]="item.link" [fragment]="item.frag"
-           class="text-grigio font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300 
-                  hover:text-white hover:bg-white/10 no-underline cursor-pointer whitespace-nowrap">
+           class="text-white font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300 
+                  hover:text-blue-500 no-underline cursor-pointer whitespace-nowrap">
           {{ item.label }}
         </a>
       </li>
     </ul>
   </nav>
 
-  <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0 w-full lg:w-auto justify-center">
-    <a routerLink="/login" 
-       class="text-white font-semibold text-[0.95rem] px-4 py-2 rounded-lg no-underline hover:opacity-80 transition-opacity whitespace-nowrap">
-       Accedi
-    </a>
-    <a routerLink="/registrazione" 
-       class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro hover:scale-105 active:scale-95 transition-all duration-300 no-underline whitespace-nowrap">
-       Registrati
-    </a>
+  <div class="flex items-center gap-4">
+    
+    <div class="hidden lg:flex items-center gap-4">
+      <a routerLink="/login" class="text-white font-semibold text-[0.95rem] hover:opacity-80 no-underline">Accedi</a>
+      <a routerLink="/registrazione" class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro no-underline">Registrati</a>
+    </div>
+
+    <button (click)="toggleSidebar()" class="lg:hidden text-white p-2 focus:outline-none">
+      <i class="bi-list text-4xl"></i>
+    </button>
+    
+  </div>
+
+  <div *ngIf="sidebarVisibile">
+    <div (click)="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40"></div>
+    
+    <div class="fixed top-0 right-0 h-full w-[280px] bg-blu shadow-2xl z-50 p-6 flex flex-col gap-6 overflow-y-auto border-l border-white/10">
+      
+      <div class="flex justify-end">
+        <button (click)="toggleSidebar()" class="text-white p-2">
+          <i class="bi-x-lg text-3xl"></i>
+        </button>
+      </div>
+
+      <ul class="flex flex-col gap-4 list-none p-0 m-0">
+        <li *ngFor="let item of [
+            { link: '/', frag: 'chi-siamo', label: 'Chi Siamo' },
+            { link: '/', frag: 'come-funziona', label: 'Come funziona' },
+            { link: '/', frag: 'vantaggi', label: 'Vantaggi' },
+            { link: '/', frag: 'contatti', label: 'Contatti' }]">
+          <a [routerLink]="item.link" [fragment]="item.frag" (click)="toggleSidebar()"
+             class="text-white text-sm block py-2 hover:text-azzurro">
+            {{ item.label }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="flex flex-col gap-4 mt-4">
+        <a routerLink="/login" (click)="toggleSidebar()" class="text-white text-center font-semibold text-lg border border-white/20 py-3 rounded-lg no-underline">Accedi</a>
+        <a routerLink="/registrazione" (click)="toggleSidebar()" class="bg-azzurro text-white text-center font-bold text-lg py-3 rounded-lg shadow-lg no-underline">Registrati</a>
+      </div>
+
+    </div>
   </div>
 
 </header>

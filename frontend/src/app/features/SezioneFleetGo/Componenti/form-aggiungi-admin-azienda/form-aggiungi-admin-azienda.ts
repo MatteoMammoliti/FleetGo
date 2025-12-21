@@ -1,4 +1,5 @@
 import {Component, inject, Output, EventEmitter} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
@@ -7,7 +8,7 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
 @Component({
   selector: 'app-form-aggiungi-admin-azienda',
     imports: [
-        FormsModule
+        FormsModule,CommonModule
     ],
   templateUrl: './form-aggiungi-admin-azienda.html',
   styleUrl: './form-aggiungi-admin-azienda.css',
