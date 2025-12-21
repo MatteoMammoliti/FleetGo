@@ -1,41 +1,61 @@
-<div class="table-container">
-  <table class="fl-table"> <thead>
-  <tr>
+<div class="flex flex-col w-full bg-white">
+  <div class="">
+    <div class="flex justify-between w-full align-items-center">
+      <h3>Elenco Fatture</h3>
+
+      <div class="flex gap-7">
+        <select [(ngModel)]="annoSelezionato" (change)="aggiornaFatture()" class="form-select me-2">
+          @for (anno of anniFatture; track anno) {
+            <option [ngValue]="anno">{{ anno }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="aziendaSelezionata" class="form-select" (change)="aggiornaFatture()">
+          <option value="">Tutte le Aziende</option>
+          @for (az of listaAziende; track az.idAzienda) {
+            <option [value]="az.nomeAzienda">{{ az.nomeAzienda }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+  <table class="table-auto w-full"> <thead>
+  <tr class="">
     <th>N. Fattura</th>
     <th>Azienda</th>
     <th>Periodo</th>
     <th>Importo</th>
     <th>Stato</th>
-    <th class="text-right">Azioni</th>
+    <th class="">Azioni</th>
   </tr>
   </thead>
     <tbody>
       @for (fattura of fatture; track fattura.numeroFattura) {
         <tr>
-          <td><span class="fw-bold">#{{ fattura.numeroFattura }}</span></td>
+          <td><span class="">#{{ fattura.numeroFattura }}</span></td>
           <td>{{ fattura.azienda.nomeAzienda }}</td> <td>{{ fattura.meseFattura }}/{{ fattura.annoFattura }}</td>
-          <td class="text-success fw-bold">€ {{ fattura.costo }}</td>
+          <td class="">€ {{ fattura.costo }}</td>
           <td>
             @if(fattura.fatturaPagata) {
-              <span class="badge-success">Pagata</span>
+              <span class="">Pagata</span>
             } @else {
-              <span class="badge-warning">In Attesa</span>
+              <span class="">In Attesa</span>
             }
           </td>
-          <td class="text-right">
+          <td class="">
             <button class="btn-icon download" (click)="onDownload(fattura.numeroFattura)" title="Scarica PDF">
               <i class="bi bi-file-earmark-pdf-fill"></i>
             </button>
           </td>
         </tr>
       }
-      @if(fatture.length === 0) {
-        <tr>
-          <td colspan="6" class="text-center py-4 text-muted">
-            Nessuna fattura trovata per i filtri selezionati.
-          </td>
-        </tr>
-      }
     </tbody>
+
   </table>
-</div>
+    @if(fatture.length === 0) {
+      <div class="w-full flex justify-center items-center">
+        <app-messaggio-card-vuota testoPrimario="Nessuna fattura trovata!" testoSecondario="Prova a cambiare i filtri" icona="bi-check" tagliaIcona="3xl"></app-messaggio-card-vuota>
+      </div>
+    }
+  </div>
+  </div>

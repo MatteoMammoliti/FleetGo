@@ -1,6 +1,5 @@
-<div class="dashboard-container"> <h1 class="titolo-pagina">Storico Fatturazione</h1>
-
-  <div class="griglia-kpi-2 mb-4">
+<app-intestazione-ebackground titolo="Fiscalità FleetGo">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-3 mb-5">
       <app-card-statistiche-dashboard-fleet
       titolo="Fatture Emesse ({{annoSelezionato}})"
       [valore]="totaleFattureAnnoSelezionato"
@@ -27,30 +26,9 @@
 
   </div>
 
-  <div class="panel-container"> <div class="panel-header d-flex justify-content-between align-items-center">
-    <h3>Elenco Fatture</h3>
-
-    <div class="filtri-container">
-      <select [(ngModel)]="annoSelezionato" (change)="aggiornaFatture()" class="form-select me-2">
-        @for (anno of anniFatture; track anno) {
-          <option [ngValue]="anno">{{ anno }}</option>
-        }
-      </select>
-
-      <select [(ngModel)]="aziendaSelezionata" class="form-select">
-        <option value="">Tutte le Aziende</option>
-        @for (az of listaAziende; track az.idAzienda) {
-          <option [value]="az.nomeAzienda">{{ az.nomeAzienda }}</option>
-        }
-      </select>
-    </div>
-  </div>
-
-    <app-tabella-storico-fatture
-      [fatture]="FattureFiltrate"
-      (richiestaDownload)="gestisciDownload($event)">
+    <app-tabella-storico-fatture [fatture]="FattureFiltrate" [anniFatture]="anniFatture"
+                                 [listaAziende]="listaAziende" (aggiornaTabella)="aggiorna($event)"  (richiestaDownload)="gestisciDownload($event)" >
     </app-tabella-storico-fatture>
 
-  </div>
+</app-intestazione-ebackground>
 
-</div>

@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   TabellaStoricoFatture
 } from '@features/SezioneFleetGo/Componenti/tabella-storico-fatture/tabella-storico-fatture';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-storico-fatture',
@@ -15,7 +16,8 @@ import {
     CardStatisticheDashboardFleet,
     ReactiveFormsModule,
     FormsModule,
-    TabellaStoricoFatture
+    TabellaStoricoFatture,
+    IntestazioneEBackground
   ],
   templateUrl: './storico-fatture.html',
   styleUrl: './storico-fatture.css',
@@ -37,6 +39,13 @@ export class StoricoFatture {
   totaleRicaviAnnoStimato = 0;
 
   ngOnInit() {
+    this.prelevaAnni();
+    this.prelevaAziende();
+    this.aggiornaFatture();
+  }
+
+
+  private prelevaAnni(){
     this.storicoFattureService.getAnniFatture().subscribe({
       next: (anni) => {
         this.anniFatture = anni;
@@ -51,6 +60,8 @@ export class StoricoFatture {
       }
     })
 
+  }
+  private prelevaAziende(){
     this.aziendeAffiliateService.richiediAziende().subscribe({
       next: (aziende) => {
         this.listaAziende = aziende;
@@ -59,7 +70,12 @@ export class StoricoFatture {
         console.error('Errore durante il recupero delle aziende affiliate:', error);
       }
     })
+  }
 
+
+  protected aggiorna(dati:any){
+    this.annoSelezionato=dati.annoSelezionato;
+    this.aziendaSelezionata=dati.aziendaSelezionata;
     this.aggiornaFatture();
   }
 

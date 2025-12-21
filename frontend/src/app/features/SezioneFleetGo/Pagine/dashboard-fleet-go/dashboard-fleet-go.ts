@@ -10,10 +10,11 @@ import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {GestisciRichiestaManutenzione} from '@features/SezioneFleetGo/Componenti/gestisci-richiesta-manutenzione/gestisci-richiesta-manutenzione';
 import {ModaleGenerazioneFattura} from '@features/SezioneFleetGo/Componenti/modale-generazione-fattura/modale-generazione-fattura';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-dashboard-fleet-go',
-  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura],
+  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground],
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })
