@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CommonModule } from '@angular/common'; // <--- AGGIUNTO PER GRAFICA
+import { CommonModule } from '@angular/common';
 import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabella-aziende/tabella-aziende';
 import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo'; // <--- AGGIUNTO PER GRAFICA
@@ -22,6 +22,10 @@ import { AziendaDTO } from '@core/models/aziendaDTO';
   styleUrl: './aziende-affiliate.css',
 })
 export class AziendeAffiliate implements OnInit {
+
+  testoRicerca: string = '';
+  aziendeOriginali: AziendaDTO[] = [];
+
   mostraModale = false;
 
   apriModaleAggiunta() {
@@ -31,6 +35,19 @@ export class AziendeAffiliate implements OnInit {
   chiudiModale() {
     this.mostraModale = false;
   }
+
+  filtraAziende() {
+    if (!this.testoRicerca || this.testoRicerca.trim() === '') {
+      this.listaAziende = this.aziendeOriginali;
+    } else {
+      const term = this.testoRicerca.toLowerCase();
+      this.listaAziende = this.aziendeOriginali.filter(az => 
+      (az.nomeAzienda && az.nomeAzienda.toLowerCase().includes(term)) ||
+      (az.pIva && az.pIva.toLowerCase().includes(term))
+      );
+    }
+  }
+
 
   @ViewChild('tabellaAziende') tabella!: TabellaAziendeComponent;
   @ViewChild('formAggiungiAdminAzienda') formAggiunta!: FormAggiungiAdminAzienda;
@@ -65,6 +82,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         console.log("ho ricevuto");
         if (data) {
+          this.aziendeOriginali = data;
           this.listaAziende = data;
           console.log("Dati caricati:", this.listaAziende);
         }
