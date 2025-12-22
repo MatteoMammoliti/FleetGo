@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaAffiliazioneAziendaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
@@ -39,12 +40,12 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idDipendente
      * @param idAzienda
      */
-    public void rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda) throws SQLException{
-        String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=?";
+    public boolean rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda) throws SQLException{
+        String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=? AND data_risposta IS NULL";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);
-            st.executeUpdate();
+            return st.executeUpdate()>0;
         }
     }
 
@@ -152,5 +153,22 @@ public class RichiestaAffiliazioneAziendaDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public ContenitoreDatiAzienda getRichiestaInAttesaDipendente(Integer idDipendente) throws SQLException{
+        String query="SELECT a.* FROM richiesta_affiliazione_azienda ra JOIN azienda a ON a.id_azienda=ra.id_azienda" +
+                " WHERE id_dipendente=? AND data_risposta IS NULL AND accettata=?";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, idDipendente);
+            ps.setBoolean(2, false);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                ContenitoreDatiAzienda contenitoreDatiAzienda=new ContenitoreDatiAzienda();
+                contenitoreDatiAzienda.setIdAzienda(rs.getInt("id_azienda"));
+                contenitoreDatiAzienda.setNomeAzienda(rs.getString("nome_azienda"));
+                return contenitoreDatiAzienda;
+            }
+            return null;
+        }
     }
 }

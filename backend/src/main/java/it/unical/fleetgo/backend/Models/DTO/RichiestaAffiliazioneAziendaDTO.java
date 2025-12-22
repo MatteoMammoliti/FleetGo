@@ -13,6 +13,7 @@ public class RichiestaAffiliazioneAziendaDTO {
     private Integer idUtente;
     private Integer idAzienda;
     private boolean accettata;
+    private String dataAccettazione;
 
     public RichiestaAffiliazioneAziendaDTO(){}
 

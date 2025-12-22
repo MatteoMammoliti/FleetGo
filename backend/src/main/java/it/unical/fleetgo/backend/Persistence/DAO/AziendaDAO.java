@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
+import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -117,5 +118,27 @@ public class AziendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<ContenitoreDatiAzienda> getInformazioniAziendeInPiattaforme() throws SQLException{
+        List<ContenitoreDatiAzienda> infoAziende = new ArrayList<>();
+        String query="SELECT a.*, " +
+                " (SELECT COUNT(*) FROM gestione_veicolo_azienda gv WHERE gv.id_azienda=a.id_azienda) as totale_veicolo, " +
+                " (SELECT COUNT(*) FROM richiesta_affiliazione_azienda ra WHERE ra.id_azienda=a.id_azienda AND ra.accettata= true) as totale_dipendenti" +
+                " FROM azienda a";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                ContenitoreDatiAzienda contenitore=new ContenitoreDatiAzienda();
+                contenitore.setIdAzienda(rs.getInt("id_azienda"));
+                contenitore.setNomeAzienda(rs.getString("nome_azienda"));
+                contenitore.setNomeSedeAzienda(rs.getString("sede_azienda"));
+                contenitore.setTotaleDipendentiAzienda(rs.getInt("totale_dipendenti"));
+                contenitore.setTotaleVeicoliAzienda(rs.getInt("totale_veicolo"));
+                infoAziende.add(contenitore);
+            }
+            return infoAziende;
+        }
+
     }
 }

@@ -42,6 +42,7 @@ public class SecurityConf {
                         .requestMatchers("/dashboardAdminAziendale/**").hasRole("AdminAziendale")
                         .requestMatchers("/dashboardFleetGo/**").hasRole("FleetGo")
                         .requestMatchers("/dashboardDipendente/**").hasRole("Dipendente")
+                        .requestMatchers("/homeNoAzienda/**").hasRole("Dipendente")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) ->
@@ -54,6 +55,7 @@ public class SecurityConf {
 
                             String ruolo =auth.getAuthorities().iterator().next().toString();
                             String ruoloPulito= ruolo.replace("ROLE_","");
+                            Integer idAziendaAssociatoRisposta=null;
 
                             String targetUrl = switch (ruoloPulito) {
                                 case "FleetGo" -> "/dashboardFleetGo";
@@ -89,15 +91,19 @@ public class SecurityConf {
                                     idAziendaAssociata= utenteService.getAziendaAssociataDipendente(contenitoreCredenziali.getIdUtente());
                                     if(idAziendaAssociata!=null){
                                         session.setAttribute("idAziendaAssociata",idAziendaAssociata);
+                                        idAziendaAssociatoRisposta=idAziendaAssociata;
+
                                     }
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
                             }
-
+                            String idAziendaJsonValue = (idAziendaAssociatoRisposta != null) ? idAziendaAssociatoRisposta.toString() : "null";
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.setContentType("application/json;charset=UTF-8");
-                            response.getWriter().write(String.format("{\"redirectUrl\": \"%s\", \"ruolo\": \"%s\"}", targetUrl, ruoloPulito));
+                            response.getWriter().write(String.format(
+                                    "{\"redirectUrl\": \"%s\", \"ruolo\": \"%s\", \"idAzienda\": %s}", targetUrl, ruoloPulito, idAziendaJsonValue
+                            ));
                         })
                         .failureHandler((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Credenziali non valide");
