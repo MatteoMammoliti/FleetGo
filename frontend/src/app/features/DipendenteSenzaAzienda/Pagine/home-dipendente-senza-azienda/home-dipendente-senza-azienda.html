@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-gray-50 font-sans pb-10">
+
+  <nav class="bg-white border-b border-gray-200 h-16 sticky top-0 z-20 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span class="text-gray-900 font-bold text-xl tracking-tight">FleetGo</span>
+      </div>
+      <button class="text-sm font-medium text-gray-500 hover:text-red-600 transition-colors">Esci</button>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 lg:py-12">
+
+    <div class="text-center mb-10 lg:mb-14">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white shadow-sm mb-5">
+        @if (richiestaInAttesa) {
+          <svg class="w-10 h-10 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        } @else {
+          <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+        }
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
+        @if (richiestaInAttesa) {
+          Richiesta in elaborazione
+        } @else {
+          Benvenuto in FleetGo!
+        }
+      </h1>
+
+      <p class="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
+        @if (richiestaInAttesa) {
+          Hai inviato una richiesta di affiliazione. Attendi che l'azienda la approvi per accedere alla dashboard.
+        } @else {
+          Per iniziare a prenotare veicoli, cerca l'azienda per cui lavori e invia una richiesta di affiliazione al gestore.
+        }
+      </p>
+    </div>
+
+    @if (richiestaInAttesa) {
+
+      <div class="max-w-2xl mx-auto animate-fade-in-up">
+        <div class="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden">
+          <div class="p-8 text-center">
+
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-50 mb-6">
+              <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Richiesta inviata a:</h3>
+            <p class="text-2xl font-bold text-blue-600 mb-6">{{ richiestaInAttesa.nomeAzienda }}</p>
+
+            <div class="bg-gray-50 rounded-xl p-4 mb-8 text-sm text-gray-600 border border-gray-100">
+              La tua richiesta è attualmente in stato <strong>"In Attesa"</strong>. <br>
+              Non appena un amministratore dell'azienda accetterà la tua richiesta, riceverai accesso completo alla piattaforma.
+            </div>
+
+            <button
+              (click)="annullaRichiesta()"
+              class="inline-flex items-center justify-center gap-2 text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 font-medium px-6 py-3 rounded-xl transition-all w-full sm:w-auto border border-transparent hover:border-red-200">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              Annulla Richiesta
+            </button>
+
+          </div>
+          <div class="h-2 bg-amber-400 w-full"></div>
+        </div>
+      </div>
+
+    } @else {
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+        <div class="lg:col-span-2 space-y-6">
+
+          <div class="bg-white p-1 rounded-xl border border-gray-200 shadow-sm sticky top-20 z-10">
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="Cerca azienda per nome o indirizzo..."
+                [(ngModel)]="testoFiltro"
+                (input)="filtraAziende()"
+                class="w-full pl-12 pr-4 py-3.5 rounded-lg border-none focus:ring-0 focus:outline-none text-gray-700 placeholder-gray-400 text-base"
+              >
+              <div class="absolute left-4 top-3.5 text-gray-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between px-2">
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider">
+              Risultati ricerca
+            </h3>
+            <span class="bg-blue-100 text-blue-700 font-semibold py-0.5 px-2.5 rounded-full text-xs">
+              {{ aziendeFiltrate.length }} trovate
+            </span>
+          </div>
+
+          <div class="space-y-4">
+            @for (azienda of aziendeFiltrate; track azienda.idAzienda) {
+              <app-azienda-card
+                [datiAzienda]="azienda"
+                [selezionato]="aziendaSelezionata?.idAzienda === azienda.idAzienda"
+                (selezionaAzienda)="selezionaAzienda($event)">
+              </app-azienda-card>
+            } @empty {
+              <div class="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
+                <p class="text-gray-500 font-medium">Nessuna azienda trovata con questo nome.</p>
+                <button (click)="testoFiltro=''; filtraAziende()" class="mt-2 text-blue-600 hover:underline text-sm">Mostra tutte</button>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="lg:col-span-1" id="sidebar-richiesta">
+          <app-richiesta-affiliazione
+            [aziendaSelezionata]="aziendaSelezionata"
+            (inviaRichiesta)="gestisciInvioRichiesta($event)">
+          </app-richiesta-affiliazione>
+        </div>
+
+      </div>
+    }
+
+  </div>
+</div>

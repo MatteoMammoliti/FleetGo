@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabella-aziende/tabella-aziende';
 import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo'; // <--- AGGIUNTO PER GRAFICA
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import { AziendaDTO } from '@core/models/aziendaDTO';
 
@@ -13,10 +13,10 @@ import { AziendaDTO } from '@core/models/aziendaDTO';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    CommonModule,             
+    CommonModule,
     TabellaAziendeComponent,
     FormAggiungiAdminAzienda,
-    TemplateTitoloSottotitolo 
+    TemplateTitoloSottotitolo
   ],
   templateUrl: './aziende-affiliate.html',
   styleUrl: './aziende-affiliate.css',
@@ -41,7 +41,7 @@ export class AziendeAffiliate implements OnInit {
       this.listaAziende = this.aziendeOriginali;
     } else {
       const term = this.testoRicerca.toLowerCase();
-      this.listaAziende = this.aziendeOriginali.filter(az => 
+      this.listaAziende = this.aziendeOriginali.filter(az =>
       (az.nomeAzienda && az.nomeAzienda.toLowerCase().includes(term)) ||
       (az.pIva && az.pIva.toLowerCase().includes(term))
       );
@@ -64,10 +64,10 @@ export class AziendeAffiliate implements OnInit {
     this.aziendeService.registraAzienda(mod.adminAziendale, mod.azienda).subscribe({
       next: (res) => {
         console.log("Azienda registrata!", res);
-        
+
         this.aggiornaDati();
-        this.chiudiModale(); 
-        
+        this.chiudiModale();
+
         if(this.formAggiunta) this.formAggiunta.pulisciForm();
       },
       error: (err) => {
@@ -93,9 +93,9 @@ export class AziendeAffiliate implements OnInit {
     });
   }
 
-  elimina(idAdmin: number | undefined) { 
+  elimina(idAdmin: number | undefined) {
     if(!idAdmin) return;
-    
+
     if(confirm("Sei sicuro di voler eliminare questa azienda?")) {
         console.log("sono in elimina padre" + idAdmin);
         this.aziendeService.eliminaAzienda(idAdmin).subscribe({

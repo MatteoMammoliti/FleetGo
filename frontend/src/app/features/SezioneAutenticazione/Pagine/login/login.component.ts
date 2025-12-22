@@ -4,7 +4,6 @@ import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '@core/auth/auth-service';
 import {validazione} from '@core/utils/validazione';
 import { FormsModule } from '@angular/forms';
-import { DipendenteDTO } from '@core/models/dipendenteDTO.models';
 
 
 @Component({
@@ -76,9 +75,17 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: (response: any) => {
-
-        this.authService.aggiornaRuoloUtenteCorrente(response.ruolo);
-        this.router.navigate([response.redirectUrl]);
+        this.authService.aggiornaRuoloUtenteCorrente(response.ruolo,response.idAzienda||null);
+        console.log(response.idAzienda)
+        if(response.ruolo ==='Dipendente'){
+          if(response.idAzienda){
+            this.router.navigate(['/dashboardDipendente'])
+          }else {
+            this.router.navigate(['/senza-azienda'])
+          }
+        }else{
+          this.router.navigate([response.redirectUrl]);
+        }
       },
       error: (error) => {
 

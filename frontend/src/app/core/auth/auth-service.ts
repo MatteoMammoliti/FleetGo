@@ -8,6 +8,7 @@ import {environment} from '@env/environment';
 export interface LoginResponse {
   redirectUrl: string;
   ruolo: string;
+  idAzienda?:number | null;
 }
 
 @Injectable({
@@ -16,6 +17,7 @@ export interface LoginResponse {
 
 export class AuthService {
   ruoloUtenteCorrente = signal<string | null>(null);
+  idAzienda=signal<number | null>(null);
 
   constructor (private http: HttpClient) {
 
@@ -46,14 +48,23 @@ export class AuthService {
     });
   }
 
-  aggiornaRuoloUtenteCorrente(ruoloRicevuto: string) {
+  aggiornaRuoloUtenteCorrente(ruoloRicevuto: string,idAzienda: number | null) {
     console.log("Aggiorno utente corrente in auth-service.ts con ruolo: " + ruoloRicevuto);
     this.ruoloUtenteCorrente.set(ruoloRicevuto);
     localStorage.setItem('ruoloUtenteCorrente', ruoloRicevuto);
+    if (idAzienda) {
+      this.idAzienda.set(idAzienda);
+      localStorage.setItem('idAziendaAffiliata', idAzienda.toString());
+    } else {
+      this.idAzienda.set(null);
+      localStorage.removeItem('idAziendaAffiliata');
+    }
   }
 
   logout(){
     this.ruoloUtenteCorrente.set(null);
+    this.idAzienda.set(null);
+    localStorage.removeItem('idAziendaAffiliata');
     localStorage.removeItem('ruoloUtenteCorrente');
     return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text', withCredentials: true });
   }

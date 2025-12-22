@@ -1,0 +1,36 @@
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sticky top-6">
+  <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Richiedi Affiliazione</h2>
+
+  @if (aziendaSelezionata) {
+
+    <div class="animate-fade-in">
+      <div class="bg-blue-50 rounded-lg p-4 mb-5 border border-blue-100">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded bg-white flex items-center justify-center text-blue-500 shadow-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          </div>
+          <div>
+            <p class="font-bold text-gray-800 text-sm">{{ aziendaSelezionata.nomeAzienda }}</p>
+            <p class="text-xs text-gray-500 mt-0.5">{{ aziendaSelezionata.nomeSedeAzienda }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        (click)="confermaRichiesta()"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+        Invia Richiesta
+      </button>
+    </div>
+
+  } @else {
+    <div class="text-center py-10 text-gray-500 flex flex-col items-center">
+      <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 border border-gray-200 border-dashed">
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+      </div>
+      <h3 class="font-medium text-gray-900">Nessuna azienda selezionata</h3>
+      <p class="text-sm mt-2 text-gray-400 max-w-[200px]">Clicca su un'azienda dalla lista a sinistra per compilare la richiesta.</p>
+    </div>
+  }
+</div>
