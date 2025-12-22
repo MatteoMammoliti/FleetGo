@@ -26,4 +26,12 @@
   .td-sinistro{
     @apply py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors align-middle
   }
+
+  .layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    min-width: 0;
+  }
 }

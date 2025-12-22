@@ -3,7 +3,7 @@
   <div class="hidden lg:flex w-1/2 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-azzurro/60 to-blu-notte/90 z-10"></div>
     <img src="immagine_login.png" class="absolute inset-0 w-full h-full object-cover">
-    
+
     <div class="relative z-20 flex flex-col justify-center h-full px-16 text-white">
       <h1 class="text-5xl font-bold mb-6">Bentornato!<br>Il futuro della tua flotta è qui.</h1>
       <p class="text-lg opacity-90 max-w-md leading-relaxed">
@@ -20,9 +20,9 @@
     </div>
 
   <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
-    
+
     <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10 w-full max-w-[500px] border border-white">
-      
+
       <div class="text-center mb-8">
         <h2 class="text-3xl font-bold text-blu">Accedi</h2>
         <p class="text-grigio-scuro mt-2">Accedi al tuo profilo FleetGo</p>
@@ -32,7 +32,7 @@
 
         <div class="space-y-1">
           <label class="text-xs font-bold text-black uppercase">Email Aziendale</label>
-          <input type="email" 
+          <input type="email"
                  [(ngModel)]="email" placeholder="nome@azienda.it"
                  class="w-full px-4 py-3.5 rounded-xl border bg-gray-50 outline-none transition-all"
                  [class.border-red-500]="mappaErrori.email"
@@ -53,7 +53,7 @@
           <div class="flex justify-between items-center">
             <label class="text-xs font-bold text-black uppercase">Password</label>
           </div>
-          <input type="password" 
+          <input type="password"
                  [(ngModel)]="password" placeholder="**********"
                  class="w-full px-4 py-3.5 rounded-xl border bg-gray-50 outline-none transition-all"
                  [class.border-red-500]="mappaErrori.password"
@@ -82,14 +82,14 @@
           </div>
         }
 
-        <button (click)="onSubmit()" 
+        <button (click)="onSubmit()"
                 class="w-full py-4 bg-azzurro text-white font-bold rounded-xl hover:bg-azzurro-scuro hover:shadow-lg flex justify-center items-center gap-2 mt-4">
           Accedi
         </button>
 
         <div class="text-center pt-6 border-t border-gray-100 mt-6">
           <p class="text-testo-s text-sm">
-            Non hai un Account? 
+            Non hai un Account?
             <a routerLink="/registrazione" class="text-azzurro font-bold hover:underline hover:text-azzurro-scuro cursor-pointer">
               Crea un Account
             </a>

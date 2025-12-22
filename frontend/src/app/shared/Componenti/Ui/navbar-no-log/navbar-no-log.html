@@ -1,5 +1,5 @@
-<header class="bg-blu w-full h-[80px] flex items-center justify-between px-6 lg:px-12 shadow-md relative z-50">
-  
+<header class="bg-blu min-w-0 w-full h-[80px] flex items-center justify-between px-6 lg:px-12 shadow-md relative z-50">
+
   <div class="flex items-center gap-3">
     <div class="bg-white/10 p-2 rounded-lg">
       <i class="bi bi-truck text-white text-2xl"></i>
@@ -14,9 +14,9 @@
           { link: '/', frag: 'come-funziona', label: 'Come funziona' },
           { link: '/', frag: 'vantaggi', label: 'Vantaggi' },
           { link: '/', frag: 'contatti', label: 'Contatti' }]">
-          
+
         <a [routerLink]="item.link" [fragment]="item.frag"
-           class="text-white font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300 
+           class="text-white font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300
                   hover:text-blue-500 no-underline cursor-pointer whitespace-nowrap">
           {{ item.label }}
         </a>
@@ -25,7 +25,7 @@
   </nav>
 
   <div class="flex items-center gap-4">
-    
+
     <div class="hidden lg:flex items-center gap-4">
       <a routerLink="/login" class="text-white font-semibold text-[0.95rem] hover:opacity-80 no-underline">Accedi</a>
       <a routerLink="/registrazione" class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro no-underline">Registrati</a>
@@ -34,14 +34,14 @@
     <button (click)="toggleSidebar()" class="lg:hidden text-white p-2 focus:outline-none">
       <i class="bi-list text-4xl"></i>
     </button>
-    
+
   </div>
 
   <div *ngIf="sidebarVisibile">
     <div (click)="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40"></div>
-    
-    <div class="fixed top-0 right-0 h-full w-[280px] bg-blu shadow-2xl z-50 p-6 flex flex-col gap-6 overflow-y-auto border-l border-white/10">
-      
+
+    <div class="fixed top-0 right-0 h-full w-full bg-blu shadow-2xl z-50 p-6 flex flex-col gap-6 overflow-y-auto border-l border-white/10">
+
       <div class="flex justify-end">
         <button (click)="toggleSidebar()" class="text-white p-2">
           <i class="bi-x-lg text-3xl"></i>
