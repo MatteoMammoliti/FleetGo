@@ -3,13 +3,17 @@ import {FatturaDTO} from '@core/models/FatturaDTO.models';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
 
 @Component({
   selector: 'app-tabella-storico-fatture',
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    MessaggioCardVuota
+    MessaggioCardVuota,
+    SceltaTendina,
+    BottoneChiaro
   ],
   templateUrl: './tabella-storico-fatture.html',
   styleUrl: './tabella-storico-fatture.css',

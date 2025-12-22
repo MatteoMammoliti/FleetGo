@@ -4,13 +4,15 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-modale-generazione-fattura',
   imports: [
     FormsModule,
     DecimalPipe,
-    TemplateFinestraModale
+    TemplateFinestraModale,
+    SceltaTendina
   ],
   templateUrl: './modale-generazione-fattura.html',
   styleUrl: './modale-generazione-fattura.css',
@@ -22,7 +24,7 @@ export class ModaleGenerazioneFattura {
   @Input() offerteAttive: OffertaDTO[] = [];
   @Output() chiudiPagina = new EventEmitter<void>();
   @Output() confermaGenerazione = new EventEmitter<FatturaDaGenerareDTO>();
-  offertaSelezionata: OffertaDTO | null = null;
+  offertaSelezionata: any = "";
   prezzoScontato = 0;
   scontoDaSottrarre = 0;
   ngOnInit(){

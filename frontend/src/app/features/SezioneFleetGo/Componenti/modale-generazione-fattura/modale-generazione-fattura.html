@@ -12,14 +12,10 @@
 
           </div>
           <div class="border-b-2 py-3">
-            <label for="offertaSelect" class="font-bold">Promozione: </label>
-            <select id="offertaSelect" [(ngModel)]="offertaSelezionata" (change)="calcolaSconto()" class="">
-              <option [ngValue]="null">Seleziona promozione</option>
-
-              @for(offerta of offerteAttive; track offerta.idOfferta) {
-                <option [ngValue]="offerta">{{ offerta.nomeOfferta }} (-{{ offerta.percentualeSconto }}%)</option>
-              }
-            </select>
+            <div class="flex items-center gap-3">
+              <label class="font-bold">Promozione: </label>
+              <app-scelta-tendina (valoreChange)="offertaSelezionata=$event; calcolaSconto()" [lista]="offerteAttive" [valore]="offertaSelezionata" [placeholder]="'Nessuna offerta attiva'" [chiaveVisuale]="'nomeOfferta'"></app-scelta-tendina>
+            </div>
 
             @if(offertaSelezionata) {
               <div class="bg-azzurro/10 px-3 py-1 w-fit rounded-xl gap-1 flex items-center mt-2">

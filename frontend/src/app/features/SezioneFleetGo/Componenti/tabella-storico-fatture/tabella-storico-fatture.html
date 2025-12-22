@@ -1,51 +1,53 @@
-<div class="flex flex-col w-full bg-white">
-  <div class="">
-    <div class="flex justify-between w-full align-items-center">
-      <h3>Elenco Fatture</h3>
+<div class="w-full bg-white rounded-xl shadow-md p-6 ">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-2 pb-3 gap-4 border-b-2 border-b-gray-100">
+      <h2  class="font-bold text-xl text-testo-p">Elenco Fatture</h2>
 
       <div class="flex gap-7">
-        <select [(ngModel)]="annoSelezionato" (change)="aggiornaFatture()" class="form-select me-2">
-          @for (anno of anniFatture; track anno) {
-            <option [ngValue]="anno">{{ anno }}</option>
-          }
-        </select>
+        <app-scelta-tendina (valoreChange)="annoSelezionato=$event; aggiornaFatture()" [lista]="anniFatture" [valore]="annoSelezionato" ></app-scelta-tendina>
 
-        <select [(ngModel)]="aziendaSelezionata" class="form-select" (change)="aggiornaFatture()">
-          <option value="">Tutte le Aziende</option>
-          @for (az of listaAziende; track az.idAzienda) {
-            <option [value]="az.nomeAzienda">{{ az.nomeAzienda }}</option>
-          }
-        </select>
+        <app-scelta-tendina (valoreChange)="aziendaSelezionata=$event; aggiornaFatture()" [lista]="listaAziende" [valore]="aziendaSelezionata" [placeholder]="'Tutte le aziende'" [chiaveVisuale]="'nomeAzienda'" [chiaveUtilizzata]="'nomeAzienda'">
+        </app-scelta-tendina>
       </div>
-    </div>
+  </div>
 
-  <table class="table-auto w-full"> <thead>
-  <tr class="">
-    <th>N. Fattura</th>
-    <th>Azienda</th>
-    <th>Periodo</th>
-    <th>Importo</th>
-    <th>Stato</th>
-    <th class="">Azioni</th>
+  <div class="relative overflow-x-auto shadow-sm sm:rounded-lg max-h-[700px] min-h-[300px] overflow-y-auto">
+  <table class="w-full text-sm text-left text-gray-500 border-separate border-spacing-y-2"> <thead>
+  <tr class="text-left text-testo-s">
+    <th  scope="col" class="pl-6">N. Fattura</th>
+    <th  scope="col">Azienda</th>
+    <th  scope="col">Periodo</th>
+    <th  scope="col">Importo</th>
+    <th  scope="col">Stato</th>
+    <th  scope="col" class="pr-8 text-right">Azioni</th>
   </tr>
   </thead>
     <tbody>
       @for (fattura of fatture; track fattura.numeroFattura) {
-        <tr>
-          <td><span class="">#{{ fattura.numeroFattura }}</span></td>
-          <td>{{ fattura.azienda.nomeAzienda }}</td> <td>{{ fattura.meseFattura }}/{{ fattura.annoFattura }}</td>
-          <td class="">€ {{ fattura.costo }}</td>
-          <td>
-            @if(fattura.fatturaPagata) {
-              <span class="">Pagata</span>
-            } @else {
-              <span class="">In Attesa</span>
-            }
+        <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p ">
+          <td  class="td-sinistro">
+            <span class="">#{{ fattura.numeroFattura }}</span>
           </td>
-          <td class="">
-            <button class="btn-icon download" (click)="onDownload(fattura.numeroFattura)" title="Scarica PDF">
-              <i class="bi bi-file-earmark-pdf-fill"></i>
-            </button>
+          <td class="td-base">
+            {{ fattura.azienda.nomeAzienda }}
+          </td>
+          <td class="td-base">
+            {{ fattura.meseFattura }}/{{ fattura.annoFattura }}
+          </td>
+          <td class="td-base">€ {{ fattura.costo }}</td>
+          <td class="td-base">
+            @if(fattura.fatturaPagata) {
+              <span class="font-bold text-azzurro">Pagata</span>
+            } @else {
+              <span class="font-bold text-blu">In Attesa</span>
+            }
+          </td >
+          <td  class="td-destro">
+            <div class="inline-flex justify-end w-full ml pr-2">
+              <app-bottone-chiaro (click)="onDownload(fattura.numeroFattura)" title="Scarica PDF">
+                <span>Scarica</span>
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+              </app-bottone-chiaro>
+            </div>
           </td>
         </tr>
       }
@@ -53,8 +55,8 @@
 
   </table>
     @if(fatture.length === 0) {
-      <div class="w-full flex justify-center items-center">
-        <app-messaggio-card-vuota testoPrimario="Nessuna fattura trovata!" testoSecondario="Prova a cambiare i filtri" icona="bi-check" tagliaIcona="3xl"></app-messaggio-card-vuota>
+      <div class="w-full flex justify-center items-center group">
+        <app-messaggio-card-vuota testoPrimario="Nessuna fattura trovata!" testoSecondario="Prova a cambiare i filtri" icona="bi-folder-x" tagliaIcona="xl"></app-messaggio-card-vuota>
       </div>
     }
   </div>

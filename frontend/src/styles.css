@@ -14,4 +14,16 @@
     scroll-behavior: smooth;
     scroll-padding-top: 100px;
   }
+
+  .td-base {
+    @apply py-3 bg-grigio align-middle transition-colors group-hover:bg-azzurro/10;
+  }
+
+  .td-destro{
+    @apply py-3 pl-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors align-middle
+  }
+
+  .td-sinistro{
+    @apply py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors align-middle
+  }
 }
