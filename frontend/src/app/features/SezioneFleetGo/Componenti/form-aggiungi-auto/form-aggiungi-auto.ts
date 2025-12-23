@@ -2,11 +2,13 @@ import {Component, inject, Output, EventEmitter} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-form-aggiungi-auto',
     imports: [
-        FormsModule
+        FormsModule,
+        SceltaTendina
     ],
   templateUrl: './form-aggiungi-auto.html',
   styleUrl: './form-aggiungi-auto.css',
@@ -15,6 +17,8 @@ export class FormAggiungiAuto {
   private validator = inject(validazione);
 
   @Output() onSalvataggio = new EventEmitter<FormData>();
+
+  opzioniAlimentazione: string[] = ['Elettrica', 'Benzina', 'Diesel', 'Ibrida'];
 
   mappaErrori = {
     targaVeicolo: false,
@@ -30,6 +34,11 @@ export class FormAggiungiAuto {
   tipoDistribuzioneVeicolo = '';
   statusContrattuale = 'Disponibile';
   errore='';
+
+  impostaAlimentazione(valore: string) {
+    this.tipoDistribuzioneVeicolo = valore;
+    if (valore) this.mappaErrori.tipoDistribuzioneVeicolo = false;
+  }
 
   onSubmit() {
     this.reset();
@@ -69,6 +78,7 @@ export class FormAggiungiAuto {
   onFileSelected(event: any) {
     if (event.target.files && event.target.files.length > 0) {
       this.urlImmagine = event.target.files[0];
+      this.mappaErrori.urlImmagine = false;
     }
   }
 
@@ -89,5 +99,9 @@ export class FormAggiungiAuto {
     this.modello = '';
     this.tipoDistribuzioneVeicolo = '';
     this.statusContrattuale = 'Disponibile';
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 }

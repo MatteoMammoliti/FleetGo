@@ -1,63 +1,118 @@
-  <div class="toolbar">
-
-      <div class="ricerca">
-        <input type="text" [(ngModel)]="filtroTarga" placeholder="Cerca per targa">
-      </div>
-
-      <div class="ricerca">
-        <input type="text" [(ngModel)]="filtroModello" placeholder="Cerca per modello">
-      </div>
-
-      <div class="filtri">
-        <select [(ngModel)]="filtroStato">
-          <option [ngValue]="''">Tutti gli stati</option>
-          <option value="Disponibile">Disponibile</option>
-          <option value="In manutenzione">In manutenzione</option>
-          <option value="Noleggiato">Noleggiato</option>
-        </select>
-      </div>
-
-      <div class="filtri">
-        <select [(ngModel)]="filtroAzienda">
-          <option [ngValue]="''">Tutte le aziende</option>
-
-          @for (azienda of listaAziende; track azienda.idAzienda) {
-            <option [value]="azienda.nomeAzienda">{{azienda.nomeAzienda}}</option>
-          }
-        </select>
-      </div>
-    </div>
-
-    <table class="tabella-semplice">
-      <thead>
-      <tr>
-        <th>Targa</th>
-        <th>Modello</th>
-        <th>Stato contrattuale</th>
-        <th>Stato Manutenzione</th>
-        <th>Azienda</th>
-        <th>Rimuovi</th>
-        <th>Info</th>
-      </tr>
+<div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm">
+  
+  <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+    <table class="w-full text-left border-collapse">
+      
+      <thead class="sticky top-0 z-10 bg-slate-50">
+        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-bold">
+          <th class="p-4 py-5">Veicolo</th>
+          <th class="p-4 py-5">Targa</th>
+          <th class="p-4 py-5">Azienda Assegnata</th>
+          <th class="p-4 py-5 text-center">Stato</th>
+          <th class="p-4 py-5 text-right">Azioni</th>
+        </tr>
       </thead>
-      <tbody>
 
-        @for (auto of veicoliFiltrati; track auto.idVeicolo) {
+      <tbody class="divide-y divide-slate-100">
+
+        @for (auto of listaVeicoli; track auto.targaVeicolo) {
+          <tr class="group hover:bg-blue-50/50 transition-all ">
+            
+            <td class="p-4">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+                  <i class="bi-car-front-fill"></i>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-semibold text-slate-700 text-[0.95rem]">
+                    {{ auto.modello || 'Modello sconosciuto' }}
+                  </span>
+                  <span class="text-xs text-slate-400">
+                    {{ auto.tipoDistribuzioneVeicolo || 'Alimentazione n.d.' }}
+                  </span>
+                </div>
+              </div>
+            </td>
+
+            <td class="p-4">
+              <span class="font-mono text-slate-500 text-sm bg-slate-100 px-2 py-1 rounded border border-slate-200">
+                {{ auto.targaVeicolo }}
+              </span>
+            </td>
+
+            <td class="p-4 text-slate-600">
+              <div class="flex items-center gap-2 text-sm font-medium">
+                @if (auto.nomeAziendaAffiliata) {
+                    {{ auto.nomeAziendaAffiliata }}
+                } @else {
+                    <span class="text-grigio-scuro italic">Nessuna</span>
+                }
+              </div>
+            </td>
+
+            <td class="p-4 text-center">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
+                [class.bg-green-50]="auto.statusContrattualeVeicolo === 'Disponibile'"
+                [class.text-green-700]="auto.statusContrattualeVeicolo === 'Disponibile'"
+                [class.border-green-200]="auto.statusContrattualeVeicolo === 'Disponibile'"
+                
+                [class.bg-yellow-50]="auto.statusContrattualeVeicolo === 'Noleggiato'"
+                [class.text-yellow-700]="auto.statusContrattualeVeicolo === 'Noleggiato'"
+                [class.border-yellow-200]="auto.statusContrattualeVeicolo === 'Noleggiato'"
+
+                [class.bg-red-50]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'"
+                [class.text-red-700]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'"
+                [class.border-red-200]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'">
+                
+                <span class="w-1.5 h-1.5 rounded-full"
+                    [class.bg-green-500]="auto.statusContrattualeVeicolo === 'Disponibile'"
+                    [class.bg-yellow-500]="auto.statusContrattualeVeicolo === 'Noleggiato'"
+                    [class.bg-red-500]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'">
+                </span>
+                @if (auto.inManutenzione) {
+                    Manutenzione
+                } @else {
+                    {{ auto.statusContrattualeVeicolo }}
+                }
+              </span>
+            </td>
+
+            <td class="p-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                
+                <button (click)="apriInfoVeicolo.emit(auto.targaVeicolo)"
+                        class="text-grigio-scuro hover:text-blue-600 hover:bg-blue-50 w-8 h-8 rounded-lg transition-all flex items-center justify-center"
+                        title="Dettagli Veicolo">
+                  <i class="bi-info-circle text-lg"></i>
+                </button>
+
+                <button (click)="eliminaVeicolo(auto.targaVeicolo)" 
+                        class="text-grigio-scuro hover:text-red-600 hover:bg-red-50 w-8 h-8 rounded-lg transition-all flex items-center justify-center"
+                        title="Rimuovi Veicolo">
+                  <i class="bi-trash3 text-lg"></i>
+                </button>
+
+              </div>
+            </td>
+
+          </tr>
+        }
+
+        @if (listaVeicoli.length === 0) {
           <tr>
-            <td>{{ auto.targaVeicolo }}</td>
-            <td>{{ auto.modello }}</td>
-            <td>{{ auto.statusContrattualeVeicolo}}</td>
-            @if (auto.inManutenzione) {
-              <td>"In manutenzione"</td>
-            } @else if (!auto.inManutenzione){
-              <td>"Ok"</td>
-            }
-            <td>{{ auto.nomeAziendaAffiliata }}</td>
-
-            <td><button class="bottone-rimuovi" (click)="eliminaVeicolo(auto.targaVeicolo)">Rimuovi</button></td>
-            <td><button class="bottone-rimuovi" (click)="apriInfoVeicolo.emit(auto.targaVeicolo)">Info</button></td>
+            <td colspan="5" class="p-12 text-center">
+              <div class="flex flex-col items-center justify-center gap-3 text-slate-400">
+                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-2">
+                  <i class="bi-car-front-fill"></i>
+                </div>
+                <p class="text-lg font-medium text-grigio-scuro">Nessun veicolo trovato</p>
+                
+              </div>
+            </td>
           </tr>
         }
 
       </tbody>
     </table>
+  </div>
+</div>

@@ -1,8 +1,7 @@
-import {Component, inject, Input,Output, EventEmitter} from '@angular/core';
+import {Component, Input,Output, EventEmitter} from '@angular/core';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {FormsModule} from '@angular/forms';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-tabella-auto',
