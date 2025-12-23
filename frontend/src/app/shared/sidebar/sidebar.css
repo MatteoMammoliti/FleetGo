@@ -17,7 +17,7 @@
     right: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione {
         position: static;
         width: 100%;
@@ -38,7 +38,7 @@
     width: 100%;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep .contenitore-navbar-items {
         flex-direction: row;
         align-items: center;
@@ -52,7 +52,7 @@
     position: static;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep .contenitoreMenu {
         position: absolute;
         left: 50%;
@@ -72,7 +72,7 @@
     gap: 15px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep ul {
         flex-direction: row;
         gap: 30px;
@@ -92,7 +92,7 @@
     display: block;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep a {
         font-size: 0.95rem;
         padding: 8px 12px;
@@ -110,7 +110,7 @@
     width: 100%;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep .contenitore-logout {
         width: auto;
         margin-left: auto;
@@ -140,7 +140,7 @@
     color: white;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
     .navigazione ::ng-deep button.logout {
         width: auto;
         font-size: 0.9rem;
