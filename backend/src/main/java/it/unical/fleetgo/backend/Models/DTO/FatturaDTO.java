@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
 import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
+import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +29,13 @@ public class FatturaDTO {
         if(caricareAzienda) this.azienda = new AziendaDTO(fattura.getAzienda());
         else this.azienda = null;
 
-        if(caricaOfferta) this.offertaApplicata = new OffertaDTO(fattura.getOffertaApplicata());
-        else this.offertaApplicata = null;
+        if(caricaOfferta) {
+            Offerta o = fattura.getOffertaApplicata();
+            if(o != null) this.offertaApplicata = new OffertaDTO(o);
+            else this.offertaApplicata = null;
+        } else {
+            this.offertaApplicata = null;
+        }
     }
 
     public FatturaDTO(FatturaDaGenerareDTO fattura) {

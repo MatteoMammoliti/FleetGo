@@ -100,7 +100,7 @@ public class FleetGoService {
 
             if(f != null) {
                 return this.generatorePdfService.generaPdfFattura(
-                        new FatturaDTO(f, true, true)
+                        new FatturaDTO(f, true, f.getIdOffertaApplicata() != null)
                 );
             }
         }

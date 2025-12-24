@@ -42,6 +42,7 @@ export class OfferteAttive implements OnInit {
     this.offerteService.eliminaOfferta(idOfferta).subscribe({
       next: value => {
         console.log("offerta eliminata correttamente")
+        this.getOfferteAttive();
       }, error: err => {
         console.error(err);
       }

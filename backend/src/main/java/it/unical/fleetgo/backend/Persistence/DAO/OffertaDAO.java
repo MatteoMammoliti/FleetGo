@@ -33,7 +33,7 @@ public class OffertaDAO {
     }
 
     public List<Offerta> getOfferteAttive() {
-        String query = "SELECT * FROM offerte_attive";
+        String query = "SELECT * FROM offerte_attive WHERE offerta_attiva = true";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
 
@@ -60,7 +60,7 @@ public class OffertaDAO {
     }
 
     public void eliminaOfferta(Integer idOfferta) {
-        String query = "DELETE FROM offerte_attive WHERE id_offerta = ?";
+        String query = "UPDATE offerte_attive SET offerta_attiva = false WHERE id_offerta = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idOfferta);

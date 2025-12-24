@@ -28,6 +28,7 @@ public class ControllerFattureEmesse {
             headers.setContentDispositionFormData("attachment", "fattura_" + idFattura + ".pdf");
             return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
