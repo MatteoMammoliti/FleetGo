@@ -45,16 +45,6 @@ public class ControllerGestioneDipendenti {
         }
     }
 
-    @PostMapping("/approvaPatente")
-    public ResponseEntity<String> approvaPatente(@RequestBody Integer idUtente) {
-        try {
-            adminAziendaleService.approvaPatente(idUtente);
-            return ResponseEntity.ok("Patente approvata con successo");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Patente non approvata");
-        }
-    }
-
     @GetMapping("/getRichiesteNoleggio/{idDipendente}")
     public ResponseEntity<List<RichiestaNoleggioDTO>> getRichiesteNoleggio(@PathVariable Integer idDipendente) {
         try {

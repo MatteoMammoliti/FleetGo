@@ -47,11 +47,11 @@ export class DashboardService {
     });
   }
 
-  getNumPatentiDaAccettare(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getNumeroPatentiDaAccettare`, { withCredentials:true })
-  }
-
   inoltraRichiestaDiAppuntamento():Observable<string> {
     return this.http.post(`${this.apiUrl}/richiediAppuntamento`, {}, { withCredentials:true, responseType: "text" })
+  }
+
+  getNumFattureDaPagare(): Observable<number>{
+    return this.http.get<number>(`${this.apiUrl}/getNumFattureDaPagare`, { withCredentials:true })
   }
 }

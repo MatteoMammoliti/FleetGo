@@ -22,7 +22,7 @@ export class DashboardAzienda implements OnInit{
   offerteAttive: OffertaDTO[] = [];
   contatoreRichiesteAffiliazione = 0;
   contatoreRichiesteNoleggio = 0;
-  contatorePatentiDaAccettare = 0;
+  contatoreFattureDaPagare = 0;
 
   statisticheGuadagno = 0;
   statisticheFlotta = 0;
@@ -38,7 +38,7 @@ export class DashboardAzienda implements OnInit{
   get sommaRichieste(): number {
     return this.contatoreRichiesteAffiliazione +
       this.contatoreRichiesteNoleggio +
-      this.contatorePatentiDaAccettare;
+      this.contatoreFattureDaPagare;
   }
 
   ngOnInit(){
@@ -84,11 +84,10 @@ export class DashboardAzienda implements OnInit{
       }, error: error => { console.error(error); }
     })
 
-    this.dashboardService.getNumPatentiDaAccettare().subscribe({
+    this.dashboardService.getNumFattureDaPagare().subscribe({
       next: value => {
-        console.log(value)
-        if(value) this.contatorePatentiDaAccettare = value;
-      }, error: err => { console.error(err); }
+        if(value) this.contatoreFattureDaPagare = value;
+      }, error: error => { console.error(error); }
     })
   }
 

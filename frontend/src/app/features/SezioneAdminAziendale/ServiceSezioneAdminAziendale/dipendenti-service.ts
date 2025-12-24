@@ -23,10 +23,6 @@ export class DipendentiService {
     return this.http.post(`${this.apiUrl}/rimuoviDipendente`, idUtente, { responseType: 'text', withCredentials: true});
   }
 
-  public approvaPatente(idUtente: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/approvaPatente`, idUtente, { responseType: 'text', withCredentials: true});
-  }
-
   public getRichiesteNoleggio(idDipendente: number | undefined): Observable<RichiestaNoleggioDTO[]> {
     return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getRichiesteNoleggio/${idDipendente}`, { withCredentials: true });
   }

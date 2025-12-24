@@ -6,6 +6,7 @@ import { GestioneDipendentiComponent} from '@features/SezioneAdminAziendale/Pagi
 import {FlottaAdminAziendale} from '@features/SezioneAdminAziendale/Pagine/flotta-admin-aziendale/flotta-admin-aziendale';
 import {DettagliVeicoloAziendale} from '@features/SezioneAdminAziendale/Pagine/dettagli-veicolo-aziendale/dettagli-veicolo-aziendale';
 import {Prenotazioni} from '@features/SezioneAdminAziendale/Pagine/prenotazioni/prenotazioni';
+import {StoricoFattureAdminAziendale} from '@features/SezioneAdminAziendale/Pagine/storico-fatture/storico-fatture-admin-aziendale';
 
 export const AZIENDA_ROUTES: Routes = [
   {
@@ -18,7 +19,8 @@ export const AZIENDA_ROUTES: Routes = [
       { path: 'dipendenti', component : GestioneDipendentiComponent},
       { path: 'flotta', component : FlottaAdminAziendale },
       { path: 'dettagli-veicolo/:targa', component: DettagliVeicoloAziendale},
-      { path: 'prenotazioni', component: Prenotazioni}
+      { path: 'prenotazioni', component: Prenotazioni},
+      { path: 'storico-fatture', component: StoricoFattureAdminAziendale }
     ],
   },
 ];

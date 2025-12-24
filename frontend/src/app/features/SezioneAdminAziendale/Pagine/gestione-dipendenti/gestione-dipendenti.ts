@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/form-gestione-dipendenti-admin-aziendale/elenco-dipendenti';
+import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/elenco-dipendenti/elenco-dipendenti';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {DipendentiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dipendenti-service';
 import {ModaleDettagliDipendente} from '@features/SezioneAdminAziendale/Componenti/modale-dettagli-dipendente/modale-dettagli-dipendente';
@@ -90,16 +90,6 @@ export class GestioneDipendentiComponent implements OnInit{
 
   chiudiModale() {
     this.modaleDettaglioDipendenteVisibile = false;
-  }
-
-  approvaPatente(idUtente: number) {
-    this.service.approvaPatente(idUtente).subscribe({
-      next: value => {
-        if(value) {
-          setInterval( () => {this.dipendenteDaVisualizzare.patenteAccettata = true}, 3000);
-        }
-      }
-    })
   }
 
   accettaRichiestaAffiliazione(idDipendente: number){

@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {NgClass} from '@angular/common';
 
 interface ItemCarosello{
-  tipo: "NOLEGGIO" | "AFFILIAZIONE" | "VUOTO" | "PATENTI";
+  tipo: "NOLEGGIO" | "AFFILIAZIONE" | "VUOTO" | "FATTURE";
   titolo: string;
   contatore: number;
   colore: string;
@@ -26,7 +26,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
 
   @Input() contatoreRichiesteNoleggioInAttesa = 0;
   @Input() contatoreRichiesteAffiliazioneInAttesa = 0;
-  @Input() contatorePatentiDaAccettare = 0;
+  @Input() contatoreFattureDaPagare = 0;
 
   slides: ItemCarosello[] = [];
   indiceCorrente = 0;
@@ -62,7 +62,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         contatore: this.contatoreRichiesteAffiliazioneInAttesa,
         colore: "blue-theme",
         icona: "bi-buildings-fill",
-        rotta: '/dashboardAdminAziendale/richieste-affiliazione'
+        rotta: '/dashboardAzienda/dipendenti'
       }
 
       this.slides.push(item);
@@ -75,20 +75,20 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         contatore: this.contatoreRichiesteNoleggioInAttesa,
         colore: "purple-theme",
         icona: "bi-car-front-fill",
-        rotta: '/dashboardAdminAziendale/richieste-noleggio'
+        rotta: '/dashboardAzienda/prenotazioni'
       }
 
       this.slides.push(item);
     }
 
-    if(this.contatorePatentiDaAccettare > 0) {
+    if(this.contatoreFattureDaPagare > 0) {
       const item: ItemCarosello = {
-        tipo: "PATENTI",
-        titolo: "Numero di patenti da approvare",
-        contatore: this.contatorePatentiDaAccettare,
-        colore: "red-theme",
+        tipo: "FATTURE",
+        titolo: "Numero di fatture da pagare",
+        contatore: this.contatoreFattureDaPagare,
+        colore: "blue-theme",
         icona: "bi-car-front-fill",
-        rotta: '/dashboardAdminAziendale/richieste-affiliazione'
+        rotta: '/dashboardAzienda/storico-fatture'
       }
 
       this.slides.push(item);

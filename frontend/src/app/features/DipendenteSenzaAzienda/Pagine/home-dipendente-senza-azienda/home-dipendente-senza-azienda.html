@@ -102,7 +102,7 @@
             @for (azienda of aziendeFiltrate; track azienda.idAzienda) {
               <app-azienda-card
                 [datiAzienda]="azienda"
-                [selezionato]="aziendaSelezionata?.idAzienda === azienda.idAzienda"
+                [selezionato]="aziendaSelezionata.idAzienda === azienda.idAzienda"
                 (selezionaAzienda)="selezionaAzienda($event)">
               </app-azienda-card>
             } @empty {

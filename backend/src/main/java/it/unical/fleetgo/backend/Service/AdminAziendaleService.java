@@ -1,15 +1,17 @@
 package it.unical.fleetgo.backend.Service;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
 import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
-import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
-import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
-import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
-import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
+import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -22,6 +24,10 @@ public class AdminAziendaleService {
 
     @Autowired private DataSource dataSource;
     @Autowired private EmailService emailService;
+    @Autowired private GeneratorePdfService generatorePdfService;
+
+    @Value("${stripe.api.key}") private String stripeApiKey;
+    @Value("${app.frontend.url}") private String urlReinderizzazione;
 
     public void modificaDati(ModificaDatiUtenteDTO dati) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
@@ -159,10 +165,44 @@ public class AdminAziendaleService {
         }
     }
 
-    public Integer getNumeroPatentiDaAccettare(Integer idAzienda) throws SQLException {
+    public Integer getNumeroFattureDaPagare(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
-            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
-            return credenzialiDAO.getNumeroDipendentiConPatentiDaAccettare(idAzienda);
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            return fatturaDAO.getNmeroFattureDaPagareByIdAzienda(idAzienda);
+        }
+    }
+
+    public List<FatturaDTO> getFattureEmesse(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            List<Fattura> fattureEmesse = fatturaDAO.getFattureEmesseAdAzienda(idAzienda);
+            List<FatturaDTO> fattureEmesseDTO = new ArrayList<>();
+
+            for(Fattura f : fattureEmesse) {
+                fattureEmesseDTO.add(new FatturaDTO(f, false, f.getIdOffertaApplicata() != null));
+            }
+            return fattureEmesseDTO;
+        }
+    }
+
+    public byte[] downloadFattura(Integer numeroFattura) throws SQLException{
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura);
+
+            if(f != null) {
+                return this.generatorePdfService.generaPdfFattura(
+                        new FatturaDTO(f, true, f.getIdOffertaApplicata() != null)
+                );
+            }
+        }
+        return null;
+    }
+
+    public List<Integer> getAnniFatture(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            return fatturaDAO.getAnniFatturePerAzienda(idAzienda);
         }
     }
 
@@ -178,12 +218,6 @@ public class AdminAziendaleService {
         }
     }
 
-    public void approvaPatente(Integer idUtente) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
-            credenzialiDAO.approvaPatente(idUtente);
-        }
-    }
     public List<RichiestaNoleggioDTO> getRichiesteNoleggio(Integer idDipendente) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
@@ -251,6 +285,53 @@ public class AdminAziendaleService {
                 richiesteDTO.add(new RichiestaNoleggioDTO(r, true, true));
             }
             return richiesteDTO;
+        }
+    }
+
+    public String pagaFattura(Integer numeroFattura) throws SQLException, StripeException {
+        Stripe.apiKey = this.stripeApiKey;
+
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            FatturaDTO fattura = new FatturaDTO(
+                    fatturaDAO.getFatturaByNumeroFattura(numeroFattura),
+                    false,
+                    false
+            );
+
+            String titoloPagamento = "Pagamento Fattura FleetGo #" + numeroFattura;
+            long importoFatturaInCentesimi = (long) (fattura.getCosto() * 100);
+
+            SessionCreateParams.LineItem.PriceData.ProductData prodotto = SessionCreateParams.LineItem.PriceData.ProductData.builder().
+                    setName(titoloPagamento).
+                    build();
+
+            SessionCreateParams.LineItem.PriceData bodyPaginaPagamento = SessionCreateParams.LineItem.PriceData.builder()
+                    .setCurrency("eur")
+                    .setUnitAmount(importoFatturaInCentesimi)
+                    .setProductData(prodotto).build();
+
+            SessionCreateParams params =
+                    SessionCreateParams.builder()
+                            .setMode(SessionCreateParams.Mode.PAYMENT)
+                            .setSuccessUrl(this.urlReinderizzazione + "?success=true&fattura=" + numeroFattura)
+                            .setCancelUrl(this.urlReinderizzazione + "?canceled=true")
+                            .addLineItem(
+                                    SessionCreateParams.LineItem.builder()
+                                            .setQuantity(1L)
+                                            .setPriceData(bodyPaginaPagamento).build()
+                            ).build();
+
+            Session session = Session.create(params);
+            return session.getUrl();
+
+        }
+    }
+
+    public boolean contrassegnaFatturaPagata(Integer numeroFattura) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            FatturaDAO fatturaDAO = new FatturaDAO(connection);
+            return fatturaDAO.pagaFattura(numeroFattura);
         }
     }
 }

@@ -8,22 +8,10 @@
       {{ iniziali }}
     </div>
 
-    <div class="flex-1 min-w-0"> <h3 class="text-lg font-bold text-slate-900 truncate" title="{{ dipendente.nomeUtente }} {{ dipendente.cognomeUtente }}">
+    <div class="flex-1 min-w-0">
+      <h3 class="text-lg font-bold text-slate-900 truncate" title="{{ dipendente.nomeUtente }} {{ dipendente.cognomeUtente }}">
       {{ dipendente.nomeUtente }} {{ dipendente.cognomeUtente }}
     </h3>
-
-      @if(dipendente.patenteAccettata) {
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold border">
-          <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
-          Patente accettata
-        </span>
-      } @else {
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold border">
-          <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span>
-          Patente da accettare
-        </span>
-      }
-
     </div>
 
   </div>

@@ -26,9 +26,12 @@
 
   </div>
 
-    <app-tabella-storico-fatture [fatture]="FattureFiltrate" [anniFatture]="anniFatture"
-                                 [listaAziende]="listaAziende" (aggiornaTabella)="aggiorna($event)"  (richiestaDownload)="gestisciDownload($event)" >
+    <app-tabella-storico-fatture
+      [fatture]="FattureFiltrate"
+      [anniFatture]="anniFatture"
+      [listaAziende]="listaAziende"
+      (aggiornaTabella)="aggiorna($event)"
+      (richiestaDownload)="gestisciDownload($event)" >
     </app-tabella-storico-fatture>
 
 </app-intestazione-ebackground>
-

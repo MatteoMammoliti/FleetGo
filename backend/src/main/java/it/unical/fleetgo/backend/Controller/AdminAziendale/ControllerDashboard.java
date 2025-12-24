@@ -107,19 +107,6 @@ public class ControllerDashboard {
         }
     }
 
-    @GetMapping("/getNumeroPatentiDaAccettare")
-    public ResponseEntity<Integer> getNumeroPatentiDaAccettare(HttpSession session) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNumeroPatentiDaAccettare(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
     @PostMapping("/richiediAppuntamento")
     public ResponseEntity<String> richiediAppuntamento(HttpSession session) {
         try {
@@ -127,6 +114,19 @@ public class ControllerDashboard {
             return ResponseEntity.status(HttpStatus.OK).body("Richiesta inviata con successo");
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'invio della mail");
+        }
+    }
+
+    @GetMapping("/getNumFattureDaPagare")
+    public ResponseEntity<Integer> getNumeroFattureDaPagare(HttpSession session) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getNumeroFattureDaPagare(
+                            (Integer) session.getAttribute("idAzienda")
+                    )
+            );
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

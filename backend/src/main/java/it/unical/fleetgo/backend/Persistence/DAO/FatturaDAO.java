@@ -38,9 +38,14 @@ public class FatturaDAO {
         }
     }
 
-    public boolean pagaFattura(FatturaDTO fattura) {
-        String query = "UPDATE fattura SET fattura_pagata = true WHERE id_fleetgo = ? AND id_azienda = ? AND mese_fattura = ? AND anno_fattura = ?";
-        return getFattura(fattura, query);
+    public boolean pagaFattura(Integer numeroFattura) {
+        String query = "UPDATE fattura SET fattura_pagata = true WHERE numero_fattura = ?";
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, numeroFattura);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Fattura> getFattureEmesseDaFleetGo(Integer anno) {
@@ -96,6 +101,26 @@ public class FatturaDAO {
         }
     }
 
+    public List<Integer> getAnniFatturePerAzienda(Integer idAzienda) {
+        String query = "SELECT DISTINCT anno_fattura FROM fattura WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, idAzienda);
+
+            List<Integer> anni = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                anni.add(rs.getInt("anno_fattura"));
+            }
+
+            return anni;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Fattura> getFattureEmesseAdAzienda(Integer idAzienda) {
         String query = "SELECT * FROM fattura WHERE id_azienda = ?";
 
@@ -105,6 +130,19 @@ public class FatturaDAO {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Integer getNmeroFattureDaPagareByIdAzienda(Integer idAzienda) {
+        String query = "SELECT COUNT(*) as numero FROM fattura WHERE id_azienda = ? AND fattura_pagata = false";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) return rs.getInt("numero");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     private List<Fattura> creaListaFattura(PreparedStatement ps) throws SQLException {
@@ -123,16 +161,5 @@ public class FatturaDAO {
             fatture.add(f);
         }
         return fatture;
-    }
-
-    private boolean getFattura(FatturaDTO fattura, String query) {
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, fattura.getIdAzienda());
-            ps.setInt(2, fattura.getMeseFattura());
-            ps.setInt(3, fattura.getAnnoFattura());
-            return ps.executeUpdate() > 0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

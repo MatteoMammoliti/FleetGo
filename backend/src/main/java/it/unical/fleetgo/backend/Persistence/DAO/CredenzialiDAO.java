@@ -39,7 +39,7 @@ public class CredenzialiDAO {
      * @return
      */
     public CredenzialiUtente getCredenzialiUtenteById(Integer idUtente){
-        String query = "SELECT email,patente,immagine_patente FROM credenziali_utente WHERE id_utente=?";
+        String query = "SELECT email,immagine_patente FROM credenziali_utente WHERE id_utente=?";
 
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1, idUtente);
@@ -48,7 +48,6 @@ public class CredenzialiDAO {
             if(rs.next()){
                 CredenzialiUtente contenitore = new CredenzialiUtente();
                 contenitore.setEmail(rs.getString("email"));
-                contenitore.setPatente(rs.getBoolean("patente"));
                 String urlImmagine = rs.getString("immagine_patente");
 
                 if(urlImmagine != null) contenitore.setImgPatente(urlImmagine);
@@ -124,33 +123,6 @@ public class CredenzialiDAO {
                     ps.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Integer getNumeroDipendentiConPatentiDaAccettare(Integer idAzienda) {
-        String query = "SELECT COUNT(r.id_dipendente) as numero_richiesta FROM richiesta_affiliazione_azienda r " +
-                "JOIN credenziali_utente c ON c.id_utente = r.id_dipendente WHERE r.id_azienda = ? AND c.patente = false AND r.accettata = true";
-
-        try(PreparedStatement ps = conn.prepareStatement(query)){
-            ps.setInt(1, idAzienda);
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) return rs.getInt("numero_richiesta");
-
-        } catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public void approvaPatente(Integer idUtente){
-        String query = "UPDATE credenziali_utente SET patente = true WHERE id_utente = ?";
-
-        try(PreparedStatement ps = conn.prepareStatement(query)){
-            ps.setInt(1, idUtente);
-            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

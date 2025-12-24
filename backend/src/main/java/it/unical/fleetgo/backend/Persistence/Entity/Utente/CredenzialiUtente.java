@@ -9,6 +9,5 @@ public class CredenzialiUtente {
     private Integer idUtente;
     private String password;
     private String email;
-    private boolean patente;
     private String imgPatente;
 }

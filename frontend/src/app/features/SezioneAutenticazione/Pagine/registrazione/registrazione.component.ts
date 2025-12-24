@@ -129,8 +129,7 @@ export class RegistrazioneComponent {
       email: this.email,
       password: this.password,
       dataNascitaUtente: this.datanascita,
-      tipoUtente: 'Dipendente',
-      patenteAccettata: false
+      tipoUtente: 'Dipendente'
     };
 
     this.authService.registrazione(user, this.patente).subscribe({

@@ -19,7 +19,6 @@ export class ModaleDettagliDipendente implements OnInit{
   @Input() dipendente: DipendenteDTO | null = null;
   @Input() storicoNoleggi: RichiestaNoleggioDTO[] = []
   @Output() chiudiPagina = new EventEmitter<void>();
-  @Output() approvaPatente = new EventEmitter<number>();
   approvazioneInCorso = false;
   tabAttiva = "INFO";
 
@@ -30,13 +29,6 @@ export class ModaleDettagliDipendente implements OnInit{
       return '';
     }
     return (this.dipendente.nomeUtente.charAt(0) + this.dipendente.cognomeUtente.charAt(0)).toUpperCase();
-  }
-
-  approvaPatenteDipendente(idUtente: number | undefined) {
-    if(idUtente){
-      this.approvazioneInCorso = true;
-      this.approvaPatente.emit(idUtente);
-    }
   }
 
   impostaTab(tipologia: string) {

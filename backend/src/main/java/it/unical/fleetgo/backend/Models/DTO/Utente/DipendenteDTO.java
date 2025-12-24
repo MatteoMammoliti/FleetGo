@@ -13,7 +13,6 @@ public class DipendenteDTO extends UtenteDTO {
     private Integer idAziendaAffiliata;
     private List<RichiestaNoleggioDTO> richiesteNoleggio;
     private String urlImmagine;
-    private boolean patenteAccettata;
 
     public DipendenteDTO() {}
 
@@ -23,11 +22,9 @@ public class DipendenteDTO extends UtenteDTO {
 
         if (utente.getCredenziali() != null) {
             this.urlImmagine = utente.getCredenziali().getImgPatente();
-            this.patenteAccettata = utente.getCredenziali().isPatente();
             this.setEmail(utente.getCredenziali().getEmail());
         } else {
             this.setEmail("");
-            this.patenteAccettata = false;
         }
     }
 }
