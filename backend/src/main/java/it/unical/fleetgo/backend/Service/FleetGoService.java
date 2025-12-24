@@ -180,4 +180,11 @@ public class FleetGoService {
             return offerteDTO;
         }
     }
+
+    public boolean concludiRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
+            return dao.contrassegnaRichiestaManutenzioneComeCompletata(idManutenzione);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe} from '@angular/common';
 
@@ -13,7 +13,10 @@ import {DatePipe} from '@angular/common';
 export class TabellaManutenzioniInCorso {
 
   @Input() listaRichieste:RichiestaManutenzioneDTO[]=[]
+  @Output() chiudiRichiesta=new EventEmitter<number>()
 
-  onConcludi(){}
+  onConcludi(idRichiesta:number){
+    this.chiudiRichiesta.emit(idRichiesta)
+  }
 
 }

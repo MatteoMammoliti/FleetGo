@@ -62,4 +62,16 @@ constructor(private service:SezioneManutenzioneService) {}
     error:(err)=>console.error("Errore nel caricamento dello storico delle manutenzioni")
   });
   }
+
+  concludiRichiestaManutenzione(idRichiesta:number){
+    this.service.chiudiRichiestaManutenzione(idRichiesta).subscribe({
+      next:(risposta:string)=>{
+        this.prelevaManutenzioniStorico()
+        this.prelevaManutenzioniInCorso()
+
+      },
+      error:(err)=>console.error("Errore nel chiudere la manutenzione")
+    })
+
+  }
 }
