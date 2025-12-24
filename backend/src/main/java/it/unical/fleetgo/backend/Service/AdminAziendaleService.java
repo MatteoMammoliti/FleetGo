@@ -125,7 +125,7 @@ public class AdminAziendaleService {
     public Integer getNumRichiesteNoleggio(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
-            return richiestaNoleggioDAO.getNumRichiesteNoleggio(idAzienda);
+            return richiestaNoleggioDAO.getNumRichiesteNoleggioDaAccettare(idAzienda);
         }
     }
 
@@ -332,6 +332,48 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
             return fatturaDAO.pagaFattura(numeroFattura);
+        }
+    }
+
+    public boolean approvaRichiestaNoleggio(Integer idRichiesta) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
+            return richiestaNoleggioDAO.accettaRichiestaNoleggio(idRichiesta);
+        }
+    }
+
+    public boolean rifiutaRichiesta(Integer idRichiesta) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
+            return richiestaNoleggioDAO.rifiutaRichiestaNoleggio(idRichiesta);
+        }
+    }
+
+    public void approvazioneConRifiutoAutomatico(Integer idDaApprovare, List<Integer> idRichiesteDaRifiutare) throws SQLException {
+
+        Connection connection = this.dataSource.getConnection();
+
+        try{
+
+            connection.setAutoCommit(false);
+
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new   RichiestaNoleggioDAO(connection);
+            boolean approvata = richiestaNoleggioDAO.accettaRichiestaNoleggio(idDaApprovare);
+
+            if(!approvata) {
+                connection.rollback();
+            }
+
+            for(Integer id: idRichiesteDaRifiutare) {
+                richiestaNoleggioDAO.rifiutaRichiestaNoleggio(id);
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 }
