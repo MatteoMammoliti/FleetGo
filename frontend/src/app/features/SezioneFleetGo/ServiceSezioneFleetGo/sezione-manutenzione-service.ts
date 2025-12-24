@@ -26,4 +26,10 @@ export class SezioneManutenzioneService{
   public prelevaManutenzioniStorico():Observable<RichiestaManutenzioneDTO[]>{
     return this.http.get<RichiestaManutenzioneDTO[]>(`${this.apiUrl}/manutenzioniStorico`,{withCredentials:true})
   }
+
+  public chiudiRichiestaManutenzione(idRichiesta:number):Observable<string>{
+    return this.http.post(`${this.apiUrl}/chiudiRichiestaManutenzione${idRichiesta}`,{},{
+      responseType:'text',
+      withCredentials:true})
+  }
 }

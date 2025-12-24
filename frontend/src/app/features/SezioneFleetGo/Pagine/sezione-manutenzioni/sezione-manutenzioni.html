@@ -2,7 +2,7 @@
   <h1 class="page-title">Gestione Operativa Manutenzioni</h1>
 
   <app-card-dati-manutenzione [dati]="datiManutenzione"></app-card-dati-manutenzione>
-  <app-tabella-manutenzioni-in-corso [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
+  <app-tabella-manutenzioni-in-corso (chiudiRichiesta)="concludiRichiestaManutenzione($event)" [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
   <app-tabella-storico-manutenzioni [listaStorico]="listaManutenzioniStorico"></app-tabella-storico-manutenzioni>
 
 </div>
