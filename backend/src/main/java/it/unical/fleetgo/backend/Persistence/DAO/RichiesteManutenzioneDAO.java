@@ -161,24 +161,37 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    public boolean contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione,Integer idVeicolo) throws SQLException {
+    public boolean contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione) throws SQLException {
         String modificaRichiesta="UPDATE richiesta_manutenzione SET completata=? WHERE id_manutenzione=?";
-        String cambioStatusVeicolo="UPDATE veicolo SET status_condizione_veicolo=? WHERE id_veicolo=?";
+        String cambioStatusVeicolo="UPDATE veicolo v SET in_manutenzione=? FROM richiesta_manutenzione rm WHERE v.id_veicolo=rm.id_veicolo AND rm.id_manutenzione=?";
+        String rendoVeicoloNoleggiabile="UPDATE gestione_veicolo_azienda gv SET disponibile_per_noleggio=? FROM richiesta_manutenzione rm WHERE gv.id_veicolo=rm.id_veicolo AND rm.id_manutenzione=?";
         try {
             con.setAutoCommit(false);
-            PreparedStatement st = con.prepareStatement(modificaRichiesta);
-            st.setBoolean(1,true);
-            st.setInt(2,idManutenzione);
-            if(st.executeUpdate()==0){
-                con.rollback();
-                return false;
+            try(PreparedStatement st = con.prepareStatement(modificaRichiesta)){
+                st.setBoolean(1,true);
+                st.setInt(2,idManutenzione);
+                if(st.executeUpdate()==0){
+                    con.rollback();
+                    return false;
+                }
             }
-            PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo);
-            st2.setInt(1,idVeicolo);
-            if(st2.executeUpdate()==0){
-                con.rollback();
-                return false;
+            try(PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo)){
+                st2.setBoolean(1,false);
+                st2.setInt(2,idManutenzione);
+                if(st2.executeUpdate()==0){
+                    con.rollback();
+                    return false;
+                }
             }
+            try(PreparedStatement st3 = con.prepareStatement(rendoVeicoloNoleggiabile)){
+                st3.setBoolean(1,true);
+                st3.setInt(2,idManutenzione);
+                if(st3.executeUpdate()==0){
+                    con.rollback();
+                    return false;
+                }
+            }
+
             con.commit();
             return true;
         }catch(SQLException e){
