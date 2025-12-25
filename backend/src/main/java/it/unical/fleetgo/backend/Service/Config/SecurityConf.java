@@ -82,6 +82,11 @@ public class SecurityConf {
                                                     contenitoreCredenziali.getIdUtente()
                                             )
                                     );
+
+                                    if(adminAziendaleService.isPrimoAccesso(contenitoreCredenziali.getIdUtente())) {
+                                        targetUrl = "/recuperoPassword";
+                                    }
+
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }

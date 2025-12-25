@@ -376,4 +376,11 @@ public class AdminAziendaleService {
             connection.setAutoCommit(true);
         }
     }
+
+    public boolean isPrimoAccesso(Integer idAdmin) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            return credenzialiDAO.isPrimoAccessoAdminAziendale(idAdmin);
+        }
+    }
 }

@@ -102,10 +102,33 @@ public class UtenteService {
 
     public void modificaPassword(String email, Integer codiceOTP, String nuovaPassword) throws SQLException {
 
-        try(Connection connection = this.dataSource.getConnection()) {
+        Connection connection = this.dataSource.getConnection();
+
+        try{
+            connection.setAutoCommit(false);
+
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
             String passwordCriptata = passwordEncoder.encode(nuovaPassword);
-            credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email);
+
+            if(!credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email)) {
+                connection.rollback();
+                throw new RuntimeException("Problema durante l'inserimento della password");
+            }
+
+            if(credenzialiDAO.getRuoloByEmail(email).equals("AdminAziendale")) {
+                if(!credenzialiDAO.impostaPrimoAccesso(email)){
+                    connection.rollback();
+                    throw new RuntimeException("Problema durante l'inserimento della password");
+                }
+            }
+
+            connection.commit();
+
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw new RuntimeException(ex);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 

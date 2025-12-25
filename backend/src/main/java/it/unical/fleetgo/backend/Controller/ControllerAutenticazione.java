@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiModificaPasswordDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.UtenteService;
+import jakarta.servlet.http.HttpSession;
 import org.hibernate.annotations.processing.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,11 +58,15 @@ public class ControllerAutenticazione {
     @PostMapping("/modificaPassword")
     public ResponseEntity<String> modificaPassword(@RequestBody ContenitoreDatiModificaPasswordDTO dati) {
         try {
-            utenteService.modificaPassword(dati.getEmail(), Integer.parseInt(dati.getCodiceOTP()), dati.getNuovaPassword());
+            utenteService.modificaPassword(
+                    dati.getEmail(),
+                    Integer.parseInt(dati.getCodiceOTP()),
+                    dati.getNuovaPassword());
             return ResponseEntity.status(HttpStatus.OK).body("Password modificata con successo");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Codice OTP errato o scaduto");
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica della password");
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al Database");

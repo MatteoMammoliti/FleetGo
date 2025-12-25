@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { GeneralLayoutAdminAziendale } from '../../layouts/app-general-layout-admin-aziendale/general-layout-admin-aziendale';
+import { GeneralLayoutAdminAziendale } from '../../layouts/general-layout-admin-aziendale/general-layout-admin-aziendale';
 import { DashboardAzienda } from '@features/SezioneAdminAziendale/Pagine/dashboard-admin-aziendale/dashboard-azienda';
 import { ModificaDatiComponent } from '@features/SezioneAdminAziendale/Pagine/modifica-dati/modifica-dati';
 import { GestioneDipendentiComponent} from '@features/SezioneAdminAziendale/Pagine/gestione-dipendenti/gestione-dipendenti';

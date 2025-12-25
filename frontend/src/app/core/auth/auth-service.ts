@@ -49,7 +49,6 @@ export class AuthService {
   }
 
   aggiornaRuoloUtenteCorrente(ruoloRicevuto: string,idAzienda: number | null) {
-    console.log("Aggiorno utente corrente in auth-service.ts con ruolo: " + ruoloRicevuto);
     this.ruoloUtenteCorrente.set(ruoloRicevuto);
     localStorage.setItem('ruoloUtenteCorrente', ruoloRicevuto);
     if (idAzienda) {

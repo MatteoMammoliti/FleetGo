@@ -1,4 +1,4 @@
-import {Component, inject, Output, EventEmitter} from '@angular/core';
+import {Component, inject, Output, EventEmitter, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
@@ -14,10 +14,11 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
   styleUrl: './form-aggiungi-admin-azienda.css',
 })
 
-export class FormAggiungiAdminAzienda {
+export class FormAggiungiAdminAzienda implements OnInit {
 
   @Output() aziendaAggiunta = new EventEmitter<any>();
-  private validatore = inject(validazione);
+
+  constructor(private validatore: validazione) {}
 
   nome = '';
   cognome = '';
@@ -40,10 +41,9 @@ export class FormAggiungiAdminAzienda {
     sedeLegale: false,
   };
 
-
-
-
-
+  ngOnInit() {
+    this.generaPasswordCasuale();
+  }
 
   onSubmit() {
     this.reset();
@@ -99,19 +99,10 @@ export class FormAggiungiAdminAzienda {
       sedeAzienda: this.sedeLegale
     }
 
-
     const mod : any ={
       adminAziendale:adminAziendale,
       azienda:azienda
     }
-
-
-
-    console.log("Form valido, invio i dati...");
-
-
-
-
 
     this.aziendaAggiunta.emit(mod);
 
@@ -141,5 +132,13 @@ export class FormAggiungiAdminAzienda {
     this.partitaIva = '';
     this.sedeLegale = '';
     this.reset();
+  }
+
+  generaPasswordCasuale() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$";
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      this.password += chars.charAt(randomIndex);
+    }
   }
 }

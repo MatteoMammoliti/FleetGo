@@ -14,12 +14,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class RecuperoPassword {
 
-  constructor(private service: AuthService ) {
-  }
+  constructor(private service: AuthService ) {}
 
-  stepCorrente=1;
+  stepCorrente= 1;
   errore='';
   messaggio='';
+
   inviaRichiestaOtp(email: string) {
     this.service.invioOTP(email).subscribe({
       next: (res) => {
@@ -42,9 +42,4 @@ export class RecuperoPassword {
       }
     });
   }
-
-
-
-
-
 }

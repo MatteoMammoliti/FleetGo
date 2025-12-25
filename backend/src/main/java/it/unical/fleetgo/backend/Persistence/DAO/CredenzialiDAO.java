@@ -99,7 +99,7 @@ public class CredenzialiDAO {
         }
     }
 
-    public void modificaPassword(Integer codiceOTP, String nuovaPassword, String email) {
+    public boolean modificaPassword(Integer codiceOTP, String nuovaPassword, String email) {
 
         String selOTP = "SELECT codice_otp, scadenza_codice_otp FROM credenziali_utente WHERE email=?";
         try(PreparedStatement st = conn.prepareStatement(selOTP)) {
@@ -120,11 +120,51 @@ public class CredenzialiDAO {
                 try(PreparedStatement ps = conn.prepareStatement(query)) {
                     ps.setString(1, nuovaPassword);
                     ps.setString(2, email);
-                    ps.executeUpdate();
+                    return ps.executeUpdate() > 0;
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return false;
+    }
+
+    public boolean isPrimoAccessoAdminAziendale(Integer idUtente) {
+        String query = "SELECT primo_accesso FROM credenziali_utente WHERE id_utente=?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, idUtente);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getBoolean("primo_accesso");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public boolean impostaPrimoAccesso(String email) {
+        String query = "UPDATE credenziali_utente SET primo_accesso = false WHERE email=?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, email);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getRuoloByEmail(String email) {
+        String query = "SELECT u.tipo_utente FROM utente u JOIN credenziali_utente c ON c.id_utente = u.id_utente WHERE c.email = ?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) return rs.getString("tipo_utente");
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

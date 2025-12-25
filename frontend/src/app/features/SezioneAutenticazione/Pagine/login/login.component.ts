@@ -5,7 +5,6 @@ import {AuthService} from '@core/auth/auth-service';
 import {validazione} from '@core/utils/validazione';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -69,24 +68,23 @@ export class LoginComponent {
 
     this.errore = "";
 
-
-    console.log(email, password);
-
-
     this.authService.login(email, password).subscribe({
       next: (response: any) => {
-        this.authService.aggiornaRuoloUtenteCorrente(response.ruolo,response.idAzienda||null);
-        console.log(response.idAzienda)
+        this.authService.aggiornaRuoloUtenteCorrente(response.ruolo, response.idAzienda || null);
+
         if(response.ruolo ==='Dipendente'){
+
           if(response.idAzienda){
             this.router.navigate(['/dashboardDipendente'])
           }else {
             this.router.navigate(['/senza-azienda'])
           }
+
         }else{
           this.router.navigate([response.redirectUrl]);
         }
       },
+
       error: (error) => {
 
         if(error.status==401) {
