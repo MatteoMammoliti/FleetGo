@@ -1,5 +1,7 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
+import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
+import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.SalvataggioImmagineService;
 import it.unical.fleetgo.backend.Service.VeicoloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class ControllerFlottaVeicoli {
 
     @Autowired private VeicoloService veicoloService;
     @Autowired private SalvataggioImmagineService salvataggioImmagineVeicolo;
+    @Autowired private AziendaService aziendaService;
 
     @PostMapping(value = "/registraVeicolo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> registraVeicolo(@RequestPart("veicolo") VeicoloDTO veicolo, @RequestPart("immagineVeicolo") MultipartFile immagineVeicolo) throws IOException {
@@ -82,6 +85,17 @@ public class ControllerFlottaVeicoli {
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");
+        }
+    }
+
+    @GetMapping("/getAziende")
+    public ResponseEntity<List<AziendaDTO>> getAziendeInPiattaforma() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    aziendaService.getElencoAziende()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
+import {AziendaDTO} from '@core/models/aziendaDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +35,10 @@ export class FlottaGlobaleService {
   }
 
   inviaModifiche(veicolo:VeicoloDTO):Observable<string>{
-    console.log("sono qua")
-    console.log("invio", veicolo)
     return this.http.post(`${this.apiUrl}/modificaVeicolo`, veicolo, {responseType: "text", withCredentials:true});
+  }
+
+  richiediAziende() {
+    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/getAziende`, {withCredentials:true});
   }
 }

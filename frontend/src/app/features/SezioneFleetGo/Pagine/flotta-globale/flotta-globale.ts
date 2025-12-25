@@ -7,6 +7,8 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {AziendaCard} from '@features/DipendenteSenzaAzienda/Componenti/azienda-card/azienda-card';
+import {AziendaDTO} from '@core/models/aziendaDTO';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -25,23 +27,27 @@ import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo
 })
 
 export class FlottaGlobale implements OnInit{
-  private service= inject(FlottaGlobaleService);
-  private route = inject(Router);
+
+  constructor(private service: FlottaGlobaleService, private route: Router) {}
 
   veicoliOriginali: VeicoloDTO[] = [];
-  listaVeicoli:VeicoloDTO[]=[];
+
   testoRicerca: string = '';
+  filtroAzienda: AziendaDTO | null = null;
+  filtroStatoVeicolo: string = '';
+  aziendeInPiattaforma: AziendaDTO[] = []
+
   mostraModale: boolean = false;
 
   ngOnInit(): void {
     this.caricaDati();
+    this.caricaAziende();
   }
 
   caricaDati() {
     this.service.richiediVeicoli().subscribe({
       next: (datiDalServer) => {
         this.veicoliOriginali = datiDalServer;
-        this.filtraVeicoli();
       },
       error: (err) => {
         console.error("Errore nel caricamento:", err);
@@ -49,33 +55,51 @@ export class FlottaGlobale implements OnInit{
     });
   }
 
-  filtraVeicoli() {
-    if (!this.testoRicerca || this.testoRicerca.trim() === '') {
-      this.listaVeicoli = this.veicoliOriginali;
-    } else {
-      const term = this.testoRicerca.toLowerCase();
-      this.listaVeicoli = this.veicoliOriginali.filter(v => 
-        (v.targaVeicolo && v.targaVeicolo.toLowerCase().includes(term)) ||
-        (v.modello && v.modello.toLowerCase().includes(term)) ||
-        (v.nomeAziendaAffiliata && v.nomeAziendaAffiliata.toLowerCase().includes(term))
-      );
-    }
+  caricaAziende() {
+    this.service.richiediAziende().subscribe({
+      next: (datiDalServer) => {
+        if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
+      }, error: (err) => {
+        console.error("Errore nel caricamento:", err);
+      }
+    })
   }
 
-  apriModale() {
-    this.mostraModale = true;
+
+  get veicoliFiltrati() {
+    return this.veicoliOriginali.filter(veicolo => {
+
+      let matchAzienda = true;
+
+      if(this.filtroAzienda && this.filtroAzienda.idAzienda) {
+        matchAzienda = veicolo.idAziendaAffiliata == this.filtroAzienda.idAzienda;
+      }
+
+      let matchStato = true;
+      if (this.filtroStatoVeicolo && this.filtroStatoVeicolo !== '') {
+        if (this.filtroStatoVeicolo === 'MANUTENZIONE') {
+          matchStato = veicolo.inManutenzione || veicolo.statusContrattualeVeicolo === 'MANUTENZIONE';
+        } else {
+          matchStato = veicolo.statusContrattualeVeicolo?.toLowerCase() === this.filtroStatoVeicolo.toLowerCase();
+        }
+      }
+
+      const matchRicerca =
+        (veicolo.targaVeicolo?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false) ||
+        (veicolo.modello?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false);
+
+      return matchAzienda && matchStato && matchRicerca;
+    });
   }
-  
-  chiudiModale() {
-    this.mostraModale = false;
-  } 
+
+  gestisciVisibilitaModale() { this.mostraModale = !this.mostraModale; }
 
   gestisciSalvataggio(dati: FormData) {
     this.service.registraVeicolo(dati).subscribe({
       next: (response) => {
         console.log("Veicolo salvato con successo:", response);
         this.caricaDati();
-        this.chiudiModale();
+        this.gestisciVisibilitaModale();
       },
       error: (err) => {
         console.error("Errore durante il salvataggio del veicolo:", err);
@@ -97,5 +121,11 @@ export class FlottaGlobale implements OnInit{
 
   dettagliVeicolo(targaVeicolo: string) {
     this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
+  }
+
+  resettaFiltri() {
+    this.filtroAzienda = {} as AziendaDTO;
+    this.filtroStatoVeicolo = "";
+    this.testoRicerca = "";
   }
 }
