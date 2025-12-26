@@ -7,7 +7,7 @@
   <div class="flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="relative w-full md:w-96">
       <i class="bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-      <input type="text" placeholder="Cerca per nome o partita IVA..." 
+      <input type="text" placeholder="Cerca per nome o partita IVA..."
              [(ngModel)]="testoRicerca"
              (input)="filtraAziende()"
              class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm">
@@ -21,7 +21,7 @@
   </div>
 
   <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-    <app-tabella-aziende 
+    <app-tabella-aziende
       #tabellaAziende
       [listaAziende]="listaAziende"
       (richiediEliminazione)="elimina($event)">
@@ -32,7 +32,7 @@
     <div (click)="chiudiModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
 
     <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-jump-in">
-      
+
       <div class="sticky top-0 bg-white z-10 flex items-center justify-between p-6 border-b border-slate-100">
         <h2 class="text-xl font-bold text-slate-800">Nuova Partnership</h2>
         <button (click)="chiudiModale()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-red-500 transition-colors">
@@ -41,7 +41,7 @@
       </div>
 
       <div class="p-6 md:p-8">
-        <app-form-aggiungi-admin-azienda 
+        <app-form-aggiungi-admin-azienda
           #formAggiungiAdminAzienda
           (aziendaAggiunta)="onAziendaAggiunta($event)">
         </app-form-aggiungi-admin-azienda>
@@ -49,5 +49,4 @@
 
     </div>
   </div>
-
 </div>

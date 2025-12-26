@@ -7,7 +7,7 @@ import lombok.Setter;
 public class Azienda {
     private int idAzienda;
     private Integer idAdmin;
-    private String sedeAzienda;
+    private Integer sedeAzienda;
     private String nomeAzienda;
     private String pIva;
 }

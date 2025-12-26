@@ -383,4 +383,11 @@ public class AdminAziendaleService {
             return credenzialiDAO.isPrimoAccessoAdminAziendale(idAdmin);
         }
     }
+
+    public boolean eliminaLuogo(Integer idLuogo) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            LuogoAziendaDAO luogoAziendaDAO =  new LuogoAziendaDAO(connection);
+            return luogoAziendaDAO.rimuoviLuogo(idLuogo);
+        }
+    }
 }

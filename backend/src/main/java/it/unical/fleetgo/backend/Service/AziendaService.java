@@ -62,4 +62,11 @@ public class AziendaService {
             return listaAziende;
         }
     }
+
+    public boolean impostaSede(Integer idLuogo, Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            AziendaDAO aziendaDAO = new AziendaDAO(connection);
+            return aziendaDAO.impostaSedeAzienda(idLuogo, idAzienda);
+        }
+    }
 }

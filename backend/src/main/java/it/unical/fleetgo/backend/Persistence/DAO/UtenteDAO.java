@@ -199,19 +199,13 @@ public class UtenteDAO {
                     }
                 }
             }
-            if(dati.getNomeAzienda()!=null || dati.getSedeAzienda()!=null || dati.getPIva()!=null){
+            if(dati.getNomeAzienda()!=null || dati.getPIva()!=null){
                 StringBuilder aggiornoAzienda=new StringBuilder("UPDATE azienda SET ");
                 List<Object> parametri = new ArrayList<>();
                 boolean primo= true;
                 if(dati.getNomeAzienda()!=null){
                     aggiornoAzienda.append("nome_azienda=? ");
                     parametri.add(dati.getNomeAzienda());
-                    primo=false;
-                }
-                if(dati.getSedeAzienda()!=null){
-                    if(!primo){aggiornoAzienda.append(", ");}
-                    aggiornoAzienda.append("sede_azienda=? ");
-                    parametri.add(dati.getSedeAzienda());
                     primo=false;
                 }
                 if(dati.getPIva()!=null){
@@ -253,8 +247,8 @@ public class UtenteDAO {
     }
 
     public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente){
-        String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,a.sede_azienda,a.p_iva FROM utente u JOIN" +
-                " credenziali_utente c ON u.id_utente=c.id_utente LEFT JOIN azienda a ON u.id_utente=a.id_admin_azienda WHERE u.id_utente =?";
+        String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,l.nome_luogo,a.p_iva FROM utente u JOIN" +
+                " credenziali_utente c ON u.id_utente=c.id_utente LEFT JOIN azienda a ON u.id_utente=a.id_admin_azienda LEFT JOIN luogo_azienda l ON a.sede_azienda = l.id_luogo WHERE u.id_utente =?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
             ResultSet rs = st.executeQuery();
@@ -264,7 +258,7 @@ public class UtenteDAO {
                         rs.getDate("data_nascita").toString(),
                         rs.getString("email"),
                         rs.getString("nome_azienda"),
-                        rs.getString("sede_azienda"),
+                        rs.getString("nome_luogo"),
                         rs.getString("p_iva"),
                         null);
             }

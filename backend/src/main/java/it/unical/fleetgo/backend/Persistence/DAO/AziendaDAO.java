@@ -3,6 +3,8 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
+import org.springframework.security.core.parameters.P;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,13 +21,12 @@ public class AziendaDAO {
     }
 
     public boolean inserisciAzienda(AziendaDTO azienda){
-        String query = "INSERT INTO azienda(id_admin_azienda, sede_azienda, nome_azienda, p_iva) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO azienda(id_admin_azienda, nome_azienda, p_iva) VALUES (?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, azienda.getIdAdminAzienda());
-            ps.setString(2, azienda.getSedeAzienda());
-            ps.setString(3, azienda.getNomeAzienda());
-            ps.setString(4, azienda.getPIva());
+            ps.setString(2, azienda.getNomeAzienda());
+            ps.setString(3, azienda.getPIva());
             return ps.executeUpdate() > 0;
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -70,7 +71,7 @@ public class AziendaDAO {
             if(rs.next()) {
                 Azienda a = new Azienda();
                 a.setIdAzienda(rs.getInt("id_azienda"));
-                a.setSedeAzienda(rs.getString("sede_azienda"));
+                a.setSedeAzienda(rs.getInt("sede_azienda"));
                 a.setNomeAzienda(rs.getString("nome_azienda"));
                 a.setPIva(rs.getString("p_iva"));
                 return a;
@@ -109,7 +110,7 @@ public class AziendaDAO {
                 Azienda a = new Azienda();
                 a.setIdAzienda(rs.getInt("id_azienda"));
                 a.setIdAdmin(rs.getInt("id_admin_azienda"));
-                a.setSedeAzienda(rs.getString("sede_azienda"));
+                a.setSedeAzienda(rs.getInt("sede_azienda"));
                 a.setNomeAzienda(rs.getString("nome_azienda"));
                 a.setPIva(rs.getString("p_iva"));
                 aziende.add(a);
@@ -139,6 +140,18 @@ public class AziendaDAO {
             }
             return infoAziende;
         }
+    }
 
+    public Boolean impostaSedeAzienda(Integer idLuogo, Integer idAzienda) {
+        String query = "UPDATE azienda SET sede_azienda = ? WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idLuogo);
+            ps.setInt(2, idAzienda);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

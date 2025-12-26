@@ -27,7 +27,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
   password = '';
   nomeAzienda = '';
   partitaIva = '';
-  sedeLegale = '';
   errore = '';
 
   mappaErrori = {
@@ -38,7 +37,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
     password: false,
     nomeAzienda: false,
     partitaIva: false,
-    sedeLegale: false,
   };
 
   ngOnInit() {
@@ -48,7 +46,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
   onSubmit() {
     this.reset();
 
-    if (!this.nome || !this.cognome || !this.email || !this.password || !this.nomeAzienda || !this.partitaIva || !this.sedeLegale) {
+    if (!this.nome || !this.cognome || !this.email || !this.password || !this.nomeAzienda || !this.partitaIva) {
       this.errore = "Riempi tutti i campi";
       this.mappaErrori.nome = this.nome == '';
       this.mappaErrori.cognome = this.cognome == '';
@@ -56,7 +54,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
       this.mappaErrori.password = this.password == '';
       this.mappaErrori.nomeAzienda = this.nomeAzienda == '';
       this.mappaErrori.partitaIva = this.partitaIva == '';
-      this.mappaErrori.sedeLegale = this.sedeLegale == '';
       return;
     }
 
@@ -95,8 +92,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
 
     const azienda: AziendaDTO = {
       nomeAzienda: this.nomeAzienda,
-      pIva: this.partitaIva,
-      sedeAzienda: this.sedeLegale
+      pIva: this.partitaIva
     }
 
     const mod : any ={
@@ -118,7 +114,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
       password: false,
       nomeAzienda: false,
       partitaIva: false,
-      sedeLegale: false,
     };
   }
 
@@ -130,7 +125,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
     this.password = '';
     this.nomeAzienda = '';
     this.partitaIva = '';
-    this.sedeLegale = '';
     this.reset();
   }
 

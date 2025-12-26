@@ -7,6 +7,10 @@ import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {
   MappaGestioneLuoghi
 } from '@features/SezioneAdminAziendale/Componenti/mappa-gestione-luoghi/mappa-gestione-luoghi';
+import {
+  TabellaGestioneLuoghi
+} from '@features/SezioneAdminAziendale/Componenti/tabella-gestione-luoghi/tabella-gestione-luoghi';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-modifica-dati',
@@ -14,7 +18,9 @@ import {
   imports: [
     FormsModule,
     FormModificaDatiAdminAziendale,
-    MappaGestioneLuoghi
+    MappaGestioneLuoghi,
+    TabellaGestioneLuoghi,
+    NgClass
   ],
   templateUrl: './modifica-dati.html',
   styleUrl: './modifica-dati.css'
@@ -90,5 +96,31 @@ export class ModificaDatiComponent implements OnInit{
         console.log(err);
       }
     });
+  }
+
+  impostaSede(idLuogo: number) {
+    this.service.impostaSedeAzienda(idLuogo).subscribe({
+      next: value => {
+        if(value) {
+          this.caricaDatiAdmin();
+          this.caricaLuoghiEsistenti();
+        }
+      }, error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  eliminaLuogo(idLuogo: number) {
+    this.service.eliminaLuogo(idLuogo).subscribe({
+      next: value => {
+        if(value) {
+          this.caricaDatiAdmin();
+          this.caricaLuoghiEsistenti();
+        }
+      }, error: err => {
+        console.log(err);
+      }
+    })
   }
 }

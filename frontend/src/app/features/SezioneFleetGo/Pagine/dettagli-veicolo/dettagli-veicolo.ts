@@ -24,16 +24,17 @@ declare var google:any;
 })
 
 export class DettagliVeicolo implements OnInit {
-  private veicoloService:FlottaGlobaleService = inject(FlottaGlobaleService);
-  private aziendeAssociateService:AziendeAffiliateService = inject(AziendeAffiliateService);
-  private route = inject(ActivatedRoute);
-  private googleMapsService:GoogleMapsService = inject(GoogleMapsService);
 
-  veicolo:any = null;
+  constructor(private veicoloService: FlottaGlobaleService,
+              private route: ActivatedRoute,
+              private aziendeAssociateService:AziendeAffiliateService,
+              private googleMapsService:GoogleMapsService) {}
+
+  veicolo: any = null;
   aziende:AziendaDTO[] = [];
   aziendaSelezionata:any=null;
   modificaAzienda: boolean = false;
-  
+
   private map: any;
   private marker: any;
   private infoWindow: any;
@@ -58,7 +59,7 @@ export class DettagliVeicolo implements OnInit {
       next: (response) => {
         if (response) {
           this.veicolo = response;
-          this.modificaAzienda= !this.veicolo.nomeAziendaAffiliata;
+          this.modificaAzienda = !this.veicolo.nomeAziendaAffiliata;
 
           const luogo = this.veicolo.luogoRitiroDeposito;
           if (this.veicolo.nomeAziendaAffiliata && luogo && luogo.latitudine && luogo.longitudine) {
@@ -70,19 +71,6 @@ export class DettagliVeicolo implements OnInit {
     });
   }
 
-  initAziende(){
-    this.aziendeAssociateService.richiediAziende().subscribe({
-      next: (response) => {
-        if (response) {
-          this.aziende = response || [];
-        }
-      },error:
-        (err) => {
-          console.error("Errore nel caricamento:", err);
-        }
-    })
-
-  }
   initMappa() {
     const luogo = this.veicolo.luogoRitiroDeposito;
     if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
@@ -99,7 +87,7 @@ export class DettagliVeicolo implements OnInit {
 
   disegnaMappa(coords: { lat: number; lng: number}) {
     const mapElement = document.getElementById("google-map");
-    
+
     if (!mapElement) return;
 
     const mapOptions = {
@@ -112,7 +100,7 @@ export class DettagliVeicolo implements OnInit {
     };
 
     this.map=new google.maps.Map(mapElement, mapOptions);
-    
+
     this.marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -135,14 +123,14 @@ export class DettagliVeicolo implements OnInit {
   attivaMappa() {
     this.map.setZoom(17);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'cooperative' }); 
+    this.map.setOptions({ gestureHandling: 'cooperative' });
     this.infoWindow.open(this.map, this.marker);
   }
 
   resetMappa() {
     this.map.setZoom(this.zoomIniziale);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'none' }); 
+    this.map.setOptions({ gestureHandling: 'none' });
     this.infoWindow.close();
   }
 
@@ -155,51 +143,43 @@ export class DettagliVeicolo implements OnInit {
     this.modificaAzienda = false;
     this.aziendaSelezionata = null;
   }
-    
+
 
   salvaModifiche(): void {
-    const veicoloDaInviare: any = {
-      idVeicolo: this.veicolo.idVeicolo,
-      targaVeicolo: this.veicolo.targaVeicolo,
-      urlImmagine: this.veicolo.urlImmagine,
-      modello: this.veicolo.modello,
-      tipoDistribuzioneVeicolo: this.veicolo.tipoDistribuzioneVeicolo,
-      livelloCarburante: this.veicolo.livelloCarburante,
-      statusContrattualeVeicolo: this.veicolo.statusContrattualeVeicolo,
-      inManutenzione: this.veicolo.inManutenzione || false
-    };
-
     if (this.modificaAzienda) {
-      if (this.aziendaSelezionata && typeof this.aziendaSelezionata === 'object') {
+
+      const veicoloDaInviare: any = {
+        idVeicolo: this.veicolo.idVeicolo,
+        targaVeicolo: this.veicolo.targaVeicolo,
+        urlImmagine: this.veicolo.urlImmagine,
+        modello: this.veicolo.modello,
+        tipoDistribuzioneVeicolo: this.veicolo.tipoDistribuzioneVeicolo,
+        livelloCarburante: this.veicolo.livelloCarburante,
+        statusContrattualeVeicolo: this.veicolo.statusContrattualeVeicolo,
+        inManutenzione: this.veicolo.inManutenzione || false
+      };
+
+      if (this.aziendaSelezionata) {
         veicoloDaInviare.idAziendaAffiliata = this.aziendaSelezionata.idAzienda;
         veicoloDaInviare.nomeAziendaAffiliata = this.aziendaSelezionata.nomeAzienda;
       } else {
         veicoloDaInviare.idAziendaAffiliata = null;
         veicoloDaInviare.nomeAziendaAffiliata = null;
       }
-    } else {
-      veicoloDaInviare.idAziendaAffiliata = this.veicolo.idAziendaAffiliata;
-      veicoloDaInviare.nomeAziendaAffiliata = this.veicolo.nomeAziendaAffiliata;
+
+      this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({
+        next: () => {
+          console.log("Salvataggio avvenuto con successo");
+          this.initVeicolo(this.veicolo.targaVeicolo);
+          this.modificaAzienda = false;
+          this.aziendaSelezionata = null;
+        },
+        error: (err) => {
+          console.error("Errore salvataggio:", err);
+        }
+      });
     }
-
-    console.log("Invio aggiornamento:", veicoloDaInviare);
-
-    this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({
-      next: () => {
-        console.log("Salvataggio avvenuto con successo");
-        this.initVeicolo(this.veicolo.targaVeicolo);
-        this.modificaAzienda = false;
-        this.aziendaSelezionata = null;
-      },
-      error: (err) => {
-        console.error("Errore salvataggio:", err);
-      }
-    });
   }
 
-  tornaIndietro(){
-    window.history.back();
-  }
+  tornaIndietro(){window.history.back();}
 }
-
- 

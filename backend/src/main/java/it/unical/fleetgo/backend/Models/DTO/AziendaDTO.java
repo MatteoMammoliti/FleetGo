@@ -14,7 +14,7 @@ public class AziendaDTO {
     private Integer idAzienda;
     private Integer idAdminAzienda;
     private String nomeAzienda;
-    private String sedeAzienda;
+    private Integer sedeAzienda;
     private String pIva;
 
     public AziendaDTO() {}

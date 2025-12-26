@@ -3,14 +3,12 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-form-modifica-dati-admin-aziendale',
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgIf
   ],
   templateUrl: './form-modifica-dati-admin-aziendale.html',
   styleUrl: './form-modifica-dati-admin-aziendale.css',
@@ -21,10 +19,11 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
   constructor(private validator:validazione) {}
 
   @Input() datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
+  @Input() luoghi: LuogoDTO[] = [];
   @Input() erroreBackend="";
   @Input() luoghiCorrenti: LuogoDTO[] = [];
 
-  @Output() richiestaModifica=new EventEmitter<ModificaDatiUtenteDTO>();
+  @Output() richiestaModifica= new EventEmitter<ModificaDatiUtenteDTO>();
 
   nome: string | null = '';
   cognome: string | null = '';
@@ -32,7 +31,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
   email: string | null = '';
   nomeAzienda: string | null = '';
   partitaIva: string | null = '';
-  sedeAzienda: string | null = '';
+  sedeAzienda: string | null | undefined = '';
 
   errore = '';
 
@@ -42,10 +41,8 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
     data: false,
     email :false,
     nomeAzienda: false,
-    sedeAzienda:false,
     partitaIva: false
   };
-
 
   ngOnChanges() {
     this.caricaDatiEsistenti();
@@ -71,7 +68,6 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
       data: false,
       email : false,
       nomeAzienda: false,
-      sedeAzienda: false,
       partitaIva: false
     };
   }
@@ -86,7 +82,6 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
       if(!this.data) this.mappaErrori.data = true;
       if (!this.email) this.mappaErrori.email = true;
       if (!this.nomeAzienda) this.mappaErrori.nomeAzienda = true;
-      if (!this.sedeAzienda) this.mappaErrori.sedeAzienda = true;
       if (!this.partitaIva) this.mappaErrori.partitaIva = true;
       return;
     }
@@ -121,7 +116,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
       data: this.datiCorrenti.data != this.data ? this.datiCorrenti.data : null,
       email: this.datiCorrenti.email != this.email ? this.email : null,
       nomeAzienda: this.datiCorrenti.nomeAzienda != this.nomeAzienda ? this.nomeAzienda : null,
-      sedeAzienda: this.datiCorrenti.sedeAzienda != this.sedeAzienda ? this.sedeAzienda : null,
+      sedeAzienda: null,
       pIva: this.datiCorrenti.pIva != this.partitaIva ? this.partitaIva : null,
     };
 

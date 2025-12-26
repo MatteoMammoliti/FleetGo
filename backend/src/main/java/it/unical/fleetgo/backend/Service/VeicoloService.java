@@ -1,13 +1,11 @@
 package it.unical.fleetgo.backend.Service;
 
-import it.unical.fleetgo.backend.Models.DTO.GestioneVeicoloAziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -61,10 +59,7 @@ public class VeicoloService {
         }
     }
 
-
-
     public VeicoloDTO getInformazioniVeicolo(String targa) throws SQLException {
-
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             Veicolo veicolo = veicoloDAO.getVeicoloByTarga(targa);
@@ -72,42 +67,19 @@ public class VeicoloService {
         }
     }
 
-    public void modificaDati(VeicoloDTO veicoloDTO) throws SQLException {
-
+    public void aggiuntaModificaGestioneVeicolo(Integer idAziendaAffiliata, Integer idVeicolo) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new  GestioneVeicoloAziendaDAO(connection);
 
-            connection.setAutoCommit(false);
-            try {
-                if(veicoloDTO.getNomeAziendaAffiliata() != null) {
-                    this.inserisciNuovoVeicoloGestito(veicoloDTO);
-                } else if(veicoloDTO.getInManutenzione() != null) {
-                    this.cambiaStatusManutenzioneVeicolo(veicoloDTO);
-                }
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                throw new RuntimeException(e);
-            } finally {
-                connection.setAutoCommit(true);
+            if(idAziendaAffiliata == null) {
+                gestioneVeicoloAziendaDAO.eliminaVeicoloGestito(idVeicolo);
+                return;
             }
+            gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(idVeicolo, idAziendaAffiliata);
         }
     }
 
-    private void inserisciNuovoVeicoloGestito(VeicoloDTO veicolo) throws SQLException {
-
-        try(Connection connection = this.dataSource.getConnection()) {
-            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
-            VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
-
-            GestioneVeicoloAziendaDTO contenitore = new GestioneVeicoloAziendaDTO();
-            contenitore.setIdVeicolo(veicolo.getIdVeicolo());
-            contenitore.setIdAzienda(veicolo.getIdAziendaAffiliata());
-            gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(contenitore);
-            veicoloDAO.cambiaStatusContrattualeVeicolo("Noleggiato",veicolo.getIdVeicolo());
-        }
-    }
     private void cambiaStatusManutenzioneVeicolo(VeicoloDTO veicolo) throws SQLException {
-
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             veicoloDAO.cambiaStatusManutenzioneVeicolo(veicolo.getInManutenzione(), veicolo.getIdVeicolo());

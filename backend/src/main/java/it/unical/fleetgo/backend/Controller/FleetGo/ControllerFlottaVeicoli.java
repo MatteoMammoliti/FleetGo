@@ -81,7 +81,7 @@ public class ControllerFlottaVeicoli {
     @PostMapping(value = "/modificaVeicolo")
     public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicolo) {
         try{
-            veicoloService.modificaDati(veicolo);
+            veicoloService.aggiuntaModificaGestioneVeicolo(veicolo.getIdAziendaAffiliata(), veicolo.getIdVeicolo());
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");

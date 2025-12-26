@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
+import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,7 @@ public class ControllerModificaDati {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
     @Autowired private UtenteService utenteService;
+    @Autowired private AziendaService aziendaService;
 
     @PostMapping("/modificaDatiAdmin")
     public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
@@ -82,5 +84,30 @@ public class ControllerModificaDati {
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al DB");
         }
+    }
+
+    @PostMapping("/eliminaLuogo")
+    public ResponseEntity<String> eliminaLuogo(@RequestBody Integer idLuogo){
+        try {
+            if(adminAziendaleService.eliminaLuogo(idLuogo))
+                return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
+            else
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al DB");
+        }
+    }
+
+    @PostMapping("/impostaSede")
+    public ResponseEntity<String> impostaSede(@RequestBody Integer idLuogo, HttpSession session){
+        try {
+            if(aziendaService.impostaSede(
+                    idLuogo,
+                    (Integer) session.getAttribute("idAzienda")
+            )) return ResponseEntity.status(HttpStatus.OK).body("Sede modificati con successo!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
     }
 }

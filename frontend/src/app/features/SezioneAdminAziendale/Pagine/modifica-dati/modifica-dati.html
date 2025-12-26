@@ -1,23 +1,42 @@
-<div class="layout-wrapper">
+<div class="flex flex-col gap-8 p-8 min-h-screen bg-slate-50">
 
-  <app-form-modifica-dati-admin-aziendale
-    class="colonna-form"
-    [datiCorrenti]="utenteDaModificare"
-    [erroreBackend]="errore"
-    [luoghiCorrenti]="luoghiEsistenti"
-    (richiestaModifica)="modificaDatiUtente($event)">
-  </app-form-modifica-dati-admin-aziendale>
+  <div>
+    <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Impostazioni Azienda</h1>
+    <p class="text-slate-500">Gestisci i dati amministrativi, le sedi operative e la tua presenza sul territorio.</p>
+  </div>
 
-  <div class="card-map">
-    <div class="card-header">
-      <h3><i class="bi bi-geo-alt-fill"></i> Mappa</h3>
-      <button class="btn-toggle-map" (click)="iniziaAggiuntaLuogo()" [class.active]="modalitaAggiunta">
-        <i class="bi" [class.bi-plus-lg]="!modalitaAggiunta" [class.bi-x-lg]="modalitaAggiunta"></i>
-        {{ modalitaAggiunta ? 'Annulla' : 'Aggiungi Luogo' }}
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
+    <app-form-modifica-dati-admin-aziendale
+      [datiCorrenti]="utenteDaModificare"
+      [erroreBackend]="errore"
+      (richiestaModifica)="modificaDatiUtente($event)">
+    </app-form-modifica-dati-admin-aziendale>
+
+    <app-tabella-gestione-luoghi
+      [luoghi]="luoghiEsistenti"
+      [nomeSedeAttuale]="utenteDaModificare.sedeAzienda"
+      (impostaSede)="impostaSede($event)"
+      (eliminaLuogo)="eliminaLuogo($event)">
+    </app-tabella-gestione-luoghi>
+
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+      <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <i class="bi bi-map-fill text-blue-600"></i> Mappa Interattiva
+      </h3>
+
+      <button (click)="iniziaAggiuntaLuogo()"
+              class="px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
+              [ngClass]="modalitaAggiunta ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200'">
+        <i class="bi" [class]="modalitaAggiunta ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+        {{ modalitaAggiunta ? 'Annulla Inserimento' : 'Aggiungi Nuovo Luogo' }}
       </button>
     </div>
 
-    <div class="map-content">
+    <div class="h-[500px] w-full relative">
       <app-mappa-gestione-luoghi
         [luoghiSalvati]="luoghiEsistenti"
         [modalitaAggiuntaLuogo]="modalitaAggiunta"

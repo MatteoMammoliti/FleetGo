@@ -30,4 +30,12 @@ export class ModificaDatiService {
   public aggiungiLuogo(luogo: LuogoDTO): Observable<string> {
     return this.http.post(`${this.apiUrl}/aggiungiLuogo`,luogo, { responseType: "text", withCredentials: true });
   }
+
+  public impostaSedeAzienda(idLuogo: number) {
+    return this.http.post(`${this.apiUrl}/impostaSede`,idLuogo, { responseType: "text", withCredentials: true });
+  }
+
+  public eliminaLuogo(idLuogo: number) {
+    return this.http.post(`${this.apiUrl}/impostaSede`,idLuogo, { responseType: "text", withCredentials: true });
+  }
 }
