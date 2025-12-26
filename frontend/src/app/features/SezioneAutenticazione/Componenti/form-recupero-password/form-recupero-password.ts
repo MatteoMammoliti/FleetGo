@@ -1,18 +1,15 @@
 import {Component, inject, Input, Output, EventEmitter} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms'; // Mantenuto per FormsModule, che è dentro ReactiveFormsModule
-import {HttpClient} from '@angular/common/http';
 import {validazione} from '@core/utils/validazione';
 import {RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
-import {AuthService} from '@core/auth/auth-service';
 
 @Component({
   selector: 'app-form-recupero-password',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule, // Usiamo FormsModule per ngModel
+    FormsModule,
     RouterLink
   ],
   templateUrl: './form-recupero-password.html',
