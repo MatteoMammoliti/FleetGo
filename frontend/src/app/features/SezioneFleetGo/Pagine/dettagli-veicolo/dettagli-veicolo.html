@@ -1,113 +1,136 @@
-<div class="container mt-5 mb-5">
+<div class="flex flex-col gap-6 p-6 fade-in mb-20">
 
   @if (!veicolo) {
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Caricamento...</span>
-      </div>
-      <p class="mt-2">Recupero dati veicolo in corso...</p>
+    <div class="flex flex-col items-center justify-center h-64 gap-3">
+      <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+      <p class="text-grigio-scuro font-medium">Recupero dati veicolo...</p>
     </div>
   }
 
   @if (veicolo) {
-    <div class="card shadow-lg">
-      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Gestione Veicolo: {{ veicolo.targaVeicolo }}</h3>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <app-template-titolo-sottotitolo
+        [titolo]="'Dettaglio Veicolo'"
+        [sottotitolo]="'Targa: ' + veicolo.targaVeicolo">
+      </app-template-titolo-sottotitolo>
 
-        <span class="badge"
+      <div class="px-4 py-2 rounded-full border text-sm font-bold flex items-center gap-2 shadow-sm"
+           [ngClass]="{
+             'bg-green-50 text-green-700 border-green-200': veicolo.statusContrattualeVeicolo === 'Disponibile',
+             'bg-yellow-50 text-yellow-700 border-yellow-200': veicolo.statusContrattualeVeicolo === 'Noleggiato',
+             'bg-red-50 text-red-700 border-red-200': veicolo.statusContrattualeVeicolo === 'In Manutenzione' || veicolo.inManutenzione}">
+        <span class="w-2.5 h-2.5 rounded-full"
               [ngClass]="{
-                'bg-success': veicolo.statusCondizioneVeicolo === 'DISPONIBILE',
-                'bg-warning': veicolo.statusCondizioneVeicolo === 'MANUTENZIONE',
-                'bg-danger': veicolo.statusCondizioneVeicolo === 'IN_USO'
-              }">
-          {{ veicolo.statusCondizioneVeicolo }}
-        </span>
+                'bg-green-500': veicolo.statusContrattualeVeicolo === 'Disponibile',
+                'bg-yellow-500': veicolo.statusContrattualeVeicolo === 'Noleggiato',
+                'bg-red-500': veicolo.statusContrattualeVeicolo === 'In Manutenzione' || veicolo.inManutenzione}"></span>
+        {{ veicolo.inManutenzione ? 'In Manutenzione' : veicolo.statusContrattualeVeicolo }}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-2">
+      <div class="flex flex-col gap-6">
+        <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200">
+          <img [src]="veicolo.urlImmagine ? veicolo.urlImmagine : 'assets/images/placeholder-car.png'"
+               class="w-full h-64 object-cover rounded-xl">
+        </div>
+
+        @if (veicolo.nomeAziendaAffiliata && veicolo.luogoRitiroDeposito && veicolo.luogoRitiroDeposito.latitudine && veicolo.luogoRitiroDeposito.longitudine) {
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-grigio-scuro ml-1">Posizione Attuale</label>
+            <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-slate-200 relative group">
+              <div id="google-map" class="w-full h-full"></div>
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs font-medium text-grigio-scuro shadow-sm pointer-events-none">
+                Clicca sul marker per ingrandire
+              </div>
+            </div>
+            <p class="text-xs text-grigio-scuro ml-1 flex items-center gap-1">
+              <i class="bi-geo-alt-fill"></i>
+              {{ veicolo.luogoRitiroDeposito.nomeLuogo }}
+            </p>
+          </div>
+        }
       </div>
 
-      <div class="card-body">
-        <form (ngSubmit)="salvaModifiche()" #veicoloForm="ngForm">
-          <div class="row">
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 h-fit">
+        
+        <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2">
+          Info
+        </h3>
 
-            <div class="col-md-5 text-center border-end">
+        <form (ngSubmit)="salvaModifiche()" #veicoloForm="ngForm" class="flex flex-col gap-6">
 
-              <img [src]="veicolo.urlImmagine ? veicolo.urlImmagine : 'logoFleetGo.png'"
-                   class="img-fluid rounded mb-3"
-                   alt="Foto Veicolo"
-                   style="max-height: 250px; object-fit: cover;">
-
-              <div class="mb-3 text-start px-3">
-                <label class="form-label fw-bold">Modello</label>
-                <input type="text" class="form-control" name="modello" [(ngModel)]="veicolo.modello" required>
-              </div>
-
-              <div class="mb-3 text-start px-3">
-                <label class="form-label fw-bold">Tipo Distribuzione</label>
-                <input type="text" class="form-control" name="distribuzione" [(ngModel)]="veicolo.tipoDistribuzioneVeicolo" readonly>
-                <small class="text-muted">Dato tecnico non modificabile</small>
-              </div>
-
-              @if (veicolo.nomeAziendaAffiliata && veicolo.luogoRitiroDeposito) {
-                <div class="mt-4 px-3 text-start">
-                  <label class="form-label fw-bold">
-                    Posizione Attuale: {{ veicolo.luogoRitiroDeposito.nomeLuogo }}
-                  </label>
-                  <div id="google-map" class="rounded border shadow-sm" style="height: 250px; width: 100%;"></div>
-                </div>
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-sm font-semibold text-blu">Azienda Assegnata</label>
+              @if (!modificaAzienda && veicolo.nomeAziendaAffiliata) {
+                <button type="button" (click)="abilitaCambioAzienda()" class="text-xs text-blue-600 hover:underline font-medium">
+                  Modifica / Rimuovi
+                </button>
               }
-            </div>
-
-            <div class="col-md-7 px-4">
-              <h5 class="text-primary mb-3">Impostazioni FleetGo</h5>
-
-              <div class="mb-4">
-                @if (veicolo.nomeAziendaAffiliata) {
-                  <label class="form-label fw-bold">
-                    Azienda Affiliata: {{ veicolo.nomeAziendaAffiliata }}
-                  </label>
-                }
-
-                @if (veicolo.nomeAziendaAffiliata===null) {
-                  <label class="form-label fw-bold">Assegna ad Azienda</label>
-                  <select class="form-select" name="idAzienda" [(ngModel)]="aziendaSelezionata" >
-                    <option value="">-- Nessuna (Parcheggio FleetGo) --</option>
-                    @for (azienda of aziende; track azienda.idAzienda) {
-                      <option [ngValue]="azienda">
-                        {{ azienda.nomeAzienda }} ({{ azienda.sedeAzienda }})
-                      </option>
-                    }
-                  </select>
-                  <div class="form-text">Seleziona un'azienda per trasferire il veicolo.</div>
-                }
-              </div>
-
-              <div class="mb-4">
-                @if (!veicolo.inManutenzione) {
-                  <label class="form-label fw-bold">
-                    Stato Attuale: Nessun problema da segnalare!
-                  </label>
-                } @else if (veicolo.inManutenzione){
-                  <label class="form-label fw-bold">
-                    Stato Attuale: In manutenzione!
-                  </label>
-                }
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label fw-bold">Livello Carburante: {{ veicolo.livelloCarburante }}%</label>
-                <input type="range" class="form-range" min="0" max="100" step="5"
-                       name="benzina" [(ngModel)]="veicolo.livelloCarburante">
-              </div>
-
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
-                <button type="button" class="btn btn-secondary me-md-2" (click)="tornaIndietro()">
+              @if (modificaAzienda && veicolo.nomeAziendaAffiliata) {
+                <button type="button" (click)="disabilitaCambioAzienda()" class="text-xs text-red-500 hover:underline font-medium">
                   Annulla
                 </button>
-                <button type="submit" class="btn btn-primary btn-lg" [disabled]="!veicoloForm.valid">
-                  <i class="bi bi-save"></i> Salva Modifiche
-                </button>
-              </div>
-
+              }
             </div>
+            
+            @if (!modificaAzienda && veicolo.nomeAziendaAffiliata) {
+              <div class="w-full px-4 py-3 rounded-xl bg-blue-50 border border-blue-100 text-blue-800 font-bold flex items-center gap-3">
+                {{ veicolo.nomeAziendaAffiliata }}
+              </div>
+            } @else {
+              <div class="fade-in">
+                <app-scelta-tendina
+                  [lista]="aziende"
+                  [chiaveVisuale]="'nomeAzienda'"
+                  [placeholder]="'Seleziona azienda (o lascia vuoto per nessuna)'"
+                  (valoreChange)="aziendaSelezionata = $event">
+                </app-scelta-tendina>
+                <p class="text-xs text-slate-400 mt-1">
+                  Seleziona un'azienda per trasferire il veicolo.
+                </p>
+              </div>
+            }
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-blu">Modello</label>
+            <input type="text" name="modello" [(ngModel)]="veicolo.modello" required
+                   class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none font-medium">
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-blu">Alimentazione</label>
+            <div class="w-full px-4 py-3 rounded-xl border border-slate-100 bg-slate-100/50 text-black font-medium select-none">
+              {{ veicolo.tipoDistribuzioneVeicolo }}
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 mt-2">
+            <div class="flex justify-between items-center">
+              <label class="text-sm font-semibold text-slate-700">Livello Carburante</label>
+              <span class="text-sm font-bold text-slate-800">{{ veicolo.livelloCarburante }}%</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-100">
+              <div class="h-full rounded-full transition-all duration-1000"
+                   [style.width.%]="veicolo.livelloCarburante"
+                   [ngClass]="{
+                     'bg-red-500': veicolo.livelloCarburante <= 20,
+                     'bg-yellow-500': veicolo.livelloCarburante > 20 && veicolo.livelloCarburante <= 50,
+                     'bg-green-500': veicolo.livelloCarburante > 50}">
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-slate-100">
+            <button type="button" (click)="tornaIndietro()" 
+                    class="px-6 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition-all">
+              Annulla
+            </button>
+            <button type="submit" [disabled]="!veicoloForm.valid"
+                    class="px-8 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+              <i class="bi-save"></i> Salva Modifiche
+            </button>
           </div>
         </form>
       </div>

@@ -1,66 +1,80 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {CommonModule} from '@angular/common';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {AziendaDTO} from '@core/models/aziendaDTO';
-import {ActivatedRoute,Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {GoogleMapsService} from '@core/services/google-maps-service';
-
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 declare var google:any;
 
 @Component({
   selector: 'app-dettagli-veicolo',
+  standalone: true,
   imports: [
     FormsModule,
-    NgClass,
+    CommonModule,
+    TemplateTitoloSottotitolo,
+    SceltaTendina
   ],
   templateUrl: './dettagli-veicolo.html',
   styleUrl: './dettagli-veicolo.css',
 })
 
-export class DettagliVeicolo {
+export class DettagliVeicolo implements OnInit {
   private veicoloService:FlottaGlobaleService = inject(FlottaGlobaleService);
   private aziendeAssociateService:AziendeAffiliateService = inject(AziendeAffiliateService);
-  private activeRoute:ActivatedRoute = inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
   private googleMapsService:GoogleMapsService = inject(GoogleMapsService);
+
   veicolo:any = null;
   aziende:AziendaDTO[] = [];
   aziendaSelezionata:any=null;
-  statusCambiato:string = "";
-  private luogo: any;
+  modificaAzienda: boolean = false;
+  
+  private map: any;
+  private marker: any;
+  private infoWindow: any;
+  private coordsIniziali: { lat: number, lng: number } | null = null;
+  private zoomIniziale: number = 15;
 
   ngOnInit(){
-    const targa:string | null = this.activeRoute.snapshot.paramMap.get('targa');
+    const targa:string | null = this.route.snapshot.paramMap.get('targa');
     this.initVeicolo(targa);
+    this.caricaListaAziende();
   }
 
-  initVeicolo(targa:string | null){
+  caricaListaAziende() {
+    this.aziendeAssociateService.richiediAziende().subscribe({
+      next: (data) => this.aziende = data || [],
+      error: (err) => console.error("Errore aziende:", err)
+    });
+  }
+
+  initVeicolo(targa: string | null) {
     this.veicoloService.richiediVeicolo(targa).subscribe({
       next: (response) => {
         if (response) {
-          console.log("Dati caricati:", response);
           this.veicolo = response;
-          console.log(this.veicolo.nomeAziendaAffiliata)
-          if(this.veicolo.nomeAziendaAffiliata === null){
-            this.initAziende();
-          }else {
-            this.intiMappa();
-          }
+          this.modificaAzienda= !this.veicolo.nomeAziendaAffiliata;
 
+          const luogo = this.veicolo.luogoRitiroDeposito;
+          if (this.veicolo.nomeAziendaAffiliata && luogo && luogo.latitudine && luogo.longitudine) {
+            this.initMappa();
+          }
         }
-      }, error:
-        (err) => {
-          console.error("Errore nel caricamento:", err);
-        }
+      },
+      error: (err) => console.error("Errore caricamento veicolo:", err)
     });
   }
+
   initAziende(){
     this.aziendeAssociateService.richiediAziende().subscribe({
       next: (response) => {
         if (response) {
-          this.aziende = response;
+          this.aziende = response || [];
         }
       },error:
         (err) => {
@@ -69,14 +83,79 @@ export class DettagliVeicolo {
     })
 
   }
-  intiMappa(){
-    this.luogo = this.veicolo.luogoRitiroDeposito;
+  initMappa() {
+    const luogo = this.veicolo.luogoRitiroDeposito;
+    if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
+    this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
+
     this.googleMapsService.load().then(() => {
       setTimeout(() => {
-        this.disegnaMappa(this.luogo.latitudine, this.luogo.longitudine);
+        if(this.coordsIniziali) {
+            this.disegnaMappa(this.coordsIniziali);
+        }
       }, 500);
     });
   }
+
+  disegnaMappa(coords: { lat: number; lng: number}) {
+    const mapElement = document.getElementById("google-map");
+    
+    if (!mapElement) return;
+
+    const mapOptions = {
+      zoom: this.zoomIniziale,
+      center: coords,
+      disableDefaultUI: true,
+      zoomControl: false,
+      gestureHandling: 'none',
+      clickableIcons: false
+    };
+
+    this.map=new google.maps.Map(mapElement, mapOptions);
+    
+    this.marker = new google.maps.Marker({
+      position: coords,
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+    });
+
+    this.infoWindow = new google.maps.InfoWindow({
+      content:`<div style="padding:5px; font-weight:bold; color:#0f172a">${this.veicolo.luogoRitiroDeposito.nomeLuogo}</div>`
+    });
+
+    this.marker.addListener("click", () => {
+      this.attivaMappa();
+    });
+
+    this.infoWindow.addListener('closeclick', () => {
+      this.resetMappa();
+    });
+  }
+
+  attivaMappa() {
+    this.map.setZoom(17);
+    this.map.setCenter(this.coordsIniziali);
+    this.map.setOptions({ gestureHandling: 'cooperative' }); 
+    this.infoWindow.open(this.map, this.marker);
+  }
+
+  resetMappa() {
+    this.map.setZoom(this.zoomIniziale);
+    this.map.setCenter(this.coordsIniziali);
+    this.map.setOptions({ gestureHandling: 'none' }); 
+    this.infoWindow.close();
+  }
+
+  abilitaCambioAzienda() {
+    this.modificaAzienda = true;
+    this.aziendaSelezionata = null;
+  }
+
+  disabilitaCambioAzienda() {
+    this.modificaAzienda = false;
+    this.aziendaSelezionata = null;
+  }
+    
 
   salvaModifiche(): void {
     const veicoloDaInviare: any = {
@@ -87,51 +166,40 @@ export class DettagliVeicolo {
       tipoDistribuzioneVeicolo: this.veicolo.tipoDistribuzioneVeicolo,
       livelloCarburante: this.veicolo.livelloCarburante,
       statusContrattualeVeicolo: this.veicolo.statusContrattualeVeicolo,
-      inManutenzione: false
+      inManutenzione: this.veicolo.inManutenzione || false
     };
 
-    if (this.aziendaSelezionata != null) {
-      veicoloDaInviare.idAziendaAffiliata = this.aziendaSelezionata.idAzienda;
-      veicoloDaInviare.nomeAziendaAffiliata = this.aziendaSelezionata.nomeAzienda;
+    if (this.modificaAzienda) {
+      if (this.aziendaSelezionata && typeof this.aziendaSelezionata === 'object') {
+        veicoloDaInviare.idAziendaAffiliata = this.aziendaSelezionata.idAzienda;
+        veicoloDaInviare.nomeAziendaAffiliata = this.aziendaSelezionata.nomeAzienda;
+      } else {
+        veicoloDaInviare.idAziendaAffiliata = null;
+        veicoloDaInviare.nomeAziendaAffiliata = null;
+      }
+    } else {
+      veicoloDaInviare.idAziendaAffiliata = this.veicolo.idAziendaAffiliata;
+      veicoloDaInviare.nomeAziendaAffiliata = this.veicolo.nomeAziendaAffiliata;
     }
 
+    console.log("Invio aggiornamento:", veicoloDaInviare);
+
     this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({
-      next: (response) => {
-        console.log("Modifiche avvenute con successo");
-        this.reset();
-        this.ngOnInit();
+      next: () => {
+        console.log("Salvataggio avvenuto con successo");
+        this.initVeicolo(this.veicolo.targaVeicolo);
+        this.modificaAzienda = false;
+        this.aziendaSelezionata = null;
       },
       error: (err) => {
-        this.reset();
-        console.error("Errore nel caricamento:", err);
+        console.error("Errore salvataggio:", err);
       }
     });
   }
 
-
   tornaIndietro(){
     window.history.back();
   }
-
-  disegnaMappa(lat: number, lng: number) {
-    const coords = { lat: lat, lng: lng };
-    const mapElement = document.getElementById("google-map");
-
-    if (mapElement) {
-      const map = new google.maps.Map(mapElement, {
-        zoom: 15,
-        center: coords,
-      });
-
-      new google.maps.Marker({
-        position: coords,
-        map: map,
-        title: "Posizione Veicolo"
-      });
-    }
-  }
-  reset(){
-    this.aziendaSelezionata = null;
-    this.statusCambiato = "";
-  }
 }
+
+ 
