@@ -208,7 +208,6 @@ public class RichiestaNoleggioDAO {
 
     public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente, Integer idAzienda) throws SQLException {
         aggiornaStatiNoleggi();
-        // Query con JOIN per prendere il nome_luogo
         String query = "SELECT rn.*, l.nome_luogo FROM richiesta_noleggio rn " +
                 "JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda AND rn.id_veicolo=g.id_veicolo " +
                 "JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna " +

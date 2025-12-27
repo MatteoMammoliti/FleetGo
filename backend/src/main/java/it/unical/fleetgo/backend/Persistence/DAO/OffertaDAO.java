@@ -2,10 +2,8 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.OffertaDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +31,9 @@ public class OffertaDAO {
     }
 
     public List<Offerta> getOfferteAttive() {
+
+        this.aggiornaStatoOfferte();
+
         String query = "SELECT * FROM offerte_attive WHERE offerta_attiva = true";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -91,5 +92,15 @@ public class OffertaDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    private void aggiornaStatoOfferte() {
+        String query = "UPDATE offerte_attive SET offerta_attiva = false WHERE scadenza < CURRENT_DATE AND offerta_attiva = true";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

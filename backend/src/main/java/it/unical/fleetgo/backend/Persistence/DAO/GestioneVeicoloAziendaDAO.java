@@ -114,7 +114,7 @@ public class GestioneVeicoloAziendaDAO {
         LocalDateTime inizioRichiesta = LocalDateTime.parse(dataRitiro + "T" + oraInizio);
         LocalDateTime fineRichiesta = LocalDateTime.parse(dataConsegna + "T" + oraFine);
         List<VeicoloPrenotazione> veicoli = new ArrayList<>();
-        String query="SELECT v.*, m.nome_modello, CASE " +
+        String query="SELECT v.*, m.nome_modello, m.url_immagine, CASE " +
                 " WHEN v.in_manutenzione=true THEN 'Non_disponibile' " +
                 " WHEN EXISTS(" +
                     " SELECT 1 FROM richiesta_noleggio r WHERE r.id_veicolo=v.id_veicolo AND r.stato_richiesta !='Terminata' AND " +
@@ -136,7 +136,7 @@ public class GestioneVeicoloAziendaDAO {
                 veicolo.setTargaVeicolo(rs.getString("targa"));
                 veicolo.setNomeModello(rs.getString("nome_modello"));
                 veicolo.setIdModello(rs.getInt("modello_veicolo"));
-                veicolo.setUrlImmagine(rs.getString("immagine_veicolo"));
+                veicolo.setUrlImmagine(rs.getString("url_immagine"));
                 veicolo.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
                 veicolo.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
                 veicolo.setStatusContrattualeVeicolo(rs.getString("status_contrattuale"));

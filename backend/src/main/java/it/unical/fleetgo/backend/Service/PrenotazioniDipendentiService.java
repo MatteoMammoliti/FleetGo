@@ -36,6 +36,7 @@ public class PrenotazioniDipendentiService {
                 veicoloDTO.setIdVeicolo(v.getIdVeicolo());
                 veicoloDTO.setStatoAttuale(v.getStatoAttuale());
                 veicoloDTO.setIdModello(v.getIdModello());
+                veicoloDTO.setUrlImmagine(v.getUrlImmagine());
                 veicoloDTO.setNomeModello(v.getNomeModello());
                 veicoloDTO.setTargaVeicolo(v.getTargaVeicolo());
                 veicoloDTO.setTipoDistribuzioneVeicolo(v.getTipoDistribuzioneVeicolo());

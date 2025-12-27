@@ -25,6 +25,11 @@ export class AuthService {
     if (ruoloLocale){
       this.ruoloUtenteCorrente.set(ruoloLocale);
     }
+
+    const idAziendaLocale = localStorage.getItem('idAziendaAffiliata');
+    if (idAziendaLocale) {
+      this.idAzienda.set(Number(idAziendaLocale));
+    }
   }
   apiUrl = environment.apiUrl+'/autenticazione';
 

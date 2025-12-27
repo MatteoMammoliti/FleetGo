@@ -39,7 +39,10 @@
   @if (daVisualizzare.length > 0) {
 
     @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
-      <app-prenotazione-card (annullaRichiesta)="eliminaPrenotazione($event)" [prenotazione]="prenotazione"></app-prenotazione-card>
+      <app-prenotazione-card
+        (annullaRichiesta)="eliminaPrenotazione($event)"
+        [prenotazione]="prenotazione">
+      </app-prenotazione-card>
     }
 
   } @else {
