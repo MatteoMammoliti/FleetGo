@@ -31,7 +31,7 @@
 
         <p class="text-testo-s text-base flex items-center gap-2">
           <i class="bi bi-car-front-fill"></i>
-          {{ viaggio.veicolo?.modello || 'Veicolo non assegnato' }}
+          {{ viaggio.veicolo?.nomeModello || 'Veicolo non assegnato' }}
           @if (viaggio.veicolo?.targaVeicolo) {
             <span class="font-mono bg-grigio px-2 py-0.5 rounded text-testo-p font-medium border border-gray-300">
               {{ viaggio.veicolo?.targaVeicolo }}

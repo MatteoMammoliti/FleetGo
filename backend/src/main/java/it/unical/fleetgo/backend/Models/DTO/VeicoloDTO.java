@@ -12,7 +12,8 @@ public class VeicoloDTO {
     private Integer idVeicolo;
     private String targaVeicolo;
     private String urlImmagine;
-    private String modello;
+    private Integer idModello;
+    private String nomeModello;
     private String tipoDistribuzioneVeicolo;
     private Integer livelloCarburante;
     private String statusContrattualeVeicolo;
@@ -28,7 +29,8 @@ public class VeicoloDTO {
         this.idVeicolo = veicolo.getIdVeicolo();
         this.targaVeicolo = veicolo.getTargaVeicolo();
         this.urlImmagine = veicolo.getUrlImmagine();
-        this.modello = veicolo.getModello();
+        this.idModello = veicolo.getIdModello();
+        this.nomeModello = veicolo.getNomeModello();
         this.tipoDistribuzioneVeicolo = veicolo.getTipoDistribuzioneVeicolo();
         this.livelloCarburante = veicolo.getLivelloCarburante();
         this.inManutenzione = veicolo.getInManutenzione();

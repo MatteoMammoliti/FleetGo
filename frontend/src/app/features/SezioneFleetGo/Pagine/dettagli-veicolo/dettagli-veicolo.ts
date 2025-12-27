@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
@@ -44,7 +44,6 @@ export class DettagliVeicolo implements OnInit {
   ngOnInit(){
     const targa:string | null = this.route.snapshot.paramMap.get('targa');
     this.initVeicolo(targa);
-    this.caricaListaAziende();
   }
 
   caricaListaAziende() {
@@ -137,13 +136,13 @@ export class DettagliVeicolo implements OnInit {
   abilitaCambioAzienda() {
     this.modificaAzienda = true;
     this.aziendaSelezionata = null;
+    this.caricaListaAziende();
   }
 
   disabilitaCambioAzienda() {
     this.modificaAzienda = false;
     this.aziendaSelezionata = null;
   }
-
 
   salvaModifiche(): void {
     if (this.modificaAzienda) {

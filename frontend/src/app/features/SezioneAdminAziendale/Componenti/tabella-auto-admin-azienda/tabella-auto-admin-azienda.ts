@@ -29,14 +29,12 @@ export class TabellaAutoAdminAzienda {
       const targa = !this.filtroTarga ||
         (veicolo.targaVeicolo && veicolo.targaVeicolo.toLowerCase().includes(this.filtroTarga.toLowerCase()));
 
-      const modello = !this.filtroModello ||
-        (veicolo.modello && veicolo.modello.toLowerCase().includes(this.filtroModello.toLowerCase()));
       const stato = !this.filtroStato ||
         (veicolo.statusContrattualeVeicolo && veicolo.statusContrattualeVeicolo.toLowerCase().includes(this.filtroStato.toLowerCase()));
 
       const manutenzone=!this.filtroManutenzione || veicolo.inManutenzione;
 
-      return targa && modello && stato && manutenzone;
+      return targa && stato && manutenzone;
     });
   }
 

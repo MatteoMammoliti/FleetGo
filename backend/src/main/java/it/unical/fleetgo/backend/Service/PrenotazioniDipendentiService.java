@@ -21,8 +21,10 @@ import java.util.List;
 
 @Service
 public class PrenotazioniDipendentiService {
+
     @Autowired private DataSource dataSource;
-    private Double tariffa=0.15;
+
+    private final Double TARRIFA = 0.15;
 
     public List<VeicoloPrenotazioneDTO> getVeicoli(Integer idAzienda,String dataInizio,String dataFine,String oraInizio,String oraFine,String nomeLuogo) throws SQLException {
         try(Connection connection = dataSource.getConnection()){
@@ -33,7 +35,8 @@ public class PrenotazioniDipendentiService {
                 VeicoloPrenotazioneDTO veicoloDTO = new VeicoloPrenotazioneDTO();
                 veicoloDTO.setIdVeicolo(v.getIdVeicolo());
                 veicoloDTO.setStatoAttuale(v.getStatoAttuale());
-                veicoloDTO.setModello(v.getModello());
+                veicoloDTO.setIdModello(v.getIdModello());
+                veicoloDTO.setNomeModello(v.getNomeModello());
                 veicoloDTO.setTargaVeicolo(v.getTargaVeicolo());
                 veicoloDTO.setTipoDistribuzioneVeicolo(v.getTipoDistribuzioneVeicolo());
                 veicoloDTO.setLivelloCarburante(v.getLivelloCarburante());
@@ -83,7 +86,7 @@ public class PrenotazioniDipendentiService {
         if (minutiTotali <= 0) {
             throw new RuntimeException("Le date inserite non sono valide (fine prima dell'inizio)");
         }
-        return minutiTotali * this.tariffa;
+        return minutiTotali * this.TARRIFA;
 
     }
 

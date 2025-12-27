@@ -9,7 +9,8 @@ public class Veicolo {
     private Integer idVeicolo;
     private String targaVeicolo;
     private String urlImmagine;
-    private String modello;
+    private Integer idModello;
+    private String nomeModello;
     private String tipoDistribuzioneVeicolo;
     private Integer livelloCarburante;
     private String statusContrattualeVeicolo;

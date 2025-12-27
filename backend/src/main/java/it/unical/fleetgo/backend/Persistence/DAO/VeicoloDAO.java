@@ -18,14 +18,13 @@ public class VeicoloDAO {
     }
 
     public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
-        String query = "INSERT INTO veicolo(targa, immagine_veicolo, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO veicolo(targa, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo) VALUES (?, ?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query))  {
             ps.setString(1, veicoloDTO.getTargaVeicolo());
-            ps.setString(2, veicoloDTO.getUrlImmagine());
-            ps.setString(3, veicoloDTO.getModello());
-            ps.setString(4, veicoloDTO.getTipoDistribuzioneVeicolo());
-            ps.setInt(5, veicoloDTO.getLivelloCarburante());
+            ps.setInt(2, veicoloDTO.getIdModello());
+            ps.setString(3, veicoloDTO.getTipoDistribuzioneVeicolo());
+            ps.setInt(4, veicoloDTO.getLivelloCarburante());
             return ps.executeUpdate() > 0;
         }
     }
@@ -56,8 +55,8 @@ public class VeicoloDAO {
     }
 
     public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
-        String query = "SELECT v.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
-                " ON a.id_azienda = g.id_azienda";
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             List<Veicolo> veicoli = new ArrayList<>();
@@ -75,8 +74,8 @@ public class VeicoloDAO {
 
 
     public List<Veicolo> getVeicoliAssegnatiAzienda(Integer idAzienda) {
-        String query = "SELECT v.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
-                " ON a.id_azienda = g.id_azienda WHERE a.id_azienda = ?";
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello WHERE a.id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
@@ -94,7 +93,7 @@ public class VeicoloDAO {
     }
 
     public Veicolo getVeicoloDaId(Integer idVeicolo) {
-        String query = "SELECT * FROM veicolo WHERE id_veicolo = ?";
+        String query = "SELECT v.*, m.url_immagine, m.nome_modello FROM veicolo v JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idVeicolo);
@@ -111,11 +110,12 @@ public class VeicoloDAO {
     }
 
     public Veicolo getVeicoloDaIdConLuogo(Integer idVeicolo) {
-        String query = "SELECT v.*, l.*, a.nome_azienda, a.id_azienda " +
+        String query = "SELECT v.*, l.*, a.nome_azienda, a.id_azienda, m.url_immagine, m.nome_modello " +
                 "FROM veicolo v " +
                 "LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo " +
                 "LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo " +
                 "LEFT JOIN azienda a ON g.id_azienda = a.id_azienda " +
+                "JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello " +
                 "WHERE v.id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -133,7 +133,12 @@ public class VeicoloDAO {
     }
 
     public Veicolo getVeicoloByTarga(String targa) {
-        String query = "SELECT v.*,l.*,a.nome_azienda,a.id_azienda FROM veicolo v LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo LEFT JOIN azienda a ON g.id_azienda = a.id_azienda WHERE v.targa = ?";
+        String query = "SELECT v.*,l.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello " +
+                "FROM veicolo v LEFT JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo " +
+                "LEFT JOIN luogo_azienda l ON g.luogo_ritiro_consegna = l.id_luogo " +
+                "LEFT JOIN azienda a ON g.id_azienda = a.id_azienda " +
+                "JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello " +
+                "WHERE v.targa = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, targa);
@@ -189,8 +194,9 @@ public class VeicoloDAO {
         Veicolo v = new Veicolo();
         v.setIdVeicolo(rs.getInt("id_veicolo"));
         v.setTargaVeicolo(rs.getString("targa"));
-        v.setUrlImmagine(rs.getString("immagine_veicolo"));
-        v.setModello(rs.getString("modello_veicolo"));
+        v.setNomeModello(rs.getString("nome_modello"));
+        v.setIdModello(rs.getInt("modello_veicolo"));
+        v.setUrlImmagine(rs.getString("url_immagine"));
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
         v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
         v.setStatusContrattualeVeicolo(rs.getString("status_contrattuale"));

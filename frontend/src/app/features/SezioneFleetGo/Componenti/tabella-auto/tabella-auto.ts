@@ -17,25 +17,8 @@ export class TabellaAuto {
   @Output() richiestaEliminazione = new EventEmitter<string>();
   @Output() apriInfoVeicolo=new EventEmitter<string>();
 
-  filtroTarga = '';
-  filtroModello = '';
-  filtroStato = '';
-  filtroAzienda = '';
-  filtroManutenzione="";
-  get veicoliFiltrati(): VeicoloDTO[] {
-    return this.listaVeicoli.filter(veicolo => {
-      const targa = !this.filtroTarga || (veicolo.targaVeicolo && veicolo.targaVeicolo.toLowerCase().includes(this.filtroTarga.toLowerCase()));
-      const modello = !this.filtroModello || (veicolo.modello && veicolo.modello.toLowerCase().includes(this.filtroModello.toLowerCase()));
-      const stato = !this.filtroStato || (veicolo.statusContrattualeVeicolo && veicolo.statusContrattualeVeicolo.toLowerCase().includes(this.filtroStato.toLowerCase()));
-      const manutenzione=!this.filtroManutenzione || veicolo.inManutenzione;
-      const azienda = !this.filtroAzienda || (veicolo.nomeAziendaAffiliata && veicolo.nomeAziendaAffiliata.toLowerCase().includes(this.filtroAzienda.toLowerCase()));
-      return targa && modello && stato && azienda && manutenzione;
-    });
-  }
 
   eliminaVeicolo(targaVeicolo: string) {
     this.richiestaEliminazione.emit(targaVeicolo);
   }
-
-
 }

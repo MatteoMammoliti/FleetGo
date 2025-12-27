@@ -1,8 +1,11 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Models.DTO.ModelloDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
+import it.unical.fleetgo.backend.Persistence.DAO.ModelloDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
+import it.unical.fleetgo.backend.Persistence.Entity.Modello;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,10 +82,37 @@ public class VeicoloService {
         }
     }
 
-    private void cambiaStatusManutenzioneVeicolo(VeicoloDTO veicolo) throws SQLException {
+    public void cambiaStatusManutenzioneVeicolo(VeicoloDTO veicolo) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
             veicoloDAO.cambiaStatusManutenzioneVeicolo(veicolo.getInManutenzione(), veicolo.getIdVeicolo());
+        }
+    }
+
+    public boolean aggiuntaModello(ModelloDTO modello) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            ModelloDAO modelloDAO = new ModelloDAO(connection);
+            return modelloDAO.inserisciModello(modello);
+        }
+    }
+
+    public List<ModelloDTO> getModelli() throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            ModelloDAO modelloDAO = new ModelloDAO(connection);
+            List<Modello> modelli = modelloDAO.getModelli();
+            List<ModelloDTO> listaModelloDTO = new ArrayList<>();
+
+            for(Modello modello : modelli) {
+                listaModelloDTO.add(new ModelloDTO(modello));
+            }
+            return listaModelloDTO;
+        }
+    }
+
+    public Boolean eliminaModello(Integer idModello) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()){
+            ModelloDAO modelloDAO = new ModelloDAO(connection);
+            return modelloDAO.eliminaModello(idModello);
         }
     }
 }

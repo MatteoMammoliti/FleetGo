@@ -5,7 +5,7 @@
       {{ veicolo.statoAttuale }}
     </span>
 
-    <img [src]="veicolo.urlImmagine" alt="{{ veicolo.modello }}" class="car-img">
+    <img [src]="veicolo.urlImmagine" alt="{{ veicolo.nomeModello }}" class="car-img">
 
     <span class="fuel-badge">
       <i class="bi bi-lightning-charge-fill"></i> {{ veicolo.tipoDistribuzioneVeicolo }}
@@ -16,8 +16,8 @@
 
     <div class="card-header-row">
       <div class="title-group">
-        <h3 class="car-model">{{ veicolo.modello }}</h3>
-        <span class="car-brand">{{ veicolo.modello }} • {{ veicolo.targaVeicolo }}</span>
+        <h3 class="car-model">{{ veicolo.nomeModello }}</h3>
+        <span class="car-brand">{{ veicolo.nomeModello }} • {{ veicolo.targaVeicolo }}</span>
       </div>
 
       <div class="price-group">

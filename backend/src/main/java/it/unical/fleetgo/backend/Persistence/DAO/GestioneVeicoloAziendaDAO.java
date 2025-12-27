@@ -114,14 +114,14 @@ public class GestioneVeicoloAziendaDAO {
         LocalDateTime inizioRichiesta = LocalDateTime.parse(dataRitiro + "T" + oraInizio);
         LocalDateTime fineRichiesta = LocalDateTime.parse(dataConsegna + "T" + oraFine);
         List<VeicoloPrenotazione> veicoli = new ArrayList<>();
-        String query="SELECT v.*, CASE " +
+        String query="SELECT v.*, m.nome_modello, CASE " +
                 " WHEN v.in_manutenzione=true THEN 'Non_disponibile' " +
                 " WHEN EXISTS(" +
                     " SELECT 1 FROM richiesta_noleggio r WHERE r.id_veicolo=v.id_veicolo AND r.stato_richiesta !='Terminata' AND " +
                     " r.richiesta_annullata!=true AND r.accettata=true AND ( (r.data_ritiro + r.ora_inizio) <= ? AND (r.data_consegna + r.ora_fine) >= ? ))" +
                 " THEN 'Non_disponibile'" +
                 " ELSE 'Disponibile' END as stato_attuale " +
-                " FROM gestione_veicolo_azienda ga JOIN veicolo v ON ga.id_veicolo=v.id_veicolo JOIN luogo_azienda l ON l.id_luogo=ga.luogo_ritiro_consegna " +
+                " FROM gestione_veicolo_azienda ga JOIN veicolo v ON ga.id_veicolo=v.id_veicolo JOIN luogo_azienda l ON l.id_luogo=ga.luogo_ritiro_consegna JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello " +
                 " WHERE ga.id_azienda=? AND l.nome_luogo=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setTimestamp(1, Timestamp.valueOf(fineRichiesta));
@@ -134,7 +134,8 @@ public class GestioneVeicoloAziendaDAO {
                 LuogoAzienda luogo = new LuogoAzienda();
                 veicolo.setIdVeicolo(rs.getInt("id_veicolo"));
                 veicolo.setTargaVeicolo(rs.getString("targa"));
-                veicolo.setModello(rs.getString("modello_veicolo"));
+                veicolo.setNomeModello(rs.getString("nome_modello"));
+                veicolo.setIdModello(rs.getInt("modello_veicolo"));
                 veicolo.setUrlImmagine(rs.getString("immagine_veicolo"));
                 veicolo.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
                 veicolo.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));

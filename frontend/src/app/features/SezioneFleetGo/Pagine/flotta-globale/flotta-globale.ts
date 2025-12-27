@@ -1,5 +1,5 @@
-import {Component, OnInit, inject} from '@angular/core';
-import {Form, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TabellaAuto} from '@features/SezioneFleetGo/Componenti/tabella-auto/tabella-auto';
 import {FormAggiungiAuto} from '@features/SezioneFleetGo/Componenti/form-aggiungi-auto/form-aggiungi-auto';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
@@ -7,8 +7,10 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
-import {AziendaCard} from '@features/DipendenteSenzaAzienda/Componenti/azienda-card/azienda-card';
 import {AziendaDTO} from '@core/models/aziendaDTO';
+import {ModelloDTO} from '@core/models/ModelloDTO';
+import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/form-aggiungi-modello/form-aggiungi-modello';
+import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card-modello';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -20,7 +22,9 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
     FormAggiungiAuto,
     CommonModule,
     FormsModule,
-    TemplateTitoloSottotitolo
+    TemplateTitoloSottotitolo,
+    FormAggiungiModello,
+    CardModello
   ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
@@ -38,10 +42,15 @@ export class FlottaGlobale implements OnInit{
   aziendeInPiattaforma: AziendaDTO[] = []
 
   mostraModale: boolean = false;
+  mostraModaleInserimentoModello = false;
+  erroreEliminazioneModello = "";
+
+  listaModelli: ModelloDTO[] = [];
 
   ngOnInit(): void {
+    this.resettaFiltri()
     this.caricaDati();
-    this.caricaAziende();
+    this.caricaModelli();
   }
 
   caricaDati() {
@@ -55,6 +64,19 @@ export class FlottaGlobale implements OnInit{
     });
   }
 
+  caricaModelli() {
+    this.service.richiediModelli().subscribe({
+      next: (datiDalServer) => {
+        if(datiDalServer) {
+          console.log(datiDalServer);
+          this.listaModelli = datiDalServer;
+        }
+      }, error: (err) => {
+        console.error("Errore nel caricamento:", err);
+      }
+    })
+  }
+
   caricaAziende() {
     this.service.richiediAziende().subscribe({
       next: (datiDalServer) => {
@@ -64,7 +86,6 @@ export class FlottaGlobale implements OnInit{
       }
     })
   }
-
 
   get veicoliFiltrati() {
     return this.veicoliOriginali.filter(veicolo => {
@@ -85,21 +106,23 @@ export class FlottaGlobale implements OnInit{
       }
 
       const matchRicerca =
-        (veicolo.targaVeicolo?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false) ||
-        (veicolo.modello?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false);
+          (veicolo.targaVeicolo?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false) ||
+        (veicolo.nomeModello?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false);
 
       return matchAzienda && matchStato && matchRicerca;
     });
   }
 
   gestisciVisibilitaModale() { this.mostraModale = !this.mostraModale; }
+  gestisciVisibilitaModaleInserimentoModello() { this.mostraModaleInserimentoModello = !this.mostraModaleInserimentoModello; }
 
-  gestisciSalvataggio(dati: FormData) {
-    this.service.registraVeicolo(dati).subscribe({
+  gestisciSalvataggio(veicolo: VeicoloDTO) {
+    this.service.registraVeicolo(veicolo).subscribe({
       next: (response) => {
         console.log("Veicolo salvato con successo:", response);
         this.caricaDati();
         this.gestisciVisibilitaModale();
+        this.resettaFiltri();
       },
       error: (err) => {
         console.error("Errore durante il salvataggio del veicolo:", err);
@@ -120,6 +143,7 @@ export class FlottaGlobale implements OnInit{
   }
 
   dettagliVeicolo(targaVeicolo: string) {
+    this.caricaAziende();
     this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
   }
 
@@ -127,5 +151,31 @@ export class FlottaGlobale implements OnInit{
     this.filtroAzienda = {} as AziendaDTO;
     this.filtroStatoVeicolo = "";
     this.testoRicerca = "";
+  }
+
+  aggiungiModello(formData: FormData) {
+    this.service.registraModello(formData).subscribe({
+      next: (response) => {
+        if(response) {
+          this.caricaModelli();
+          this.gestisciVisibilitaModaleInserimentoModello();
+        }
+      }, error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  eliminaModello(idModello: number) {
+    this.service.eliminaModello(idModello).subscribe({
+      next: (response) => {
+        if(response) {
+          this.caricaModelli();
+        }
+      }, error: (err) => {
+        console.log(err);
+        this.erroreEliminazioneModello = err;
+      }
+    })
   }
 }

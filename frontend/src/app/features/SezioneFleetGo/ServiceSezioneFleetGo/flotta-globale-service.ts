@@ -4,17 +4,18 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
 import {AziendaDTO} from '@core/models/aziendaDTO';
+import {ModelloDTO} from '@core/models/ModelloDTO';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlottaGlobaleService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
+
   private apiUrl= environment.apiUrl+'/dashboardFleetGo';
 
-  registraVeicolo(formData: FormData):Observable<string>   {
-    return this.http.post(`${this.apiUrl}/registraVeicolo`, formData, {
+  registraVeicolo(veicolo: VeicoloDTO):Observable<string>   {
+    return this.http.post(`${this.apiUrl}/registraVeicolo`, veicolo, {
       responseType: 'text',
       withCredentials: true
     });
@@ -40,5 +41,17 @@ export class FlottaGlobaleService {
 
   richiediAziende() {
     return this.http.get<AziendaDTO[]>(`${this.apiUrl}/getAziende`, {withCredentials:true});
+  }
+
+  richiediModelli(): Observable<ModelloDTO[]> {
+    return this.http.get<ModelloDTO[]>(`${this.apiUrl}/getModelli`, {withCredentials:true});
+  }
+
+  registraModello(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/registraModello`, formData, {responseType: "text", withCredentials:true});
+  }
+
+  eliminaModello(idModello: number) {
+    return this.http.post(`${this.apiUrl}/eliminaModello`, idModello, {responseType: "text", withCredentials:true});
   }
 }
