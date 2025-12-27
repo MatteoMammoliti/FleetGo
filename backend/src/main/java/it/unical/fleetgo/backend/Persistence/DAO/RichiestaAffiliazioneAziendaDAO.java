@@ -5,9 +5,6 @@ import it.unical.fleetgo.backend.Models.Proxy.DipendenteProxy;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaAffiliazioneAziendaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaAffiliazioneAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
-import org.springframework.security.core.parameters.P;
-
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +37,14 @@ public class RichiestaAffiliazioneAziendaDAO {
      * @param idDipendente
      * @param idAzienda
      */
-    public boolean rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda) throws SQLException{
-        String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=? AND data_risposta IS NULL";
+    public boolean rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda,Boolean affiliato) throws SQLException{
+        String query;
+        if(affiliato){
+            query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=? AND data_risposta IS NOT NULL";
+        }else {
+            query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=? AND data_risposta IS NULL";
+        }
+
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);

@@ -1,8 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.*;
-import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
-import it.unical.fleetgo.backend.Persistence.DAO.AziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.LuogoAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.UtenteDAO;
@@ -10,7 +8,6 @@ import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

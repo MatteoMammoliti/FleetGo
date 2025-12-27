@@ -3,11 +3,9 @@ package it.unical.fleetgo.backend.Service;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 
 @Service
 public class GeneratorePdfService {

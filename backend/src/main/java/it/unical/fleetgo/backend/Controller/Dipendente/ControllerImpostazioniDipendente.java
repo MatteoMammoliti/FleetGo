@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Controller.Dipendente;
 
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
-import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.DipendenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

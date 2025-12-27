@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Controller.DipendenteSenzaAzienda;
 
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
-import it.unical.fleetgo.backend.Models.DTO.RichiestaAffiliazioneAziendaDTO;
 import it.unical.fleetgo.backend.Service.DipendenteNoAziendaService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

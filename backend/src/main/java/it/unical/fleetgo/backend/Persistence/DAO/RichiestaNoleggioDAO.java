@@ -123,13 +123,17 @@ public class RichiestaNoleggioDAO {
         LocalDateTime adesso = LocalDateTime.now();
         String q1 = "UPDATE richiesta_noleggio SET stato_richiesta = 'In corso' WHERE stato_richiesta = 'Da ritirare' AND (data_ritiro + ora_inizio) <= ?";
         String q2 = "UPDATE richiesta_noleggio SET stato_richiesta = 'Terminata' WHERE stato_richiesta = 'In corso' AND (data_consegna + ora_fine) <= ?";
+        String q3="UPDATE richiesta_noleggio SET richiesta_annullata=true WHERE stato_richiesta='In attesa' AND richiesta_annullata=false AND accettata=false AND (data_ritiro + ora_inizio) <= ?";
 
         try (PreparedStatement st1 = connection.prepareStatement(q1);
-             PreparedStatement st2 = connection.prepareStatement(q2)) {
+             PreparedStatement st2 = connection.prepareStatement(q2);
+             PreparedStatement st3 = connection.prepareStatement(q3);) {
             st1.setObject(1, adesso);
             st1.executeUpdate();
             st2.setObject(1, adesso);
             st2.executeUpdate();
+            st3.setObject(1, adesso);
+            st3.executeUpdate();
         }
     }
 

@@ -74,7 +74,7 @@ public class AdminAziendaleService {
                     return false;
                 }
                 daoNoleggio.eliminaRichiesteNoleggioDipendenteEliminato(idUtente,idAzienda);
-                richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(idUtente, idAzienda);
+                richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(idUtente, idAzienda,true);
                 connection.commit();
                 return true;
             }catch(SQLException e){
