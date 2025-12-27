@@ -32,7 +32,7 @@ public class DipendenteNoAziendaService {
     public boolean eliminaRichiestaInAttesa(Integer idDipendente,Integer idAzienda) throws SQLException{
         try(Connection connection = this.dataSource.getConnection()){
             RichiestaAffiliazioneAziendaDAO dao = new RichiestaAffiliazioneAziendaDAO(connection);
-            return dao.rimuoviRichiestaAffiliazioneAzienda(idDipendente,idAzienda);
+            return dao.rimuoviRichiestaAffiliazioneAzienda(idDipendente,idAzienda,false);
         }
     }
 

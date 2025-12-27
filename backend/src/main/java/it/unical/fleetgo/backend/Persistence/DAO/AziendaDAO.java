@@ -3,7 +3,6 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
-import org.springframework.security.core.parameters.P;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
