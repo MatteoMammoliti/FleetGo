@@ -1,35 +1,42 @@
-<div class="page-container">
+<div class="flex flex-col gap-8 p-6 fade-in mb-20">
 
-  <div class="page-header">
-    <div class="header-text">
-      <h1>Gestione Offerte</h1>
-      <p>Crea promozioni per i tuoi clienti</p>
-    </div>
-    <button class="btn-add-offer" (click)="apriPaginaInserimentoOfferta()">
-      <i class="bi bi-plus-lg"></i> Nuova Offerta
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <app-template-titolo-sottotitolo
+      [titolo]="'Gestione Offerte Attive'">
+    </app-template-titolo-sottotitolo>
+
+    <button (click)="apriPaginaInserimentoOfferta()" 
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
+      <i class="bi-plus-lg text-lg"></i>
+      <span>Nuova Offerta</span>
     </button>
   </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-  <div class="offers-grid">
-
-    @for(offerta of offerteAttive; track offerta.idOfferta) {
-      <app-card-offerta
-        [offerta]=offerta
-        (eliminaOfferta)="onRimuoviOfferta($event)">
-      </app-card-offerta>
-    }
-
-    <div class="add-card-placeholder" (click)="apriPaginaInserimentoOfferta()">
-      <div class="dashed-border">
-        <i class="bi bi-plus-circle"></i>
-        <span>Aggiungi Offerta</span>
+    <div (click)="apriPaginaInserimentoOfferta()" 
+         class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[280px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300">
+      <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors">
+        <i class="bi-plus-lg text-3xl"></i>
+      </div>
+      <div class="text-center">
+        <h3 class="font-bold text-grigio-scuro group-hover:text-blue-700 transition-colors">Crea Nuova Offerta</h3>
+        <p class="text-sm text-grigio-scuro mt-1">Clicca per aggiungere</p>
       </div>
     </div>
-  </div>
 
+    @for(offerta of offerteAttive; track offerta.idOfferta) {
+      <div class="fade-in-up">
+        <app-card-offerta
+          [offerta]="offerta"
+          (eliminaOfferta)="onRimuoviOfferta($event)">
+        </app-card-offerta>
+      </div>
+    }
+  </div>
   <app-modale-aggiunta-offerta
     [paginaVisibile]="apriModale"
     (chiudiPagina)="chiudiPaginaInserimentoOfferta()"
     (salva)="salvaOfferta($event)">
   </app-modale-aggiunta-offerta>
+
 </div>

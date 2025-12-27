@@ -3,12 +3,14 @@ import {CardOfferta} from '@features/SezioneFleetGo/Componenti/card-offerta/card
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/offerte-attive-service';
 import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modale-aggiunta-offerta/modale-aggiunta-offerta';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-offerte-attive',
   imports: [
     CardOfferta,
-    ModaleAggiuntaOfferta
+    ModaleAggiuntaOfferta,
+    TemplateTitoloSottotitolo
   ],
   templateUrl: './offerte-attive.html',
   styleUrl: './offerte-attive.css',
