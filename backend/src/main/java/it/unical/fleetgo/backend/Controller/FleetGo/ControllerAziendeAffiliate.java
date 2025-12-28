@@ -47,24 +47,53 @@ public class ControllerAziendeAffiliate {
         }
     }
 
-    @GetMapping("/elencoAziende")
-    public ResponseEntity<List<AziendaDTO>> getElencoAziende() {
+    @GetMapping("/elencoAziendeAttive")
+    public ResponseEntity<List<AziendaDTO>> getElencoAziendeAttive() {
         try {
-            List<AziendaDTO> elencoAziende = aziendaService.getElencoAziende();
-            return ResponseEntity.ok(elencoAziende);
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    aziendaService.getElencoAziendeAttive()
+            );
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    @PostMapping("/eliminaAzienda")
-    public ResponseEntity<String> eliminaAzienda(@RequestBody Integer idAdminGestore) {
+    @GetMapping("/elencoAziendeDisabilitate")
+    public ResponseEntity<List<AziendaDTO>> getElencoAziendeDisabilitate() {
         try {
-            aziendaService.eliminaAzienda(idAdminGestore);
-            return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    aziendaService.getElencoAziendeDisabilitate()
+            );
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione dell'azienda");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/riabilitaAzienda")
+    public ResponseEntity<String> riabilitaAzienda(@RequestBody Integer idAzienda) {
+        try {
+            if(aziendaService.riabilitaAzienda(idAzienda)) {
+                return ResponseEntity.status(HttpStatus.OK).body("Azienda riabilitata con successo");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Azienda non riabilitata");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al DB");
+        }
+    }
+
+    @PostMapping("/disabilitaAzienda")
+    public ResponseEntity<String> eliminaAzienda(@RequestBody Integer idAzienda) {
+        try {
+            aziendaService.disabilitaAzienda(idAzienda);
+            return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
+
+        } catch (IllegalStateException | SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

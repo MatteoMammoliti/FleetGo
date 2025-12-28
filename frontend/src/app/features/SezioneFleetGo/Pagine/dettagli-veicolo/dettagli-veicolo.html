@@ -58,28 +58,21 @@
           Info
         </h3>
 
-        <form (ngSubmit)="salvaModifiche()" #veicoloForm="ngForm" class="flex flex-col gap-6">
+        <form (ngSubmit)="associaVeicoloAzienda()" #veicoloForm="ngForm" class="flex flex-col gap-6">
 
           <div class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-sm font-semibold text-blu">Azienda Assegnata</label>
-              @if (!modificaAzienda && veicolo.nomeAziendaAffiliata) {
-                <button type="button" (click)="abilitaCambioAzienda()" class="text-xs text-blue-600 hover:underline font-medium">
-                  Modifica / Rimuovi
-                </button>
-              }
-              @if (modificaAzienda && veicolo.nomeAziendaAffiliata) {
-                <button type="button" (click)="disabilitaCambioAzienda()" class="text-xs text-red-500 hover:underline font-medium">
-                  Annulla
-                </button>
+              @if (veicolo.nomeAziendaAffiliata) {
+                <button (click)="disassociaVeicoloAzienda()" type="button" class="text-xs text-blue-600 hover:underline font-medium">Rimuovi</button>
               }
             </div>
 
-            @if (!modificaAzienda && veicolo.nomeAziendaAffiliata) {
+            @if (veicolo.nomeAziendaAffiliata) {
               <div class="w-full px-4 py-3 rounded-xl bg-blue-50 border border-blue-100 text-blue-800 font-bold flex items-center gap-3">
                 {{ veicolo.nomeAziendaAffiliata }}
               </div>
-            } @else {
+            } @else if(!veicolo.inManutenzione) {
               <div class="fade-in">
                 <app-scelta-tendina
                   [lista]="aziende"
@@ -91,6 +84,8 @@
                   Seleziona un'azienda per trasferire il veicolo.
                 </p>
               </div>
+            } @else {
+              <p>Veicolo in manutenzione e quindi non assegnabile</p>
             }
           </div>
 

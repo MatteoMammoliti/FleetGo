@@ -11,6 +11,7 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/form-aggiungi-modello/form-aggiungi-modello';
 import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card-modello';
+import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -32,7 +33,9 @@ import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card
 
 export class FlottaGlobale implements OnInit{
 
-  constructor(private service: FlottaGlobaleService, private route: Router) {}
+  constructor(private service: FlottaGlobaleService,
+              private route: Router,
+              private aziendeService: AziendeAffiliateService) {}
 
   veicoliOriginali: VeicoloDTO[] = [];
 
@@ -51,6 +54,7 @@ export class FlottaGlobale implements OnInit{
     this.resettaFiltri()
     this.caricaDati();
     this.caricaModelli();
+    this.caricaAziende();
   }
 
   caricaDati() {
@@ -78,7 +82,7 @@ export class FlottaGlobale implements OnInit{
   }
 
   caricaAziende() {
-    this.service.richiediAziende().subscribe({
+    this.aziendeService.richiediAziendeAttive().subscribe({
       next: (datiDalServer) => {
         if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
       }, error: (err) => {
@@ -143,7 +147,6 @@ export class FlottaGlobale implements OnInit{
   }
 
   dettagliVeicolo(targaVeicolo: string) {
-    this.caricaAziende();
     this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
   }
 

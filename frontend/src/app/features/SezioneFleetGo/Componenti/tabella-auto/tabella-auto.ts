@@ -17,8 +17,7 @@ export class TabellaAuto {
   @Output() richiestaEliminazione = new EventEmitter<string>();
   @Output() apriInfoVeicolo=new EventEmitter<string>();
 
-
-  eliminaVeicolo(targaVeicolo: string) {
-    this.richiestaEliminazione.emit(targaVeicolo);
+  eliminaVeicolo(targaVeicolo: string | undefined) {
+    if(targaVeicolo) this.richiestaEliminazione.emit(targaVeicolo);
   }
 }

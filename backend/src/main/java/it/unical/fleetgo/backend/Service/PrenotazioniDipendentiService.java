@@ -24,7 +24,7 @@ public class PrenotazioniDipendentiService {
 
     @Autowired private DataSource dataSource;
 
-    private final Double TARRIFA = 0.15;
+    private static final Double TARRIFA = 0.15;
 
     public List<VeicoloPrenotazioneDTO> getVeicoli(Integer idAzienda,String dataInizio,String dataFine,String oraInizio,String oraFine,String nomeLuogo) throws SQLException {
         try(Connection connection = dataSource.getConnection()){

@@ -18,8 +18,7 @@ export class TabellaStoricoManutenzioni {
 
   get listaStoricoFiltrata():RichiestaManutenzioneDTO[]{
     return this.listaStorico.filter(richiesta=>{
-      const targa = !this.filtroTarga && richiesta.veicolo.targaVeicolo.includes(this.filtroTarga)
-      return targa;
+      return !this.filtroTarga && richiesta.veicolo.targaVeicolo?.includes(this.filtroTarga);
     })
   }
 

@@ -77,24 +77,25 @@ public class ControllerFlottaVeicoli {
         }
     }
 
-    @PostMapping(value = "/modificaVeicolo")
-    public ResponseEntity<String> modificaVeicolo(@RequestBody VeicoloDTO veicolo) {
+    @PostMapping(value = "/associaVeicoloAzienda")
+    public ResponseEntity<String> associaVeicolo(@RequestBody VeicoloDTO veicolo) {
         try {
-            veicoloService.aggiuntaModificaGestioneVeicolo(veicolo.getIdAziendaAffiliata(), veicolo.getIdVeicolo());
+            veicoloService.associaVeicolo(veicolo);
             return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del veicolo");
         }
     }
 
-    @GetMapping("/getAziende")
-    public ResponseEntity<List<AziendaDTO>> getAziendeInPiattaforma() {
+    @PostMapping(value = "/disassociaVeicoloAzienda")
+    public ResponseEntity<String> disassociaVeicolo(@RequestBody VeicoloDTO veicolo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    aziendaService.getElencoAziende()
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            veicoloService.disassociaVeicolo(veicolo);
+            return ResponseEntity.status(HttpStatus.OK).body("Veicolo modificato con successo");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante le operazioni nel DB");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
         }
     }
 
@@ -128,7 +129,7 @@ public class ControllerFlottaVeicoli {
         }
     }
 
-    @PostMapping
+    @PostMapping("/eliminaModello")
     public ResponseEntity<String> eliminaModello(@RequestBody Integer idModello) {
         try {
             if(veicoloService.eliminaModello(idModello)) {

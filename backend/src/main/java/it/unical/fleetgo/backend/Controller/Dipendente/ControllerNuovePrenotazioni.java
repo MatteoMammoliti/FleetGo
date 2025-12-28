@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Controller.Dipendente;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloPrenotazioneDTO;
+import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.PrenotazioniDipendentiService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,16 @@ import java.util.List;
 @RequestMapping("/nuovaPrenotazione")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerNuovePrenotazioni {
+
+    @Autowired private AziendaService aziendaService;
     @Autowired private PrenotazioniDipendentiService service;
 
     @GetMapping("/caricaVeicoli")
-    public ResponseEntity<List<VeicoloPrenotazioneDTO>> getVeicoli(@RequestParam("ritiro") String dataRitiro, @RequestParam("consegna") String dataConsegna,
-                                           @RequestParam("oraInizio")String oraInizio, @RequestParam("oraFine") String oraFine, @RequestParam("nomeLuogo") String nomeLuogo,
+    public ResponseEntity<List<VeicoloPrenotazioneDTO>> getVeicoli(@RequestParam("ritiro") String dataRitiro,
+                                                                   @RequestParam("consegna") String dataConsegna,
+                                                                   @RequestParam("oraInizio")String oraInizio,
+                                                                   @RequestParam("oraFine") String oraFine,
+                                                                   @RequestParam("nomeLuogo") String nomeLuogo,
                                            HttpSession session){
         Integer idAziendaAssociata= (Integer) session.getAttribute("idAziendaAssociata");
         if(idAziendaAssociata==null){
@@ -56,14 +62,21 @@ public class ControllerNuovePrenotazioni {
     }
 
     @PostMapping("/inviaRichiesta")
-    public ResponseEntity<String> inviaNuovaRichiesta(@RequestBody RichiestaNoleggioDTO richiesta,HttpSession session){
+    public ResponseEntity<String> inviaNuovaRichiesta(@RequestBody RichiestaNoleggioDTO richiesta, HttpSession session){
         Integer idDipendente= (Integer) session.getAttribute("idUtente");
         Integer idAzienda=(Integer) session.getAttribute("idAziendaAssociata");
-        if(idDipendente==null || idAzienda==null){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        try {
+            if(idDipendente==null || idAzienda==null || !aziendaService.isAziendaAttiva(idAzienda)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (SQLException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
+
         richiesta.setIdDipendente(idDipendente);
         richiesta.setIdAziendaRiferimento(idAzienda);
+
         try{
             Integer richiestaGenerata=this.service.inviaRichiestaNoleggio(richiesta);
             if(richiestaGenerata!=null){

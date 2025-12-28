@@ -62,7 +62,7 @@ export class StoricoFatture {
 
   }
   private prelevaAziende(){
-    this.aziendeAffiliateService.richiediAziende().subscribe({
+    this.aziendeAffiliateService.richiediAziendeAttive().subscribe({
       next: (aziende) => {
         this.listaAziende = aziende;
       },

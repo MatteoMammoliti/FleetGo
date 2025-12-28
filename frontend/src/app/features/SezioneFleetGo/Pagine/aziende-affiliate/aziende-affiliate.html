@@ -1,52 +1,131 @@
 <div class="flex flex-col gap-8 p-6 fade-in relative">
 
   <app-template-titolo-sottotitolo
-    [titolo]="'Aziende Affiliate'">
+    [titolo]="'Aziende Affiliate'"
+    [sottotitolo]="'Gestione contratti e stato affiliazioni'">
   </app-template-titolo-sottotitolo>
 
-  <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-    <div class="relative w-full md:w-96">
+  <div class="flex flex-col xl:flex-row justify-between items-end xl:items-center gap-4">
+
+    <div class="relative w-full xl:w-96">
       <i class="bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
       <input type="text" placeholder="Cerca per nome o partita IVA..."
              [(ngModel)]="testoRicerca"
-             (input)="filtraAziende()"
              class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm">
     </div>
 
-    <button (click)="apriModaleAggiunta()"
-            class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95">
-      <i class="bi-plus-lg text-lg"></i>
-      <span>Nuova Azienda</span>
-    </button>
-  </div>
+    <div class="flex flex-wrap items-center gap-3 w-full xl:w-auto justify-end">
 
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-    <app-tabella-aziende
-      #tabellaAziende
-      [listaAziende]="listaAziende"
-      (richiediEliminazione)="elimina($event)">
-    </app-tabella-aziende>
-  </div>
+      <div class="bg-slate-100 p-1 rounded-xl flex border border-slate-200">
 
-  <div *ngIf="mostraModale" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-    <div (click)="chiudiModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
+        <button (click)="impostaVista(false)"
+                class="px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2"
+                [class.bg-white]="!mostraAziendeArchiviate"
+                [class.text-blue-600]="!mostraAziendeArchiviate"
+                [class.shadow-sm]="!mostraAziendeArchiviate"
+                [class.text-slate-500]="mostraAziendeArchiviate"
+                [class.hover:text-slate-700]="mostraAziendeArchiviate">
+          <i class="bi bi-building-check"></i>
+          Attive
+        </button>
 
-    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-jump-in">
-
-      <div class="sticky top-0 bg-white z-10 flex items-center justify-between p-6 border-b border-slate-100">
-        <h2 class="text-xl font-bold text-slate-800">Nuova Partnership</h2>
-        <button (click)="chiudiModale()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-red-500 transition-colors">
-          <i class="bi bi-x-lg text-lg"></i>
+        <button (click)="impostaVista(true)"
+                class="px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2"
+                [class.bg-white]="mostraAziendeArchiviate"
+                [class.text-red-600]="mostraAziendeArchiviate"
+                [class.shadow-sm]="mostraAziendeArchiviate"
+                [class.text-slate-500]="!mostraAziendeArchiviate"
+                [class.hover:text-slate-700]="!mostraAziendeArchiviate">
+          <i class="bi bi-archive-fill"></i>
+          Archivio
+          @if (listaAziendeDisabilitate.length > 0) {
+            <span class="bg-slate-200 text-slate-600 text-[10px] px-1.5 py-0.5 rounded-full">
+              {{ listaAziendeDisabilitate.length }}
+            </span>
+          }
         </button>
       </div>
 
-      <div class="p-6 md:p-8">
-        <app-form-aggiungi-admin-azienda
-          #formAggiungiAdminAzienda
-          (aziendaAggiunta)="onAziendaAggiunta($event)">
-        </app-form-aggiungi-admin-azienda>
-      </div>
-
+      <button (click)="gestisciVisibilitaModaleAggiuntaAziende()"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-blue-100 ml-2">
+        <i class="bi-plus-lg text-lg"></i>
+        <span>Nuova Azienda</span>
+      </button>
     </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all duration-300">
+
+    <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+      <h3 class="font-bold flex items-center gap-2 transition-colors"
+          [class.text-slate-700]="!mostraAziendeArchiviate"
+          [class.text-red-600]="mostraAziendeArchiviate">
+        @if (!mostraAziendeArchiviate) {
+          <i class="bi bi-building-check text-green-600"></i> Aziende Attive
+        } @else {
+          <i class="bi bi-archive text-red-500"></i> Archivio Disabilitate
+        }
+      </h3>
+      <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        {{ filtraAziende.length }} risultati
+      </span>
+    </div>
+
+    <app-tabella-aziende
+      #tabellaAziende
+      [listaAziende]="filtraAziende"
+      [modalitaArchivio]="mostraAziendeArchiviate"
+      (disabilitaAzienda)="disabilitaAzienda($event)"
+      (riabilitaAzienda)="riabilitaAzienda($event)">
+    </app-tabella-aziende>
+  </div>
+
+  @if(mostraModale) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div (click)="gestisciVisibilitaModaleAggiuntaAziende()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all cursor-pointer"></div>
+
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-jump-in">
+        <div class="sticky top-0 bg-white z-10 flex items-center justify-between p-6 border-b border-slate-100">
+          <h2 class="text-xl font-bold text-slate-800">Nuova Partnership</h2>
+          <button (click)="gestisciVisibilitaModaleAggiuntaAziende()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-red-500 transition-colors">
+            <i class="bi bi-x-lg text-lg"></i>
+          </button>
+        </div>
+
+        <div class="p-6 md:p-8">
+          <app-form-aggiungi-admin-azienda
+            #formAggiungiAdminAzienda
+            (aziendaAggiunta)="onAziendaAggiunta($event)">
+          </app-form-aggiungi-admin-azienda>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="flex flex-col gap-8 p-6 fade-in relative">
+
+    @if (erroreDisabilitazione) {
+      <div class="fixed bottom-6 right-6 z-[120] animate-bounce-in">
+        <div class="bg-white border-l-4 border-red-500 shadow-2xl rounded-lg p-4 flex items-start gap-4 max-w-md">
+
+          <div class="bg-red-50 text-red-500 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+            <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+          </div>
+
+          <div class="flex-1">
+            <h4 class="font-bold text-gray-800 text-sm">Operazione Fallita</h4>
+            <p class="text-sm text-gray-600 mt-1 leading-snug">
+              {{ erroreDisabilitazione }}
+            </p>
+          </div>
+
+          <button (click)="erroreDisabilitazione = ''"
+                  class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center transition-colors">
+            <i class="bi bi-x-lg text-xs"></i>
+          </button>
+        </div>
+      </div>
+    }
+
   </div>
 </div>

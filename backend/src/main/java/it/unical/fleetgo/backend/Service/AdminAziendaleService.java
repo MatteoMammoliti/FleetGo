@@ -79,7 +79,6 @@ public class AdminAziendaleService {
                 return true;
             }catch(SQLException e){
                 connection.rollback();
-                e.printStackTrace();
                 throw new SQLException(e);
             }finally{
                 connection.setAutoCommit(true);
@@ -218,12 +217,12 @@ public class AdminAziendaleService {
         }
     }
 
-    public List<RichiestaNoleggioDTO> getRichiesteNoleggio(Integer idDipendente) throws SQLException {
+    public List<RichiestaNoleggioDTO> getRichiesteNoleggio(Integer idDipendente, Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
             List<RichiestaNoleggioDTO> richiesteNoleggio = new ArrayList<>();
             richiestaNoleggioDAO.aggiornaStatiNoleggi();
-            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdDipendente(idDipendente);
+            List<RichiestaNoleggio> richieste = richiestaNoleggioDAO.getRichiesteNoleggioAccettateByIdDipendente(idDipendente, idAzienda);
 
             for(RichiestaNoleggio richiesta: richieste) {
                 richiesteNoleggio.add(new RichiestaNoleggioDTO(richiesta, false, false));

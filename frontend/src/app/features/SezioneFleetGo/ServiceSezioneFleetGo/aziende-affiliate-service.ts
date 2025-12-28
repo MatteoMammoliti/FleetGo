@@ -26,16 +26,23 @@ export class AziendeAffiliateService {
     return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitore, { withCredentials: true,  responseType: 'text' });
   }
 
-  richiediAziende(): Observable<AziendaDTO[]>{
-    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziende`, {
+  richiediAziendeAttive(): Observable<AziendaDTO[]>{
+    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziendeAttive`, {
       withCredentials:true
     });
   }
 
-  eliminaAzienda(idAdmin: number | undefined): Observable<string> {
-    return this.http.post(`${this.apiUrl}/eliminaAzienda`, idAdmin, {
-      responseType: 'text',
+  richiediAziendeDisabilitate(): Observable<AziendaDTO[]> {
+    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziendeDisabilitate`, {
       withCredentials:true
     });
+  }
+
+  riabilitaAzienda(idAzienda: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/riabilitaAzienda`, idAzienda, { withCredentials: true,  responseType: 'text' });
+  }
+
+  disabilitaAzienda(idAzienda: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/disabilitaAzienda`, idAzienda, { withCredentials: true,  responseType: 'text' });
   }
 }

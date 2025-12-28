@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.ModelloDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.ModelloDAO;
+import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.Modello;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
@@ -70,15 +71,48 @@ public class VeicoloService {
         }
     }
 
-    public void aggiuntaModificaGestioneVeicolo(Integer idAziendaAffiliata, Integer idVeicolo) throws SQLException {
+    public void associaVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
-            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new  GestioneVeicoloAziendaDAO(connection);
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
+            gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(veicoloDTO.getIdVeicolo(),  veicoloDTO.getIdAziendaAffiliata());
+        }
+    }
 
-            if(idAziendaAffiliata == null) {
-                gestioneVeicoloAziendaDAO.eliminaVeicoloGestito(idVeicolo);
-                return;
+    public void disassociaVeicolo(VeicoloDTO veicoloDTO) throws SQLException, IllegalStateException {
+
+        Connection connection = this.dataSource.getConnection();
+
+        try{
+
+            connection.setAutoCommit(false);
+
+            RichiestaNoleggioDAO richiestaNoleggioDAO =  new RichiestaNoleggioDAO(connection);
+            if(richiestaNoleggioDAO.getRichiesteAccettateEInCorsoPerVeicolo(veicoloDTO.getIdAziendaAffiliata(), veicoloDTO.getIdVeicolo())){
+                connection.rollback();
+                System.out.println("sono qui");
+                throw new IllegalStateException("Sono in corso noleggi per questo veicolo");
+            };
+
+            richiestaNoleggioDAO.eliminaRichiesteInAttesaPerVeicolo(veicoloDTO.getIdAziendaAffiliata(),  veicoloDTO.getIdVeicolo());
+
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO =  new GestioneVeicoloAziendaDAO(connection);
+            if(!gestioneVeicoloAziendaDAO.eliminaVeicoloGestito(veicoloDTO.getIdVeicolo())){
+                connection.rollback();
+                throw new RuntimeException("Errore durante le operazioni nel DB");
+            };
+
+            if(!gestioneVeicoloAziendaDAO.cambiaStatusContrattuale(veicoloDTO.getIdVeicolo())){
+                connection.rollback();
+                throw new RuntimeException("Errore durante le operazioni nel DB");
             }
-            gestioneVeicoloAziendaDAO.inserisciNuovoVeicoloGestito(idVeicolo, idAziendaAffiliata);
+
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            connection.rollback();
+            throw new RuntimeException("Errore durante le operazioni nel DB");
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 

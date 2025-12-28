@@ -49,4 +49,18 @@ public class GeneraFatturaDAO {
         }
         return null;
     }
+
+    public boolean ciSonoFattureDaGenerare(Integer idAzienda) {
+        String query = "SELECT totale_da_fatturare FROM view_fatture_da_generare WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getFloat("totale_da_fatturare") > 0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

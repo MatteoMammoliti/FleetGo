@@ -17,54 +17,75 @@ public class GestioneVeicoloAziendaDAO {
         this.connection = connection;
     }
 
-    public void inserisciNuovoVeicoloGestito(Integer idVeicolo, Integer idAzienda) {
+    public void inserisciNuovoVeicoloGestito(Integer idVeicolo, Integer idAzienda) throws SQLException {
+        try {
 
-        String verificoEsistenza = "SELECT * FROM gestione_veicolo_azienda WHERE id_veicolo = ?";
+            connection.setAutoCommit(false);
 
-        try(PreparedStatement ps = connection.prepareStatement(verificoEsistenza)){
-            ps.setInt(1, idVeicolo);
+            String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda) VALUES (?, ?)";
 
-            ResultSet rs = ps.executeQuery();
+            try(PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, idVeicolo);
+                ps.setInt(2, idAzienda);
+                ps.executeUpdate();
 
-            if(rs.next()) {
-                cambiaAziendaGestioneVeicolo(
-                        idVeicolo,
-                        idAzienda
-                );
-                return;
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+                throw new RuntimeException(e);
             }
+
+            String aggiornamentoStatusContrattuale = "UPDATE veicolo SET status_contrattuale = 'Noleggiato' WHERE id_veicolo = ?";
+
+            try(PreparedStatement ps = connection.prepareStatement(aggiornamentoStatusContrattuale)) {
+                ps.setInt(1, idVeicolo);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+
+            connection.commit();
+
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new RuntimeException(ex);
-        }
-
-        String query = "INSERT INTO gestione_veicolo_azienda(id_veicolo, id_azienda) VALUES (?, ?)";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idVeicolo);
-            ps.setInt(2, idAzienda);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
-    public void eliminaVeicoloGestito(Integer idVeicolo) {
+    public boolean eliminaVeicoloGestito(Integer idVeicolo) throws SQLException {
+
         String query = "DELETE FROM gestione_veicolo_azienda WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idVeicolo);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    public void cambiaAziendaGestioneVeicolo(Integer idVeicolo, Integer idAzienda) {
-        String query = "UPDATE gestione_veicolo_azienda SET id_azienda = ? WHERE id_veicolo = ?";
+    public boolean cambiaStatusContrattuale(Integer idVeicolo) {
+        String aggiornamentoStatusContrattuale = "UPDATE veicolo SET status_contrattuale = 'Disponibile' WHERE id_veicolo = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(aggiornamentoStatusContrattuale)) {
+            ps.setInt(1, idVeicolo);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminaVeicoliInGestioneAzienda(Integer idAzienda) {
+        String query = "DELETE FROM gestione_veicolo_azienda WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
-            ps.setInt(2, idVeicolo);
             ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -93,14 +114,13 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public void contrassegnaVeicoliLiberiPreEliminazioneAzienda(Integer idAdminAzienda) {
+    public void contrassegnaVeicoliLiberiPreDisabilitazioneAzienda(Integer idAzienda) {
         String query="UPDATE veicolo SET status_contrattuale =? WHERE id_veicolo IN " +
-                " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g " +
-                "JOIN azienda a ON a.id_azienda=g.id_azienda WHERE a.id_admin_azienda=?)";
+                " (SELECT g.id_veicolo FROM gestione_veicolo_azienda g WHERE g.id_azienda = ?)";
 
         try(PreparedStatement st = connection.prepareStatement(query)){
                 st.setString(1, "Disponibile");
-                st.setInt(2, idAdminAzienda);
+                st.setInt(2, idAzienda);
                 st.executeUpdate();
         }catch (SQLException e){
             throw new RuntimeException(e);

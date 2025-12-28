@@ -8,6 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 declare var google:any;
 
 @Component({
@@ -33,7 +34,6 @@ export class DettagliVeicolo implements OnInit {
   veicolo: any = null;
   aziende:AziendaDTO[] = [];
   aziendaSelezionata:any=null;
-  modificaAzienda: boolean = false;
 
   private map: any;
   private marker: any;
@@ -44,12 +44,18 @@ export class DettagliVeicolo implements OnInit {
   ngOnInit(){
     const targa:string | null = this.route.snapshot.paramMap.get('targa');
     this.initVeicolo(targa);
+    this.caricaListaAziende();
   }
 
   caricaListaAziende() {
-    this.aziendeAssociateService.richiediAziende().subscribe({
-      next: (data) => this.aziende = data || [],
-      error: (err) => console.error("Errore aziende:", err)
+    this.aziendeAssociateService.richiediAziendeAttive().subscribe({
+      next: data => {
+        console.log("il backend mi ha mandato questo", data);
+        if(data) {
+          this.aziende = data;
+
+        }
+      }, error: (err) => console.error("Errore aziende:", err)
     });
   }
 
@@ -57,8 +63,10 @@ export class DettagliVeicolo implements OnInit {
     this.veicoloService.richiediVeicolo(targa).subscribe({
       next: (response) => {
         if (response) {
+
+          console.log("ho ricevuto", response);
+
           this.veicolo = response;
-          this.modificaAzienda = !this.veicolo.nomeAziendaAffiliata;
 
           const luogo = this.veicolo.luogoRitiroDeposito;
           if (this.veicolo.nomeAziendaAffiliata && luogo && luogo.latitudine && luogo.longitudine) {
@@ -133,51 +141,40 @@ export class DettagliVeicolo implements OnInit {
     this.infoWindow.close();
   }
 
-  abilitaCambioAzienda() {
-    this.modificaAzienda = true;
-    this.aziendaSelezionata = null;
-    this.caricaListaAziende();
-  }
+  associaVeicoloAzienda() {
 
-  disabilitaCambioAzienda() {
-    this.modificaAzienda = false;
-    this.aziendaSelezionata = null;
-  }
-
-  salvaModifiche(): void {
-    if (this.modificaAzienda) {
-
-      const veicoloDaInviare: any = {
-        idVeicolo: this.veicolo.idVeicolo,
-        targaVeicolo: this.veicolo.targaVeicolo,
-        urlImmagine: this.veicolo.urlImmagine,
-        modello: this.veicolo.modello,
-        tipoDistribuzioneVeicolo: this.veicolo.tipoDistribuzioneVeicolo,
-        livelloCarburante: this.veicolo.livelloCarburante,
-        statusContrattualeVeicolo: this.veicolo.statusContrattualeVeicolo,
-        inManutenzione: this.veicolo.inManutenzione || false
-      };
-
-      if (this.aziendaSelezionata) {
-        veicoloDaInviare.idAziendaAffiliata = this.aziendaSelezionata.idAzienda;
-        veicoloDaInviare.nomeAziendaAffiliata = this.aziendaSelezionata.nomeAzienda;
-      } else {
-        veicoloDaInviare.idAziendaAffiliata = null;
-        veicoloDaInviare.nomeAziendaAffiliata = null;
-      }
-
-      this.veicoloService.inviaModifiche(veicoloDaInviare).subscribe({
-        next: () => {
-          console.log("Salvataggio avvenuto con successo");
-          this.initVeicolo(this.veicolo.targaVeicolo);
-          this.modificaAzienda = false;
-          this.aziendaSelezionata = null;
-        },
-        error: (err) => {
-          console.error("Errore salvataggio:", err);
-        }
-      });
+    const veicolo: VeicoloDTO = {
+      idVeicolo: this.veicolo.idVeicolo,
+      idAziendaAffiliata: this.aziendaSelezionata.idAzienda
     }
+
+    this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.ngOnInit();
+      }, error: (err) => {
+        console.log(err);
+        // visualizzate il cazzo di errore su html
+      }
+    })
+  }
+
+  disassociaVeicoloAzienda() {
+
+    const veicolo: VeicoloDTO = {
+      idVeicolo: this.veicolo.idVeicolo,
+      idAziendaAffiliata: this.veicolo.idAziendaAffiliata
+    }
+
+    this.veicoloService.disassociaVeicoloAzienda(veicolo).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.ngOnInit();
+      }, error: (err) => {
+        console.log(err);
+        // visualizzate il cazzo di errore su html
+      }
+    })
   }
 
   tornaIndietro(){window.history.back();}

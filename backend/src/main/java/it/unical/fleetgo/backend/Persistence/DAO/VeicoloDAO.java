@@ -210,8 +210,9 @@ public class VeicoloDAO {
             luogo.setLongitudine(rs.getFloat("longitudine"));
             v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));;
             v.setIdAziendaAffiliata(rs.getInt("id_azienda"));
-
             v.setLuogo(luogo);
+
+            System.out.println("sto settendo l'id" + v.getIdAziendaAffiliata());
         }
         if(soloAzienda){
             v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));

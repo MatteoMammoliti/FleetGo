@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/dashboardDipendente")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerHomeDipendente {
+
     @Autowired private DipendenteService dipendenteService;
 
     @GetMapping("/prossimoViaggio")

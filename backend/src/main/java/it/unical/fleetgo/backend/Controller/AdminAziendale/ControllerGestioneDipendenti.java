@@ -44,9 +44,21 @@ public class ControllerGestioneDipendenti {
     }
 
     @GetMapping("/getRichiesteNoleggio/{idDipendente}")
-    public ResponseEntity<List<RichiestaNoleggioDTO>> getRichiesteNoleggio(@PathVariable Integer idDipendente) {
+    public ResponseEntity<List<RichiestaNoleggioDTO>> getRichiesteNoleggio(@PathVariable Integer idDipendente, HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminAziendaleService.getRichiesteNoleggio(idDipendente));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.getRichiesteNoleggio(
+                            idDipendente,
+                            idAzienda
+                    )
+            );
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

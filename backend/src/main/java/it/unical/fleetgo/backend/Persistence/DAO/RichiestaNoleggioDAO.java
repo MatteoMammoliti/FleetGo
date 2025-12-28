@@ -170,11 +170,12 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdDipendente(Integer idDipendente) throws SQLException {
+    public List<RichiestaNoleggio> getRichiesteNoleggioAccettateByIdDipendente(Integer idDipendente, Integer idAzienda) throws SQLException {
         aggiornaStatiNoleggi();
-        String query = "SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND accettata=true";
+        String query = "SELECT * FROM richiesta_noleggio WHERE id_dipendente=? AND accettata=true AND id_azienda = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idDipendente);
+            ps.setInt(2, idAzienda);
             ResultSet rs = ps.executeQuery();
             List<RichiestaNoleggio> list = new ArrayList<>();
             while (rs.next()) list.add(estraiRichiestaNoleggio(rs));
@@ -255,6 +256,62 @@ public class RichiestaNoleggioDAO {
             st.setInt(1, idDipendente);
             st.setInt(2, idAzienda);
             st.executeUpdate();
+        }
+    }
+
+    public boolean getRichiesteAccettateEInCorso(Integer idAzienda) {
+        String query = "SELECT * FROM richiesta_noleggio WHERE id_azienda = ? AND richiesta_annullata = false AND (stato_richiesta = 'In corso' OR stato_richiesta = 'Da ritirare') LIMIT 1";
+
+        System.out.println("ho ricevuto id azienda: " + idAzienda);
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean getRichiesteAccettateEInCorsoPerVeicolo(Integer idAzienda, Integer idVeicolo) {
+        String query = "SELECT * FROM richiesta_noleggio WHERE id_veicolo = ? AND id_azienda = ? AND richiesta_annullata = false AND (stato_richiesta = 'In corso' OR stato_richiesta = 'Da ritirare') LIMIT 1";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idVeicolo);
+            ps.setInt(2, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        } catch(SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminaRichiesteInAttesa(Integer idAzienda) {
+        String query = "DELETE FROM richiesta_noleggio WHERE id_azienda = ? AND stato_richiesta = 'In attesa' AND richiesta_annullata = false";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminaRichiesteInAttesaPerVeicolo(Integer idAzienda, Integer idVeicolo) {
+        String query = "DELETE FROM richiesta_noleggio WHERE id_azienda = ? AND id_veicolo = ? AND stato_richiesta = 'In attesa' AND richiesta_annullata = false";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ps.setInt(2, idVeicolo);
+            ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

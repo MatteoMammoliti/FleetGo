@@ -58,6 +58,14 @@
                  class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 shadow-sm">
         </div>
 
+        <select [(ngModel)]="filtroAzienda"
+                class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none shadow-sm cursor-pointer md:max-w-[200px]">
+          <option [ngValue]="null">Tutte le aziende</option>
+          @for (azienda of aziendeInPiattaforma; track azienda.idAzienda) {
+            <option [ngValue]="azienda">{{ azienda.nomeAzienda }}</option>
+          }
+        </select>
+
         <select [(ngModel)]="filtroStatoVeicolo"
                 class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none shadow-sm cursor-pointer">
           <option value="">Tutti gli stati</option>

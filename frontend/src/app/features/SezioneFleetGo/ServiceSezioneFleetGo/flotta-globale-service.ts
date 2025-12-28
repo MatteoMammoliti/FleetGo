@@ -35,12 +35,12 @@ export class FlottaGlobaleService {
     return this.http.get<VeicoloDTO>(`${this.apiUrl}/informazioneVeicolo/${targa}`, {withCredentials:true});
   }
 
-  inviaModifiche(veicolo:VeicoloDTO):Observable<string>{
-    return this.http.post(`${this.apiUrl}/modificaVeicolo`, veicolo, {responseType: "text", withCredentials:true});
+  associaVeicoloAzienda(veicolo: VeicoloDTO) {
+    return this.http.post(`${this.apiUrl}/associaVeicoloAzienda`, veicolo, {responseType: "text", withCredentials:true});
   }
 
-  richiediAziende() {
-    return this.http.get<AziendaDTO[]>(`${this.apiUrl}/getAziende`, {withCredentials:true});
+  disassociaVeicoloAzienda(veicolo: VeicoloDTO) {
+    return this.http.post(`${this.apiUrl}/disassociaVeicoloAzienda`, veicolo, {responseType: "text", withCredentials:true});
   }
 
   richiediModelli(): Observable<ModelloDTO[]> {

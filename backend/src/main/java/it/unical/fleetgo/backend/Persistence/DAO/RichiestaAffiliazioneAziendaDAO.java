@@ -174,4 +174,15 @@ public class RichiestaAffiliazioneAziendaDAO {
             return null;
         }
     }
+
+    public boolean rimuoviDipendentiDaAziendaDisabilitata(Integer idAzienda) {
+        String query = "DELETE FROM richiesta_affiliazione_azienda WHERE id_azienda=?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

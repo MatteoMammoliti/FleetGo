@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
+import org.jspecify.annotations.NonNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +20,28 @@ public class AziendaDAO {
         this.connection = connection;
     }
 
+    @NonNull
+    private List<Azienda> estraiAziendaDaResultSet(String query) {
+        List<Azienda> aziende = new ArrayList<>();
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Azienda a = new Azienda();
+                a.setIdAzienda(rs.getInt("id_azienda"));
+                a.setIdAdmin(rs.getInt("id_admin_azienda"));
+                a.setSedeAzienda(rs.getInt("sede_azienda"));
+                a.setNomeAzienda(rs.getString("nome_azienda"));
+                a.setPIva(rs.getString("p_iva"));
+                aziende.add(a);
+            }
+            return aziende;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean inserisciAzienda(AziendaDTO azienda){
         String query = "INSERT INTO azienda(id_admin_azienda, nome_azienda, p_iva) VALUES (?, ?, ?)";
 
@@ -32,13 +55,14 @@ public class AziendaDAO {
         }
     }
 
-    public void eliminaAzienda(Integer idAdminAzienda){
-        String query = "DELETE FROM azienda WHERE id_admin_azienda = ?";
+    public boolean gestisciAttivitaAzienda(Integer idAzienda, Boolean status) {
+        String query = "UPDATE azienda SET attiva = ? WHERE id_azienda = ?";
 
-        try(PreparedStatement ps = connection.prepareStatement(query)){
-            ps.setInt(1, idAdminAzienda);
-            ps.executeUpdate();
-        } catch (SQLException e){
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setBoolean(1, status);
+            ps.setInt(2, idAzienda);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -98,26 +122,14 @@ public class AziendaDAO {
         return null;
     }
 
-    public List<Azienda> getAziendeInPiattaforme() {
-        String query = "SELECT * FROM azienda";
-        List<Azienda> aziende = new ArrayList<>();
+    public List<Azienda> getAziendeAttiveInPiattaforme() {
+        String query = "SELECT * FROM azienda WHERE attiva = true";
+        return estraiAziendaDaResultSet(query);
+    }
 
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                Azienda a = new Azienda();
-                a.setIdAzienda(rs.getInt("id_azienda"));
-                a.setIdAdmin(rs.getInt("id_admin_azienda"));
-                a.setSedeAzienda(rs.getInt("sede_azienda"));
-                a.setNomeAzienda(rs.getString("nome_azienda"));
-                a.setPIva(rs.getString("p_iva"));
-                aziende.add(a);
-            }
-            return aziende;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Azienda> getAziendeDisabilitateInPiattaforme() {
+        String query = "SELECT * FROM azienda WHERE attiva = false";
+        return estraiAziendaDaResultSet(query);
     }
 
     public List<ContenitoreDatiAzienda> getInformazioniAziendeInPiattaforme() throws SQLException{
@@ -152,5 +164,19 @@ public class AziendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isAziendaAttiva(Integer idAzienda) {
+        String query = "SELECT attiva FROM azienda WHERE id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getBoolean("attiva");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }
