@@ -52,10 +52,10 @@
 
 
   .badge-rifiuto{
-    @apply text-xs bg-red-100 border-2 border-red-400 text-red-500 px-2 py-[2px] rounded-md
+    @apply text-xs bg-red-100 text-red-600 px-2 py-[4px] rounded-md
   }
   .badge-accetto{
-    @apply text-xs bg-green-100 border-2 border-green-400 text-green-500 px-2 py-[2px] rounded-md
+    @apply text-xs bg-green-100  text-green-600 px-2 py-[4px] rounded-md
   }
 
 
