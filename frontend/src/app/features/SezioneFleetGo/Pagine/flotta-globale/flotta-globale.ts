@@ -151,7 +151,7 @@ export class FlottaGlobale implements OnInit{
   }
 
   resettaFiltri() {
-    this.filtroAzienda = {} as AziendaDTO;
+    this.filtroAzienda = null;
     this.filtroStatoVeicolo = "";
     this.testoRicerca = "";
   }
