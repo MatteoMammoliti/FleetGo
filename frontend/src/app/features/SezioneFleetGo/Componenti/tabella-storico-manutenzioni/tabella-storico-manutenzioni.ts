@@ -1,24 +1,31 @@
 import {Component, Input} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormControl,  ReactiveFormsModule} from '@angular/forms';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-tabella-storico-manutenzioni',
   imports: [
     DatePipe,
-    FormsModule
+    MessaggioCardVuota,
+    ReactiveFormsModule,
   ],
   templateUrl: './tabella-storico-manutenzioni.html',
   styleUrl: './tabella-storico-manutenzioni.css',
 })
 export class TabellaStoricoManutenzioni {
   @Input() listaStorico:RichiestaManutenzioneDTO[]=[]
-  filtroTarga: any;
+  filtroTarga=new FormControl('', { nonNullable: true });
 
   get listaStoricoFiltrata():RichiestaManutenzioneDTO[]{
+    const testoRicerca = this.filtroTarga.value.trim().toUpperCase();
+    if (!testoRicerca) {
+      return this.listaStorico;
+    }
     return this.listaStorico.filter(richiesta=>{
-      return !this.filtroTarga && richiesta.veicolo.targaVeicolo?.includes(this.filtroTarga);
+      const targa = richiesta.veicolo.targaVeicolo?.toUpperCase() || '';
+      return targa.includes(testoRicerca);
     })
   }
 

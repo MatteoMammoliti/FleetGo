@@ -15,6 +15,27 @@
     scroll-padding-top: 100px;
   }
 
+  .ricerca-testo{
+    @apply  flex bg-white px-2 py-1 rounded-xl border border-gray-50 h-8 focus-within:border-azzurro-scuro hover:border-azzurro-scuro
+  }
+
+  .div-table {
+    @apply relative overflow-x-auto overflow-y-auto;
+  }
+
+
+  .table-base{
+    @apply w-full text-sm text-left text-gray-500 border-separate border-spacing-y-2;
+  }
+
+  .tr-inferiore{
+    @apply drop-shadow-sm transition-all duration-300 text-testo-p ;
+  }
+
+  .tr-superiore{
+    @apply text-left text-testo-s;
+  }
+
   .td-base {
     @apply py-3 bg-grigio align-middle transition-colors group-hover:bg-azzurro/10;
   }
@@ -26,6 +47,17 @@
   .td-sinistro{
     @apply py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors align-middle
   }
+
+
+
+
+  .badge-rifiuto{
+    @apply text-xs bg-red-100 border-2 border-red-400 text-red-500 px-2 py-[2px] rounded-md
+  }
+  .badge-accetto{
+    @apply text-xs bg-green-100 border-2 border-green-400 text-green-500 px-2 py-[2px] rounded-md
+  }
+
 
   .layout-container {
     display: flex;

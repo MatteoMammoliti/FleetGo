@@ -1,39 +1,36 @@
-<section class="section-active">
-  <h2 class="section-title text-orange">
-    <i class="bi bi-hourglass-split"></i> Interventi in Corso
-  </h2>
-  <p class="section-description">Veicoli attualmente indisponibili per la flotta.</p>
-
+<app-template-titolo-sottotitolo titolo="Interventi in corso" sottotitolo="veicoli attualmente non disponibili nella flotta">
   @if (listaRichieste.length === 0) {
-    <div class="empty-state">Nessun veicolo attualmente in manutenzione.</div>
+    <app-messaggio-card-vuota testoPrimario="Tutti i veicoli sono in salute!" testoSecondario="Nessun veicolo in manutenzione" icona="bi-heart-pulse"></app-messaggio-card-vuota>
   } @else {
-    <div class="table-wrapper shadow-box">
-      <table class="fleet-table">
+    <div class="div-table min-h-[200px] max-h-[308px] px-5">
+      <table class="table-base">
         <thead>
-        <tr>
-          <th>Veicolo</th>
+        <tr class="tr-superiore">
+          <th class="pl-6">Veicolo</th>
           <th>Data Inizio</th>
           <th>Tipo Intervento</th>
-          <th>Stato</th>
-          <th class="text-right">Azioni</th>
+          <th class="text-center">Stato</th>
+          <th class="pr-9 text-right">Azioni</th>
         </tr>
         </thead>
         <tbody>
           @for (richiesta of listaRichieste; track richiesta.idManutenzione) {
-            <tr class="active-row">
-              <td>
-                <div class="vehicle-info">
-                  <span class="plate">{{ richiesta.veicolo.targaVeicolo }}</span>
-                  <span class="model">{{ richiesta.veicolo.nomeModello }}</span>
+            <tr class="tr-inferiore group">
+              <td class="td-sinistro">
+                <div class="flex flex-col">
+                  <span>{{ richiesta.veicolo.targaVeicolo }}</span>
+                  <small class="uppercase text-xs text-gray-500">{{ richiesta.veicolo.nomeModello }}</small>
                 </div>
               </td>
-              <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
-              <td>{{ richiesta.tipoManutenzione }}</td>
-              <td><span class="badge badge-orange">In Lavorazione</span></td>
-              <td class="text-right">
-                <button class="btn-complete" (click)="onConcludi(richiesta.idManutenzione)">
+              <td  class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+              <td  class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
+              <td  class="td-base text-center"><span class="text-xs font-bold text-azzurro-scuro">Manutenzione in corso</span></td>
+              <td class="td-destro pr-6">
+                <div class="flex justify-end">
+                  <app-bottone-chiaro (click)="onConcludi(richiesta.idManutenzione)">
                   <i class="bi bi-check-lg"></i> Concludi
-                </button>
+                </app-bottone-chiaro>
+                </div>
               </td>
             </tr>
           }
@@ -41,4 +38,5 @@
       </table>
     </div>
   }
-</section>
+</app-template-titolo-sottotitolo>
+

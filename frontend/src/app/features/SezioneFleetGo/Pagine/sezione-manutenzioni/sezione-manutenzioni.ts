@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {CardDatiManutenzione} from '@features/SezioneFleetGo/Componenti/card-dati-manutenzione/card-dati-manutenzione';
 import {ContenitoreStatisticheNumericheManutezioni} from '@core/models/ContenitoreStatisticheNumericheManutezioni';
 import {SezioneManutenzioneService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/sezione-manutenzione-service';
 import {
@@ -9,13 +8,19 @@ import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {
   TabellaStoricoManutenzioni
 } from '@features/SezioneFleetGo/Componenti/tabella-storico-manutenzioni/tabella-storico-manutenzioni';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {
+  CardStatisticheDashboardFleet
+} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 
 @Component({
-  selector: 'app-sezione-manutenzioni',
+  selector: '',
   imports: [
-    CardDatiManutenzione,
+
     TabellaManutenzioniInCorso,
-    TabellaStoricoManutenzioni
+    TabellaStoricoManutenzioni,
+    IntestazioneEBackground,
+    CardStatisticheDashboardFleet,
   ],
   templateUrl: './sezione-manutenzioni.html',
   styleUrl: './sezione-manutenzioni.css',

@@ -1,8 +1,22 @@
-<div class="container-manutenzioni">
-  <h1 class="page-title">Gestione Operativa Manutenzioni</h1>
+<app-intestazione-ebackground titolo="Salute della Flotta">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+    <app-card-statistiche-dashboard-fleet
+      titolo="Auto in officina"
+      [valore]="datiManutenzione.attualmenteInOfficina"
+      icona="bi-house-gear"
+      [descrizione]="'Auto in attesa di rilascio'"
+    ></app-card-statistiche-dashboard-fleet>
+    <app-card-statistiche-dashboard-fleet
+      titolo="Totale interventi conclusi"
+      [valore]="datiManutenzione.interventiConclusi"
+      icona="bi-house-heart"
+      [descrizione]="'Auto rimesse in carreggiata'"
+    ></app-card-statistiche-dashboard-fleet>
+  </div>
 
-  <app-card-dati-manutenzione [dati]="datiManutenzione"></app-card-dati-manutenzione>
+
   <app-tabella-manutenzioni-in-corso (chiudiRichiesta)="concludiRichiestaManutenzione($event)" [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
   <app-tabella-storico-manutenzioni [listaStorico]="listaManutenzioniStorico"></app-tabella-storico-manutenzioni>
+</app-intestazione-ebackground>
 
-</div>
+

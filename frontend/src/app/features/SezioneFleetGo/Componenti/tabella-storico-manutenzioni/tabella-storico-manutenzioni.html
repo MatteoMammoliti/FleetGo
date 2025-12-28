@@ -1,41 +1,44 @@
-<section class="section-history mt-large">
-  <div class="header-flex">
-    <h2 class="section-title">
-      <i class="bi bi-clock-history"></i> Storico Interventi
-    </h2>
-    <div class="search-box">
-      <i class="bi bi-search"></i>
-      <input type="text" [(ngModel)]="filtroTarga" placeholder="Cerca targa...">
-    </div>
-  </div>
+<div class="flex flex-col h-full bg-white rounded-2xl border border-grigio shadow-sm overflow-hidden my-5">
+    <div class="px-6 py-3 border-b border-grigio flex  flex-col justify-between ">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-blu font-bold text-xl md:text-2xl ">Storico Interventi</h3>
+          <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Veicoli che hanno terminato la manutenzione</small>
+        </div>
+        <div class="group ricerca-testo">
+          <i class="bi bi-search text-gray-500 mr-2 group-focus-within:text-azzurro-scuro"></i>
+          <input type="text" class="w-full focus:outline-none" [formControl]="filtroTarga" placeholder="Cerca targa...">
+        </div>
+      </div>
 
-  @if (listaStorico.length === 0) {
-    <div class="empty-state">Lo storico è vuoto.</div>
-  } @else {
-    <div class="table-wrapper">
-      <table class="fleet-table history-table">
+    </div>
+
+
+  @if(listaStorico.length > 0) {
+    <div class="div-table min-h-[200px] max-h-[378px] px-5">
+      <table class="table-base">
         <thead>
-        <tr>
-          <th>Veicolo</th>
+        <tr class="tr-superiore">
+          <th class="pl-6">Veicolo</th>
           <th>Data Richiesta</th>
           <th>Tipo Intervento</th>
-          <th>Esito</th>
+          <th class="text-right pr-12">Esito</th>
         </tr>
         </thead>
         <tbody>
-          @for (richiesta of listaStorico; track richiesta.idManutenzione) {
-            <tr>
-              <td>
-                <span class="plate-simple">{{ richiesta.veicolo.targaVeicolo }}</span>
-                <small class="text-muted"> ({{ richiesta.veicolo.nomeModello }})</small>
+          @for (richiesta of listaStoricoFiltrata; track richiesta.idManutenzione) {
+            <tr class="tr-inferiore group">
+              <td class="td-sinistro flex flex-col">
+                <span>{{ richiesta.veicolo.targaVeicolo }}</span>
+                <small class="uppercase text-xs text-gray-500"> {{ richiesta.veicolo.nomeModello }}</small>
               </td>
-              <td>{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
-              <td>{{ richiesta.tipoManutenzione }}</td>
-              <td>
+              <td class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy'}}</td>
+              <td class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
+              <td class="td-destro text-right pr-6">
                 @if (richiesta.completata) {
-                  <span class="badge badge-green">Completata</span>
+                  <span class="badge-accetto">Completata</span>
                 } @else {
-                  <span class="badge badge-red">Rifiutata</span>
+                  <span class="badge-rifiuto">Rifiutata</span>
                 }
               </td>
             </tr>
@@ -44,4 +47,15 @@
       </table>
     </div>
   }
-</section>
+  @if (listaStoricoFiltrata.length === 0) {
+    <div class="min-h-[200px]">
+      <app-messaggio-card-vuota testoPrimario="Nessun veicolo presente!" testoSecondario="Prova a cambiare filtro" icona="bi-search"></app-messaggio-card-vuota>
+    </div>
+  }
+  @if (listaStorico.length === 0) {
+    <div class="min-h-[200px]">
+      <app-messaggio-card-vuota testoPrimario="Nessun veicolo nello storico!"  icona="bi-search"></app-messaggio-card-vuota>
+    </div>
+  }
+</div>
+
