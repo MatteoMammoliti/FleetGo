@@ -31,7 +31,7 @@ export class FormAggiungiAuto {
   };
 
   targaVeicolo = '';
-  idModello = 0;
+  idModello: number | null = null;
   tipoDistribuzioneVeicolo = '';
   errore='';
 
@@ -80,7 +80,7 @@ export class FormAggiungiAuto {
 
   pulisciForm() {
     this.targaVeicolo = '';
-    this.idModello = 0;
+    this.idModello = null;
     this.tipoDistribuzioneVeicolo = '';
   }
 }
