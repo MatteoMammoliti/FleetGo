@@ -9,17 +9,19 @@ import {GoogleMapsService} from '@core/services/google-maps-service';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 declare var google:any;
 
 @Component({
   selector: 'app-dettagli-veicolo',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    TemplateTitoloSottotitolo,
-    SceltaTendina
-  ],
+    imports: [
+        FormsModule,
+        CommonModule,
+        TemplateTitoloSottotitolo,
+        SceltaTendina,
+        BannerErrore
+    ],
   templateUrl: './dettagli-veicolo.html',
   styleUrl: './dettagli-veicolo.css',
 })
@@ -41,6 +43,8 @@ export class DettagliVeicolo implements OnInit {
   private coordsIniziali: { lat: number, lng: number } | null = null;
   private zoomIniziale: number = 15;
 
+  erroreBanner="";
+
   ngOnInit(){
     const targa:string | null = this.route.snapshot.paramMap.get('targa');
     this.initVeicolo(targa);
@@ -55,7 +59,10 @@ export class DettagliVeicolo implements OnInit {
           this.aziende = data;
 
         }
-      }, error: (err) => console.error("Errore aziende:", err)
+      }, error: (err) => {
+        console.error("Errore aziende:", err)
+        this.erroreBanner=("Errore nel caricamento delle aziende")
+      }
     });
   }
 
@@ -74,7 +81,10 @@ export class DettagliVeicolo implements OnInit {
           }
         }
       },
-      error: (err) => console.error("Errore caricamento veicolo:", err)
+      error: (err) => {
+        console.error("Errore caricamento veicolo:", err)
+        this.erroreBanner=("Errore nel caricamento del veicolo targato: " + targa)
+      }
     });
   }
 
@@ -154,7 +164,7 @@ export class DettagliVeicolo implements OnInit {
         this.ngOnInit();
       }, error: (err) => {
         console.log(err);
-        // visualizzate il cazzo di errore su html
+        this.erroreBanner=("Non è stato possibile associare il veicolo all'azienda")
       }
     })
   }
@@ -172,7 +182,7 @@ export class DettagliVeicolo implements OnInit {
         this.ngOnInit();
       }, error: (err) => {
         console.log(err);
-        // visualizzate il cazzo di errore su html
+        this.erroreBanner=("Non è stato possibile disassociare il veicolo all'azienda")
       }
     })
   }

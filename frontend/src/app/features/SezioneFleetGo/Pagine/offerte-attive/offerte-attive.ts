@@ -4,14 +4,16 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/offerte-attive-service';
 import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modale-aggiunta-offerta/modale-aggiunta-offerta';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-offerte-attive',
-  imports: [
-    CardOfferta,
-    ModaleAggiuntaOfferta,
-    TemplateTitoloSottotitolo
-  ],
+    imports: [
+        CardOfferta,
+        ModaleAggiuntaOfferta,
+        TemplateTitoloSottotitolo,
+        BannerErrore
+    ],
   templateUrl: './offerte-attive.html',
   styleUrl: './offerte-attive.css',
 })
@@ -22,6 +24,7 @@ export class OfferteAttive implements OnInit {
 
   offerteAttive: OffertaDTO[] = [];
   apriModale = false;
+  erroreBanner="";
 
   ngOnInit() { this.getOfferteAttive() }
 
@@ -36,6 +39,7 @@ export class OfferteAttive implements OnInit {
         this.getOfferteAttive();
       }, error: err => {
         console.error(err);
+        this.erroreBanner=("Errore durante il salvataggio dell'offerta");
       }
     })
   }
@@ -47,6 +51,7 @@ export class OfferteAttive implements OnInit {
         this.getOfferteAttive();
       }, error: err => {
         console.error(err);
+        this.erroreBanner=("Errore durante l'eliminazione dell'offerta");
       }
     })
   }
@@ -58,6 +63,7 @@ export class OfferteAttive implements OnInit {
           this.offerteAttive = offerte;
       }, error: err => {
         console.error(err)
+        this.erroreBanner=("Errore durante il caricamento delle offerte");
       }
     })
   }

@@ -71,7 +71,9 @@
       (confermaGenerazione)="generaFattura($event)">
     </app-modale-generazione-fattura>
   }
-
+  @if (erroreBanner) {
+    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+  }
 
 </app-intestazione-ebackground>
 

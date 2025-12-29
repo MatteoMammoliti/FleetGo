@@ -132,4 +132,7 @@
       </div>
     </div>
   }
+  @if (erroreBanner) {
+    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+  }
 </div>

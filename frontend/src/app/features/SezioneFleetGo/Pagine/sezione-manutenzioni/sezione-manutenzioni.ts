@@ -12,6 +12,7 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
 import {
   CardStatisticheDashboardFleet
 } from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: '',
@@ -21,6 +22,7 @@ import {
     TabellaStoricoManutenzioni,
     IntestazioneEBackground,
     CardStatisticheDashboardFleet,
+    BannerErrore,
   ],
   templateUrl: './sezione-manutenzioni.html',
   styleUrl: './sezione-manutenzioni.css',
@@ -34,6 +36,9 @@ constructor(private service:SezioneManutenzioneService) {}
   listeManutezioniInCorso:RichiestaManutenzioneDTO[]=[]
   listaManutenzioniStorico:RichiestaManutenzioneDTO[]=[]
 
+
+  erroreBanner="";
+
   ngOnInit(){
   this.prelevaDatiManutenzioni();
   this.prelevaManutenzioniInCorso();
@@ -45,7 +50,10 @@ constructor(private service:SezioneManutenzioneService) {}
       next:(response:ContenitoreStatisticheNumericheManutezioni)=>{
         this.datiManutenzione=response
     },
-      error:(err) => console.error("Errore nel prelevare le statistiche delle manutenzioni")
+      error:(err) => {
+        console.error("Errore nel prelevare le statistiche delle manutenzioni");
+        this.erroreBanner="Errore nel prelevare le statistiche delle manutenzioni";
+      }
     });
   }
 
@@ -55,7 +63,10 @@ constructor(private service:SezioneManutenzioneService) {}
         console.log(response);
         this.listeManutezioniInCorso=response;
       },
-      error:(err)=>console.error("Errore nel caricamento delle manutezioni in corso")
+      error:(err)=>{
+        console.error("Errore nel caricamento delle manutezioni in corso")
+        this.erroreBanner="Errore nel caricamento delle manutezioni in corso";
+      }
     });
   }
   prelevaManutenzioniStorico(){
@@ -64,10 +75,12 @@ constructor(private service:SezioneManutenzioneService) {}
       this.listaManutenzioniStorico=reponse
       console.log(reponse)
     },
-    error:(err)=>console.error("Errore nel caricamento dello storico delle manutenzioni")
+    error:(err)=>{
+      console.error("Errore nel caricamento dello storico delle manutenzioni");
+      this.erroreBanner="Errore nel caricamento dello storico delle manutenzioni";
+      }
   });
   }
-
   concludiRichiestaManutenzione(idRichiesta:number){
     this.service.chiudiRichiestaManutenzione(idRichiesta).subscribe({
       next:(risposta:string)=>{
@@ -75,7 +88,10 @@ constructor(private service:SezioneManutenzioneService) {}
         this.prelevaManutenzioniInCorso()
 
       },
-      error:(err)=>console.error("Errore nel chiudere la manutenzione")
+      error:(err)=>{
+        console.error("Errore nel chiudere la manutenzione")
+        this.erroreBanner="Errore nel chiudere la richiesta di manutenzione";
+    }
     })
 
   }

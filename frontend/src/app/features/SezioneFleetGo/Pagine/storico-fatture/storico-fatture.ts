@@ -9,16 +9,18 @@ import {
   TabellaStoricoFatture
 } from '@features/SezioneFleetGo/Componenti/tabella-storico-fatture/tabella-storico-fatture';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-storico-fatture',
-  imports: [
-    CardStatisticheDashboardFleet,
-    ReactiveFormsModule,
-    FormsModule,
-    TabellaStoricoFatture,
-    IntestazioneEBackground
-  ],
+    imports: [
+        CardStatisticheDashboardFleet,
+        ReactiveFormsModule,
+        FormsModule,
+        TabellaStoricoFatture,
+        IntestazioneEBackground,
+        BannerErrore
+    ],
   templateUrl: './storico-fatture.html',
   styleUrl: './storico-fatture.css',
 })
@@ -37,6 +39,7 @@ export class StoricoFatture {
   totaleFattureAnnoSelezionato = 0;
   totaleRicaviAnno = 0;
   totaleRicaviAnnoStimato = 0;
+  erroreBanner="";
 
   ngOnInit() {
     this.prelevaAnni();
@@ -57,6 +60,7 @@ export class StoricoFatture {
       },
       error: (error) => {
         console.error('Errore durante il recupero degli anni di fatturazione:', error);
+        this.erroreBanner='Errore durante il recupero degli anni di fatturazione.'
       }
     })
 
@@ -68,6 +72,7 @@ export class StoricoFatture {
       },
       error: (error) => {
         console.error('Errore durante il recupero delle aziende affiliate:', error);
+        this.erroreBanner='Errore durante il caricamento delle aziende affiliate.'
       }
     })
   }
@@ -90,6 +95,7 @@ export class StoricoFatture {
       },
       error: err => {
         console.error('Errore durante il recupero delle fatture per l\'anno selezionato:', err);
+        this.erroreBanner='Errore durante il recupero delle fatture inerenti all\'anno selezionato.'
       }
     })
   }

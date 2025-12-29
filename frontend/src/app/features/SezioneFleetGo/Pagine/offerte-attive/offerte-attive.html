@@ -5,7 +5,7 @@
       [titolo]="'Gestione Offerte Attive'">
     </app-template-titolo-sottotitolo>
 
-    <button (click)="apriPaginaInserimentoOfferta()" 
+    <button (click)="apriPaginaInserimentoOfferta()"
             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
       <i class="bi-plus-lg text-lg"></i>
       <span>Nuova Offerta</span>
@@ -13,7 +13,7 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-    <div (click)="apriPaginaInserimentoOfferta()" 
+    <div (click)="apriPaginaInserimentoOfferta()"
          class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[280px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300">
       <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors">
         <i class="bi-plus-lg text-3xl"></i>
@@ -39,4 +39,7 @@
     (salva)="salvaOfferta($event)">
   </app-modale-aggiunta-offerta>
 
+  @if (erroreBanner) {
+    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+  }
 </div>

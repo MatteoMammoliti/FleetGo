@@ -11,10 +11,11 @@ import {GestisciRichiestaManutenzione} from '@features/SezioneFleetGo/Componenti
 import {ModaleGenerazioneFattura} from '@features/SezioneFleetGo/Componenti/modale-generazione-fattura/modale-generazione-fattura';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-dashboard-fleet-go',
-  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground],
+    imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground, BannerErrore],
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })
@@ -31,6 +32,8 @@ export class DashboardFleetGo implements OnInit{
     fattureDaGenerare:0,
     guadagnoMensile:0
   };
+
+  erroreBanner='';
 
   percentualeNoleggiati=0;
   descrizionePercentuale:string=""
@@ -64,7 +67,10 @@ export class DashboardFleetGo implements OnInit{
         }
         this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
       },
-      error: (err) => console.error("Errore richiesta statistiche:", err)
+      error: (err) => {
+        console.error("Errore richiesta statistiche:", err);
+        this.erroreBanner="Errore caricamento statistiche.";
+    }
     });
   }
 
@@ -73,7 +79,10 @@ export class DashboardFleetGo implements OnInit{
       next:(fattura)=>{
         this.fatture=fattura
       },
-      error:(err:any)=>(console.error("Errore richiesta fatture da generare",err))
+      error:(err:any)=>{
+        console.error("Errore richiesta fatture da generare",err);
+        this.erroreBanner="Errore caricamento fatture da generare";
+      }
     });
   }
 
@@ -83,7 +92,10 @@ export class DashboardFleetGo implements OnInit{
         console.log(richiesta)
         this.richiesteManutenzione=richiesta
       },
-      error:(err:any)=>(console.error("Errore richieste manutenzioni da gestire",err))
+      error:(err:any)=>{
+        console.error("Errore richieste manutenzioni da gestire",err);
+        this.erroreBanner="Errore caricamento manutenzioni da gestire";
+      }
     });
   }
 
@@ -93,7 +105,10 @@ export class DashboardFleetGo implements OnInit{
       next:(risultato:RichiestaManutenzioneDTO)=>{
         this.richiestaSelezionata=risultato
       },
-      error:(err:any)=>(console.error("errore nella visualizzazione delle informazioni della richiesta",err))
+      error:(err:any)=>{
+        console.error("Errore nella visualizzazione delle informazioni della richiesta",err);
+        this.erroreBanner="EErrore nella visualizzazione delle informazioni della richiesta";
+      }
     });
   }
 
@@ -104,7 +119,10 @@ export class DashboardFleetGo implements OnInit{
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
       },
-      error:(err:any)=>{console.error("Errore nell'accettare la richiesta di manutenzione",err)}
+      error:(err:any)=>{
+        console.error("Errore nell'accettare la richiesta di manutenzione",err)
+        this.erroreBanner=("Errore nell'accettare la richiesta di manutenzione" + idManutenzione)
+      }
     });
   }
 
@@ -114,7 +132,10 @@ export class DashboardFleetGo implements OnInit{
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
       },
-      error:(err:any)=>{console.error("Errore nel rifiutare la richiesta di mantezione",err)}
+      error:(err:any)=>{
+        console.error("Errore nel rifiutare la richiesta di mantezione",err)
+        this.erroreBanner=("Errore nel rifiutare la richiesta di manutenzione" + idManutenzione)
+      }
     });
   }
 
@@ -136,7 +157,10 @@ export class DashboardFleetGo implements OnInit{
         this.richiediFattureDaGenerare();
         this.chiudiFinestraModaleGenerazioneFattura();
       },
-      error:(err:any)=>{console.error("Errore nella generazione della fattura",err)}
+      error:(err:any)=>{
+        console.error("Errore nella generazione della fattura",err)
+        this.erroreBanner=("Errore nella generazione della fattura")
+      }
     })
   }
 

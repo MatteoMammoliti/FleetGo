@@ -36,7 +36,7 @@ export class AziendeAffiliate implements OnInit {
   mostraModale = false;
   mostraAziendeArchiviate = false
 
-  erroreDisabilitazione = "";
+  erroreBanner = "";
 
   constructor(private aziendeService: AziendeAffiliateService) {}
 
@@ -79,7 +79,7 @@ export class AziendeAffiliate implements OnInit {
       },
       error: (err) => {
         console.error("Errore", err);
-        this.erroreDisabilitazione = "Non è stato possibile aggiungere l'azienda";
+        this.erroreBanner = "Non è stato possibile aggiungere l'azienda";
       }
     });
   }
@@ -89,7 +89,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if (data) { this.listaAziendeAttive = data; }
       }, error: (err) => {
-        this.erroreDisabilitazione = "Non è stato possibile caricare le aziende attive.";
+        this.erroreBanner = "Non è stato possibile caricare le aziende attive.";
       }
     });
   }
@@ -99,7 +99,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if(data) this.listaAziendeDisabilitate = data;
       }, error: (err) => {
-        this.erroreDisabilitazione = "Non è stato possibile caricare le aziende disabilitate.";
+        this.erroreBanner = "Non è stato possibile caricare le aziende disabilitate.";
       }
     })
   }
@@ -111,7 +111,7 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeAttive();
         }
       }, error: (err) => {
-          this.erroreDisabilitazione = "Non è stato possibile disabilitare l'azienda " + idAzienda;
+          this.erroreBanner = "Non è stato possibile disabilitare l'azienda " + idAzienda;
       }
     });
   }
@@ -124,7 +124,7 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeDisabilitate();
         }
       }, error: (err) => {
-        this.erroreDisabilitazione = "Non è stato possibile riabilitare l'azienda " + idAzienda;
+        this.erroreBanner = "Non è stato possibile riabilitare l'azienda " + idAzienda;
       }
     });
   }

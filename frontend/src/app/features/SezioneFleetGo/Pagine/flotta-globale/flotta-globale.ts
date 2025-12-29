@@ -12,21 +12,23 @@ import {ModelloDTO} from '@core/models/ModelloDTO';
 import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/form-aggiungi-modello/form-aggiungi-modello';
 import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card-modello';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-flotta-globale',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    TabellaAuto,
-    FormAggiungiAuto,
-    CommonModule,
-    FormsModule,
-    TemplateTitoloSottotitolo,
-    FormAggiungiModello,
-    CardModello
-  ],
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        TabellaAuto,
+        FormAggiungiAuto,
+        CommonModule,
+        FormsModule,
+        TemplateTitoloSottotitolo,
+        FormAggiungiModello,
+        CardModello,
+        BannerErrore
+    ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
 })
@@ -46,9 +48,9 @@ export class FlottaGlobale implements OnInit{
 
   mostraModale: boolean = false;
   mostraModaleInserimentoModello = false;
-  erroreEliminazioneModello = "";
 
   listaModelli: ModelloDTO[] = [];
+  erroreBanner="";
 
   ngOnInit(): void {
     this.resettaFiltri()
@@ -64,6 +66,7 @@ export class FlottaGlobale implements OnInit{
       },
       error: (err) => {
         console.error("Errore nel caricamento:", err);
+        this.erroreBanner="Errore nel caricamento dei veicoli"
       }
     });
   }
@@ -77,6 +80,7 @@ export class FlottaGlobale implements OnInit{
         }
       }, error: (err) => {
         console.error("Errore nel caricamento:", err);
+        this.erroreBanner=("Errore nel caricamento dei modelli");
       }
     })
   }
@@ -87,6 +91,7 @@ export class FlottaGlobale implements OnInit{
         if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
       }, error: (err) => {
         console.error("Errore nel caricamento:", err);
+        this.erroreBanner=("Errore nel caricamento delle aziende attive");
       }
     })
   }
@@ -130,6 +135,7 @@ export class FlottaGlobale implements OnInit{
       },
       error: (err) => {
         console.error("Errore durante il salvataggio del veicolo:", err);
+        this.erroreBanner=("Errore durante il salvataggio del veicolo targato: " + veicolo.targaVeicolo);
       }
     });
   }
@@ -142,6 +148,7 @@ export class FlottaGlobale implements OnInit{
       },
       error: (err) => {
         console.error("Errore durante l'eliminazione del veicolo:", err);
+        this.erroreBanner=("Errore durante l'eliminazione del veicolo targato: " + targaVeicolo);
       }
     });
   }
@@ -165,6 +172,7 @@ export class FlottaGlobale implements OnInit{
         }
       }, error: (err) => {
         console.log(err);
+        this.erroreBanner=("Errore durante la registrazione del modello.");
       }
     })
   }
@@ -177,7 +185,7 @@ export class FlottaGlobale implements OnInit{
         }
       }, error: (err) => {
         console.log(err);
-        this.erroreEliminazioneModello = err;
+        this.erroreBanner=("Errore durante l'eliminazione del modello "+ idModello);
       }
     })
   }
