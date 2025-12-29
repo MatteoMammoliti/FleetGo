@@ -68,7 +68,7 @@ export class LoginComponent {
 
     this.errore = "";
 
-    this.authService.login(email, password).subscribe({
+    this.authService.login(email.toLowerCase(), password).subscribe({
       next: (response: any) => {
         this.authService.salvaDatiLogin(response);
         this.router.navigate([response.redirectUrl]);

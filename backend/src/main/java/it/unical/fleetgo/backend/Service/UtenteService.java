@@ -48,7 +48,7 @@ public class UtenteService {
 
                 String passwordCriptata = passwordEncoder.encode(utenteDTO.getPassword());
 
-                if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail(), passwordCriptata, urlImmagine)) {
+                if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail().toLowerCase(), passwordCriptata, urlImmagine)) {
                     connection.rollback();
                     throw new RuntimeException("Problema durante l'inserimento delle credenziali");
                 }

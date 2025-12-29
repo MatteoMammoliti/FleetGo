@@ -2,10 +2,8 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +15,23 @@ public class LuogoAziendaDAO {
         this.connection = connection;
     }
 
-    public void inserisciLuogo(LuogoDTO luogoDTO) {
+    public Integer inserisciLuogo(LuogoDTO luogoDTO) {
         String query = "INSERT INTO luogo_azienda(id_azienda, nome_luogo, longitudine, latitudine) VALUES (?, ?, ?, ?)";
 
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
+        try(PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, luogoDTO.getIdAzienda());
             ps.setString(2, luogoDTO.getNomeLuogo());
             ps.setDouble(3, luogoDTO.getLongitudine());
             ps.setDouble(4, luogoDTO.getLatitudine());
             ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     public boolean rimuoviLuogo(Integer id_luogo) {

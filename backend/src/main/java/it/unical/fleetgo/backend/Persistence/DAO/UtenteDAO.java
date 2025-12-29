@@ -304,6 +304,7 @@ public class UtenteDAO {
     }
 
     public String getNomeCognomeAdminById(Integer idUtente) {
+
         String query = "SELECT nome_utente, cognome FROM utente WHERE id_utente = ?";
 
         try(PreparedStatement ps = con.prepareStatement(query)) {
@@ -311,7 +312,11 @@ public class UtenteDAO {
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) return rs.getString("nome_utente") + " " + rs.getString("cognome");
+
+            if(rs.next()) {
+                System.out.println("dentro if");
+                return rs.getString("nome_utente") + " " + rs.getString("cognome");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

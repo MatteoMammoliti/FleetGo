@@ -179,4 +179,18 @@ public class AziendaDAO {
         }
         return false;
     }
+
+    public boolean isSedeImpostata(Integer idAzienda) {
+        String query = "SELECT 1 FROM azienda WHERE id_azienda = ? AND sede_azienda IS NOT  NULL";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

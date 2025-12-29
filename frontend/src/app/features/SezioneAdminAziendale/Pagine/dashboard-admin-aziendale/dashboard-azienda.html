@@ -68,3 +68,9 @@
   (chiudiPagina)="chiudiModaleRichiestaAppuntamento()"
   (richiediAppuntamento)="richiediAppuntamento()">
 </app-modale-richiesta-appuntamento>
+
+@if(nessunaSedeImpostata){
+  <app-modale-obbligo-impostazione-sede
+    (impostaSede)="impostaSede($event)">
+  </app-modale-obbligo-impostazione-sede>
+}

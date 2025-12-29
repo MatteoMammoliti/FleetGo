@@ -54,4 +54,8 @@ export class DashboardService {
   getNumFattureDaPagare(): Observable<number>{
     return this.http.get<number>(`${this.apiUrl}/getNumFattureDaPagare`, { withCredentials:true })
   }
+
+  isSedeImpostata() {
+    return this.http.get<boolean>(`${this.apiUrl}/isSedeImpostata`, { withCredentials:true })
+  }
 }

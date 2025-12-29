@@ -22,8 +22,7 @@ public class ControllerDashboard {
     public ResponseEntity<List<OffertaDTO>> getOfferteAttive() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getOfferteAttive()
-            );
+                    adminAziendaleService.getOfferteAttive());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -31,12 +30,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getContatoreRichiesteAffiliazione")
     public ResponseEntity<Integer> getNumeroRichiesteAffiliazione(HttpSession session){
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNumRichiesteAffiliazione(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getNumRichiesteAffiliazione(idAzienda));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -44,12 +47,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getContatoreRichiesteNoleggio")
     public ResponseEntity<Integer> getNumeroRichiesteNoleggio(HttpSession session){
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNumRichiesteNoleggio(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getNumRichiesteNoleggio(idAzienda));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -57,12 +64,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getSpesaMensile")
     public ResponseEntity<Float> getSpesaMensile(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getSpesaMensile(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getSpesaMensile(idAzienda));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -70,12 +81,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getNumeroNoleggi")
     public ResponseEntity<Integer> getNumeroNoleggi(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getVeicoliNoleggiati(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getVeicoliNoleggiati(idAzienda));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -83,12 +98,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getNomeCognomeAdmin")
     public ResponseEntity<String> getNomeCognomeAdmin(HttpSession session) {
+
+        Integer idUtente = (Integer) session.getAttribute("idUtente");
+
+        if(idUtente == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNomeCognomeAdmin(
-                            (Integer) session.getAttribute("idUtente")
-                    )
-            );
+                    adminAziendaleService.getNomeCognomeAdmin(idUtente));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -96,12 +115,16 @@ public class ControllerDashboard {
 
     @GetMapping("/getNomeAziendaGestita")
     public ResponseEntity<String> getNomeAziendaGestita(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNomeAziendaGestita(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getNomeAziendaGestita(idAzienda));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -109,8 +132,15 @@ public class ControllerDashboard {
 
     @PostMapping("/richiediAppuntamento")
     public ResponseEntity<String> richiediAppuntamento(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
-            adminAziendaleService.richiediAppuntamento( (Integer) session.getAttribute("idUtente"));
+            adminAziendaleService.richiediAppuntamento(idAzienda);
             return ResponseEntity.status(HttpStatus.OK).body("Richiesta inviata con successo");
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'invio della mail");
@@ -119,13 +149,34 @@ public class ControllerDashboard {
 
     @GetMapping("/getNumFattureDaPagare")
     public ResponseEntity<Integer> getNumeroFattureDaPagare(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getNumeroFattureDaPagare(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getNumeroFattureDaPagare(idAzienda));
         } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/isSedeImpostata")
+    public ResponseEntity<Boolean> getIfSede(HttpSession session) {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    adminAziendaleService.isSedeImpostata(idAzienda));
+        }  catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

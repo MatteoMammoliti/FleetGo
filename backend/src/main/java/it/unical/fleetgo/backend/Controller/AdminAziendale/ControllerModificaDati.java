@@ -27,6 +27,11 @@ public class ControllerModificaDati {
     public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
 
         Integer idUtente= (Integer)session.getAttribute("idUtente");
+
+        if(idUtente == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         dati.setIdUtente(idUtente);
 
         try{
@@ -50,7 +55,13 @@ public class ControllerModificaDati {
 
     @GetMapping("/datiUtente")
     public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session){
+
         Integer idUtente = (Integer)session.getAttribute("idUtente");
+
+        if(idUtente == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try{
             ModificaDatiUtenteDTO dati=utenteService.getDatiUtente(idUtente);
             return  ResponseEntity.status(HttpStatus.OK).body(dati);
@@ -61,12 +72,16 @@ public class ControllerModificaDati {
 
     @GetMapping("/luoghiAzienda")
     public ResponseEntity<List<LuogoDTO>> getLuoghiCorrenti(HttpSession session) {
+
+        Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getLuoghiCorrenti(
-                            (Integer) session.getAttribute("idAzienda")
-                    )
-            );
+                    adminAziendaleService.getLuoghiCorrenti(idAzienda));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -74,8 +89,15 @@ public class ControllerModificaDati {
 
     @PostMapping("/aggiungiLuogo")
     public ResponseEntity<String> aggiungiLuogo(@RequestBody LuogoDTO luogo, HttpSession session){
+
+        Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
-            luogo.setIdAzienda((Integer) session.getAttribute("idAzienda"));
+            luogo.setIdAzienda(idAzienda);
             adminAziendaleService.aggiungiLuogo(luogo);
             return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
         } catch (SQLException e) {
@@ -97,11 +119,16 @@ public class ControllerModificaDati {
 
     @PostMapping("/impostaSede")
     public ResponseEntity<String> impostaSede(@RequestBody Integer idLuogo, HttpSession session){
+
+        Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         try {
-            if(aziendaService.impostaSede(
-                    idLuogo,
-                    (Integer) session.getAttribute("idAzienda")
-            )) return ResponseEntity.status(HttpStatus.OK).body("Sede modificati con successo!");
+            if(aziendaService.impostaSede(idLuogo, idAzienda))
+                return ResponseEntity.status(HttpStatus.OK).body("Sede modificati con successo!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
         }

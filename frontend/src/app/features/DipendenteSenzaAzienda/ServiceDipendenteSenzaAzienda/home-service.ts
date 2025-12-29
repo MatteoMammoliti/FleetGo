@@ -32,5 +32,4 @@ export class HomeService{
       responseType: 'text',
       withCredentials:true })
   }
-
 }

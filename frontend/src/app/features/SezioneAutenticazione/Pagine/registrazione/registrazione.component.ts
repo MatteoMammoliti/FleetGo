@@ -121,12 +121,10 @@ export class RegistrazioneComponent {
       return;
     }
 
-
-
     const user: DipendenteDTO = {
       nomeUtente: this.nome,
       cognomeUtente: this.cognome,
-      email: this.email,
+      email: this.email.toLowerCase(),
       password: this.password,
       dataNascitaUtente: this.datanascita,
       tipoUtente: 'Dipendente'

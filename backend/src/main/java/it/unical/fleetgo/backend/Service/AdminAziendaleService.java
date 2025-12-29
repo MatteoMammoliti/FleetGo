@@ -101,9 +101,45 @@ public class AdminAziendaleService {
     }
 
     public void aggiungiLuogo(LuogoDTO luogo) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
-            luogoAziendaDAO.inserisciLuogo(luogo);
+
+        Connection connection = this.dataSource.getConnection();
+
+        try{
+
+            System.out.println("sono qui");
+            System.out.println("arrivato:" + luogo.getIdLuogo() + luogo.getNomeLuogo() + luogo.getIdAzienda());
+            connection.setAutoCommit(false);
+
+            Integer idLuogo = null;
+
+            try {
+                LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
+                idLuogo = luogoAziendaDAO.inserisciLuogo(luogo);
+            } catch (Exception e) {
+                e.printStackTrace();
+                connection.rollback();
+                return;
+            }
+
+            if(!this.isSedeImpostata(luogo.getIdAzienda()) && idLuogo != null) {
+
+                try {
+                    AziendaDAO aziendaDAO = new  AziendaDAO(connection);
+                    luogo.setIdLuogo(idLuogo);
+                    aziendaDAO.impostaSedeAzienda(luogo.getIdLuogo(), luogo.getIdAzienda());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    connection.rollback();
+                    return;
+                }
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            connection.rollback();
+            throw new SQLException(e);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
@@ -387,6 +423,13 @@ public class AdminAziendaleService {
         try(Connection connection = this.dataSource.getConnection()) {
             LuogoAziendaDAO luogoAziendaDAO =  new LuogoAziendaDAO(connection);
             return luogoAziendaDAO.rimuoviLuogo(idLuogo);
+        }
+    }
+
+    public boolean isSedeImpostata(Integer idAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            AziendaDAO aziendaDAO = new AziendaDAO(connection);
+            return aziendaDAO.isSedeImpostata(idAzienda);
         }
     }
 }

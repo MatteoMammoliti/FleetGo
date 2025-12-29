@@ -6,18 +6,21 @@ import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Component
 import {CardStatisticheDashboard} from '@features/SezioneAdminAziendale/Componenti/card-statistiche-dashboard/card-statistiche-dashboard';
 import {CurrencyPipe} from '@angular/common';
 import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
-import {of} from 'rxjs';
+import {ModaleObbligoImpostazioneSede} from '@features/SezioneAdminAziendale/Componenti/modale-obbligo-impostazione-sede/modale-obbligo-impostazione-sede';
+import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
 
 @Component({
   selector: 'app-dashboard-azienda',
-  imports: [CaroselloOfferte, CaroselloRichiesteMiste, CurrencyPipe, CardStatisticheDashboard, ModaleRichiestaAppuntamento],
+  imports: [CaroselloOfferte, CaroselloRichiesteMiste, CurrencyPipe, CardStatisticheDashboard, ModaleRichiestaAppuntamento, ModaleObbligoImpostazioneSede],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
 
 export class DashboardAzienda implements OnInit{
 
-  constructor(private dashboardService:DashboardService) {}
+  constructor(private dashboardService:DashboardService,
+              private modificaDatiService: ModificaDatiService) {}
 
   offerteAttive: OffertaDTO[] = [];
   contatoreRichiesteAffiliazione = 0;
@@ -34,6 +37,7 @@ export class DashboardAzienda implements OnInit{
   modaleAppuntamentoVisibile = false;
   appuntamentoRichiesto = false;
 
+  nessunaSedeImpostata = false;
 
   get sommaRichieste(): number {
     return this.contatoreRichiesteAffiliazione +
@@ -49,7 +53,6 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getNomeAziendaGestita().subscribe({
       next: value => {
         if(value) {
-          console.log(value)
           this.nomeAziendaGestita = value;
         }
       }, error: err => { console.error(err); }
@@ -61,12 +64,18 @@ export class DashboardAzienda implements OnInit{
           this.nomeECognomeAdmin = value;
         }
       }, error: err => { console.error(err); }
-    })}
+    })
+
+    this.dashboardService.isSedeImpostata().subscribe({
+      next: value => { this.nessunaSedeImpostata = !value;
+      }, error: err => { console.error(err); }
+    })
+  }
 
   caricaOfferteAttive() {
     this.dashboardService.getOfferteAttive().subscribe({
       next: value => {
-        if(value) this.offerteAttive = value;
+        if(value !== null && value !== undefined) this.offerteAttive = value;
       }, error: err => { console.error(err); }
     })
   }
@@ -74,19 +83,19 @@ export class DashboardAzienda implements OnInit{
   caricaContatori() {
     this.dashboardService.getContatoreRichiesteAffiliazione().subscribe({
       next: value => {
-        if(value) this.contatoreRichiesteAffiliazione = value;
+        if(value !== null && value !== undefined) this.contatoreRichiesteAffiliazione = value;
       }, error: error => { console.error(error); }
     })
 
     this.dashboardService.getContatoreRichiesteNoleggio().subscribe({
       next: value => {
-        if(value) this.contatoreRichiesteNoleggio = value;
+        if(value !== null && value !== undefined) this.contatoreRichiesteNoleggio = value;
       }, error: error => { console.error(error); }
     })
 
     this.dashboardService.getNumFattureDaPagare().subscribe({
       next: value => {
-        if(value) this.contatoreFattureDaPagare = value;
+        if(value !== null && value !== undefined) this.contatoreFattureDaPagare = value;
       }, error: error => { console.error(error); }
     })
   }
@@ -124,6 +133,16 @@ export class DashboardAzienda implements OnInit{
           setInterval( () => {
             this.chiudiModaleRichiestaAppuntamento();
           }, 3000)
+        }
+      }, error: err => { console.error(err); }
+    })
+  }
+
+  impostaSede(luogo: LuogoDTO) {
+    this.modificaDatiService.aggiungiLuogo(luogo).subscribe({
+      next: value => {
+        if(value) {
+          this.nessunaSedeImpostata = false;
         }
       }, error: err => { console.error(err); }
     })
