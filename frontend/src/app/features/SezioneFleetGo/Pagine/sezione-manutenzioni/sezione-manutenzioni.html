@@ -17,9 +17,9 @@
 
   <app-tabella-manutenzioni-in-corso (chiudiRichiesta)="concludiRichiestaManutenzione($event)" [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
   <app-tabella-storico-manutenzioni [listaStorico]="listaManutenzioniStorico"></app-tabella-storico-manutenzioni>
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
 </app-intestazione-ebackground>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
 
 

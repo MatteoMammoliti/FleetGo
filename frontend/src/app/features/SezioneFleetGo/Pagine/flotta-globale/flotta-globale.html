@@ -27,7 +27,7 @@
       @for (modello of listaModelli; track modello.idModello) {
         <app-card-modello
           [modello]="modello"
-          [erroreEliminazione]="erroreEliminazioneModello"
+          [erroreEliminazione]="erroreBanner"
           (elimina)="eliminaModello($event)">
         </app-card-modello>
       }

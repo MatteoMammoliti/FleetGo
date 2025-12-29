@@ -37,7 +37,7 @@ constructor(private service:SezioneManutenzioneService) {}
   listaManutenzioniStorico:RichiestaManutenzioneDTO[]=[]
 
 
-  erroreBanner="";
+  erroreBanner='';
 
   ngOnInit(){
   this.prelevaDatiManutenzioni();
