@@ -6,6 +6,7 @@ import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/fo
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import { AziendaDTO } from '@core/models/aziendaDTO';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-aziende-affiliate',
@@ -16,7 +17,8 @@ import { AziendaDTO } from '@core/models/aziendaDTO';
     CommonModule,
     TabellaAziendeComponent,
     FormAggiungiAdminAzienda,
-    TemplateTitoloSottotitolo
+    TemplateTitoloSottotitolo,
+    BannerErrore
   ],
   templateUrl: './aziende-affiliate.html',
   styleUrl: './aziende-affiliate.css',
@@ -77,7 +79,7 @@ export class AziendeAffiliate implements OnInit {
       },
       error: (err) => {
         console.error("Errore", err);
-        // visualizzare errore qui su html
+        this.erroreDisabilitazione = "Non è stato possibile aggiungere l'azienda";
       }
     });
   }
@@ -87,7 +89,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if (data) { this.listaAziendeAttive = data; }
       }, error: (err) => {
-        // visualizzare errore qui su html
+        this.erroreDisabilitazione = "Non è stato possibile caricare le aziende attive.";
       }
     });
   }
@@ -97,7 +99,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if(data) this.listaAziendeDisabilitate = data;
       }, error: (err) => {
-        // visualizzare errore qui su html
+        this.erroreDisabilitazione = "Non è stato possibile caricare le aziende disabilitate.";
       }
     })
   }
@@ -109,9 +111,7 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeAttive();
         }
       }, error: (err) => {
-        if (err.error && typeof err.error === 'string') {
-          this.erroreDisabilitazione = err.error;
-        }
+          this.erroreDisabilitazione = "Non è stato possibile disabilitare l'azienda " + idAzienda;
       }
     });
   }
@@ -124,7 +124,7 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeDisabilitate();
         }
       }, error: (err) => {
-        // visualizzare errore in html
+        this.erroreDisabilitazione = "Non è stato possibile riabilitare l'azienda " + idAzienda;
       }
     });
   }

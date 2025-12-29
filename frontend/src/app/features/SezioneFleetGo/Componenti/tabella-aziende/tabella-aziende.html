@@ -71,14 +71,14 @@
             <td class="p-4 text-right">
 
               @if (!modalitaArchivio) {
-                <button (click)="disabilitaAzienda.emit(azienda.idAzienda)"
+                <button (click)="apriModaleDisabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
                         class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
                         title="Disabilita Azienda">
                   <span class="text-xs font-semibold text-transparent group-hover/btn:text-red-600">Disabilita</span>
                   <i class="bi-power text-lg"></i>
                 </button>
               } @else {
-                <button (click)="riabilitaAzienda.emit(azienda.idAzienda)"
+                <button (click)="apriModaleRiabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
                         class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-green-600 hover:bg-green-50 px-3 py-1.5 rounded-lg transition-all"
                         title="Riabilita Azienda">
                   <span class="text-xs font-semibold text-transparent group-hover/btn:text-green-600">Riabilita</span>
@@ -109,3 +109,16 @@
     </table>
   </div>
 </div>
+
+@if(modaleDisabilitaAzienda){
+  <app-template-finestra-modale tastoBlu="Disabilita" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
+                                (conferma)="confermaModaleDisabilitaAzienda()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su disabilita l'azienda {{nomeAziendaInteressataModale}} verrà disabilitata.</span>
+  </app-template-finestra-modale>
+}
+@if(modaleRiabilitaAzienda){
+  <app-template-finestra-modale tastoBlu="Riabilita" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
+                                (conferma)="confermaModaleRiabilitaAzienda()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su riabilita l'azienda {{nomeAziendaInteressataModale}} verrà riabilitata.</span>
+  </app-template-finestra-modale>
+}

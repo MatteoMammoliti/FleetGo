@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {CommonModule} from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-tabella-aziende',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TemplateFinestraModale],
   templateUrl: './tabella-aziende.html',
   styleUrl: './tabella-aziende.css'
 })
@@ -17,4 +18,42 @@ export class TabellaAziendeComponent {
   @Output() riabilitaAzienda = new EventEmitter<number>();
   @Output() disabilitaAzienda = new EventEmitter<number>();
 
-}
+  modaleDisabilitaAzienda = false;
+  modaleRiabilitaAzienda = false;
+
+  aziendaInteressataModale:any=null;
+  nomeAziendaInteressataModale:any=null;
+
+  apriModaleDisabilitaAzienda(idAzienda:any,nomeAzienda:any){
+    if(idAzienda!=null){
+      this.aziendaInteressataModale=idAzienda;
+      this.modaleDisabilitaAzienda=true;
+      this.nomeAziendaInteressataModale=nomeAzienda;
+    }
+
+  }
+  chiudiModale(){
+    this.aziendaInteressataModale=null;
+    this.modaleDisabilitaAzienda=false;
+    this.modaleRiabilitaAzienda=false;
+    this.nomeAziendaInteressataModale=null;
+  }
+  confermaModaleDisabilitaAzienda(){
+    this.disabilitaAzienda.emit(this.aziendaInteressataModale);
+    this.chiudiModale();
+  }
+
+  apriModaleRiabilitaAzienda(idAzienda:any,nomeAzienda:any) {
+    if (idAzienda != null) {
+      this.aziendaInteressataModale = idAzienda;
+      this.modaleRiabilitaAzienda= true;
+      this.nomeAziendaInteressataModale=nomeAzienda;
+    }
+  }
+  confermaModaleRiabilitaAzienda(){
+    this.riabilitaAzienda.emit(this.aziendaInteressataModale);
+    this.chiudiModale();
+  }
+
+
+  }

@@ -18,4 +18,6 @@ export class TemplateFinestraModale {
   @Input() tastoBianco="";
   @Input() tastoBlu="";
 
+  @Input() larghezza="max-w-xl";
+
 }
