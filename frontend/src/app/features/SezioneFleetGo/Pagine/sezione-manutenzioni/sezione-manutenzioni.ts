@@ -38,6 +38,7 @@ constructor(private service:SezioneManutenzioneService) {}
 
 
   erroreBanner='';
+  successoBanner='';
 
   ngOnInit(){
   this.prelevaDatiManutenzioni();
@@ -51,8 +52,7 @@ constructor(private service:SezioneManutenzioneService) {}
         this.datiManutenzione=response
     },
       error:(err) => {
-        console.error("Errore nel prelevare le statistiche delle manutenzioni");
-        this.erroreBanner="Errore nel prelevare le statistiche delle manutenzioni";
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -64,8 +64,7 @@ constructor(private service:SezioneManutenzioneService) {}
         this.listeManutezioniInCorso=response;
       },
       error:(err)=>{
-        console.error("Errore nel caricamento delle manutezioni in corso")
-        this.erroreBanner="Errore nel caricamento delle manutezioni in corso";
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -76,9 +75,8 @@ constructor(private service:SezioneManutenzioneService) {}
       console.log(reponse)
     },
     error:(err)=>{
-      console.error("Errore nel caricamento dello storico delle manutenzioni");
-      this.erroreBanner="Errore nel caricamento dello storico delle manutenzioni";
-      }
+      this.erroreBanner=err.error;
+    }
   });
   }
   concludiRichiestaManutenzione(idRichiesta:number){
@@ -87,11 +85,12 @@ constructor(private service:SezioneManutenzioneService) {}
         this.prelevaManutenzioniStorico()
         this.prelevaManutenzioniInCorso()
 
+        this.successoBanner='Manutenzione conclusa con successo';
+
       },
       error:(err)=>{
-        console.error("Errore nel chiudere la manutenzione")
-        this.erroreBanner="Errore nel chiudere la richiesta di manutenzione";
-    }
+        this.erroreBanner=err.error;
+      }
     })
 
   }

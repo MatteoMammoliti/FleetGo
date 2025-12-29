@@ -39,7 +39,10 @@
     (salva)="salvaOfferta($event)">
   </app-modale-aggiunta-offerta>
 
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
 </div>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

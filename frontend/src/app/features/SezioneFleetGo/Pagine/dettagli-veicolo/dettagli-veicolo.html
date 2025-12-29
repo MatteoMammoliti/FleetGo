@@ -64,7 +64,7 @@
             <div class="flex justify-between items-center">
               <label class="text-sm font-semibold text-blu">Azienda Assegnata</label>
               @if (veicolo.nomeAziendaAffiliata) {
-                <button (click)="disassociaVeicoloAzienda()" type="button" class="text-xs text-blue-600 hover:underline font-medium">Rimuovi</button>
+                <button (click)="dissociaVeicoloAzienda()" type="button" class="text-xs text-blue-600 hover:underline font-medium">Rimuovi</button>
               }
             </div>
 
@@ -132,7 +132,10 @@
       </div>
     </div>
   }
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
 </div>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

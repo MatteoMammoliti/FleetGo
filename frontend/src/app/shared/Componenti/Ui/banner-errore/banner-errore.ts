@@ -8,7 +8,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class BannerErrore {
   @Output() chiudi= new EventEmitter();
+
+
   @Input() errore: string = '';
-  @Input() titolo='Operazione Fallita'
-  @Input() icona='bi-exclamation-triangle';
+  @Input() titoloErrore='Operazione Fallita'
+  @Input() iconaErrore='bi-exclamation-triangle';
+
+  @Input() successo='';
+  @Input() titoloSuccesso="Operazione Eseguita"
+  @Input() iconaSuccesso="bi-check2"
+
 }

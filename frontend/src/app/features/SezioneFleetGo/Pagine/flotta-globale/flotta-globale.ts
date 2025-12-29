@@ -51,6 +51,7 @@ export class FlottaGlobale implements OnInit{
 
   listaModelli: ModelloDTO[] = [];
   erroreBanner="";
+  successoBanner="";
 
   ngOnInit(): void {
     this.resettaFiltri()
@@ -65,8 +66,7 @@ export class FlottaGlobale implements OnInit{
         this.veicoliOriginali = datiDalServer;
       },
       error: (err) => {
-        console.error("Errore nel caricamento:", err);
-        this.erroreBanner="Errore nel caricamento dei veicoli"
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -75,12 +75,10 @@ export class FlottaGlobale implements OnInit{
     this.service.richiediModelli().subscribe({
       next: (datiDalServer) => {
         if(datiDalServer) {
-          console.log(datiDalServer);
           this.listaModelli = datiDalServer;
         }
       }, error: (err) => {
-        console.error("Errore nel caricamento:", err);
-        this.erroreBanner=("Errore nel caricamento dei modelli");
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -90,8 +88,7 @@ export class FlottaGlobale implements OnInit{
       next: (datiDalServer) => {
         if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
       }, error: (err) => {
-        console.error("Errore nel caricamento:", err);
-        this.erroreBanner=("Errore nel caricamento delle aziende attive");
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -123,32 +120,31 @@ export class FlottaGlobale implements OnInit{
   }
 
   gestisciVisibilitaModale() { this.mostraModale = !this.mostraModale; }
-  gestisciVisibilitaModaleInserimentoModello() { this.mostraModaleInserimentoModello = !this.mostraModaleInserimentoModello; }
+  gestisciVisibilitaModaleInserimentoModello() { this.mostraModaleInserimentoModello = !this.mostraModaleInserimentoModello;}
 
   gestisciSalvataggio(veicolo: VeicoloDTO) {
     this.service.registraVeicolo(veicolo).subscribe({
       next: (response) => {
-        console.log("Veicolo salvato con successo:", response);
         this.caricaDati();
         this.gestisciVisibilitaModale();
         this.resettaFiltri();
+        this.successoBanner="Veicolo registrato con successo";
       },
       error: (err) => {
-        console.error("Errore durante il salvataggio del veicolo:", err);
-        this.erroreBanner=("Errore durante il salvataggio del veicolo targato: " + veicolo.targaVeicolo);
+        this.erroreBanner=err.error;
       }
     });
   }
 
+
   gestisciEliminazione(targaVeicolo: string) {
     this.service.rimuoviVeicolo(targaVeicolo).subscribe({
       next: (response) => {
-        console.log("Veicolo eliminato con successo:", response);
         this.caricaDati();
+        this.successoBanner="Veicolo rimosso con successo"
       },
       error: (err) => {
-        console.error("Errore durante l'eliminazione del veicolo:", err);
-        this.erroreBanner=("Errore durante l'eliminazione del veicolo targato: " + targaVeicolo);
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -170,9 +166,9 @@ export class FlottaGlobale implements OnInit{
           this.caricaModelli();
           this.gestisciVisibilitaModaleInserimentoModello();
         }
+        this.successoBanner="Modello registrato con successo"
       }, error: (err) => {
-        console.log(err);
-        this.erroreBanner=("Errore durante la registrazione del modello.");
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -183,9 +179,9 @@ export class FlottaGlobale implements OnInit{
         if(response) {
           this.caricaModelli();
         }
+        this.successoBanner="Modello eliminato con successo"
       }, error: (err) => {
-        console.log(err);
-        this.erroreBanner=("Errore durante l'eliminazione del modello "+ idModello);
+        this.erroreBanner=err.error;
       }
     })
   }

@@ -71,9 +71,11 @@
       (confermaGenerazione)="generaFattura($event)">
     </app-modale-generazione-fattura>
   }
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
-
 </app-intestazione-ebackground>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
 

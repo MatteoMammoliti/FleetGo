@@ -46,6 +46,7 @@ export class DashboardFleetGo implements OnInit{
   fatture:FatturaDaGenerareDTO[]=[];
   offerteAttive: OffertaDTO[] = [];
   fatturaDaGenerare: FatturaDaGenerareDTO = {} as FatturaDaGenerareDTO;
+  successoBanner="";
 
   ngOnInit(): void {
     this.richiediStatistiche();
@@ -56,7 +57,6 @@ export class DashboardFleetGo implements OnInit{
   richiediStatistiche() {
     this.dashboardService.richiediStatistiche().subscribe({
       next: (contenitore) => {
-        console.log(contenitore);
         this.statistiche = contenitore;
 
         if(this.statistiche.veicoliAssegnati==0){
@@ -68,8 +68,7 @@ export class DashboardFleetGo implements OnInit{
         this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
       },
       error: (err) => {
-        console.error("Errore richiesta statistiche:", err);
-        this.erroreBanner="Errore caricamento statistiche.";
+        this.erroreBanner=err.error;
     }
     });
   }
@@ -80,8 +79,7 @@ export class DashboardFleetGo implements OnInit{
         this.fatture=fattura
       },
       error:(err:any)=>{
-        console.error("Errore richiesta fatture da generare",err);
-        this.erroreBanner="Errore caricamento fatture da generare";
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -89,12 +87,10 @@ export class DashboardFleetGo implements OnInit{
   richiediManutenzioniDaGestire(){
     this.dashboardService.richiediManutenzioneDaGestire().subscribe({
       next:(richiesta:RichiestaManutenzioneDTO[])=>{
-        console.log(richiesta)
         this.richiesteManutenzione=richiesta
       },
       error:(err:any)=>{
-        console.error("Errore richieste manutenzioni da gestire",err);
-        this.erroreBanner="Errore caricamento manutenzioni da gestire";
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -103,11 +99,10 @@ export class DashboardFleetGo implements OnInit{
   caricaRichiestaManutenzione(idManutenzione:number){
     this.dashboardService.richiediInformazioniSuManutenzioneDaGestire(idManutenzione).subscribe({
       next:(risultato:RichiestaManutenzioneDTO)=>{
-        this.richiestaSelezionata=risultato
+        this.richiestaSelezionata=risultato;
       },
       error:(err:any)=>{
-        console.error("Errore nella visualizzazione delle informazioni della richiesta",err);
-        this.erroreBanner="EErrore nella visualizzazione delle informazioni della richiesta";
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -115,13 +110,12 @@ export class DashboardFleetGo implements OnInit{
   accettaRichiestaManutenzione(idManutenzione:number){
     this.dashboardService.accettaRichiestaManutenzione(idManutenzione).subscribe({
       next:(risultato:string)=>{
-        console.log(risultato)
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
+        this.successoBanner="Manutenzione accettata con successo";
       },
       error:(err:any)=>{
-        console.error("Errore nell'accettare la richiesta di manutenzione",err)
-        this.erroreBanner=("Errore nell'accettare la richiesta di manutenzione" + idManutenzione)
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -131,10 +125,10 @@ export class DashboardFleetGo implements OnInit{
       next:(risultato:string)=>{
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
+        this.successoBanner="Manutenzione rifiutata con successo";
       },
       error:(err:any)=>{
-        console.error("Errore nel rifiutare la richiesta di mantezione",err)
-        this.erroreBanner=("Errore nel rifiutare la richiesta di manutenzione" + idManutenzione)
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -146,20 +140,18 @@ export class DashboardFleetGo implements OnInit{
 
   riceviFatturaDaGenerare(fattura: FatturaDaGenerareDTO) {
     this.fatturaDaGenerare = fattura;
-    console.log("ho ricevuto", this.fatturaDaGenerare)
     this.onClickGeneraFattura();
   }
 
   generaFattura(fattura:FatturaDaGenerareDTO){
-    console.log("sto inviando al back", fattura)
     this.dashboardService.generaFattura(fattura).subscribe({
       next:()=>{
         this.richiediFattureDaGenerare();
         this.chiudiFinestraModaleGenerazioneFattura();
+        this.successoBanner="Fattura emessa con successo";
       },
       error:(err:any)=>{
-        console.error("Errore nella generazione della fattura",err)
-        this.erroreBanner=("Errore nella generazione della fattura")
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -167,7 +159,7 @@ export class DashboardFleetGo implements OnInit{
   caricaOfferte() {
     this.dashboardService.getOfferteAttive().subscribe({
       next: value => {this.offerteAttive = value;},
-      error: err => { console.error(err); }
+      error: err => {  this.erroreBanner=err.error; }
     })
   }
 
