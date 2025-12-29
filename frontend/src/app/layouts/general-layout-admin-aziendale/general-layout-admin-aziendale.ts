@@ -12,9 +12,11 @@ import {Footer} from '@shared/footer/footer';
   templateUrl: './general-layout-admin-aziendale.html',
   styleUrl: './general-layout-admin-aziendale.css',
 })
+
 export class GeneralLayoutAdminAziendale {
-  public authService= inject(AuthService);
-  private router = inject(Router);
+
+  constructor(private authService: AuthService,
+              private router: Router,) {}
 
   logout() {
     this.authService.logout().subscribe({

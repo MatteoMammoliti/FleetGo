@@ -5,10 +5,10 @@ import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-
 import {RecuperoPassword} from '@features/SezioneAutenticazione/Pagine/recupero-password/recupero-password';
 import {authGuard} from '@core/auth/auth.guard';
 import {LandingPage} from '@features/SezionePubblica/landing-page/landing-page';
-import {
-  HomeDipendenteSenzaAzienda
-} from '@features/DipendenteSenzaAzienda/Pagine/home-dipendente-senza-azienda/home-dipendente-senza-azienda';
-import {checkAziendaGuard} from '@core/auth/check-azienda-guard';
+import {HomeDipendenteSenzaAzienda} from '@features/DipendenteSenzaAzienda/Pagine/home-dipendente-senza-azienda/home-dipendente-senza-azienda';
+import {CheckAziendaGuard} from '@core/auth/check-azienda.guard';
+import {PrimoAccessoGuard} from '@core/auth/primo-accesso.guard';
+import {AziendaDisabilitataGuard} from '@core/auth/azienda-disabilitata.guard';
 
 export const routes: Routes = [
  {
@@ -21,11 +21,20 @@ export const routes: Routes = [
       { path: 'recuperoPassword', component: RecuperoPassword}
     ]
   },
+
   {
     path:'senza-azienda',
     component:HomeDipendenteSenzaAzienda,
     canActivate:[authGuard],
     data:{ruolo:'Dipendente'}
+  },
+
+  {
+    path: 'azienda-disabilitata',
+    loadChildren: () => import('@features/SezioneAdminAziendaDisabilitata/azienda-disabilitata.routes')
+      .then(m => m.AZIENDA_DISABILITATA_ROUTES),
+    canActivate: [authGuard, PrimoAccessoGuard],
+    data: { ruolo: 'AdminAziendale'}
   },
 
   {
@@ -40,7 +49,7 @@ export const routes: Routes = [
     path: 'dashboardAzienda',
     loadChildren: () => import('@features/SezioneAdminAziendale/admin-aziendale.routes')
       .then(m => m.AZIENDA_ROUTES),
-    canActivate: [authGuard],
+    canActivate: [authGuard, PrimoAccessoGuard, AziendaDisabilitataGuard],
     data: { ruolo: 'AdminAziendale' }
   },
 
@@ -48,7 +57,7 @@ export const routes: Routes = [
     path: 'dashboardDipendente',
     loadChildren: () => import('@features/SezioneDipendente/dipendente.routes')
       .then(m => m.DIPENDENTE_ROUTES),
-    canActivate: [authGuard,checkAziendaGuard],
+    canActivate: [authGuard, CheckAziendaGuard],
     data: { ruolo: 'Dipendente' }
   },
 

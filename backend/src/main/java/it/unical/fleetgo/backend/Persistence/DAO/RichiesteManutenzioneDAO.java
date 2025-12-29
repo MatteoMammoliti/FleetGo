@@ -164,7 +164,9 @@ public class RichiesteManutenzioneDAO {
     public boolean contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione) throws SQLException {
         String modificaRichiesta="UPDATE richiesta_manutenzione SET completata=? WHERE id_manutenzione=?";
         String cambioStatusVeicolo="UPDATE veicolo v SET in_manutenzione=? FROM richiesta_manutenzione rm WHERE v.id_veicolo=rm.id_veicolo AND rm.id_manutenzione=?";
+        String esisteRecordInGestioneVeicoloAzienda = "SELECT 1 FROM gestione_veicolo_azienda gv JOIN richiesta_manutenzione rm ON gv.id_veicolo = rm.id_veicolo WHERE rm.id_manutenzione = ?";
         String rendoVeicoloNoleggiabile="UPDATE gestione_veicolo_azienda gv SET disponibile_per_noleggio=? FROM richiesta_manutenzione rm WHERE gv.id_veicolo=rm.id_veicolo AND rm.id_manutenzione=?";
+
         try {
             con.setAutoCommit(false);
             try(PreparedStatement st = con.prepareStatement(modificaRichiesta)){
@@ -183,17 +185,26 @@ public class RichiesteManutenzioneDAO {
                     return false;
                 }
             }
-            try(PreparedStatement st3 = con.prepareStatement(rendoVeicoloNoleggiabile)){
-                st3.setBoolean(1,true);
-                st3.setInt(2,idManutenzione);
-                if(st3.executeUpdate()==0){
-                    con.rollback();
-                    return false;
+
+            try(PreparedStatement st3 = con.prepareStatement(esisteRecordInGestioneVeicoloAzienda)){
+                st3.setInt(1,idManutenzione);
+                ResultSet rs = st3.executeQuery();
+
+                if(rs.next()){
+                    try(PreparedStatement st4 = con.prepareStatement(rendoVeicoloNoleggiabile)){
+                        st4.setBoolean(1,true);
+                        st4.setInt(2,idManutenzione);
+                        if(st4.executeUpdate()==0){
+                            con.rollback();
+                            return false;
+                        }
+                    }
                 }
             }
 
             con.commit();
             return true;
+
         }catch(SQLException e){
             con.rollback();
             throw new RuntimeException(e);

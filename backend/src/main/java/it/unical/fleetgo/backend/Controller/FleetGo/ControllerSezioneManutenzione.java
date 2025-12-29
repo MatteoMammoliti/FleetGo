@@ -27,6 +27,7 @@ public class ControllerSezioneManutenzione {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
     @GetMapping("/manutenzioniInCorso")
     public ResponseEntity<List<RichiestaManutenzioneDTO>> getManutenzioniInCorso() {
         try{
@@ -48,6 +49,7 @@ public class ControllerSezioneManutenzione {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
     @PostMapping("/chiudiRichiestaManutenzione{idRichiesta}")
     public ResponseEntity<String> chiudiRichiestaManutenzione(@PathVariable Integer idRichiesta) {
         try{

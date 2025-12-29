@@ -9,6 +9,8 @@ export interface LoginResponse {
   redirectUrl: string;
   ruolo: string;
   idAzienda?:number | null;
+  primoAccesso: boolean;
+  isAziendaAttiva: boolean | null;
 }
 
 @Injectable({
@@ -18,10 +20,12 @@ export interface LoginResponse {
 export class AuthService {
   ruoloUtenteCorrente = signal<string | null>(null);
   idAzienda=signal<number | null>(null);
+  primoAccesso = signal<boolean | null>(null);
+  aziendaAttiva = signal<boolean | null>(null);
 
   constructor (private http: HttpClient) {
 
-    const ruoloLocale=localStorage.getItem('ruoloUtenteCorrente');
+    const ruoloLocale= localStorage.getItem('ruoloUtenteCorrente');
     if (ruoloLocale){
       this.ruoloUtenteCorrente.set(ruoloLocale);
     }
@@ -30,9 +34,19 @@ export class AuthService {
     if (idAziendaLocale) {
       this.idAzienda.set(Number(idAziendaLocale));
     }
-  }
-  apiUrl = environment.apiUrl+'/autenticazione';
 
+    const primoAccessoLocale = localStorage.getItem('primoAccesso');
+    if(primoAccessoLocale){
+      this.primoAccesso.set(primoAccessoLocale === 'true');
+    }
+
+    const isAziendaAttiva = localStorage.getItem('isAziendaAttiva');
+    if(isAziendaAttiva){
+      this.aziendaAttiva.set(isAziendaAttiva === 'true');
+    }
+  }
+
+  apiUrl = environment.apiUrl+'/autenticazione';
 
   registrazione(utente:DipendenteDTO,immaginePatente:File ):Observable<string> {
     const formData = new FormData();
@@ -53,23 +67,37 @@ export class AuthService {
     });
   }
 
-  aggiornaRuoloUtenteCorrente(ruoloRicevuto: string,idAzienda: number | null) {
-    this.ruoloUtenteCorrente.set(ruoloRicevuto);
-    localStorage.setItem('ruoloUtenteCorrente', ruoloRicevuto);
-    if (idAzienda) {
-      this.idAzienda.set(idAzienda);
-      localStorage.setItem('idAziendaAffiliata', idAzienda.toString());
+  salvaDatiLogin(response: LoginResponse) {
+
+    this.ruoloUtenteCorrente.set(response.ruolo);
+    this.idAzienda.set(response.idAzienda || null);
+    this.primoAccesso.set(response.primoAccesso);
+    this.aziendaAttiva.set(response.isAziendaAttiva);
+
+    localStorage.setItem('ruoloUtenteCorrente', response.ruolo);
+
+    if (response.idAzienda) {
+      localStorage.setItem('idAziendaAffiliata', response.idAzienda.toString());
     } else {
-      this.idAzienda.set(null);
       localStorage.removeItem('idAziendaAffiliata');
     }
+
+    localStorage.setItem('primoAccesso', String(response.primoAccesso));
+    localStorage.setItem('isAziendaAttiva', String(response.isAziendaAttiva));
   }
 
   logout(){
+
+    this.primoAccesso.set(null);
     this.ruoloUtenteCorrente.set(null);
     this.idAzienda.set(null);
+    this.aziendaAttiva.set(null);
+
     localStorage.removeItem('idAziendaAffiliata');
     localStorage.removeItem('ruoloUtenteCorrente');
+    localStorage.removeItem('primoAccesso');
+    localStorage.removeItem('isAziendaAttiva');
+
     return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text', withCredentials: true });
   }
 

@@ -1,5 +1,4 @@
 package it.unical.fleetgo.backend.Controller.FleetGo;
-import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ModelloDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Service.AziendaService;

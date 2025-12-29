@@ -2,6 +2,7 @@ package it.unical.fleetgo.backend.Service.Config;
 
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
+import it.unical.fleetgo.backend.Service.AziendaService;
 import it.unical.fleetgo.backend.Service.UtenteService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,9 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import tools.jackson.databind.ObjectMapper;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +30,7 @@ public class SecurityConf {
 
     @Autowired AdminAziendaleService adminAziendaleService;
     @Autowired UtenteService utenteService;
+    @Autowired AziendaService aziendaService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +57,9 @@ public class SecurityConf {
 
                             String ruolo =auth.getAuthorities().iterator().next().toString();
                             String ruoloPulito= ruolo.replace("ROLE_","");
-                            Integer idAziendaAssociatoRisposta=null;
+                            Integer idAziendaJson = null;
+                            boolean isPrimoAccesso = false;
+                            Boolean aziendaAttiva = null;
 
                             String targetUrl = switch (ruoloPulito) {
                                 case "FleetGo" -> "/dashboardFleetGo";
@@ -75,38 +81,53 @@ public class SecurityConf {
 
                             if (ruoloPulito.equals("AdminAziendale")) {
                                 try {
-                                    session.setAttribute("idAzienda",
-                                            adminAziendaleService.getIdAziendaGestita(
-                                                    contenitoreCredenziali.getIdUtente()
-                                            )
-                                    );
+
+                                    Integer idAzienda = adminAziendaleService.getIdAziendaGestita(contenitoreCredenziali.getIdUtente());
+
+                                    session.setAttribute("idAzienda", idAzienda);
+                                    idAziendaJson = idAzienda;
 
                                     if(adminAziendaleService.isPrimoAccesso(contenitoreCredenziali.getIdUtente())) {
+                                        isPrimoAccesso = true;
                                         targetUrl = "/recuperoPassword";
+                                    }
+
+                                    if(!aziendaService.isAziendaAttiva(idAzienda)) {
+                                        targetUrl = "/azienda-disabilitata";
+                                        aziendaAttiva = false;
+                                    } else {
+                                        aziendaAttiva = true;
                                     }
 
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
                             }else if (ruoloPulito.equals("Dipendente")) {
-                                Integer idAziendaAssociata=null;
                                 try {
-                                    idAziendaAssociata= utenteService.getAziendaAssociataDipendente(contenitoreCredenziali.getIdUtente());
-                                    if(idAziendaAssociata!=null){
-                                        session.setAttribute("idAziendaAssociata",idAziendaAssociata);
-                                        idAziendaAssociatoRisposta=idAziendaAssociata;
+                                    Integer idAziendaAssociata = utenteService.getAziendaAssociataDipendente(contenitoreCredenziali.getIdUtente());
 
+                                    if(idAziendaAssociata != null){
+                                        session.setAttribute("idAziendaAssociata",idAziendaAssociata);
+                                        idAziendaJson = idAziendaAssociata;
+                                    } else {
+                                        targetUrl = "/senza-azienda";
                                     }
+
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
                             }
-                            String idAziendaJsonValue = (idAziendaAssociatoRisposta != null) ? idAziendaAssociatoRisposta.toString() : "null";
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.setContentType("application/json;charset=UTF-8");
-                            response.getWriter().write(String.format(
-                                    "{\"redirectUrl\": \"%s\", \"ruolo\": \"%s\", \"idAzienda\": %s}", targetUrl, ruoloPulito, idAziendaJsonValue
-                            ));
+
+                            Map<String, Object> parametriJson = new HashMap<>();
+                            parametriJson.put("idAzienda", idAziendaJson);
+                            parametriJson.put("primoAccesso", isPrimoAccesso);
+                            parametriJson.put("ruolo",  ruoloPulito);
+                            parametriJson.put("redirectUrl", targetUrl);
+                            parametriJson.put("isAziendaAttiva", aziendaAttiva);
+
+                            new ObjectMapper().writeValue(response.getWriter(), parametriJson);
                         })
                         .failureHandler((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Credenziali non valide");
