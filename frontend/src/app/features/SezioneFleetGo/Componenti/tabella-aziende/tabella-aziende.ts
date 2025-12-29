@@ -2,11 +2,12 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {CommonModule} from '@angular/common';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
 
 @Component({
   selector: 'app-tabella-aziende',
   standalone: true,
-  imports: [CommonModule, TemplateFinestraModale],
+  imports: [CommonModule, TemplateFinestraModale, IconaStato],
   templateUrl: './tabella-aziende.html',
   styleUrl: './tabella-aziende.css'
 })

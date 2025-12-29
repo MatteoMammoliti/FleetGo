@@ -59,7 +59,7 @@ export class DettagliVeicolo implements OnInit {
           this.aziende = data;
         }
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -77,7 +77,7 @@ export class DettagliVeicolo implements OnInit {
         }
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -155,9 +155,9 @@ export class DettagliVeicolo implements OnInit {
     this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
         this.ngOnInit();
-        this.successoBanner="Veicolo associato con successo";
+        this.gestisciSuccesso("Veicolo associato con successo");
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -172,12 +172,24 @@ export class DettagliVeicolo implements OnInit {
     this.veicoloService.dissociaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
         this.ngOnInit();
-        this.successoBanner="Veicolo dissociato con successo";
+        this.gestisciSuccesso("Veicolo dissociato con successo");
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
 
   tornaIndietro(){window.history.back();}
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 }

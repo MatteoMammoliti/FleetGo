@@ -7,6 +7,7 @@ import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo
 import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import { AziendaDTO } from '@core/models/aziendaDTO';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-aziende-affiliate',
@@ -18,7 +19,8 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
     TabellaAziendeComponent,
     FormAggiungiAdminAzienda,
     TemplateTitoloSottotitolo,
-    BannerErrore
+    BannerErrore,
+    IntestazioneEBackground
   ],
   templateUrl: './aziende-affiliate.html',
   styleUrl: './aziende-affiliate.css',
@@ -77,10 +79,11 @@ export class AziendeAffiliate implements OnInit {
         this.richiediAziendeAttive();
         this.gestisciVisibilitaModaleAggiuntaAziende();
         if(this.formAggiunta) this.formAggiunta.pulisciForm();
-        this.successoBanner="Azienda aggiunta con successo";
+        this.gestisciSuccesso( "Azienda aggiunta con successo");
       },
       error: (err) => {
-        this.erroreBanner = err.error;
+        this.gestisciErrore(err.error);
+
       }
     });
   }
@@ -90,7 +93,8 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if (data) { this.listaAziendeAttive = data; }
       }, error: (err) => {
-        this.erroreBanner = err.error;
+        this.gestisciErrore(err.error);
+
       }
     });
   }
@@ -100,7 +104,8 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if(data) this.listaAziendeDisabilitate = data;
       }, error: (err) => {
-        this.erroreBanner = err.error;
+        this.gestisciErrore(err.error);
+
       }
     })
   }
@@ -111,9 +116,10 @@ export class AziendeAffiliate implements OnInit {
         if(res) {
           this.richiediAziendeAttive();
         }
-        this.successoBanner="Azienda disabilitata con successo";
+        this.gestisciSuccesso( "Azienda disabilitata con successo");
       }, error: (err) => {
-          this.erroreBanner = err.error;
+        this.gestisciErrore(err.error);
+
       }
     });
   }
@@ -125,11 +131,23 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeAttive();
           this.richiediAziendeDisabilitate();
         }
-        this.successoBanner="Azienda riabilitata con successo";
+        this.gestisciSuccesso( "Azienda riabilitata con successo");
       }, error: (err) => {
-        this.erroreBanner = err.error;
+        this.gestisciErrore(err.error);
       }
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }
 

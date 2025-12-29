@@ -49,32 +49,11 @@
                 }
               </div>
             </td>
-
             <td class="p-4 text-center">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
-                [class.bg-green-50]="auto.statusContrattualeVeicolo === 'Disponibile'"
-                [class.text-green-700]="auto.statusContrattualeVeicolo === 'Disponibile'"
-                [class.border-green-200]="auto.statusContrattualeVeicolo === 'Disponibile'"
-
-                [class.bg-yellow-50]="auto.statusContrattualeVeicolo === 'Noleggiato'"
-                [class.text-yellow-700]="auto.statusContrattualeVeicolo === 'Noleggiato'"
-                [class.border-yellow-200]="auto.statusContrattualeVeicolo === 'Noleggiato'"
-
-                [class.bg-red-50]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'"
-                [class.text-red-700]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'"
-                [class.border-red-200]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'">
-
-                <span class="w-1.5 h-1.5 rounded-full"
-                    [class.bg-green-500]="auto.statusContrattualeVeicolo === 'Disponibile'"
-                    [class.bg-yellow-500]="auto.statusContrattualeVeicolo === 'Noleggiato'"
-                    [class.bg-red-500]="auto.inManutenzione || auto.statusContrattualeVeicolo === 'In Manutenzione'">
-                </span>
-                @if (auto.inManutenzione) {
-                    Manutenzione
-                } @else {
-                    {{ auto.statusContrattualeVeicolo }}
-                }
-              </span>
+              <app-icona-stato
+                [testo]="auto.inManutenzione ? 'Manutenzione' : auto.statusContrattualeVeicolo"
+                [stato]="getBadgeStatus(auto)">
+              </app-icona-stato>
             </td>
 
             <td class="p-4 text-right">

@@ -60,7 +60,8 @@ export class StoricoFatture {
         }
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
+
       }
     })
 
@@ -71,7 +72,8 @@ export class StoricoFatture {
         this.listaAziende = aziende;
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
+
       }
     })
   }
@@ -93,7 +95,7 @@ export class StoricoFatture {
         this.calcolaDati();
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -132,4 +134,11 @@ export class StoricoFatture {
       window.URL.revokeObjectURL(url);
     });
   }
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+
 }

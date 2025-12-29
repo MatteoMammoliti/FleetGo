@@ -1,145 +1,141 @@
-<div class="flex flex-col gap-8 p-6 min-h-screen bg-slate-50/50 fade-in">
-
-  <app-template-titolo-sottotitolo
-    [titolo]="'Gestione Flotta'"></app-template-titolo-sottotitolo>
-  <div class="flex flex-col gap-5">
-
-    <div>
-      <h3 class="text-lg font-bold text-blu flex items-center gap-2">
-        <i class="bi-book text-blue-600"></i> Catalogo Modelli
-      </h3>
-      <p class="text-sm text-slate-500">Tutti i modelli disponibili al momento:</p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-
-      <div (click)="gestisciVisibilitaModaleInserimentoModello()"
-           class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[240px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300 h-full">
-        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors shadow-sm">
-          <i class="bi-plus-lg text-3xl"></i>
-        </div>
-        <div class="text-center">
-          <h3 class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Nuovo Modello</h3>
-          <p class="text-xs text-slate-500 mt-1">Aggiungi al catalogo</p>
-        </div>
-      </div>
-
-      @for (modello of listaModelli; track modello.idModello) {
-        <app-card-modello
-          [modello]="modello"
-          [erroreEliminazione]="erroreBanner"
-          (elimina)="eliminaModello($event)">
-        </app-card-modello>
-      }
-
-    </div>
-  </div>
-
-  <hr class="border-grigio-scuro/20">
-
-  <div class="flex flex-col gap-5">
-
-    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
-
-      <div class="shrink-0">
+<app-intestazione-ebackground titolo="Gestione Flotta">
+      <div class="mb-3">
         <h3 class="text-lg font-bold text-blu flex items-center gap-2">
-          <i class="bi bi-car-front-fill text-blue-600"></i> Inventario Veicoli
+          <i class="bi-book text-blue-600"></i> Catalogo Modelli
         </h3>
-        <p class="text-sm text-slate-500">Gestione fisica della flotta.</p>
+        <p class="text-sm text-slate-500">Tutti i modelli disponibili al momento:</p>
       </div>
 
-      <div class="flex flex-col md:flex-row gap-3 w-full xl:w-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-4">
 
-        <div class="relative flex-grow md:w-64">
-          <i class="bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input type="text" placeholder="Cerca targa o modello..." [(ngModel)]="testoRicerca"
-                 class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm text-sm">
+        <div (click)="gestisciVisibilitaModaleInserimentoModello()"
+             class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[240px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300 h-full">
+          <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors shadow-sm">
+            <i class="bi-plus-lg text-3xl"></i>
+          </div>
+          <div class="text-center">
+            <h3 class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Nuovo Modello</h3>
+            <p class="text-xs text-slate-500 mt-1">Aggiungi al catalogo</p>
+          </div>
         </div>
 
-        <div class="relative md:w-48">
-          <select [(ngModel)]="filtroAzienda"
-          class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none text-sm cursor-pointer"
-          [class.text-slate-500]="filtroAzienda === null"
-          [class.text-slate-700]="filtroAzienda !== null">
-
-        <option [ngValue]="null">Tutte le aziende</option>
-
-        @for (azienda of aziendeInPiattaforma; track azienda.idAzienda) {
-          <option [ngValue]="azienda" class="text-slate-700">
-            {{ azienda.nomeAzienda }}
-          </option>
+        @for (modello of listaModelli; track modello.idModello) {
+          <app-card-modello
+            [modello]="modello"
+            [erroreEliminazione]="erroreBanner"
+            (elimina)="eliminaModello($event)">
+          </app-card-modello>
         }
-        </select>
 
-       <i class="bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
       </div>
 
+    <hr class="border-grigio-scuro/20">
 
-        <div class="relative md:w-48">
-          <select [(ngModel)]="filtroStatoVeicolo"
-                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none text-sm cursor-pointer"
-                  [class.text-slate-500]="filtroStatoVeicolo === ''"
-                  [class.text-slate-700]="filtroStatoVeicolo !== ''">
-            <option value="">Tutti gli stati</option>
-            <option value="DISPONIBILE">Disponibile</option>
-            <option value="NOLEGGIATO">Noleggiato</option>
-            <option value="MANUTENZIONE">In Manutenzione</option>
-          </select>
-          <i class="bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+    <div class="flex flex-col gap-5 pt-3 pb-5">
+
+      <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+
+        <div class="shrink-0">
+          <h3 class="text-lg font-bold text-blu flex items-center gap-2">
+            <i class="bi bi-car-front-fill text-blue-600"></i> Inventario Veicoli
+          </h3>
+          <p class="text-sm text-slate-500">Gestione fisica della flotta.</p>
         </div>
 
-        @if (testoRicerca || filtroStatoVeicolo || filtroAzienda) {
-          <button (click)="resettaFiltri()"
-                  class="px-4 py-1 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-600 rounded-xl transition-colors flex items-center justify-center gap-2"
-                  >
-            <i class="bi-x-lg"></i>
+        <div class="flex flex-col md:flex-row gap-3 w-full xl:w-auto">
+
+          <div class="relative flex-grow md:w-64">
+            <i class="bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" placeholder="Cerca targa o modello..." [(ngModel)]="testoRicerca"
+                   class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm text-sm">
+          </div>
+
+          <div class="relative md:w-48">
+            <select [(ngModel)]="filtroAzienda"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none text-sm cursor-pointer"
+                    [class.text-slate-500]="filtroAzienda === null"
+                    [class.text-slate-700]="filtroAzienda !== null">
+
+              <option [ngValue]="null">Tutte le aziende</option>
+
+              @for (azienda of aziendeInPiattaforma; track azienda.idAzienda) {
+                <option [ngValue]="azienda" class="text-slate-700">
+                  {{ azienda.nomeAzienda }}
+                </option>
+              }
+            </select>
+
+            <i class="bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+          </div>
+
+
+          <div class="relative md:w-48">
+            <select [(ngModel)]="filtroStatoVeicolo"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none text-sm cursor-pointer"
+                    [class.text-slate-500]="filtroStatoVeicolo === ''"
+                    [class.text-slate-700]="filtroStatoVeicolo !== ''">
+              <option value="">Tutti gli stati</option>
+              <option value="DISPONIBILE">Disponibile</option>
+              <option value="NOLEGGIATO">Noleggiato</option>
+              <option value="MANUTENZIONE">In Manutenzione</option>
+            </select>
+            <i class="bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+          </div>
+
+          @if (testoRicerca || filtroStatoVeicolo || filtroAzienda) {
+            <button (click)="resettaFiltri()"
+                    class="px-4 py-1 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-600 rounded-xl transition-colors flex items-center justify-center gap-2"
+            >
+              <i class="bi-x-lg"></i>
+            </button>
+          }
+
+          <button (click)="gestisciVisibilitaModale()"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm whitespace-nowrap">
+            <i class="bi-plus-lg text-lg"></i>
+            <span>Nuovo Veicolo</span>
           </button>
-        }
+        </div>
+      </div>
 
-        <button (click)="gestisciVisibilitaModale()"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm whitespace-nowrap">
-          <i class="bi-plus-lg text-lg"></i>
-          <span>Nuovo Veicolo</span>
-        </button>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <app-tabella-auto
+          [listaVeicoli]="veicoliFiltrati"
+          (richiestaEliminazione)="gestisciEliminazione($event)"
+          (apriInfoVeicolo)="dettagliVeicolo($event)">
+        </app-tabella-auto>
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      <app-tabella-auto
-        [listaVeicoli]="veicoliFiltrati"
-        (richiestaEliminazione)="gestisciEliminazione($event)"
-        (apriInfoVeicolo)="dettagliVeicolo($event)">
-      </app-tabella-auto>
-    </div>
-  </div>
+    @if (mostraModaleInserimentoModello) {
+      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div (click)="gestisciVisibilitaModaleInserimentoModello()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
 
-  @if (mostraModaleInserimentoModello) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div (click)="gestisciVisibilitaModaleInserimentoModello()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
-
-      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
-        <app-form-aggiungi-modello
-          (onAnnulla)="gestisciVisibilitaModaleInserimentoModello()"
-          (confermaAggiunta)="aggiungiModello($event)">
-        </app-form-aggiungi-modello>
+        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
+          <app-form-aggiungi-modello
+            (onAnnulla)="gestisciVisibilitaModaleInserimentoModello()"
+            (confermaAggiunta)="aggiungiModello($event)">
+          </app-form-aggiungi-modello>
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  @if (mostraModale) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div (click)="gestisciVisibilitaModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
+    @if (mostraModale) {
+      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div (click)="gestisciVisibilitaModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
 
-      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
-        <app-form-aggiungi-auto
-          [modelli]="listaModelli"
-          (onSalvataggio)="gestisciSalvataggio($event)"
-          (onAnnulla)="gestisciVisibilitaModale()">
-        </app-form-aggiungi-auto>
+        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
+          <app-form-aggiungi-auto
+            [modelli]="listaModelli"
+            (onSalvataggio)="gestisciSalvataggio($event)"
+            (onAnnulla)="gestisciVisibilitaModale()">
+          </app-form-aggiungi-auto>
+        </div>
       </div>
-    </div>
-  }
-</div>
+    }
+
+</app-intestazione-ebackground>
+
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }

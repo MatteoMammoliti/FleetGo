@@ -52,7 +52,7 @@ constructor(private service:SezioneManutenzioneService) {}
         this.datiManutenzione=response
     },
       error:(err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -64,7 +64,7 @@ constructor(private service:SezioneManutenzioneService) {}
         this.listeManutezioniInCorso=response;
       },
       error:(err)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -75,7 +75,7 @@ constructor(private service:SezioneManutenzioneService) {}
       console.log(reponse)
     },
     error:(err)=>{
-      this.erroreBanner=err.error;
+      this.gestisciErrore(err.error);
     }
   });
   }
@@ -85,13 +85,25 @@ constructor(private service:SezioneManutenzioneService) {}
         this.prelevaManutenzioniStorico()
         this.prelevaManutenzioniInCorso()
 
-        this.successoBanner='Manutenzione conclusa con successo';
+        this.gestisciSuccesso('Manutenzione conclusa con successo');
 
       },
       error:(err)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
 
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

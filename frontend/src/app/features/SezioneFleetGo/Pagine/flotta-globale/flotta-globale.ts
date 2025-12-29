@@ -13,22 +13,24 @@ import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/form-aggi
 import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card-modello';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-flotta-globale',
   standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        TabellaAuto,
-        FormAggiungiAuto,
-        CommonModule,
-        FormsModule,
-        TemplateTitoloSottotitolo,
-        FormAggiungiModello,
-        CardModello,
-        BannerErrore
-    ],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    TabellaAuto,
+    FormAggiungiAuto,
+    CommonModule,
+    FormsModule,
+    TemplateTitoloSottotitolo,
+    FormAggiungiModello,
+    CardModello,
+    BannerErrore,
+    IntestazioneEBackground
+  ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
 })
@@ -184,5 +186,17 @@ export class FlottaGlobale implements OnInit{
         this.erroreBanner=err.error;
       }
     })
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }
