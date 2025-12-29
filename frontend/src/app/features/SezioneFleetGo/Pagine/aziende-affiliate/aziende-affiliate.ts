@@ -37,6 +37,7 @@ export class AziendeAffiliate implements OnInit {
   mostraAziendeArchiviate = false
 
   erroreBanner = "";
+  successoBanner="";
 
   constructor(private aziendeService: AziendeAffiliateService) {}
 
@@ -76,10 +77,10 @@ export class AziendeAffiliate implements OnInit {
         this.richiediAziendeAttive();
         this.gestisciVisibilitaModaleAggiuntaAziende();
         if(this.formAggiunta) this.formAggiunta.pulisciForm();
+        this.successoBanner="Azienda aggiunta con successo";
       },
       error: (err) => {
-        console.error("Errore", err);
-        this.erroreBanner = "Non è stato possibile aggiungere l'azienda";
+        this.erroreBanner = err.error;
       }
     });
   }
@@ -89,7 +90,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if (data) { this.listaAziendeAttive = data; }
       }, error: (err) => {
-        this.erroreBanner = "Non è stato possibile caricare le aziende attive.";
+        this.erroreBanner = err.error;
       }
     });
   }
@@ -99,7 +100,7 @@ export class AziendeAffiliate implements OnInit {
       next: (data) => {
         if(data) this.listaAziendeDisabilitate = data;
       }, error: (err) => {
-        this.erroreBanner = "Non è stato possibile caricare le aziende disabilitate.";
+        this.erroreBanner = err.error;
       }
     })
   }
@@ -110,8 +111,9 @@ export class AziendeAffiliate implements OnInit {
         if(res) {
           this.richiediAziendeAttive();
         }
+        this.successoBanner="Azienda disabilitata con successo";
       }, error: (err) => {
-          this.erroreBanner = "Non è stato possibile disabilitare l'azienda " + idAzienda;
+          this.erroreBanner = err.error;
       }
     });
   }
@@ -123,9 +125,11 @@ export class AziendeAffiliate implements OnInit {
           this.richiediAziendeAttive();
           this.richiediAziendeDisabilitate();
         }
+        this.successoBanner="Azienda riabilitata con successo";
       }, error: (err) => {
-        this.erroreBanner = "Non è stato possibile riabilitare l'azienda " + idAzienda;
+        this.erroreBanner = err.error;
       }
     });
   }
 }
+

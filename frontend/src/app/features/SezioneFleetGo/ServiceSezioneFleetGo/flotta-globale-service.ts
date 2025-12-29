@@ -39,7 +39,7 @@ export class FlottaGlobaleService {
     return this.http.post(`${this.apiUrl}/associaVeicoloAzienda`, veicolo, {responseType: "text", withCredentials:true});
   }
 
-  disassociaVeicoloAzienda(veicolo: VeicoloDTO) {
+  dissociaVeicoloAzienda(veicolo: VeicoloDTO) {
     return this.http.post(`${this.apiUrl}/disassociaVeicoloAzienda`, veicolo, {responseType: "text", withCredentials:true});
   }
 

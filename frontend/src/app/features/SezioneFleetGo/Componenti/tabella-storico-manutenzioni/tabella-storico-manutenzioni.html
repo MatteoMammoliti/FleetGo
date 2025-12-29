@@ -47,15 +47,16 @@
       </table>
     </div>
   }
-  @if (listaStoricoFiltrata.length === 0) {
-    <div class="min-h-[200px]">
-      <app-messaggio-card-vuota testoPrimario="Nessun veicolo presente!" testoSecondario="Prova a cambiare filtro" icona="bi-search"></app-messaggio-card-vuota>
-    </div>
-  }
   @if (listaStorico.length === 0) {
     <div class="min-h-[200px]">
       <app-messaggio-card-vuota testoPrimario="Nessun veicolo nello storico!"  icona="bi-search"></app-messaggio-card-vuota>
     </div>
   }
+  @else if (listaStoricoFiltrata.length === 0) {
+    <div class="min-h-[200px]">
+      <app-messaggio-card-vuota testoPrimario="Nessun veicolo presente!" testoSecondario="Prova a cambiare filtro" icona="bi-search"></app-messaggio-card-vuota>
+    </div>
+  }
+
 </div>
 

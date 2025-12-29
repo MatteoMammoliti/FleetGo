@@ -44,6 +44,7 @@ export class DettagliVeicolo implements OnInit {
   private zoomIniziale: number = 15;
 
   erroreBanner="";
+  successoBanner="";
 
   ngOnInit(){
     const targa:string | null = this.route.snapshot.paramMap.get('targa');
@@ -54,14 +55,11 @@ export class DettagliVeicolo implements OnInit {
   caricaListaAziende() {
     this.aziendeAssociateService.richiediAziendeAttive().subscribe({
       next: data => {
-        console.log("il backend mi ha mandato questo", data);
         if(data) {
           this.aziende = data;
-
         }
       }, error: (err) => {
-        console.error("Errore aziende:", err)
-        this.erroreBanner=("Errore nel caricamento delle aziende")
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -70,9 +68,6 @@ export class DettagliVeicolo implements OnInit {
     this.veicoloService.richiediVeicolo(targa).subscribe({
       next: (response) => {
         if (response) {
-
-          console.log("ho ricevuto", response);
-
           this.veicolo = response;
 
           const luogo = this.veicolo.luogoRitiroDeposito;
@@ -82,8 +77,7 @@ export class DettagliVeicolo implements OnInit {
         }
       },
       error: (err) => {
-        console.error("Errore caricamento veicolo:", err)
-        this.erroreBanner=("Errore nel caricamento del veicolo targato: " + targa)
+        this.erroreBanner=err.error;
       }
     });
   }
@@ -160,29 +154,27 @@ export class DettagliVeicolo implements OnInit {
 
     this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
-        console.log(response);
         this.ngOnInit();
+        this.successoBanner="Veicolo associato con successo";
       }, error: (err) => {
-        console.log(err);
-        this.erroreBanner=("Non è stato possibile associare il veicolo all'azienda")
+        this.erroreBanner=err.error;
       }
     })
   }
 
-  disassociaVeicoloAzienda() {
+  dissociaVeicoloAzienda() {
 
     const veicolo: VeicoloDTO = {
       idVeicolo: this.veicolo.idVeicolo,
       idAziendaAffiliata: this.veicolo.idAziendaAffiliata
     }
 
-    this.veicoloService.disassociaVeicoloAzienda(veicolo).subscribe({
+    this.veicoloService.dissociaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
-        console.log(response);
         this.ngOnInit();
+        this.successoBanner="Veicolo dissociato con successo";
       }, error: (err) => {
-        console.log(err);
-        this.erroreBanner=("Non è stato possibile disassociare il veicolo all'azienda")
+        this.erroreBanner=err.error;
       }
     })
   }

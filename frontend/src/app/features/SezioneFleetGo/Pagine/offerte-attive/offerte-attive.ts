@@ -25,6 +25,7 @@ export class OfferteAttive implements OnInit {
   offerteAttive: OffertaDTO[] = [];
   apriModale = false;
   erroreBanner="";
+  successoBanner="";
 
   ngOnInit() { this.getOfferteAttive() }
 
@@ -34,12 +35,11 @@ export class OfferteAttive implements OnInit {
   salvaOfferta(formData: FormData) {
     this.offerteService.inserisciNuovaOfferta(formData).subscribe({
       next: value =>{
-        console.log("offerta aggiunta correttamente")
         this.chiudiPaginaInserimentoOfferta();
         this.getOfferteAttive();
+        this.successoBanner = "Offerta salvata con successo"
       }, error: err => {
-        console.error(err);
-        this.erroreBanner=("Errore durante il salvataggio dell'offerta");
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -47,11 +47,10 @@ export class OfferteAttive implements OnInit {
   onRimuoviOfferta(idOfferta: number) {
     this.offerteService.eliminaOfferta(idOfferta).subscribe({
       next: value => {
-        console.log("offerta eliminata correttamente")
         this.getOfferteAttive();
+        this.successoBanner = "Offerta rimossa con successo"
       }, error: err => {
-        console.error(err);
-        this.erroreBanner=("Errore durante l'eliminazione dell'offerta");
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -62,8 +61,7 @@ export class OfferteAttive implements OnInit {
         if(offerte)
           this.offerteAttive = offerte;
       }, error: err => {
-        console.error(err)
-        this.erroreBanner=("Errore durante il caricamento delle offerte");
+        this.erroreBanner=err.error;
       }
     })
   }

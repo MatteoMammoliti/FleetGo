@@ -40,6 +40,7 @@ export class StoricoFatture {
   totaleRicaviAnno = 0;
   totaleRicaviAnnoStimato = 0;
   erroreBanner="";
+  successoBanner="";
 
   ngOnInit() {
     this.prelevaAnni();
@@ -58,9 +59,8 @@ export class StoricoFatture {
           this.aggiornaFatture();
         }
       },
-      error: (error) => {
-        console.error('Errore durante il recupero degli anni di fatturazione:', error);
-        this.erroreBanner='Errore durante il recupero degli anni di fatturazione.'
+      error: (err) => {
+        this.erroreBanner=err.error;
       }
     })
 
@@ -70,9 +70,8 @@ export class StoricoFatture {
       next: (aziende) => {
         this.listaAziende = aziende;
       },
-      error: (error) => {
-        console.error('Errore durante il recupero delle aziende affiliate:', error);
-        this.erroreBanner='Errore durante il caricamento delle aziende affiliate.'
+      error: (err) => {
+        this.erroreBanner=err.error;
       }
     })
   }
@@ -93,9 +92,8 @@ export class StoricoFatture {
         this.fatturePerAnno = fatturePerAnno;
         this.calcolaDati();
       },
-      error: err => {
-        console.error('Errore durante il recupero delle fatture per l\'anno selezionato:', err);
-        this.erroreBanner='Errore durante il recupero delle fatture inerenti all\'anno selezionato.'
+      error: (err) => {
+        this.erroreBanner=err.error;
       }
     })
   }
