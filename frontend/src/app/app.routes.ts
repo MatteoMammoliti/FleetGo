@@ -5,7 +5,6 @@ import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-
 import {RecuperoPassword} from '@features/SezioneAutenticazione/Pagine/recupero-password/recupero-password';
 import {authGuard} from '@core/auth/auth.guard';
 import {LandingPage} from '@features/SezionePubblica/landing-page/landing-page';
-import {HomeDipendenteSenzaAzienda} from '@features/DipendenteSenzaAzienda/Pagine/home-dipendente-senza-azienda/home-dipendente-senza-azienda';
 import {CheckAziendaGuard} from '@core/auth/check-azienda.guard';
 import {PrimoAccessoGuard} from '@core/auth/primo-accesso.guard';
 import {AziendaDisabilitataGuard} from '@core/auth/azienda-disabilitata.guard';
@@ -23,10 +22,11 @@ export const routes: Routes = [
   },
 
   {
-    path:'senza-azienda',
-    component:HomeDipendenteSenzaAzienda,
-    canActivate:[authGuard],
-    data:{ruolo:'Dipendente'}
+    path: 'senza-azienda',
+    loadChildren: () => import('@features/DipendenteSenzaAzienda/dipendente-senza-azienda.routes')
+      .then(m => m.DIPENDENTE_SENZA_AZIENDA),
+    canActivate: [authGuard],
+    data: { ruolo: 'Dipendente'}
   },
 
   {

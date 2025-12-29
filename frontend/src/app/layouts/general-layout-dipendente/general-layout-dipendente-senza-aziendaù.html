@@ -1,0 +1,27 @@
+<div class="layout-container">
+
+  <app-sidebar class="navbar-top">
+
+    <div class="contenitore-navbar-items">
+
+      <div class="contenitoreMenu">
+        <ul>
+          <li><a routerLink="homepage" routerLinkActive="active">Homepage</a></li>
+          <li><a routerLink="prenotazioni" routerLinkActive="active">Le mie prenotazioni</a></li>
+          <li><a routerLink="nuovaPrenotazione" routerLinkActive="active">Nuova prenotazione</a></li>
+          <li><a routerLink="impostazioni" routerLinkActive="active">Impostazioni</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="contenitore-logout">
+      <button class="logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
+    </div>
+  </app-sidebar>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </main>
+</div>

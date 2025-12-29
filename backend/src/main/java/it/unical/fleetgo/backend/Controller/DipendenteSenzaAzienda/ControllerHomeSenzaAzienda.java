@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/homeNoAzienda")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerHomeSenzaAzienda {
+
     @Autowired DipendenteNoAziendaService service;
 
     @GetMapping("/getAziende")

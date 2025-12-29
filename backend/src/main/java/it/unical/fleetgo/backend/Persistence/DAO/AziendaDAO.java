@@ -137,7 +137,7 @@ public class AziendaDAO {
         String query="SELECT a.*, " +
                 " (SELECT COUNT(*) FROM gestione_veicolo_azienda gv WHERE gv.id_azienda=a.id_azienda) as totale_veicolo, " +
                 " (SELECT COUNT(*) FROM richiesta_affiliazione_azienda ra WHERE ra.id_azienda=a.id_azienda AND ra.accettata= true) as totale_dipendenti" +
-                " FROM azienda a";
+                " FROM azienda a WHERE a.attiva = true";
         try(PreparedStatement st = connection.prepareStatement(query)){
             ResultSet rs = st.executeQuery();
             while(rs.next()) {

@@ -29,8 +29,6 @@ export class HomeDipendenteSenzaAzienda {
     this.getRichiestaInAttesa()
   }
 
-
-
   filtraAziende(){
     if (!this.testoFiltro || this.testoFiltro.trim() === '') {
       this.aziendeFiltrate = this.aziende;
@@ -41,6 +39,7 @@ export class HomeDipendenteSenzaAzienda {
       );
     }
   }
+
   getAziende(){
     this.service.getAziende().subscribe({
       next:(risposta:ContenitoreDatiAzienda[])=>{
@@ -51,6 +50,7 @@ export class HomeDipendenteSenzaAzienda {
       error:(err)=>console.error("Errore nel caricare le aziende")
     })
   }
+
   getRichiestaInAttesa(){
     this.service.getRichiestaAffiliazioneAttesa().subscribe({
       next:(risposta:ContenitoreDatiAzienda | null)=>{
@@ -62,7 +62,6 @@ export class HomeDipendenteSenzaAzienda {
       error:(err)=>console.error("Errore nel caricare richiesta in attesa")
     });
   }
-
 
   selezionaAzienda(azienda: ContenitoreDatiAzienda) {
     this.aziendaSelezionata=azienda;
