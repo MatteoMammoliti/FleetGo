@@ -17,8 +17,6 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-s
   styleUrl: './fatture-da-generare.css',
 })
 export class FattureDaGenerare {
-  constructor() {}
-
   @Input() fatture:FatturaDaGenerareDTO[] = []
   @Output() generaFatturaEvent: EventEmitter<any> = new EventEmitter<any>();
 

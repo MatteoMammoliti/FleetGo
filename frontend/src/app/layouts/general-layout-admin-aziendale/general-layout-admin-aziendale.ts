@@ -4,10 +4,11 @@ import { inject } from '@angular/core';
 import { AuthService } from '@core/auth/auth-service';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Footer} from '@shared/footer/footer';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-general-layout-admin-aziendale',
-  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive, Footer],
+  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive, Footer, BannerErrore],
   standalone: true,
   templateUrl: './general-layout-admin-aziendale.html',
   styleUrl: './general-layout-admin-aziendale.css',
@@ -15,19 +16,24 @@ import {Footer} from '@shared/footer/footer';
 
 export class GeneralLayoutAdminAziendale {
 
-  constructor(private authService: AuthService,
-              private router: Router,) {}
+  constructor(private authService: AuthService, private router: Router) {}
+
+  erroreBanner='';
 
   logout() {
     this.authService.logout().subscribe({
       next: () => {
-        console.log("Logout avvenuto con successo sul backend.");
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error("Errore durante il logout:", err);
         this.router.navigate(['/login']);
+        this.gestisciErrore(err.error);
       }
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
   }
 }

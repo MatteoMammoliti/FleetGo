@@ -5,14 +5,23 @@ import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleet
 import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modale-aggiunta-offerta/modale-aggiunta-offerta';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-offerte-attive',
+<<<<<<< Updated upstream
     imports: [
         CardOfferta,
         ModaleAggiuntaOfferta,
         BannerErrore
     ],
+=======
+  imports: [
+    CardOfferta,
+    ModaleAggiuntaOfferta,
+    BannerErrore,
+  ],
+>>>>>>> Stashed changes
   templateUrl: './offerte-attive.html',
   styleUrl: './offerte-attive.css',
 })

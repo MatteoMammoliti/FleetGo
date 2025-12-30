@@ -3,6 +3,7 @@ import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe} from '@angular/common';
 import {FormControl,  ReactiveFormsModule} from '@angular/forms';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {TableSortService} from '@core/services/table-sort-service';
 
 @Component({
   selector: 'app-tabella-storico-manutenzioni',
@@ -15,6 +16,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   styleUrl: './tabella-storico-manutenzioni.css',
 })
 export class TabellaStoricoManutenzioni {
+  constructor(private sortTable: TableSortService) {}
   @Input() listaStorico:RichiestaManutenzioneDTO[]=[]
   filtroTarga=new FormControl('', { nonNullable: true });
 
@@ -28,5 +30,9 @@ export class TabellaStoricoManutenzioni {
       return targa.includes(testoRicerca);
     })
   }
+
+  sortColonna( chiave : string) {
+    this.listaStorico = this.sortTable.sortArray(this.listaStorico, chiave);
+   }
 
 }

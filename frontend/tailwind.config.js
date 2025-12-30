@@ -22,5 +22,7 @@ module.exports = {
         'testo-s': '#64748B',     }
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate")
+  ],
 }

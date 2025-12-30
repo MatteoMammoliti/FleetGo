@@ -49,6 +49,15 @@
   }
 
 
+  .messaggioErrore {
+    @apply text-[11px] text-red-500 font-bold uppercase animate-in fade-in
+  }
+
+  .erroreInput{
+    @apply text-[10px] text-red-500 ml-1 italic absolute bottom-0 left-0 leading-none animate-in fade-in slide-in-from-left-1
+  }
+
+
 
 
   .badge-rifiuto{

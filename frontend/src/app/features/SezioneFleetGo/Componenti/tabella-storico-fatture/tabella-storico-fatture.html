@@ -13,18 +13,18 @@
   <div class="div-table max-h-[700px] min-h-[200px]">
   <table class="table-base"> <thead>
   <tr class="text-left text-testo-s">
-    <th  scope="col" class="pl-6">N. Fattura</th>
+    <th  scope="col" class="pl-6 cursor-pointer" (click)="sortColonna('numeroFattura')">N. Fattura<i class="bi bi-arrow-down-up ml-1"></i></th>
     <th  scope="col">Azienda</th>
     <th  scope="col">Periodo</th>
-    <th  scope="col">Importo</th>
-    <th  scope="col">Stato</th>
+    <th  scope="col" (click)="sortColonna('costo')" class="cursor-pointer">Importo<i class="bi bi-arrow-down-up ml-1"></i></th>
+    <th  scope="col" (click)="sortColonna('fatturaPagata')"  class="cursor-pointer">Stato<i class="bi bi-arrow-down-up ml-1"></i></th>
     <th  scope="col" class="pr-8 text-right">Azioni</th>
   </tr>
   </thead>
     <tbody>
       @for (fattura of fatture; track fattura.numeroFattura) {
         <tr class="group tr-inferiore ">
-          <td  class="td-sinistro">
+          <td  class="td-sinistro" >
             <span class="">#{{ fattura.numeroFattura }}</span>
           </td>
           <td class="td-base">

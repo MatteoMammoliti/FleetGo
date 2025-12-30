@@ -4,25 +4,30 @@ import {validazione} from '@core/utils/validazione';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {ModelloDTO} from '@core/models/ModelloDTO';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-aggiungi-auto',
-    imports: [
-        FormsModule,
-        SceltaTendina
-    ],
+  imports: [
+    FormsModule,
+    SceltaTendina,
+    TemplateFinestraModale,
+    InputChecked
+  ],
   templateUrl: './form-aggiungi-auto.html',
   styleUrl: './form-aggiungi-auto.css',
 })
 
 export class FormAggiungiAuto {
-  private validator = inject(validazione);
+  constructor(private validator: validazione) {}
+
 
   @Input() modelli: ModelloDTO[] = [];
   @Output() onSalvataggio = new EventEmitter<VeicoloDTO>();
   @Output() onAnnulla = new EventEmitter<void>();
 
-  opzioniAlimentazione: string[] = ['Elettrica', 'Benzina', 'Diesel', 'Ibrida'];
+  opzioniAlimentazione: string[] = ['Elettrico', 'Benzina', 'Diesel', 'Ibrido'];
 
   mappaErrori = {
     targaVeicolo: false,
@@ -32,7 +37,7 @@ export class FormAggiungiAuto {
 
   targaVeicolo = '';
   idModello: number | null = null;
-  tipoDistribuzioneVeicolo = '';
+  tipoDistribuzioneVeicolo:any= null;
   errore='';
 
   impostaAlimentazione(valore: string) {
@@ -40,7 +45,7 @@ export class FormAggiungiAuto {
     if (valore) this.mappaErrori.tipoDistribuzioneVeicolo = false;
   }
 
-  onSubmit() {
+  salva() {
     this.reset();
 
     if (!this.targaVeicolo || !this.tipoDistribuzioneVeicolo || !this.idModello) {

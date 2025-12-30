@@ -4,6 +4,7 @@ import {DatePipe} from '@angular/common';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
+import {TableSortService} from '@core/services/table-sort-service';
 
 @Component({
   selector: 'app-tabella-manutenzioni-in-corso',

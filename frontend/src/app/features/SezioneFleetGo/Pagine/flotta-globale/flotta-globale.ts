@@ -13,6 +13,7 @@ import {CardModello} from '@features/SezioneFleetGo/Componenti/card-modello/card
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -27,7 +28,8 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
     FormAggiungiModello,
     CardModello,
     BannerErrore,
-    IntestazioneEBackground
+    IntestazioneEBackground,
+    TemplateFinestraModale
   ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
@@ -52,6 +54,11 @@ export class FlottaGlobale implements OnInit{
   listaModelli: ModelloDTO[] = [];
   erroreBanner="";
   successoBanner="";
+  tendina: boolean=false;
+  icona='bi-arrow-down-short';
+
+  modaleCheck=false;
+  modelloInteressato:any;
 
   ngOnInit(): void {
     this.resettaFiltri()
@@ -66,7 +73,7 @@ export class FlottaGlobale implements OnInit{
         this.veicoliOriginali = datiDalServer;
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -78,7 +85,7 @@ export class FlottaGlobale implements OnInit{
           this.listaModelli = datiDalServer;
         }
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -88,7 +95,7 @@ export class FlottaGlobale implements OnInit{
       next: (datiDalServer) => {
         if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -128,10 +135,10 @@ export class FlottaGlobale implements OnInit{
         this.caricaDati();
         this.gestisciVisibilitaModale();
         this.resettaFiltri();
-        this.successoBanner="Veicolo registrato con successo";
+        this.gestisciSuccesso("Veicolo registrato con successo");
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -141,10 +148,10 @@ export class FlottaGlobale implements OnInit{
     this.service.rimuoviVeicolo(targaVeicolo).subscribe({
       next: (response) => {
         this.caricaDati();
-        this.successoBanner="Veicolo rimosso con successo"
+        this.gestisciSuccesso("Veicolo rimosso con successo");
       },
       error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -166,9 +173,9 @@ export class FlottaGlobale implements OnInit{
           this.caricaModelli();
           this.gestisciVisibilitaModaleInserimentoModello();
         }
-        this.successoBanner="Modello registrato con successo"
+        this.gestisciSuccesso("Modello registrato con successo");
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -179,11 +186,20 @@ export class FlottaGlobale implements OnInit{
         if(response) {
           this.caricaModelli();
         }
-        this.successoBanner="Modello eliminato con successo"
+        this.gestisciSuccesso("Modello eliminato con successo");
       }, error: (err) => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
+  }
+  gestisciTendina(){
+    this.tendina=!this.tendina
+    if(this.tendina){
+      this.icona='bi-arrow-up-short';
+    }
+    else {
+      this.icona='bi-arrow-down-short';
+    }
   }
 
   gestisciErrore(messaggio: string) {
@@ -196,5 +212,23 @@ export class FlottaGlobale implements OnInit{
     this.erroreBanner = '';
     this.successoBanner = messaggio;
     setTimeout(() => this.successoBanner = '', 3000);
+  }
+
+  apriModaleCheck(idModelloInteressato:number){
+    this.modelloInteressato=idModelloInteressato;
+    this.modaleCheck=true;
+  }
+
+  confermaModale() {
+    this.modaleCheck=false;
+    if(this.modelloInteressato!=null){
+      this.eliminaModello(this.modelloInteressato)
+    }
+    this.modelloInteressato=null;
+  }
+
+  chiudiModale() {
+    this.modaleCheck=false;
+    this.modelloInteressato=null;
   }
 }

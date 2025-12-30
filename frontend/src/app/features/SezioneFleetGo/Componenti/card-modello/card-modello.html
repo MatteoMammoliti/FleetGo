@@ -1,35 +1,25 @@
 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full hover:shadow-md transition-all duration-300 group">
   <div class="relative h-40 w-full bg-slate-50 flex items-center justify-center p-4">
     @if(modello.urlImmagine) {
-      <img [src]="modello.urlImmagine" 
-           alt="Foto Modello" 
+      <img [src]="modello.urlImmagine"
+           alt="Foto Modello"
            class="w-full h-full object-contain mix-blend-multiply">
     } @else {
       <i class="bi-car-front text-4xl text-slate-300"></i>
     }
   </div>
   <div class="p-5 flex flex-col items-center justify-center flex-grow text-center gap-1">
-    
+
     <span class="text-xs font-bold text-grigio-scuro">MODELLO</span>
-    
+
     <h3 class="text-lg font-bold text-blu">
       {{ modello.nomeModello }}
     </h3>
   </div>
   <div class="p-3 border-t border-slate-100 bg-slate-50/30 mt-auto relative h-[60px] flex items-center justify-center">
-    
-    @if (erroreEliminazione) {
-      <div class="absolute inset-0 bg-red-50 flex items-center justify-center px-4 animate-pulse">
-        <p class="text-xs font-bold text-red-600 text-center leading-tight flex items-center gap-1">
-          <i class="bi-exclamation-circle-fill"></i>
-          {{ erroreEliminazione }}
-        </p>
-      </div>
-    } @else {
-      <button (click)="elimina.emit(modello.idModello)" 
+      <button (click)="elimina.emit(modello.idModello)"
               class="w-full h-full flex items-center justify-center gap-2 text-red-500 hover:text-red-700 hover:bg-red-50 font-semibold rounded-lg transition-colors text-sm">
         <i class="bi-trash3"></i> Elimina
       </button>
-    }
   </div>
 </div>

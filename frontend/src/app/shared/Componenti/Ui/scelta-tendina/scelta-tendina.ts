@@ -16,8 +16,10 @@ export class SceltaTendina {
   @Input() placeholder:string = "";
   @Input() chiaveVisuale:string="";
   @Input() chiaveUtilizzata:string="";
-
+  @Input() haErrore=false;
   @Output() valoreChange = new EventEmitter<any>();
+  @Input() messaggioErrore: string = '';
+  @Input() titolo: string = "";
 
   aggiorna(nuovoVal:any){
     this.valore = nuovoVal;

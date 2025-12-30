@@ -4,12 +4,14 @@ import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@core/models/aziendaDTO';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-aggiungi-admin-azienda',
-    imports: [
-        FormsModule,CommonModule
-    ],
+  imports: [
+    FormsModule, CommonModule, TemplateFinestraModale, InputChecked
+  ],
   templateUrl: './form-aggiungi-admin-azienda.html',
   styleUrl: './form-aggiungi-admin-azienda.css',
 })
@@ -17,6 +19,7 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
 export class FormAggiungiAdminAzienda implements OnInit {
 
   @Output() aziendaAggiunta = new EventEmitter<any>();
+  @Output() chiudi = new EventEmitter<any>();
 
   constructor(private validatore: validazione) {}
 
@@ -43,7 +46,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
     this.generaPasswordCasuale();
   }
 
-  onSubmit() {
+  salva() {
     this.reset();
 
     if (!this.nome || !this.cognome || !this.email || !this.password || !this.nomeAzienda || !this.partitaIva) {
@@ -54,6 +57,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
       this.mappaErrori.password = this.password == '';
       this.mappaErrori.nomeAzienda = this.nomeAzienda == '';
       this.mappaErrori.partitaIva = this.partitaIva == '';
+      this.mappaErrori.dataNascita = this.dataNascita == '';
       return;
     }
 

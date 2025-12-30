@@ -4,29 +4,37 @@ import { inject } from '@angular/core';
 import { AuthService } from '@core/auth/auth-service';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Footer} from '@shared/footer/footer';
+import {validazione} from '@core/utils/validazione';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 
 @Component({
   selector: 'app-general-layout-fleet-go',
-  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive, Footer],
+  imports: [Sidebar, RouterOutlet, RouterLink, RouterLinkActive, Footer, BannerErrore],
   standalone: true,
   templateUrl: './general-layout-fleet-go.html',
   styleUrl: './general-layout-fleet-go.css',
 })
 export class GeneralLayoutFleetGo {
-  public authService= inject(AuthService);
-  private router = inject(Router);
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  erroreBanner='';
 
   logout() {
     this.authService.logout().subscribe({
       next: () => {
-        console.log("Logout avvenuto con successo sul backend.");
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error("Errore durante il logout:", err);
+        this.gestisciErrore(err.error)
         this.router.navigate(['/login']);
       }
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
   }
 }

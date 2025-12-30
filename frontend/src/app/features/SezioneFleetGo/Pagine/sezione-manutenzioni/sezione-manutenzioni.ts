@@ -13,17 +13,19 @@ import {
   CardStatisticheDashboardFleet
 } from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {TemplateFinestraModale} from "@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale";
 
 @Component({
   selector: '',
-  imports: [
+    imports: [
 
-    TabellaManutenzioniInCorso,
-    TabellaStoricoManutenzioni,
-    IntestazioneEBackground,
-    CardStatisticheDashboardFleet,
-    BannerErrore,
-  ],
+        TabellaManutenzioniInCorso,
+        TabellaStoricoManutenzioni,
+        IntestazioneEBackground,
+        CardStatisticheDashboardFleet,
+        BannerErrore,
+        TemplateFinestraModale,
+    ],
   templateUrl: './sezione-manutenzioni.html',
   styleUrl: './sezione-manutenzioni.css',
 })
@@ -33,12 +35,16 @@ constructor(private service:SezioneManutenzioneService) {}
     interventiConclusi:0,
     attualmenteInOfficina:0
   }
+
   listeManutezioniInCorso:RichiestaManutenzioneDTO[]=[]
   listaManutenzioniStorico:RichiestaManutenzioneDTO[]=[]
 
 
   erroreBanner='';
   successoBanner='';
+  modaleCheck: boolean=false;
+
+  idRichiestaCorrente:any;
 
   ngOnInit(){
   this.prelevaDatiManutenzioni();
@@ -79,14 +85,14 @@ constructor(private service:SezioneManutenzioneService) {}
     }
   });
   }
-  concludiRichiestaManutenzione(idRichiesta:number){
-    this.service.chiudiRichiestaManutenzione(idRichiesta).subscribe({
+  concludiRichiestaManutenzione(){
+    this.service.chiudiRichiestaManutenzione(this.idRichiestaCorrente).subscribe({
       next:(risposta:string)=>{
         this.prelevaManutenzioniStorico()
         this.prelevaManutenzioniInCorso()
 
         this.gestisciSuccesso('Manutenzione conclusa con successo');
-
+        this.idRichiestaCorrente=null;
       },
       error:(err)=>{
         this.gestisciErrore(err.error);
@@ -106,4 +112,21 @@ constructor(private service:SezioneManutenzioneService) {}
     this.successoBanner = messaggio;
     setTimeout(() => this.successoBanner = '', 3000);
   }
+
+  apriModaleCheck(idRichiesta:number){
+    this.idRichiestaCorrente = idRichiesta;
+    this.modaleCheck=true;
+  }
+
+  confermaModale() {
+    if(this.idRichiestaCorrente!=null){
+      this.concludiRichiestaManutenzione();
+    }
+    this.modaleCheck=false;
+  }
+
+  chiudiModale() {
+    this.modaleCheck=false;
+  }
+
 }

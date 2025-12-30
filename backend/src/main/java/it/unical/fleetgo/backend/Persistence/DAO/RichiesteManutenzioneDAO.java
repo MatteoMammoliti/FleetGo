@@ -90,7 +90,7 @@ public class RichiesteManutenzioneDAO {
 
     public boolean contrassegnaRichiestaManutenzione(Integer idManutenzione, boolean accettata) throws SQLException {
         String recuperoIdVeicolo="SELECT id_veicolo FROM richiesta_manutenzione WHERE id_manutenzione=?";
-        String aggiornoRichiesta="UPDATE richiesta_manutenzione SET accettata=? WHERE id_manutenzione=?";
+        String aggiornoRichiesta="UPDATE richiesta_manutenzione SET accettata=?, completata=? WHERE id_manutenzione=?";
         String aggiornoVeicolo="UPDATE veicolo SET in_manutenzione=? WHERE id_veicolo=?";
         try {
             con.setAutoCommit(false);
@@ -107,7 +107,8 @@ public class RichiesteManutenzioneDAO {
                 }
                 try(PreparedStatement st2 = con.prepareStatement(aggiornoRichiesta)){
                     st2.setBoolean(1,accettata);
-                    st2.setInt(2,idManutenzione);
+                    st2.setBoolean(2,!accettata);
+                    st2.setInt(3,idManutenzione);
                     if(st2.executeUpdate()==0){
                         con.rollback();
                         return false;
@@ -229,10 +230,9 @@ public class RichiesteManutenzioneDAO {
 
     public List<RichiestaManutenzione> getRichiesteManutenzioneStorico(){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
-        String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=? AND completata=?";
+        String  query="SELECT * FROM richiesta_manutenzione WHERE accettata is not NULL AND completata=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setBoolean(1,true);
-            st.setBoolean(2,true);
             estraiRichiesteManutenzione(richieste, st);
             return richieste;
         }catch(SQLException e){

@@ -25,3 +25,6 @@
     <app-footer></app-footer>
   </main>
 </div>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}

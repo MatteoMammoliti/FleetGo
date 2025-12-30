@@ -1,7 +1,6 @@
-<div class="flex flex-col gap-6">
-
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
+<app-template-finestra-modale larghezza="max-w-3xl" titolo="Nuova Azienda Affiliata"
+                              tastoBlu="Conferma e crea" tastoBianco="Annulla" (conferma)="salva()" (chiudi)="chiudi.emit()" (annulla)="chiudi.emit()">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 px-3 py-4">
     <div class="flex flex-col gap-4">
       <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100">
         <i class="bi-person-badge text-blue-600 text-xl"></i>
@@ -9,87 +8,93 @@
       </div>
 
       <div class="grid grid-cols-2 gap-4">
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-grigio-scuro">Nome</label>
-          <input type="text" [(ngModel)]="nome" placeholder="Mario"
-                 [class.border-red-500]="mappaErrori.nome"
-                 class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-grigio-scuro">Cognome</label>
-          <input type="text" [(ngModel)]="cognome" placeholder="Rossi"
-                 [class.border-red-500]="mappaErrori.cognome"
-                 class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-        </div>
+        <app-input-checked
+          titolo="Nome"
+          placeholder="Mario"
+          [(valore)]="nome"
+          [haErrore]="mappaErrori.nome"
+          messaggioErrore="Nome richiesto"
+          (suInput)="mappaErrori.nome = false">
+        </app-input-checked>
+
+        <app-input-checked
+          titolo="Cognome"
+          placeholder="Rossi"
+          [(valore)]="cognome"
+          [haErrore]="mappaErrori.cognome"
+          messaggioErrore="Cognome richiesto"
+          (suInput)="mappaErrori.cognome = false">
+        </app-input-checked>
+
       </div>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-sm font-medium text-grigio-scuro">Data di Nascita</label>
-        <input type="date" [(ngModel)]="dataNascita"
-               [class.border-red-500]="mappaErrori.dataNascita"
-               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-600">
-      </div>
+      <app-input-checked
+        titolo="Data di Nascita"
+        type="date"
+        [(valore)]="dataNascita"
+        [haErrore]="mappaErrori.dataNascita"
+        messaggioErrore="Inserisci una data valida"
+        (suInput)="mappaErrori.dataNascita = false">
+      </app-input-checked>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-sm font-medium text-grigio-scuro">Email Aziendale</label>
-        <input type="email" [(ngModel)]="email" placeholder="admin@azienda.it"
-               [class.border-red-500]="mappaErrori.email"
-               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-      </div>
+      <app-input-checked
+        titolo="Email Aziendale"
+        type="email"
+        placeholder="admin@azienda.it"
+        [(valore)]="email"
+        [haErrore]="mappaErrori.email"
+        messaggioErrore="Inserisci un'email valida"
+        (suInput)="mappaErrori.email = false">
+      </app-input-checked>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-sm font-medium text-grigio-scuro">Password generata casualmente</label>
-        <input type="password" [(ngModel)]="password" placeholder="••••••••"
-               [class.border-red-500]="mappaErrori.password"
-               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-      </div>
+
+      <app-input-checked
+        titolo="Password generata casualmente"
+        type="password"
+        placeholder="••••••••"
+        [(valore)]="password"
+        [haErrore]="mappaErrori.password"
+        messaggioErrore="Password non valida"
+        (suInput)="mappaErrori.password = false">
+      </app-input-checked>
+
     </div>
 
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col h-full gap-4">
       <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100">
         <i class="bi-building text-blue-600 text-xl"></i>
         <h3 class="text-lg font-bold text-blu m-0">Dati Azienda</h3>
       </div>
+      <div class="flex flex-col gap-4">
+      <app-input-checked
+        titolo="Ragione Sociale"
+        placeholder="Es. Tech Solutions S.r.l."
+        [(valore)]="nomeAzienda"
+        [haErrore]="mappaErrori.nomeAzienda"
+        messaggioErrore="Ragione sociale obbligatoria"
+        (suInput)="mappaErrori.nomeAzienda = false">
+      </app-input-checked>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-sm font-medium text-grigio-scuro">Ragione Sociale</label>
-        <input type="text" [(ngModel)]="nomeAzienda" placeholder="Es. Tech Solutions S.r.l."
-               [class.border-red-500]="mappaErrori.nomeAzienda"
-               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+      <app-input-checked
+        titolo="Partita IVA"
+        placeholder="12345678901"
+        [(valore)]="partitaIva"
+        [haErrore]="mappaErrori.partitaIva"
+        messaggioErrore="P.IVA non valida (11 cifre)"
+        (suInput)="mappaErrori.partitaIva = false"
+        class="font-mono">
+      </app-input-checked>
       </div>
-
-      <div class="flex flex-col gap-1">
-        <label class="text-sm font-medium text-grigio-scuro">Partita IVA</label>
-        <input type="text" [(ngModel)]="partitaIva" placeholder="12345678901"
-               [class.border-red-500]="mappaErrori.partitaIva"
-               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-mono">
-      </div>
-
-      <div class="mt-auto p-4 bg-blue-50 rounded-xl border border-blue-100 text-sm text-blue-800 flex gap-3 items-start">
+      <div class="mt-auto p-4 mb-4 bg-blue-50 rounded-xl border border-blue-100 text-sm text-blue-800 flex gap-3 items-start">
         <i class="bi-info-circle-fill text-blue-500 text-lg shrink-0 mt-0.5"></i>
         <p class="leading-relaxed">
-          L'admin creato riceverà le credenziali via email e avrà accesso completo al pannello di gestione della flotta per questa azienda.
+          L'admin creato riceverà le credenziali via email e avrà accesso completo
+          al pannello di gestione della flotta per questa azienda.
         </p>
       </div>
     </div>
 
-  </div>
-
-  <div class="mt-4 pt-6 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-
-    <div class="text-red-500 font-medium text-sm flex items-center gap-2 h-6">
-      @if (errore) {
-        <span>
-          <i class="bi-exclamation-triangle-fill"></i> {{ errore }}
-        </span>
-      }
-    </div>
-
-    <button (click)="onSubmit()"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
-      <i class="bi-check-lg text-xl"></i>
-      <span>Conferma e Crea</span>
-    </button>
-  </div>
 
 </div>
+
+</app-template-finestra-modale>

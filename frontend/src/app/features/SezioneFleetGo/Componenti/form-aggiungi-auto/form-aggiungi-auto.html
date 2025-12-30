@@ -1,93 +1,54 @@
-<div class="flex flex-col h-full bg-white">
+<app-template-finestra-modale titolo="Aggiungi Veicolo" tastoBianco="Annulla" tastoBlu="Salva Veicolo"
+                              (conferma)="salva()" (chiudi)="onAnnulla.emit()"
+                              (annulla)="onAnnulla.emit()">
 
-  <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
-    <h3 class="text-xl font-bold text-blu">Aggiungi Veicolo</h3>
-    <button (click)="onAnnulla.emit()" 
-            class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all">
-      <i class="bi-x-lg"></i>
-    </button>
-  </div>
-  <div class="p-6 flex flex-col gap-6 overflow-y-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="p-6 flex flex-col gap-2 overflow-y-auto">
 
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-blu ml-1">Seleziona Modello</label>
-        <div class="relative">
-          <select [(ngModel)]="idModello"
-                  class="w-full px-4 py-3 pl-10 rounded-xl border bg-slate-50 focus:bg-white appearance-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all cursor-pointer font-medium text-slate-700 border-slate-200"
-                  [class.border-red-500]="mappaErrori.modello"
-                  [class.text-slate-400]="idModello=== null"
-                  [class.text-slate-700]="idModello!== null"
-                  [class.focus:border-red-500]="mappaErrori.modello"
-                  [class.focus:ring-red-500]="mappaErrori.modello">
-            <option [ngValue]="null" selected>Scegli un modello...</option>
-            @for (modello of modelli; track modello.idModello) {
-              <option [value]="modello.idModello">{{ modello.nomeModello }}</option>
-            }
-          </select>
-          <i class="bi bi-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none"></i>
-        </div>
-        
-        @if (mappaErrori.modello) {
-          <span class="text-red-500 text-xs ml-1 font-bold">Seleziona un modello valido.</span>
-        }
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-blu ml-1">Targa Veicolo</label>
-        <div class="relative">
-          <input type="text"
-                 [(ngModel)]="targaVeicolo"
-                 placeholder="Es. BB 000 BS"
-                 class="w-full px-4 py-3 pl-10 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-mono border-slate-200"
-                 [class.border-red-500]="mappaErrori.targaVeicolo"
-                 [class.focus:border-red-500]="mappaErrori.targaVeicolo"
-                 [class.focus:ring-red-500]="mappaErrori.targaVeicolo">
-        </div>
-        
-        @if (mappaErrori.targaVeicolo) {
-          <span class="text-red-500 text-xs ml-1 font-bold">Targa obbligatoria o formato errato.</span>
-        }
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-2 relative z-20">
-      <label class="text-sm font-semibold text-blu ml-1">Alimentazione</label>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
 
       <app-scelta-tendina
-        [lista]="opzioniAlimentazione"
-        [placeholder]="'Seleziona alimentazione...'"
-        [valore]="tipoDistribuzioneVeicolo"
-        (valoreChange)="impostaAlimentazione($event)">
+        titolo="Seleziona Modello"
+        [lista]="modelli"
+        chiaveVisuale="nomeModello"
+        chiaveUtilizzata="idModello"
+        [placeholder]="'Scegli un modello...'"
+        [(valore)]="idModello"
+        [haErrore]="mappaErrori.modello"
+        messaggioErrore="Seleziona un modello valido"
+        (valoreChange)="mappaErrori.modello = false">
       </app-scelta-tendina>
 
-      @if (mappaErrori.tipoDistribuzioneVeicolo) {
-        <span class="text-red-500 text-xs ml-1 font-bold">Seleziona l'alimentazione.</span>
+      <app-input-checked
+        titolo="Targa Veicolo"
+        placeholder="Es. BB000BS"
+        [(valore)]="targaVeicolo"
+        [haErrore]="mappaErrori.targaVeicolo"
+        messaggioErrore="Targa obbligatoria"
+        class="font-mono"
+        (suInput)="mappaErrori.targaVeicolo = false">
+      </app-input-checked>
+
+    </div>
+
+    <div class="z-20"> <app-scelta-tendina
+      titolo="Alimentazione"
+      [lista]="opzioniAlimentazione"
+      [placeholder]="'Seleziona alimentazione...'"
+      [(valore)]="tipoDistribuzioneVeicolo"
+      [haErrore]="mappaErrori.tipoDistribuzioneVeicolo"
+      messaggioErrore="Seleziona l'alimentazione"
+      (valoreChange)="mappaErrori.tipoDistribuzioneVeicolo = false">
+    </app-scelta-tendina>
+    </div>
+
+    <div class="h-6 flex items-center">
+      @if (errore) {
+        <span class="messaggioErrore ml-1">
+          <i class="bi bi-exclamation-circle mr-1"></i> {{ errore }}
+        </span>
       }
     </div>
 
   </div>
 
-  <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex flex-col gap-4 mt-auto">
-
-    @if (errore) {
-      <div class="p-3 bg-red-50 border border-red-100 rounded-lg text-red-600 text-sm font-bold flex items-center gap-2 animate-shake">
-         {{ errore }}
-      </div>
-    }
-
-    <div class="flex justify-end gap-3">
-      <button (click)="onAnnulla.emit()"
-              class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-white hover:border-slate-300 transition-all">
-        Annulla
-      </button>
-
-      <button (click)="onSubmit()"
-              class="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 active:scale-95 transition-all flex items-center gap-2">
-        <i class="bi-check-lg text-lg"></i>
-        Salva Veicolo
-      </button>
-    </div>
-  </div>
-
-</div>
+</app-template-finestra-modale>

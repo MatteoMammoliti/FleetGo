@@ -1,33 +1,57 @@
 <app-intestazione-ebackground titolo="Gestione Flotta">
-      <div class="mb-3">
-        <h3 class="text-lg font-bold text-blu flex items-center gap-2">
+
+  <div class="mb-3 cursor-pointer group p-3 rounded-2xl hover:bg-blue-50/50 transition-all duration-300"
+       (click)="gestisciTendina()">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-lg font-bold text-blu flex items-center gap-2 group-hover:text-blue-600 transition-colors">
           <i class="bi-book text-blue-600"></i> Catalogo Modelli
         </h3>
-        <p class="text-sm text-slate-500">Tutti i modelli disponibili al momento:</p>
+        <p class="text-sm text-slate-500">Tutti i modelli disponibili al momento</p>
       </div>
+      <i class="bi bi-chevron-down transition-transform duration-500 text-slate-400"
+         [class.rotate-180]="tendina"></i>
+    </div>
+  </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-4">
+  <div class="grid transition-all duration-500 ease-in-out overflow-hidden"
+       [class.grid-rows-[1fr]]="tendina"
+       [class.opacity-100]="tendina"
+       [class.grid-rows-[0fr]]="!tendina"
+       [class.opacity-0]="!tendina">
 
-        <div (click)="gestisciVisibilitaModaleInserimentoModello()"
-             class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[240px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300 h-full">
-          <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors shadow-sm">
-            <i class="bi-plus-lg text-3xl"></i>
-          </div>
-          <div class="text-center">
-            <h3 class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Nuovo Modello</h3>
-            <p class="text-xs text-slate-500 mt-1">Aggiungi al catalogo</p>
-          </div>
+    <div class="min-h-0"> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8 pt-2">
+
+      <div (click)="gestisciVisibilitaModaleInserimentoModello()"
+           class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6
+                    flex flex-col items-center justify-center gap-4 min-h-[240px]
+                    hover:border-blue-500 hover:bg-white hover:shadow-xl hover:-translate-y-2
+                    transition-all duration-300 h-full">
+        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-600
+                      group-hover:text-white flex items-center justify-center transition-all shadow-sm">
+          <i class="bi-plus-lg text-3xl"></i>
         </div>
-
-        @for (modello of listaModelli; track modello.idModello) {
-          <app-card-modello
-            [modello]="modello"
-            [erroreEliminazione]="erroreBanner"
-            (elimina)="eliminaModello($event)">
-          </app-card-modello>
-        }
-
+        <div class="text-center">
+          <h3 class="font-bold text-slate-700 group-hover:text-blue-700 transition-colors">Nuovo Modello</h3>
+          <p class="text-xs text-slate-500 mt-1">Aggiungi al catalogo</p>
+        </div>
       </div>
+
+      @for (modello of listaModelli; track modello.idModello) {
+        <app-card-modello
+          class="hover:-translate-y-2 transition-transform duration-300 block"
+          [modello]="modello"
+          (elimina)="apriModaleCheck($event)">
+        </app-card-modello>
+      }
+    </div>
+    </div>
+  </div>
+
+  <hr class="border-slate-200/60 my-6">
+
+
+
 
     <hr class="border-grigio-scuro/20">
 
@@ -121,17 +145,11 @@
     }
 
     @if (mostraModale) {
-      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div (click)="gestisciVisibilitaModale()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
-
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
           <app-form-aggiungi-auto
             [modelli]="listaModelli"
             (onSalvataggio)="gestisciSalvataggio($event)"
             (onAnnulla)="gestisciVisibilitaModale()">
           </app-form-aggiungi-auto>
-        </div>
-      </div>
     }
 
 </app-intestazione-ebackground>
@@ -141,4 +159,11 @@
 }
 @if(successoBanner){
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+
+@if(modaleCheck){
+  <app-template-finestra-modale tastoBlu="Conferma" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
+                                (conferma)="confermaModale()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su conferma il modello verrà cancellato dal Catalogo.</span>
+  </app-template-finestra-modale>
 }

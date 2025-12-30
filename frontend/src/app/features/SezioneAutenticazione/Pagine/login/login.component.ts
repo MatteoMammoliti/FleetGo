@@ -4,11 +4,12 @@ import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '@core/auth/auth-service';
 import {validazione} from '@core/utils/validazione';
 import { FormsModule } from '@angular/forms';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,FormsModule,RouterLink],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink, InputChecked],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

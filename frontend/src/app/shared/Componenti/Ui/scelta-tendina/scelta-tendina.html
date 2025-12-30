@@ -1,11 +1,32 @@
-<div class="relative w-full">
-  <select
+<div class="flex flex-col w-full relative pb-4">
+  @if (titolo) {
+    <label class="text-[10px] pt-[1px] font-bold ml-1 mb-0.5 uppercase tracking-wide transition-colors"
+           [class.text-red-600]="haErrore"
+           [class.text-slate-700]="!haErrore">
+      {{ titolo }}
+    </label>
+  }
+
+  <div class="relative w-full"> <select
     #tendina
     [ngModel]="valore"
-    (ngModelChange)="aggiorna($event); tendina.blur() " class="appearance-none w-full bg-white border border-gray-200 text-gray-500 font-medium py-1 px-3 pr-10 rounded-lg shadow-sm hover:border-azzurro focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer">
+    (ngModelChange)="aggiorna($event); tendina.blur()"
+    class="appearance-none w-full border font-medium py-2.5 px-4 pr-10 rounded-xl transition-all cursor-pointer outline-none"
+    [class.border-red-500]="haErrore"
+    [class.bg-red-50]="haErrore"
+    [class.focus:ring-red-200]="haErrore"
+    [class.focus:ring-4]="haErrore"
+    [class.border-gray-200]="!haErrore"
+    [class.bg-gray-50]="!haErrore"
+    [class.focus:bg-white]="!haErrore"
+    [class.focus:border-azzurro]="!haErrore"
+    [class.focus:ring-azzurro\/20]="!haErrore"
+    [class.focus:ring-2]="!haErrore"
+    [class.text-gray-400]="!valore"
+    [class.text-gray-700]="valore">
 
     @if (placeholder) {
-      <option [ngValue]="''" value="">{{ placeholder }}</option>
+      <option [ngValue]="null" disabled selected>{{ placeholder }}</option>
     }
 
     @for (item of lista; track item) {
@@ -13,7 +34,16 @@
         {{ chiaveVisuale ? item[chiaveVisuale] : item }}
       </option>
     }
-  </select> <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-  <i class="bi bi-chevron-down text-xs"></i>
-</div>
+    </select>
+
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+      <i class="bi bi-chevron-down text-xs" [class.text-red-500]="haErrore"></i>
+    </div>
+  </div>
+
+  @if (haErrore) {
+    <span class="erroreInput">
+      {{ messaggioErrore }}
+    </span>
+  }
 </div>

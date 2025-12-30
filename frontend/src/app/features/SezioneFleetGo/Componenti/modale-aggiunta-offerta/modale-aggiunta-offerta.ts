@@ -2,18 +2,22 @@ import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
 import {validazione} from '@core/utils/validazione';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {ImmagineInputChecked} from '@shared/Componenti/Ui/immagine-input-checked/immagine-input-checked';
 
 @Component({
   selector: 'app-modale-aggiunta-offerta',
   imports: [
     FormsModule,
+    TemplateFinestraModale,
+    InputChecked,
+    ImmagineInputChecked,
   ],
   templateUrl: './modale-aggiunta-offerta.html',
   styleUrl: './modale-aggiunta-offerta.css',
 })
 export class ModaleAggiuntaOfferta {
-
-  private validator = inject(validazione);
 
   @Input() paginaVisibile: boolean = false;
   @Output() chiudiPagina = new EventEmitter<void>();
@@ -24,7 +28,6 @@ export class ModaleAggiuntaOfferta {
   scontoPercentuale: number | null = null;
   dataScadenza: any;
   immagineCopertina: any;
-  errore = '';
 
   mappaErrori = {
     titoloOfferta: false,
@@ -45,7 +48,6 @@ export class ModaleAggiuntaOfferta {
     this.resetErrori();
 
     if (!this.titoloOfferta || !this.descrizioneOfferta || !this.scontoPercentuale || !this.dataScadenza || !this.immagineCopertina) {
-      this.errore = "Riempi tutti i campi obbligatori";
 
       if (!this.titoloOfferta) this.mappaErrori.titoloOfferta = true;
       if (!this.descrizioneOfferta) this.mappaErrori.descrizioneOfferta = true;
@@ -56,7 +58,6 @@ export class ModaleAggiuntaOfferta {
     }
 
     if (this.scontoPercentuale < 1 || this.scontoPercentuale > 100) {
-      this.errore = "Lo sconto deve essere compreso tra 1% e 100%";
       this.mappaErrori.scontoPercentuale = true;
       return;
     }
@@ -64,7 +65,6 @@ export class ModaleAggiuntaOfferta {
     const oggi = new Date();
     const dataSelezionata = new Date(this.dataScadenza);
     if (dataSelezionata <= oggi) {
-      this.errore = "La data di scadenza deve essere futura";
       this.mappaErrori.dataScadenza = true;
       return;
     }
@@ -82,6 +82,7 @@ export class ModaleAggiuntaOfferta {
 
     this.salva.emit(formData);
     this.pulisciForm();
+    this.resetErrori();
   }
 
   onFileSelected(event: any) {
@@ -92,7 +93,6 @@ export class ModaleAggiuntaOfferta {
   }
 
   resetErrori() {
-    this.errore = '';
     this.mappaErrori = {
       titoloOfferta: false,
       descrizioneOfferta: false,

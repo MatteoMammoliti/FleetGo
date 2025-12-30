@@ -11,6 +11,5 @@ import {ModelloDTO} from '@core/models/ModelloDTO';
 export class CardModello {
 
   @Input() modello: ModelloDTO = {} as ModelloDTO;
-  @Input() erroreEliminazione = "";
   @Output() elimina = new EventEmitter<number>();
 }

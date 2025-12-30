@@ -1,74 +1,55 @@
 @if(paginaVisibile) {
-  <div class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 fade-in">
-    
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
 
-      <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
-        <h2 class="text-xl font-bold text-blu">Nuova Offerta</h2>
-        <button (click)="chiudiFinestraModale()" 
-                class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all">
-          <i class="bi-x-lg"></i>
-        </button>
+  <app-template-finestra-modale titolo="Promozioni" sottotitolo="Crea una nuova offerta" tastoBlu="Crea" tastoBianco="Annulla" (conferma)="salvaOfferta()" (annulla)="chiudiFinestraModale()"  (chiudi)="chiudiFinestraModale()">
+    <div class=" px-6 py-3 flex flex-col gap-3">
+
+      <div class="grid grid-cols-2 gap-4">
+        <app-input-checked
+          titolo="Titolo Offerta"
+          placeholder="Es: Sconto Estivo"
+          [(valore)]="titoloOfferta"
+          [haErrore]="mappaErrori.titoloOfferta"
+          messaggioErrore="Inserisci un titolo valido"
+          (suInput)="mappaErrori.titoloOfferta = false"
+        >
+        </app-input-checked>
+
+        <app-input-checked
+          titolo="Sconto %"
+          type="number"
+          placeholder="0"
+          [(valore)]="scontoPercentuale"
+          [haErrore]="mappaErrori.scontoPercentuale"
+          messaggioErrore="Inserisci un valore tra 1 e 100"
+          (suInput)="mappaErrori.scontoPercentuale = false">
+        </app-input-checked>
       </div>
+      <app-input-checked
+          titolo="Scadenza"
+          type="date"
+          [(valore)]="dataScadenza"
+          [haErrore]="mappaErrori.dataScadenza"
+          messaggioErrore="La data di scadenza deve essere futura"
+          (suInput)="mappaErrori.dataScadenza = false">
+        </app-input-checked>
 
-      <div class="p-6 flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
 
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-semibold text-slate-700 ml-1">Titolo Offerta</label>
-          <input type="text" [(ngModel)]="titoloOfferta" placeholder="Es: Sconto Estivo"
-                 class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 border-slate-200">
-        </div>
+      <app-input-checked
+        titolo="Descrizione"
+        placeholder="Dettagli dell'offerta..."
+        [(valore)]="descrizioneOfferta"
+        [haErrore]="mappaErrori.descrizioneOfferta"
+        messaggioErrore="Inserisci una descrizione valida"
+        (suInput)="mappaErrori.descrizioneOfferta=false"
+        ></app-input-checked>
 
-        <div class="grid grid-cols-2 gap-6">
-          
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-slate-700 ml-1">Sconto %</label>
-            <input type="number" [(ngModel)]="scontoPercentuale" min="1" max="100" placeholder="0"
-                   class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 border-slate-200">
-          </div>
 
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-slate-700 ml-1">Scadenza</label>
-            <input type="date" [(ngModel)]="dataScadenza"
-                   class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 border-slate-200 text-slate-600">
-          </div>
-
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-semibold text-slate-700 ml-1">Descrizione</label>
-          <textarea [(ngModel)]="descrizioneOfferta" rows="3" placeholder="Dettagli dell'offerta..."
-                    class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 border-slate-200 resize-none"></textarea>
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-semibold text-slate-700 ml-1">Immagine di Copertina</label>
-          <div class="relative group cursor-pointer h-32">
-            <input type="file" 
-                   (change)="onFileSelected($event)" 
-                   accept="image/*"
-                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-            
-            <div class="w-full h-full border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group-hover:bg-slate-50 group-hover:border-blue-400">
-              
-              <i class="bi-cloud-arrow-up text-3xl text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-              <span class="text-sm font-medium text-slate-600 group-hover:text-blue-500">
-                 Clicca o trascina una foto qui
-              </span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="px-6 py-4 border-t border-slate-100 flex justify-end bg-slate-50/50">
-        <button (click)="salvaOfferta()" 
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl transition-all active:scale-95 flex items-center gap-2">
-          <i class="bi-rocket-takeoff"></i>
-          Pubblica Offerta
-        </button>
-      </div>
-
+      <app-immagine-input-checked
+        titolo="Immagine di Copertina"
+        [haErrore]="mappaErrori.immagineCopertina"
+        (fileSelezionato)="onFileSelected($event)">
+      </app-immagine-input-checked>
     </div>
-  </div>
+  </app-template-finestra-modale>
+
 }

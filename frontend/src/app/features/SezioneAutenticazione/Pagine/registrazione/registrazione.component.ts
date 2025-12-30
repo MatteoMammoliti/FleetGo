@@ -5,11 +5,12 @@ import { DipendenteDTO } from '@core/models/dipendenteDTO.models';
 import {Router,RouterLink} from '@angular/router';
 import {validazione} from '@core/utils/validazione';
 import { inject } from '@angular/core';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [FormsModule,RouterLink],
+  imports: [FormsModule, RouterLink, InputChecked],
   templateUrl: './registrazione.component.html',
   styleUrl: './registrazione.component.css',
 })

@@ -15,7 +15,7 @@
   </div>
 
 
-  <app-tabella-manutenzioni-in-corso (chiudiRichiesta)="concludiRichiestaManutenzione($event)" [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
+  <app-tabella-manutenzioni-in-corso (chiudiRichiesta)="apriModaleCheck($event)" [listaRichieste]="listeManutezioniInCorso"></app-tabella-manutenzioni-in-corso>
   <app-tabella-storico-manutenzioni [listaStorico]="listaManutenzioniStorico"></app-tabella-storico-manutenzioni>
 </app-intestazione-ebackground>
 @if (erroreBanner) {
@@ -23,6 +23,12 @@
 }
 @if(successoBanner){
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+@if(modaleCheck){
+  <app-template-finestra-modale tastoBlu="Conferma" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
+                                (conferma)="confermaModale()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su conferma il modello verrà cancellato dal Catalogo.</span>
+  </app-template-finestra-modale>
 }
 
 

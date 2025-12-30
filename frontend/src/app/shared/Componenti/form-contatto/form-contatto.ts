@@ -13,8 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators} f
 })
 
 export class FormContatto implements OnInit {
-
-  private fb = inject(FormBuilder);
+  constructor(private fb: FormBuilder) {}
 
   @Input() titolo: string = "";
   @Input() sottotitolo: string = "";
