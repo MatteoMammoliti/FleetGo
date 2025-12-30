@@ -68,8 +68,8 @@ export class DashboardFleetGo implements OnInit{
         this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
       },
       error: (err) => {
-        this.erroreBanner=err.error;
-    }
+        this.gestisciErrore(err.error);
+      }
     });
   }
 
@@ -79,7 +79,7 @@ export class DashboardFleetGo implements OnInit{
         this.fatture=fattura
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -90,7 +90,7 @@ export class DashboardFleetGo implements OnInit{
         this.richiesteManutenzione=richiesta
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -102,7 +102,7 @@ export class DashboardFleetGo implements OnInit{
         this.richiestaSelezionata=risultato;
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -112,10 +112,10 @@ export class DashboardFleetGo implements OnInit{
       next:(risultato:string)=>{
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
-        this.successoBanner="Manutenzione accettata con successo";
+        this.gestisciSuccesso("Manutenzione accettata con successo");
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -125,10 +125,10 @@ export class DashboardFleetGo implements OnInit{
       next:(risultato:string)=>{
         this.richiediManutenzioniDaGestire();
         this.richiestaSelezionata=null;
-        this.successoBanner="Manutenzione rifiutata con successo";
+        this.gestisciSuccesso("Manutenzione rifiutata con successo");
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -148,10 +148,10 @@ export class DashboardFleetGo implements OnInit{
       next:()=>{
         this.richiediFattureDaGenerare();
         this.chiudiFinestraModaleGenerazioneFattura();
-        this.successoBanner="Fattura emessa con successo";
+        this.gestisciSuccesso("Fattura emessa con successo");
       },
       error:(err:any)=>{
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -159,7 +159,9 @@ export class DashboardFleetGo implements OnInit{
   caricaOfferte() {
     this.dashboardService.getOfferteAttive().subscribe({
       next: value => {this.offerteAttive = value;},
-      error: err => {  this.erroreBanner=err.error; }
+      error: err => {
+        this.gestisciErrore(err.error);
+      }
     })
   }
 
@@ -187,4 +189,17 @@ export class DashboardFleetGo implements OnInit{
   sezioneFlotta(){
     this.router.navigate(['/dashboardFleetGo/flotta-globale']);
   }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
+
 }

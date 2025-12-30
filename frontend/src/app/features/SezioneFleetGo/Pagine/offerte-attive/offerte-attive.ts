@@ -37,9 +37,9 @@ export class OfferteAttive implements OnInit {
       next: value =>{
         this.chiudiPaginaInserimentoOfferta();
         this.getOfferteAttive();
-        this.successoBanner = "Offerta salvata con successo"
+        this.gestisciSuccesso("Offerta salvata con successo");
       }, error: err => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -48,9 +48,9 @@ export class OfferteAttive implements OnInit {
     this.offerteService.eliminaOfferta(idOfferta).subscribe({
       next: value => {
         this.getOfferteAttive();
-        this.successoBanner = "Offerta rimossa con successo"
+        this.gestisciSuccesso("Offerta rimossa con successo");
       }, error: err => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -61,8 +61,20 @@ export class OfferteAttive implements OnInit {
         if(offerte)
           this.offerteAttive = offerte;
       }, error: err => {
-        this.erroreBanner=err.error;
+        this.gestisciErrore(err.error);
       }
     })
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

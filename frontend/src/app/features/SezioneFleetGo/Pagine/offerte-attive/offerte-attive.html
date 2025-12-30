@@ -1,17 +1,20 @@
-<div class="flex flex-col gap-8 p-6 fade-in mb-20">
+<div class="px-5 bg-gray-50">
+  <div class="flex justify-between mb-8 border-b py-3">
+    <h1 class="text-blu font-bold text-3xl ">Gestione Offerte Attive</h1>
 
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-    <app-template-titolo-sottotitolo
-      [titolo]="'Gestione Offerte Attive'">
-    </app-template-titolo-sottotitolo>
+    <div class="flex max-h-10">
+      <button (click)="apriPaginaInserimentoOfferta()"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
+        <i class="bi-plus-lg text-lg"></i>
+        <span>Nuova Offerta</span>
+      </button>
+    </div>
 
-    <button (click)="apriPaginaInserimentoOfferta()"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
-      <i class="bi-plus-lg text-lg"></i>
-      <span>Nuova Offerta</span>
-    </button>
+
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-5 mb-10">
 
     <div (click)="apriPaginaInserimentoOfferta()"
          class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[280px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300">
@@ -32,6 +35,7 @@
         </app-card-offerta>
       </div>
     }
+
   </div>
   <app-modale-aggiunta-offerta
     [paginaVisibile]="apriModale"
@@ -39,10 +43,9 @@
     (salva)="salvaOfferta($event)">
   </app-modale-aggiunta-offerta>
 
-</div>
-@if (erroreBanner) {
-  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-}
-@if(successoBanner){
-  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
-}
+  @if (erroreBanner) {
+    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+  }
+  @if(successoBanner){
+    <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+  }
