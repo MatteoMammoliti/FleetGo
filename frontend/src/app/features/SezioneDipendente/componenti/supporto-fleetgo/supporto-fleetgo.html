@@ -7,21 +7,21 @@
       <div class="p-2 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
         <i class="bi bi-life-preserver text-xl"></i>
       </div>
-      <h3 class="font-bold text-xl tracking-wide">Supporto FleetGo</h3>
+      <h3 class="font-bold text-xl tracking-wide">Supporto</h3>
     </div>
 
     <p class="text-blue-100 text-sm leading-relaxed mb-6">
-      Hai problemi con un veicolo, un guasto o una prenotazione attiva? Siamo qui per aiutarti.
+      Hai problemi con un veicolo, un guasto o una prenotazione di noleggio ? Siamo qui per aiutarti.
     </p>
   </div>
 
   <div class="relative z-10">
     <button
-      (click)="contatta()"
+      (click)="apriModale.emit()"
       class="w-full bg-white text-azzurro hover:bg-blue-50 font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group">
 
       <i class="bi bi-headset group-hover:scale-110 transition-transform"></i>
-      <span>Contatta Admin</span>
+      <span>Contatta il tuo Admin aziendale</span>
 
     </button>
   </div>

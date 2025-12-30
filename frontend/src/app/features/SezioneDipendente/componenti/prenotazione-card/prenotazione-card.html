@@ -9,9 +9,14 @@
     <div class="content-header">
       <h3 class="booking-title">{{ prenotazione.motivazione }}</h3>
 
-      <span class="status-badge" [ngClass]="prenotazione.statoRichiesta ? prenotazione.statoRichiesta.toLowerCase() : ''">
+      @if(!prenotazione.richiestaAnnullata) {
+        <span class="status-badge" [ngClass]="prenotazione.statoRichiesta ? prenotazione.statoRichiesta.toLowerCase() : ''">
         {{ prenotazione.statoRichiesta }}
       </span>
+      } @else {
+        <span class="status-badge">Richiesta annullata</span>
+      }
+
     </div>
 
     <p class="car-details">
@@ -60,7 +65,7 @@
     <span class="price-label">COSTO STIMATO</span>
   </div>
 
-    @if (prenotazione.statoRichiesta === 'In attesa') {
+    @if (prenotazione.statoRichiesta === 'In attesa' && !prenotazione.richiestaAnnullata) {
       <button (click)="onAnnulla()"
               class="mt-4 flex items-center gap-1 text-red-500 bg-red-50 hover:bg-red-100 border border-red-100 font-semibold py-1.5 px-3 rounded-lg text-sm transition-colors">
         <i class="bi bi-trash3"></i> Annulla

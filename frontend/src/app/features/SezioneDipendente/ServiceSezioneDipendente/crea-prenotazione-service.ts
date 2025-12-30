@@ -12,7 +12,7 @@ import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFor
 })
 
 export class CreaPrenotazioneService{
-  private apiUrl = environment.apiUrl+'/nuovaPrenotazione';
+  private apiUrl = environment.apiUrl+'/dashboardDipendente';
 
   constructor(private http: HttpClient) {}
 

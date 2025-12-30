@@ -9,7 +9,7 @@ import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 })
 
 export class ImpostazioniService{
-  private apiUrl = environment.apiUrl+'/impostazioniDipendente';
+  private apiUrl = environment.apiUrl+'/dashboardDipendente';
 
   constructor(private http: HttpClient) {}
 

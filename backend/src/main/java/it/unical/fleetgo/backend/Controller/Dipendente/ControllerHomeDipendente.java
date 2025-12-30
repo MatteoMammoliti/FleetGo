@@ -8,11 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -56,6 +52,7 @@ public class ControllerHomeDipendente {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
     @GetMapping("/luoghiAzienda")
     public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session){
         Integer idAziendaAssociata=(Integer) session.getAttribute("idAziendaAssociata");
@@ -76,17 +73,34 @@ public class ControllerHomeDipendente {
     @GetMapping("/richiediNome")
     public  ResponseEntity<String> getRichiediNome(HttpSession session){
         Integer idDipendente=(Integer) session.getAttribute("idUtente");
+
         if(idDipendente==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+
         try{
             return ResponseEntity.ok(this.dipendenteService.getNomeDipendente(idDipendente));
         }catch (SQLException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }catch (RuntimeException e){
-            e.printStackTrace();
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PostMapping("/inviaSegnalazione")
+    public ResponseEntity<String> inviaSegnalazione(@RequestBody String messaggio, HttpSession session){
+        Integer idDipendente = (Integer) session.getAttribute("idUtente");
+        Integer idAzienda = (Integer) session.getAttribute("idAziendaAssociata");
+
+        if(idDipendente==null ||  idAzienda==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try{
+            dipendenteService.inviaSegnalazione(messaggio, idDipendente, idAzienda);
+            return ResponseEntity.status(HttpStatus.OK).body("Richiesta di assistenza invia con successo");
+        } catch(SQLException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

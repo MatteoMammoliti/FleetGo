@@ -25,9 +25,22 @@
         <app-statistiche-dipendente [statistiche]="statisticheDipendente"></app-statistiche-dipendente>
       }
 
-      <app-supporto-fleetgo></app-supporto-fleetgo>
-
+      <app-supporto-fleetgo
+        (apriModale)="gestisciVisibilita()"
+      ></app-supporto-fleetgo>
     </div>
 
   </div>
 </div>
+
+@if(modaleContattoVisibile) {
+  <app-modale-richiesta-assistenza
+    (chiudiModale)="gestisciVisibilita()"
+    (inviaSegnalazione)="inviaSegnalazione($event)"
+    [caricamentoDati]="caricamentoDati"
+    (segnalaCategoriaCambiata)="caricaDatiContesto($event)"
+    [categorieContatto]="categorieContatto"
+    [listaOggettiDinamica]="listaOggettiDinamica"
+    [listaOggettiDinamicaVisibile]="listaOggettiDinamicaVisibile">
+  </app-modale-richiesta-assistenza>
+}

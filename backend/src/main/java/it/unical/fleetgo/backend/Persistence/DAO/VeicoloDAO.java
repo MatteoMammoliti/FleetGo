@@ -178,18 +178,6 @@ public class VeicoloDAO {
         }
     }
 
-    public boolean cambiaLivelloBenzina(Integer nuovoLivelloBenzina, Integer idVeicolo) {
-        String query = "UPDATE veicolo SET livello_carburante_veicolo = ? WHERE id_veicolo = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, nuovoLivelloBenzina);
-            ps.setInt(2, idVeicolo);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Veicolo getVeicoloDaResultSet(ResultSet rs,boolean conLuogo,boolean soloAzienda) throws SQLException {
         Veicolo v = new Veicolo();
         v.setIdVeicolo(rs.getInt("id_veicolo"));

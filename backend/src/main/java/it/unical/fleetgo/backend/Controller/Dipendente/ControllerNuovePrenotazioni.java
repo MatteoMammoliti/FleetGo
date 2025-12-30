@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/nuovaPrenotazione")
+@RequestMapping("/dashboardDipendente")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerNuovePrenotazioni {
 

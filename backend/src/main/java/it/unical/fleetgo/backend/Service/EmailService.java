@@ -57,4 +57,15 @@ public class EmailService {
 
         sender.send(email);
     }
+
+    @Async
+    public void inviaRichiestaAssistenza(String emailMittente, String emailDestinatario, String messaggio, Integer idDipendente) {
+        SimpleMailMessage email = new SimpleMailMessage();
+
+        email.setFrom(emailMittente);
+        email.setTo(emailDestinatario);
+        email.setSubject("Richiesta di assistenza da Dipendente ID: " + idDipendente);
+        email.setText(messaggio);
+        sender.send(email);
+    }
 }

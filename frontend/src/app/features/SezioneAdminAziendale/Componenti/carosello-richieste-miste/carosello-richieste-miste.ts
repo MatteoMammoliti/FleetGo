@@ -101,7 +101,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         contatore: this.contatoreRichiesteAffiliazioneInAttesa,
         colore: "green-theme",
         icona: "bi-check-circle-fill",
-        rotta: ''
+        rotta: "/dashboardAzienda/dashboard"
       }
 
       this.slides.push(item);

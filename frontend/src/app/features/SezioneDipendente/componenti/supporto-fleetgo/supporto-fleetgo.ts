@@ -1,14 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-supporto-fleetgo',
-  imports: [],
   templateUrl: './supporto-fleetgo.html',
   styleUrl: './supporto-fleetgo.css',
 })
 export class SupportoFleetgo {
 
-  contatta() {
+  @Output() apriModale = new EventEmitter<void>();
 
-  }
 }

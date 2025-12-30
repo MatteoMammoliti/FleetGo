@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {StatisticheDipendenteDTO} from '@core/models/StatisticheDipendenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 
 @Injectable({
   providedIn:'root'
@@ -20,11 +21,13 @@ export class HomeService{
       withCredentials:true
     })
   }
+
   richiediStatisticheDipendente():Observable<StatisticheDipendenteDTO>{
     return this.http.get<StatisticheDipendenteDTO>(`${this.apiUrl}/statisticheDipendente`, {
       withCredentials:true
     })
   }
+
   richiediLuoghiAzienda():Observable<LuogoDTO[]>{
       return this.http.get<LuogoDTO[]>(`${this.apiUrl}/luoghiAzienda`, {
       withCredentials:true
@@ -34,6 +37,19 @@ export class HomeService{
     return this.http.get(`${this.apiUrl}/richiediNome`, {
       responseType:'text',
       withCredentials:true
+    })
+  }
+
+  richiediPrenotazioni(): Observable<RichiestaNoleggioDTO[]> {
+    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/leMiePrenotazioni`, {
+      withCredentials:true
+    })
+  }
+
+  inviaSegnalazione(messaggio: string | null): Observable<string> {
+    return this.http.post(`${this.apiUrl}/inviaSegnalazione`, messaggio, {
+      withCredentials:true,
+      responseType:'text',
     })
   }
 }

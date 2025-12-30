@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/impostazioniDipendente")
+@RequestMapping("/dashboardDipendente")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerImpostazioniDipendente {
     @Autowired private DipendenteService dipendenteService;

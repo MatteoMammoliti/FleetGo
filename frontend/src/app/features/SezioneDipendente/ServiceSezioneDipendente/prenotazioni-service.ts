@@ -9,7 +9,7 @@ import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 })
 
 export class PrenotazioniService{
-  private apiUrl = environment.apiUrl+'/prenotazioni';
+  private apiUrl = environment.apiUrl+'/dashboardDipendente';
 
   constructor(private http: HttpClient) {}
 

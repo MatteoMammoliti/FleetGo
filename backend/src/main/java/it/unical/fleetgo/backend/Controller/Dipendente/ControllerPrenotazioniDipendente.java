@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/prenotazioni")
+@RequestMapping("/dashboardDipendente")
 @CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerPrenotazioniDipendente {
 
@@ -22,17 +22,21 @@ public class ControllerPrenotazioniDipendente {
 
     @GetMapping("/leMiePrenotazioni")
     public ResponseEntity<List<RichiestaNoleggioDTO>> getLeMiePrenotazioni(HttpSession session){
+
         Integer idAzienda=(Integer)session.getAttribute("idAziendaAssociata");
+
         if(idAzienda==null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
         try{
-            return ResponseEntity.ok(this.dipendenteService.getRichiesteNoleggioDipendente((Integer) session.getAttribute("idUtente"),idAzienda));
+            return ResponseEntity.ok(this.dipendenteService.getRichiesteNoleggioDipendente(
+                    (Integer) session.getAttribute("idUtente"),
+                    idAzienda));
+
         }catch (SQLException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }catch (RuntimeException e){
-            e.printStackTrace();
             return ResponseEntity.badRequest().body(null);
         }
     }

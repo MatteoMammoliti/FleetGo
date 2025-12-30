@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
+import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -208,11 +209,14 @@ public class RichiestaNoleggioDAO {
     }
 
     public List<RichiestaNoleggio> getRichiesteNoleggioDipendente(Integer idDipendente, Integer idAzienda) throws SQLException {
+
         aggiornaStatiNoleggi();
+
         String query = "SELECT rn.*, l.nome_luogo FROM richiesta_noleggio rn " +
                 "JOIN gestione_veicolo_azienda g ON rn.id_azienda=g.id_azienda AND rn.id_veicolo=g.id_veicolo " +
                 "JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna " +
                 "WHERE rn.id_dipendente=? AND rn.id_azienda=?";
+
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setInt(1, idDipendente);
             st.setInt(2, idAzienda);
@@ -261,8 +265,6 @@ public class RichiestaNoleggioDAO {
 
     public boolean getRichiesteAccettateEInCorso(Integer idAzienda) {
         String query = "SELECT * FROM richiesta_noleggio WHERE id_azienda = ? AND richiesta_annullata = false AND (stato_richiesta = 'In corso' OR stato_richiesta = 'Da ritirare') LIMIT 1";
-
-        System.out.println("ho ricevuto id azienda: " + idAzienda);
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);

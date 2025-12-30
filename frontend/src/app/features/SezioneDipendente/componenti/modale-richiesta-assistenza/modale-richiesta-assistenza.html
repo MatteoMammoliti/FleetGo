@@ -1,0 +1,62 @@
+<app-template-finestra-modale
+  [titolo]="'Contatta Amministrazione'"
+  [sottotitolo]="'Segnala un problema o richiedi assistenza'"
+  tastoBlu="Invia Messaggio"
+  tastoBianco="Annulla"
+  (chiudi)="chiudiModale.emit()"
+  (annulla)="chiudiModale.emit()"
+  (conferma)="invio()">
+
+  <div class="flex flex-col gap-5 p-2">
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-bold text-blu ml-1">Motivo della richiesta</label>
+
+      <app-scelta-tendina
+        [lista]="categorieContatto"
+        [valore]="categoriaSelezionata"
+        placeholder="Seleziona motivo..."
+        (valoreChange)="cambioCategoria($event)">
+      </app-scelta-tendina>
+    </div>
+
+    @if (categoriaSelezionata && listaOggettiDinamicaVisibile) {
+      <div class="flex flex-col gap-2 animate-fade-in-down">
+        <label class="text-sm font-bold text-blu ml-1">Seleziona Prenotazione</label>
+
+        @if(caricamentoDati) {
+          <div class="text-sm text-gray-400 flex items-center gap-2">
+            <div class="w-4 h-4 border-2 border-azzurro border-t-transparent rounded-full animate-spin"></div>
+            Caricamento lista...
+          </div>
+        } @else {
+          <app-scelta-tendina
+            [lista]="listaOggettiDinamica"
+            [valore]="oggettoSelezionato"
+            chiaveVisuale="labelVisuale"
+            placeholder="Seleziona riferimento..."
+            (valoreChange)="oggettoSelezionato = $event">
+          </app-scelta-tendina>
+        }
+      </div>
+    }
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-bold text-blu ml-1">Messaggio</label>
+      <textarea
+        [(ngModel)]="messaggio"
+        rows="4"
+        class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-azzurro/20 focus:border-azzurro border-slate-200 resize-none text-sm"
+        placeholder="Descrivi il problema o la richiesta in dettaglio...">
+      </textarea>
+    </div>
+
+    @if (errore) {
+      <div class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-lg flex items-center gap-2">
+        <i class="bi bi-exclamation-circle-fill"></i> {{ errore }}
+      </div>
+    }
+
+  </div>
+
+</app-template-finestra-modale>

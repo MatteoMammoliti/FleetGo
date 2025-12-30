@@ -167,4 +167,18 @@ public class CredenzialiDAO {
         }
         return null;
     }
+
+    public String getEmailAdminAziendale(Integer idAzienda) {
+        String query = "SELECT c.email FROM credenziali_utente c JOIN azienda a ON a.id_admin_azienda = c.id_utente WHERE a.id_azienda = ?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getString("email");
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.*;
+import it.unical.fleetgo.backend.Persistence.DAO.CredenzialiDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.LuogoAziendaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.UtenteDAO;
@@ -19,7 +20,9 @@ import java.util.List;
 
 @Service
 public class DipendenteService {
+
     @Autowired private DataSource dataSource;
+    @Autowired private EmailService emailService;
 
     public String getNomeDipendente(Integer idDipendente) throws SQLException{
         try(Connection connection = dataSource.getConnection()){
@@ -65,6 +68,7 @@ public class DipendenteService {
     }
 
     public List<RichiestaNoleggioDTO> getRichiesteNoleggioDipendente(Integer idDipendente,Integer idAzienda) throws SQLException {
+
         try (Connection connection = dataSource.getConnection()) {
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
             List<RichiestaNoleggio> richieste =dao.getRichiesteNoleggioDipendente(idDipendente,idAzienda);
@@ -79,6 +83,7 @@ public class DipendenteService {
             return richiesteDTO;
         }
     }
+
     public List<LuogoDTO> getLuoghiAziendaAssociata(Integer idAziendaAssociata) throws SQLException {
         try(Connection connection = dataSource.getConnection()) {
             LuogoAziendaDAO dao = new LuogoAziendaDAO(connection);
@@ -96,6 +101,22 @@ public class DipendenteService {
         try(Connection connection = dataSource.getConnection()){
             UtenteDAO dao = new UtenteDAO(connection);
             dao.modificaDatiUtente(dati);
+        }
+    }
+
+    public void inviaSegnalazione(String messaggio, Integer idUtente, Integer idAzienda) throws SQLException {
+        try(Connection connection = dataSource.getConnection()) {
+            CredenzialiDAO credenzialiDAO = new  CredenzialiDAO(connection);
+
+            String emailMittente = credenzialiDAO.getCredenzialiUtenteById(idUtente).getEmail();
+            String emailAdminDestinatrio = credenzialiDAO.getEmailAdminAziendale(idAzienda);
+
+            emailService.inviaRichiestaAssistenza(
+                    emailMittente,
+                    emailAdminDestinatrio,
+                    messaggio,
+                    idUtente
+            );
         }
     }
 }
