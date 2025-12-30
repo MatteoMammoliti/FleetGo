@@ -6,7 +6,6 @@ import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleet
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/form-aggiungi-modello/form-aggiungi-modello';
@@ -25,7 +24,6 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
     FormAggiungiAuto,
     CommonModule,
     FormsModule,
-    TemplateTitoloSottotitolo,
     FormAggiungiModello,
     CardModello,
     BannerErrore,

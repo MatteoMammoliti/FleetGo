@@ -1,27 +1,154 @@
-<div>
-        <div class="contenitore-infoGenerali">
-          <div class="dati">
-            <label>Targa: {{veicolo.targaVeicolo}}</label>
-            <label>Modello: {{veicolo.nomeModello}}</label>
-            <label>Tipo Distribuzione: {{veicolo.tipoDistribuzioneVeicolo}}</label>
-            <label>Livello Carburante: {{veicolo.livelloCarburante}}</label>
-            @if(veicolo.inManutenzione){
-              <label>Status: In Manutenzione</label>
-            }
-            @else{
-              <label>Status: {{veicolo.statusContrattualeVeicolo}}</label>
-            }
-            @if (veicolo.luogoRitiroDeposito){
-            <label>Luogo ritiro: {{veicolo.luogoRitiroDeposito.nomeLuogo}}</label>
-            }
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  <div (click)="chiudi.emit()" class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-all"></div>
+  <div class="relative w-full md:w-[70%] max-h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-pop-in">
+    
+    <app-template-finestra-modale 
+      [titolo]="mostraFormManutenzione ? 'Nuova Richiesta Manutenzione' : 'Dettagli Veicolo'" 
+      (chiudi)="chiudi.emit()">
+      
+      <div class="p-6 flex flex-col gap-6 h-full overflow-y-auto">
+        
+        @if (loading) {
+          <div class="flex flex-col items-center justify-center py-20 text-slate-400">
+            <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
+            <p>Caricamento dati...</p>
           </div>
-          <div class="contenitore-foto">
-            @if (veicolo.urlImmagine){
-              <img [src]="veicolo.urlImmagine" alt="Immagine Veicolo">
-            }
-            @else{
-              <p>nessun immagine</p>
-            }
+        } 
+
+        @else if (veicolo && !mostraFormManutenzione) {
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="w-full md:w-5/12 h-48 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center p-2 relative">
+              @if (veicolo.urlImmagine){
+                <img [src]="veicolo.urlImmagine" class="max-w-full max-h-full object-contain mix-blend-multiply">
+              } @else {
+                <i class="bi bi-car-front text-6xl text-slate-300"></i>
+              }
+              <div class="absolute top-2 right-2 px-2 py-1 rounded text-[10px] font-bold uppercase border bg-white"
+                   [ngClass]="{
+                    'text-yellow-400 border-yellow-400': veicolo.inManutenzione,
+                    'text-green-600 border-green-600': !veicolo.inManutenzione && veicolo.statusContrattualeVeicolo?.toUpperCase() === 'DISPONIBILE',
+                    'text-blue-600 border-blue-600': !veicolo.inManutenzione && veicolo.statusContrattualeVeicolo?.toUpperCase() === 'NOLEGGIATO'
+                   }">
+                   {{ veicolo.inManutenzione ? 'IN MANUTENZIONE' : veicolo.statusContrattualeVeicolo }}
+              </div>
+            </div>
+
+            <div class="w-full md:w-7/12 flex flex-col justify-center gap-3 text-sm">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <p class="text-xs text-grigio-scuro font-bold uppercase">Targa</p>
+                  <p class="font-bold text-slate-800 text-lg">{{veicolo.targaVeicolo}}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-grigio-scuro font-bold uppercase">Modello</p>
+                  <p class="font-bold text-slate-800 text-lg">{{veicolo.nomeModello}}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-grigio-scuro font-bold uppercase">Alimentazione</p>
+                  <p class="font-medium text-slate-700">{{veicolo.tipoDistribuzioneVeicolo}}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-grigio-scuro font-bold uppercase">Km Percorsi</p>
+                  <p class="font-medium text-slate-700">{{veicolo.chilometraggio || 0}} km</p>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-slate-100 mt-1">
+                <p class="text-xs text-grigio-scuro font-bold uppercase">Assegnato a</p>
+                <p class="font-bold text-blue-600 flex items-center gap-2">
+                  {{ veicolo.nomeAziendaAffiliata || 'Nessuna azienda (FleetGo)' }}
+                </p>
+              </div>
+            </div>
           </div>
+
+          <div class="flex flex-col gap-2">
+            <h4 class="text-sm font-bold text-black flex items-center gap-2">
+              <i class="bi bi-geo-alt-fill text-black"></i> Posizione
+            </h4>
+            <div class="w-full h-56 bg-slate-100 rounded-xl border border-slate-200 overflow-hidden relative">
+              @if (veicolo.luogoRitiroDeposito && veicolo.luogoRitiroDeposito.latitudine && veicolo.luogoRitiroDeposito.longitudine) {
+                <div id="google-map-modale" class="w-full h-full"></div>
+                <div class="absolute bottom-2 left-2 bg-white/90 px-3 py-1 rounded-md text-xs font-bold shadow-sm border">
+                   {{ veicolo.luogoRitiroDeposito.nomeLuogo }}
+                </div>
+              } @else {
+                <div class="w-full h-full flex flex-col items-center justify-center gap-3">
+                   <p class="text-slate-400 text-sm">Posizione non disponibile</p>
+                   <div class="flex gap-2">
+                      <select [(ngModel)]="luogoSelezionatoId" class="flex-grow px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-100 outline-none">
+                        <option [ngValue]="null" disabled selected>Seleziona Sede</option>
+                        @for(luogo of listaLuoghi; track $index) {
+                          <option [value]="luogo.idLuogo">
+                            {{ luogo.nomeLuogo || 'Sede senza nome (' + $index + ')' }}
+                          </option>
+                        }
+                      </select>
+                      <button (click)="impostaLuogo()" [disabled]="!luogoSelezionatoId" 
+                              class="px-4 py-2 font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all">
+                        Salva
+                      </button>
+                   </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2">
+            <button (click)="mostraFormManutenzione = true"
+                    class="px-5 py-2 rounded-lg bg-amber-50 text-yellow-700 border border-yellow-700 font-bold hover:bg-yellow-100 transition-colors flex items-center gap-2 text-sm">
+              <i class="bi-wrench-adjustable"></i>
+              Richiedi Manutenzione
+            </button>
+
+            <button (click)="chiudi.emit()" class="px-5 py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors text-sm">
+              Chiudi
+            </button>
+          </div>
+        }
+
+        @else if (veicolo && mostraFormManutenzione) {
+          <div class="flex flex-col items-center justify-center gap-6 py-4 animate-fade-in h-full">
+            
+            <div class="text-center space-y-2">
+              <div class="w-16 h-16 flex items-center justify-center mx-auto text-yellow-400 text-3xl mb-4">
+                <i class="bi-exclamation-triangle-fill"></i>
+              </div>
+              <h3 class="text-xl font-bold text-black">Segnala un problema</h3>
+              <p class="text-slate-500 text-sm max-w-md mx-auto">
+                Richiesta di manutenzione per il veicolo: <span class="font-mono font-bold text-black">{{ veicolo.targaVeicolo }}</span>.
+              </p>
+            </div>
+
+            <div class="w-full max-w-md space-y-4">
+              <div class="flex flex-col gap-2 text-left">
+                <label class="text-sm font-bold text-grigio-scuro ml-1">Tipologia Guasto</label>
+                <select [(ngModel)]="tipoManutenzioneSelezionato" 
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:border-yellow-500 outline-none transition-all cursor-pointer">
+                  <option value="" disabled selected>Seleziona il tipo di problema</option>
+                  @for (opzione of opzioniManutenzione; track opzione) {
+                    <option [value]="opzione">{{ opzione }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="flex gap-4 w-full max-w-md mt-auto">
+              <button (click)="mostraFormManutenzione = false" 
+                      class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all">
+                Annulla
+              </button>
+              
+              <button (click)="inviaManutenzione()" 
+                      [disabled]="!tipoManutenzioneSelezionato"
+                      class="flex-1 py-3 rounded-xl bg-yellow-500 text-slate-600 font-bold hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                Invia Segnalazione
+              </button>
+            </div>
+          </div>
+        }
+
       </div>
+    </app-template-finestra-modale>
   </div>
+</div>

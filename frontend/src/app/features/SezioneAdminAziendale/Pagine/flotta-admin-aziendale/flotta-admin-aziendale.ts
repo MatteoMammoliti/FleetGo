@@ -1,39 +1,64 @@
-import { Component } from '@angular/core';
-import {TabellaAutoAdminAzienda} from '@features/SezioneAdminAziendale/Componenti/tabella-auto-admin-azienda/tabella-auto-admin-azienda';
-import {FlottaAdminAziendaleService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import {CardAutoAziendale} from '@shared/Componenti/Ui/card-auto-aziendale/card-auto-aziendale';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import { FlottaAdminAziendaleService } from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
+import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modale-gestisci-veicolo/modale-gestisci-veicolo';
+import { FlottaGlobaleService } from '../../../SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
+import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
+  standalone: true,
   imports: [
-    CardAutoAziendale
+    CardAutoAziendale,
+    CommonModule,
+    FormsModule,
+    IntestazioneEBackground,
+    ModaleGestisciVeicolo
   ],
+  
   templateUrl: './flotta-admin-aziendale.html',
   styleUrl: './flotta-admin-aziendale.css',
 })
-export class FlottaAdminAziendale {
+export class FlottaAdminAziendale implements OnInit {
+  veicoli: any[] = [];
 
-
-  constructor(private service:FlottaAdminAziendaleService, private router:Router) {}
-
-  listaVeicoli:VeicoloDTO[] = [];
+  testoRicerca: string = '';
+  filtroStato: string = '';
+  mostraModale= false;
+  veicoloSelezionato:any=null;
+  listaLuoghi:any[]=[];
+  constructor(private flottaService: FlottaAdminAziendaleService, private dettagliService: DettagliVeicoloAziendaleService) {}
 
   ngOnInit(): void {
-    this.aggiornaDati();
+    this.caricaVeicoli();
+    this.caricaLuoghi();
+  }
+
+  caricaLuoghi() {
+    this.flottaService.richiediLuoghi().subscribe({
+      next: (data) => {
+        this.listaLuoghi = data;
+        console.log("Luoghi caricati:", this.listaLuoghi);
+      },
+      error: (err) => {
+        console.error("Errore caricamento luoghi:", err);
+      }
+    });
   }
 
 
-  aggiornaDati(){
-    this.service.richiediVeicoliAziendali().subscribe({
-      next: (response) => {
-        if (response) {
-          this.listaVeicoli = response;
-          console.log("Dati caricati:", this.listaVeicoli);
+  caricaVeicoli(){
+    this.flottaService.richiediVeicoliAziendali().subscribe({
+      next: (data) => {
+        if (data) {
+          this.veicoli = data;
+          console.log("Dati caricati:", this.veicoli);
         }
         else{
-          console.log("Nessun veicolo trovato", this.listaVeicoli);
+          console.log("Nessun veicolo trovato", this.veicoli);
         }
       },
       error: (err) => {
@@ -42,11 +67,55 @@ export class FlottaAdminAziendale {
     });
   }
 
-  apriGestioneVeicolo(targa:string){
-    this.router.navigate(['/dashboardAzienda/dettagli-veicolo', targa]);
+  get veicoliFiltrati() {
+    return this.veicoli.filter(v => {
+      const targa = v.targaVeicolo || ''; 
+      const modello = v.nomeModello || '';
+      const matchTesto = (targa.toLowerCase().includes(this.testoRicerca.toLowerCase()) || 
+                          modello.toLowerCase().includes(this.testoRicerca.toLowerCase()));
+      const stato = v.statusContrattualeVeicolo?.toUpperCase() || '';
+      const matchStato = this.filtroStato ? stato === this.filtroStato?.toUpperCase() : true;
+      
+      return matchTesto && matchStato;
+    });
   }
 
-  inviaRichiestaGestione(targa: string) {
+  getConteggio(stato: string): number {
+    if (!this.veicoli) return 0;
+    return this.veicoli.filter(v => 
+      v.statusContrattualeVeicolo?.toUpperCase() === stato.toUpperCase()
+    ).length;
+  }
 
+  resetFiltri() {
+    this.testoRicerca = '';
+    this.filtroStato = '';
+  }
+
+  apriModaleDettagli(veicoloDallaLista: any) {
+    const targa = veicoloDallaLista.targaVeicolo;
+    
+    if (targa) {
+      this.dettagliService.richiediVeicolo(targa).subscribe({
+        next: (veicoloCompleto) => {
+          this.veicoloSelezionato = veicoloCompleto;
+          this.mostraModale = true;
+          console.log("Dettagli completi caricati:", this.veicoloSelezionato);
+        },
+        error: (err) => {
+          console.error("Impossibile scaricare dettagli, uso dati parziali", err);
+          this.veicoloSelezionato = veicoloDallaLista;
+          this.mostraModale = true;
+        }
+      });
+    } else {
+      this.veicoloSelezionato = veicoloDallaLista;
+      this.mostraModale = true;
+    }
+  }
+
+  chiudiModale() {
+    this.mostraModale = false;
+    this.veicoloSelezionato = null;
   }
 }

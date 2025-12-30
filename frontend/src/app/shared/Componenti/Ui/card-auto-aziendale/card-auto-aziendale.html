@@ -1,32 +1,42 @@
-<div class="contenitoreGenerale">
-  <div class="contenitore-dati-foto">
-    <div class="contenitore-dati">
-      <h2>{{veicolo.nomeModello}}</h2>
-      <h3>{{ veicolo.targaVeicolo }}</h3>
-      @if (veicolo.luogoRitiroDeposito){
-        <h4>{{ veicolo.luogoRitiroDeposito.nomeLuogo }}</h4>
-      }
-      @else{
-        <h4>Nessun luogo, assegnane uno</h4>
-      }
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full hover:shadow-md transition-all duration-300 group">
+  <div class="h-44 w-full bg-slate-50 flex items-center justify-center p-4">
+    @if(veicolo.urlImmagine) {
+      <img [src]="veicolo.urlImmagine" 
+           alt="Foto Veicolo" 
+           class="w-full h-full object-contain mix-blend-multiply">
+    } @else {
+      <i class="bi-car-front text-5xl text-slate-300"></i>
+    }
+  </div>
 
+  <div class="p-5 flex flex-col items-center justify-center flex-grow text-center gap-3">
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      <span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs font-mono font-bold tracking-wider border border-slate-200">
+        {{ veicolo.targaVeicolo }}
+      </span>
+      <span class="px-2 py-1 rounded text-[10px] font-bold uppercase border tracking-wide"
+            [ngClass]="{
+              'bg-green-50 text-green-700 border-green-200': veicolo.statusContrattualeVeicolo?.toUpperCase() === 'DISPONIBILE',
+              'bg-amber-50 text-yellow-400 border-amber-200': veicolo.statusContrattualeVeicolo?.toUpperCase() === 'MANUTENZIONE',
+              'bg-blue-50 text-blue-700 border-blue-200': veicolo.statusContrattualeVeicolo?.toUpperCase() === 'NOLEGGIATO'
+            }">
+        {{ veicolo.statusContrattualeVeicolo }}
+      </span>
     </div>
-    <div class="contenitore-foto">
-      @if (veicolo.urlImmagine){
-        <img [src]="veicolo.urlImmagine" alt="Immagine Veicolo">
-      }
-      @else{
-        <p>nessun immagine</p>
-      }
-      @if (veicolo.inManutenzione){
-        <p>In Manutenzione</p>
-      }
-      @else{
-        <p>{{veicolo.statusContrattualeVeicolo}}</p>
-      }
-    </div>
+    
+    <h3 class="text-lg font-bold text-slate-800 leading-tight">
+      {{ veicolo.nomeModello }}
+    </h3>
+    <p class="text-xs text-slate-400 font-medium">
+      {{ veicolo.tipoDistribuzioneVeicolo || veicolo.alimentazione }}
+    </p>
   </div>
-  <div class="contenitore-bottone">
-    <button (click)="inviaRichiestaGestione.emit(veicolo.targaVeicolo)">Gestisci Veicolo</button>
+
+  <div class="p-3 border-t border-slate-100 bg-slate-50/30 mt-auto">
+    <button (click)="apriDettagli.emit(veicolo)" 
+            class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-slate-600 hover:text-blue-600 font-semibold py-2.5 rounded-xl transition-colors text-sm">
+      Dettagli Veicolo
+    </button>
   </div>
+
 </div>
