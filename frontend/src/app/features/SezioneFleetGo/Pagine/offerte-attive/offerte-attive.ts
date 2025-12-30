@@ -9,19 +9,11 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 
 @Component({
   selector: 'app-offerte-attive',
-<<<<<<< Updated upstream
     imports: [
         CardOfferta,
         ModaleAggiuntaOfferta,
         BannerErrore
     ],
-=======
-  imports: [
-    CardOfferta,
-    ModaleAggiuntaOfferta,
-    BannerErrore,
-  ],
->>>>>>> Stashed changes
   templateUrl: './offerte-attive.html',
   styleUrl: './offerte-attive.css',
 })
