@@ -432,4 +432,11 @@ public class AdminAziendaleService {
             return aziendaDAO.isSedeImpostata(idAzienda);
         }
     }
+
+    public void inserisciRichiestaDiManutenzione(RichiestaManutenzioneDTO richiestaManutenzioneDTO) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
+            richiesteManutenzioneDAO.aggiungiRichiestaManutenzione(richiestaManutenzioneDTO);
+        }
+    }
 }

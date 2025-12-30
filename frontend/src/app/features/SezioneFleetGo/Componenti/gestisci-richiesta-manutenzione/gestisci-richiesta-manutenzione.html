@@ -14,12 +14,12 @@
 
         <div class="flex flex-col">
           <small class="text-xs text-gray-500 uppercase tracking-wide font-bold">Modello</small>
-          <span class="text-lg font-medium text-gray-900 capitalize">{{datiRichiesta.veicolo.nomeModello}}</span>
+          <span class="text-lg font-medium text-gray-900 capitalize">{{datiRichiesta.veicolo?.nomeModello}}</span>
         </div>
 
         <div class="flex flex-col">
           <small class="text-xs text-gray-500 uppercase tracking-wide font-bold">Targa</small>
-          <span class="text-lg font-mono text-gray-800">{{datiRichiesta.veicolo.targaVeicolo}}</span>
+          <span class="text-lg font-mono text-gray-800">{{datiRichiesta.veicolo?.targaVeicolo}}</span>
         </div>
 
         <div class="flex flex-col">
@@ -34,7 +34,7 @@
       <div class="col-span-1 md:col-span-2 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-100 p-2 overflow-hidden">
         <img
           class="w-full h-full max-h-64 object-contain rounded"
-          [src]="datiRichiesta.veicolo.urlImmagine"
+          [src]="datiRichiesta.veicolo?.urlImmagine"
           alt="Foto veicolo">
       </div>
 

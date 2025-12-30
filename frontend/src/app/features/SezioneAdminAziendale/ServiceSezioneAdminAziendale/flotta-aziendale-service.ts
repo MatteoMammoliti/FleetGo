@@ -20,14 +20,14 @@ export class FlottaAdminAziendaleService {
   }
 
   public richiediLuoghi(): Observable<any[]> {
-    return this.http.get<LuogoDTO[]>(`${this.apiUrl}/luoghiAzienda`, { withCredentials: true });  
+    return this.http.get<LuogoDTO[]>(`${this.apiUrl}/luoghiAzienda`, { withCredentials: true });
   }
 
   public inviaRichiestaManutenzione(richiesta: RichiestaManutenzioneDTO): Observable<string> {
-    return this.http.post(`${this.apiUrl}/richiediManutenzione`, richiesta, { 
-      responseType: 'text', 
-      withCredentials: true 
+    console.log(richiesta);
+    return this.http.post(`${this.apiUrl}/inserisciRichiestaManutenzione`, richiesta, {
+      responseType: 'text',
+      withCredentials: true
     });
   }
 }
-

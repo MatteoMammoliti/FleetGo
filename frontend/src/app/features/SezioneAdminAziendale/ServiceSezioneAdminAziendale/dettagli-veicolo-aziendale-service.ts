@@ -19,9 +19,6 @@ export class DettagliVeicoloAziendaleService {
   }
 
   aggiornaPosizioneVeicolo(veicolo: VeicoloDTO): Observable<string> {
-    return this.http.post(`${this.apiUrl}/aggiornaPosizioneVeicolo`, veicolo, {responseType: 'text',withCredentials: true});
+    return this.http.post(`${this.apiUrl}/impostaLuogo`, veicolo, {responseType: 'text',withCredentials: true});
   }
-
-
-
 }

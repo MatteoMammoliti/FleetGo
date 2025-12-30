@@ -101,7 +101,8 @@ public class VeicoloService {
                 throw new RuntimeException("Errore durante le operazioni nel DB");
             };
 
-            if(!gestioneVeicoloAziendaDAO.cambiaStatusContrattuale(veicoloDTO.getIdVeicolo())){
+            VeicoloDAO veicoloDAO =  new VeicoloDAO(connection);
+            if(!veicoloDAO.cambiaStatusContrattualeVeicolo("Disponibile", veicoloDTO.getIdVeicolo())){
                 connection.rollback();
                 throw new RuntimeException("Errore durante le operazioni nel DB");
             }
@@ -147,6 +148,13 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()){
             ModelloDAO modelloDAO = new ModelloDAO(connection);
             return modelloDAO.eliminaModello(idModello);
+        }
+    }
+
+    public Boolean impostaLuogoVeicolo(VeicoloDTO veicolo) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()){
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
+            return gestioneVeicoloAziendaDAO.impostaLuogoVeicolo(veicolo);
         }
     }
 }

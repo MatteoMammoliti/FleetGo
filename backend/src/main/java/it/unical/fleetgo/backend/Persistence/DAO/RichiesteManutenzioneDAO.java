@@ -14,46 +14,37 @@ public class RichiesteManutenzioneDAO {
 
     public RichiesteManutenzioneDAO(Connection con) {this.con=con;}
 
-    /**
-     * Permette di inoltrare una nuova richiesta di manutenzione.Verrà creato il record
-     * e aggiornato lo status del veicolo in questione in "Manutenzione".
-     * @param richiestaManutenzioneDTO
-     * @return
-     * @throws SQLException
-     */
-    public Integer aggiungiRichiestaManutenzione(RichiestaManutenzioneDTO richiestaManutenzioneDTO) throws SQLException {
-        String query = "INSERT INTO richiesta_manutenzione (id_admin_azienda,id_veicolo,data_richiesta,tipo_manutenzione) VALUES (?,?,?,?)";
-        String aggiornoStatoVeicolo = "UPDATE veicolo SET status_condizione_veicolo=? WHERE id_veicolo=?";
+    public void aggiungiRichiestaManutenzione(RichiestaManutenzioneDTO richiestaManutenzioneDTO) throws SQLException {
+        String query = "INSERT INTO richiesta_manutenzione (id_admin_azienda, id_veicolo, data_richiesta, tipo_manutenzione) VALUES (?,?,?,?)";
+        String rendiVeicoloNonNoleggiabile = "UPDATE gestione_veicolo_azienda SET disponibile_per_noleggio = false WHERE id_veicolo = ?";
 
         try{
             con.setAutoCommit(false);
 
-            PreparedStatement st = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = con.prepareStatement(query);
             st.setInt(1,richiestaManutenzioneDTO.getIdAdminAzienda());
             st.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
             st.setDate(3, Date.valueOf(richiestaManutenzioneDTO.getDataRichiesta()));
             st.setString(4,richiestaManutenzioneDTO.getTipoManutenzione());
-            st.executeUpdate();
 
-            ResultSet rs = st.getGeneratedKeys();
-            if(!rs.next()){
+            if(st.executeUpdate() == 0){
                 con.rollback();
-                return null;
+                return;
             }
 
-            PreparedStatement st2 = con.prepareStatement(aggiornoStatoVeicolo);
-            st2.setString(1,"Manutenzione");
-            st2.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
+            PreparedStatement st2 = con.prepareStatement(rendiVeicoloNonNoleggiabile);
+            st2.setInt(1,richiestaManutenzioneDTO.getIdVeicolo());
 
             if(st2.executeUpdate()==0){
+                System.out.println("sono qui");
                 con.rollback();
-                return null;
+                return;
             }
 
+            System.out.println("tutto apposto");
             con.commit();
-            return rs.getInt(1);
 
-            } catch(SQLException e){
+        } catch(SQLException e){
                 con.rollback();
                 throw new RuntimeException(e);
 
@@ -62,17 +53,9 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    /**
-     * Permette di rimuovere una richiesta di manutenzione NON ANCORA ACCETTATA.
-     * riporta lo status del veicolo a "Libero".
-     * @param idManutenzione
-     * @param idVeicolo
-     * @return
-     * @throws SQLException
-     */
     public boolean rimuoviRichiestaManutenzione(Integer idManutenzione,Integer idVeicolo) throws SQLException {
         String eliminoRichiesta = "DELETE FROM richiesta_manutenzione WHERE id_manutenzione=? AND accettata=?";
-        String cambioStatusVeicolo = "UPDATE veicolo SET status_condizione_veicolo=? WHERE id_veicolo=?";
+        String cambioStatusVeicolo = "UPDATE veicolo SET in_manutenzione = false WHERE id_veicolo = ?";
 
         try{
             con.setAutoCommit(false);
@@ -87,8 +70,7 @@ public class RichiesteManutenzioneDAO {
             }
 
             PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo);
-            st2.setString(1,"Libero");
-            st2.setInt(2,idVeicolo);
+            st2.setInt(1,idVeicolo);
 
             if(st2.executeUpdate()==0){
                 con.rollback();
@@ -106,13 +88,6 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    /**
-     * Permette di accettare o rifiutare una richiesta manutenzione in base al valore
-     * della variabile booleana "accettata".
-     * @param idManutenzione
-     * @param accettata
-     * @return
-     */
     public boolean contrassegnaRichiestaManutenzione(Integer idManutenzione, boolean accettata) throws SQLException {
         String recuperoIdVeicolo="SELECT id_veicolo FROM richiesta_manutenzione WHERE id_manutenzione=?";
         String aggiornoRichiesta="UPDATE richiesta_manutenzione SET accettata=? WHERE id_manutenzione=?";
@@ -140,7 +115,7 @@ public class RichiesteManutenzioneDAO {
                 }
                 if(accettata){
                     try(PreparedStatement st3 = con.prepareStatement(aggiornoVeicolo)){
-                        st3.setBoolean(1,accettata);
+                        st3.setBoolean(1, true);
                         st3.setInt(2,idVeicolo);
                         if(st3.executeUpdate()==0){
                             con.rollback();
@@ -228,10 +203,6 @@ public class RichiesteManutenzioneDAO {
         return null;
     }
 
-    /**
-     * Ritorna tutte le richieste di manutenzione ancora da dover accettare.
-     * @return
-     */
     public List<RichiestaManutenzione> getRichiesteManutenzioneDaAccettare(){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE accettata IS NULL";
@@ -243,10 +214,6 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    /**
-     * Ritorna tutte le richieste TUTTE le manutenzione accettate ma non ancora completate.
-     * @return
-     */
     public List<RichiestaManutenzione> getRichiesteManutenzioneInCorso(){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE accettata=? AND completata=?";
@@ -273,11 +240,6 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    /**
-     * Ritorna le richieste effettuate dallo specifico admin aziendale non ancora completate per tenere traccia dello status.
-     * @param idAdmin
-     * @return
-     */
     public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
         List<RichiestaManutenzione> richieste = new ArrayList<>();
         String  query="SELECT * FROM richiesta_manutenzione WHERE completata=?  AND accettata=? AND id_admin_azienda=?";

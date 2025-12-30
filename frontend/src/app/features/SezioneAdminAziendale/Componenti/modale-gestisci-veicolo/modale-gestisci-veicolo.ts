@@ -13,7 +13,7 @@ declare var google: any;
   selector: 'app-modale-gestisci-veicolo',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     TemplateFinestraModale,
     FormsModule,
   ],
@@ -22,27 +22,29 @@ declare var google: any;
 })
 export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
 
-  @Input() veicoloInput: any; 
+  @Input() veicoloInput: any;
   @Input() listaLuoghi: LuogoDTO[] = [];
   @Output() chiudi = new EventEmitter<void>();
   veicolo: any = null;
   loading: boolean = true;
   mostraFormManutenzione: boolean = false;
   tipoManutenzioneSelezionato: string = '';
+
   opzioniManutenzione = [
     'Guasto meccanico',
     'Incidente',
     'Tagliando',
     'Cambio gomme',
     'Controllo elettronico',
-    'altro'];
+    'altro'
+  ];
 
   private map: any;
   private marker: any;
   private infoWindow: any;
   private coordsIniziali: { lat: number, lng: number } | null = null;
   private zoomIniziale: number = 15;
-  
+
   luogoSelezionatoId: number | null = null;
 
   constructor(
@@ -66,10 +68,10 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
     this.dettagliService.richiediVeicolo(targa).subscribe({
       next: (data) => {
         console.log("Dettagli completi ricevuti:", data);
-        this.veicolo = data; 
+        this.veicolo = data;
         this.loading = false;
-        if (this.veicolo.luogoRitiroDeposito && 
-            this.veicolo.luogoRitiroDeposito.latitudine && 
+        if (this.veicolo.luogoRitiroDeposito &&
+            this.veicolo.luogoRitiroDeposito.latitudine &&
             this.veicolo.luogoRitiroDeposito.longitudine) {
           this.initMappa();
         }
@@ -85,7 +87,7 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
   initMappa() {
     const luogo = this.veicolo.luogoRitiroDeposito;
     if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
-    
+
     this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
 
     this.googleMapsService.load().then(() => {
@@ -93,7 +95,7 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
         if(this.coordsIniziali) {
            this.disegnaMappa(this.coordsIniziali);
         }
-      }, 300); 
+      }, 300);
     });
   }
 
@@ -153,38 +155,32 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
          this.dettagliService.aggiornaPosizioneVeicolo(this.veicolo).subscribe({
            next: (res) => {
              console.log("Luogo salvato con successo", res);
-             this.initMappa();
+             this.ngOnInit();
            },
            error: (err) => {
              console.error("Errore durante il salvataggio:", err);
              alert("Impossibile salvare la sede. Riprova");
            }
           });
-        } 
+        }
     }
   }
+
   inviaManutenzione() {
     if (!this.tipoManutenzioneSelezionato) return;
 
     const richiesta: RichiestaManutenzioneDTO = {
       idManutenzione: 0,
-      idAdminAzienda: 0,
       idVeicolo: this.veicolo.idVeicolo,
-      dataRichiesta: new Date().toISOString().split('T')[0], 
+      dataRichiesta: new Date().toISOString().split('T')[0],
       tipoManutenzione: this.tipoManutenzioneSelezionato,
-      accettata: false,
-      completata: false,
-      veicolo: this.veicolo
     };
-
-    console.log("Invio richiesta:", richiesta);
 
     this.flottaService.inviaRichiestaManutenzione(richiesta).subscribe({
       next: (res) => {
-        console.log("Risposta server:", res); 
-        alert("Richiesta di manutenzione inviata con successo!");
         this.mostraFormManutenzione = false;
         this.tipoManutenzioneSelezionato = '';
+        this.ngOnInit();
       },
       error: (err: any) => {
         console.error(err);

@@ -11,7 +11,6 @@ import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
     imports: [
         CardOfferta,
         ModaleAggiuntaOfferta,
-        TemplateTitoloSottotitolo,
         BannerErrore
     ],
   templateUrl: './offerte-attive.html',

@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
-import it.unical.fleetgo.backend.Models.Proxy.GestioneVeicoloAziendaProxy;
-import it.unical.fleetgo.backend.Persistence.Entity.GestioneVeicoloAzienda;
+import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.VeicoloPrenotazione;
 import java.sql.*;
@@ -69,18 +68,6 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public boolean cambiaStatusContrattuale(Integer idVeicolo) {
-        String aggiornamentoStatusContrattuale = "UPDATE veicolo SET status_contrattuale = 'Disponibile' WHERE id_veicolo = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(aggiornamentoStatusContrattuale)) {
-            ps.setInt(1, idVeicolo);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
     public void eliminaVeicoliInGestioneAzienda(Integer idAzienda) {
         String query = "DELETE FROM gestione_veicolo_azienda WHERE id_azienda = ?";
 
@@ -88,28 +75,6 @@ public class GestioneVeicoloAziendaDAO {
             ps.setInt(1, idAzienda);
             ps.executeUpdate();
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<GestioneVeicoloAzienda> getVeicoliInGestioneAzienda(Integer idAzienda) {
-        String query = "SELECT * FROM gestione_veicolo_azienda WHERE id_azienda = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idAzienda);
-
-            ResultSet rs = ps.executeQuery();
-            List<GestioneVeicoloAzienda> gestioni = new ArrayList<>();
-            while(rs.next()) {
-                GestioneVeicoloAzienda gestione = new GestioneVeicoloAziendaProxy(new VeicoloDAO(connection),new LuogoAziendaDAO(connection));
-                gestione.setIdVeicolo(rs.getInt("id_veicolo"));
-                gestione.setIdAzienda(rs.getInt("id_azienda"));
-                gestione.setIdLuogo(rs.getInt("id_luogo"));
-                gestione.setDisponbilePerNoleggio(rs.getBoolean("disponbile_per_noleggio"));
-                gestioni.add(gestione);
-            }
-            return gestioni;
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -182,5 +147,18 @@ public class GestioneVeicoloAziendaDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public boolean impostaLuogoVeicolo(VeicoloDTO veicoloDTO) {
+        String query = "UPDATE gestione_veicolo_azienda SET luogo_ritiro_consegna = ?, disponibile_per_noleggio = true WHERE id_veicolo = ? AND id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, veicoloDTO.getLuogoRitiroDeposito().getIdLuogo());
+            ps.setInt(2, veicoloDTO.getIdVeicolo());
+            ps.setInt(3, veicoloDTO.getIdAziendaAffiliata());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

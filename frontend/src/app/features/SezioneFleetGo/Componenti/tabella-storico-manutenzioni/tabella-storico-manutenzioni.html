@@ -29,8 +29,8 @@
           @for (richiesta of listaStoricoFiltrata; track richiesta.idManutenzione) {
             <tr class="tr-inferiore group">
               <td class="td-sinistro flex flex-col">
-                <span>{{ richiesta.veicolo.targaVeicolo }}</span>
-                <small class="uppercase text-xs text-gray-500"> {{ richiesta.veicolo.nomeModello }}</small>
+                <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
+                <small class="uppercase text-xs text-gray-500"> {{ richiesta.veicolo?.nomeModello }}</small>
               </td>
               <td class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy'}}</td>
               <td class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>

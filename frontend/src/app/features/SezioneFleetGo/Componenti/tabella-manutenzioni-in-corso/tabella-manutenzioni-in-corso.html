@@ -18,8 +18,8 @@
             <tr class="tr-inferiore group">
               <td class="td-sinistro">
                 <div class="flex flex-col">
-                  <span>{{ richiesta.veicolo.targaVeicolo }}</span>
-                  <small class="uppercase text-xs text-gray-500">{{ richiesta.veicolo.nomeModello }}</small>
+                  <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
+                  <small class="uppercase text-xs text-gray-500">{{ richiesta.veicolo?.nomeModello }}</small>
                 </div>
               </td>
               <td  class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>

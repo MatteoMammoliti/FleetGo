@@ -155,24 +155,25 @@ public class VeicoloDAO {
         return null;
     }
 
-    public void cambiaStatusContrattualeVeicolo(String nuovoStatus, Integer idVeicolo) {
+    public boolean cambiaStatusContrattualeVeicolo(String nuovoStatus, Integer idVeicolo) {
         String query = "UPDATE veicolo SET status_contrattuale = ? WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, nuovoStatus);
             ps.setInt(2, idVeicolo);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public void cambiaStatusManutenzioneVeicolo(Boolean manutenzione, Integer idVeicolo) {
+
+    public boolean cambiaStatusManutenzioneVeicolo(Boolean manutenzione, Integer idVeicolo) {
         String query = "UPDATE veicolo SET in_manutenzione = ? WHERE id_veicolo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, manutenzione);
             ps.setInt(2, idVeicolo);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

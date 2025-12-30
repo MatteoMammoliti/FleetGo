@@ -18,10 +18,11 @@ import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziend
     IntestazioneEBackground,
     ModaleGestisciVeicolo
   ],
-  
+
   templateUrl: './flotta-admin-aziendale.html',
   styleUrl: './flotta-admin-aziendale.css',
 })
+
 export class FlottaAdminAziendale implements OnInit {
   veicoli: any[] = [];
 
@@ -69,20 +70,20 @@ export class FlottaAdminAziendale implements OnInit {
 
   get veicoliFiltrati() {
     return this.veicoli.filter(v => {
-      const targa = v.targaVeicolo || ''; 
+      const targa = v.targaVeicolo || '';
       const modello = v.nomeModello || '';
-      const matchTesto = (targa.toLowerCase().includes(this.testoRicerca.toLowerCase()) || 
+      const matchTesto = (targa.toLowerCase().includes(this.testoRicerca.toLowerCase()) ||
                           modello.toLowerCase().includes(this.testoRicerca.toLowerCase()));
       const stato = v.statusContrattualeVeicolo?.toUpperCase() || '';
       const matchStato = this.filtroStato ? stato === this.filtroStato?.toUpperCase() : true;
-      
+
       return matchTesto && matchStato;
     });
   }
 
   getConteggio(stato: string): number {
     if (!this.veicoli) return 0;
-    return this.veicoli.filter(v => 
+    return this.veicoli.filter(v =>
       v.statusContrattualeVeicolo?.toUpperCase() === stato.toUpperCase()
     ).length;
   }
@@ -94,7 +95,7 @@ export class FlottaAdminAziendale implements OnInit {
 
   apriModaleDettagli(veicoloDallaLista: any) {
     const targa = veicoloDallaLista.targaVeicolo;
-    
+
     if (targa) {
       this.dettagliService.richiediVeicolo(targa).subscribe({
         next: (veicoloCompleto) => {

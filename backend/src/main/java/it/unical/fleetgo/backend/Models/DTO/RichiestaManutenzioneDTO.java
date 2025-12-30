@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,9 @@ public class RichiestaManutenzioneDTO {
     private Boolean completata;
     private VeicoloDTO veicolo;
 
+    public RichiestaManutenzioneDTO() {}
+
+    @JsonIgnore
     public RichiestaManutenzioneDTO(RichiestaManutenzione richiesta, boolean caricaVeicolo) {
         this.idManutenzione = richiesta.getIdManutenzione();
         this.idAdminAzienda = richiesta.getIdAdmin();

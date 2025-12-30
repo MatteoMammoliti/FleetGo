@@ -18,7 +18,6 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
     CommonModule,
     TabellaAziendeComponent,
     FormAggiungiAdminAzienda,
-    TemplateTitoloSottotitolo,
     BannerErrore,
     IntestazioneEBackground
   ],

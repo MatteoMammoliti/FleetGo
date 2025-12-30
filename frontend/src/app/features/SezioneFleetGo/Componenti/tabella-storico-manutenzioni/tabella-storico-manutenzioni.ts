@@ -24,7 +24,7 @@ export class TabellaStoricoManutenzioni {
       return this.listaStorico;
     }
     return this.listaStorico.filter(richiesta=>{
-      const targa = richiesta.veicolo.targaVeicolo?.toUpperCase() || '';
+      const targa = richiesta.veicolo?.targaVeicolo?.toUpperCase() || '';
       return targa.includes(testoRicerca);
     })
   }
