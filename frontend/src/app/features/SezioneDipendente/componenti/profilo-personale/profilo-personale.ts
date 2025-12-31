@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {UtenteDTO} from '@core/models/utenteDTO.model';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
@@ -11,7 +11,8 @@ import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
   templateUrl: './profilo-personale.html',
   styleUrl: './profilo-personale.css',
 })
-export class ProfiloPersonale {
+
+export class ProfiloPersonale implements OnChanges {
 
   @Output() clickSalva=new EventEmitter<ModificaDatiUtenteDTO>()
   @Input() utente!:ModificaDatiUtenteDTO;
@@ -32,8 +33,6 @@ export class ProfiloPersonale {
     }
   }
 
-
-
   salva() {
     let inviare=false;
     const datiDaInviare:ModificaDatiUtenteDTO={
@@ -46,6 +45,7 @@ export class ProfiloPersonale {
       pIva:null,
       idUtente:this.utente.idUtente
     }
+
     if(this.datiForm.nome !== this.utente.nome){
       inviare=true;
       datiDaInviare.nome=this.datiForm.nome;

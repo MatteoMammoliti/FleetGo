@@ -35,7 +35,10 @@ public class RichiestaNoleggioProxy extends RichiestaNoleggio {
     public Veicolo getVeicolo() {
         if(!veicoloCaricato) {
             Veicolo v = veicoloDAO.getVeicoloDaIdConLuogo(this.getIdVeicolo());
-            super.setVeicolo(v);
+            if(v != null){
+                veicoloCaricato = true;
+                super.setVeicolo(v);
+            }
         }
         return super.getVeicolo();
     }

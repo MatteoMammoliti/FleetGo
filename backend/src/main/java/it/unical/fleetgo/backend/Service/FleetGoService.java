@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Exceptions.RichiestaManutenzioneNonValida;
 import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Persistence.DAO.FatturaDAO;
 import it.unical.fleetgo.backend.Persistence.DAO.GeneraFatturaDAO;
@@ -10,8 +11,10 @@ import it.unical.fleetgo.backend.Persistence.Entity.Offerta;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class FleetGoService {
 
     @Autowired private DataSource dataSource;
     @Autowired private GeneratorePdfService generatorePdfService;
+    @Autowired SalvataggioImmagineService salvataggioImmagineService;
 
     public List<FatturaDaGenerareDTO> getGeneraFattura() throws SQLException {
         try(Connection connection = this.dataSource.getConnection()){
@@ -56,18 +60,21 @@ public class FleetGoService {
         }
     }
 
-    public boolean accettaRichiestaManutenzione(Integer idManutenzione)throws SQLException {
+    public void accettaRichiestaManutenzione(Integer idManutenzione)throws SQLException {
         try(Connection connection=this.dataSource.getConnection()){
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
-            return dao.contrassegnaRichiestaManutenzione(idManutenzione,true);
+            if(!dao.contrassegnaRichiestaManutenzione(idManutenzione,true)){
+                throw new RichiestaManutenzioneNonValida();
+            };
         }
-
     }
 
-    public boolean rifiutaRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+    public void rifiutaRichiestaManutenzione(Integer idManutenzione) throws SQLException {
         try(Connection connection=this.dataSource.getConnection()){
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
-            return dao.contrassegnaRichiestaManutenzione(idManutenzione,false);
+            if(!dao.contrassegnaRichiestaManutenzione(idManutenzione,false)){
+                throw new RichiestaManutenzioneNonValida();
+            }
         }
     }
 
@@ -153,10 +160,27 @@ public class FleetGoService {
         }
     }
 
-    public void inserisciNuovaOfferta(OffertaDTO offertaDTO) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            OffertaDAO offertaDAO = new OffertaDAO(connection);
+    public void inserisciNuovaOfferta(OffertaDTO offertaDTO, MultipartFile immagine) throws IOException, SQLException {
+
+        Connection conn = this.dataSource.getConnection();
+
+        try {
+            conn.setAutoCommit(false);
+
+            String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+            offertaDTO.setImmagineCopertina(urlImmagine);
+
+            OffertaDAO offertaDAO = new OffertaDAO(conn);
             offertaDAO.inserisciOfferta(offertaDTO);
+
+        } catch (IOException e) {
+            conn.rollback();
+            throw new IOException(e);
+        } catch (SQLException e) {
+            conn.rollback();
+            throw new  RuntimeException(e);
+        } finally {
+            conn.setAutoCommit(true);
         }
     }
 
@@ -181,10 +205,10 @@ public class FleetGoService {
         }
     }
 
-    public boolean concludiRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+    public void concludiRichiestaManutenzione(Integer idManutenzione) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             RichiesteManutenzioneDAO dao = new RichiesteManutenzioneDAO(connection);
-            return dao.contrassegnaRichiestaManutenzioneComeCompletata(idManutenzione);
+            dao.contrassegnaRichiestaManutenzioneComeCompletata(idManutenzione);
         }
     }
 }

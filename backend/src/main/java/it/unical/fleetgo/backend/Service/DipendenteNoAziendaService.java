@@ -29,17 +29,17 @@ public class DipendenteNoAziendaService {
         }
     }
 
-    public boolean eliminaRichiestaInAttesa(Integer idDipendente,Integer idAzienda) throws SQLException{
+    public void eliminaRichiestaInAttesa(Integer idDipendente,Integer idAzienda) throws SQLException{
         try(Connection connection = this.dataSource.getConnection()){
             RichiestaAffiliazioneAziendaDAO dao = new RichiestaAffiliazioneAziendaDAO(connection);
-            return dao.rimuoviRichiestaAffiliazioneAzienda(idDipendente,idAzienda,false);
+            dao.rimuoviRichiestaAffiliazioneAzienda(idDipendente,idAzienda,false);
         }
     }
 
-    public boolean aggiungiRichiestaAffiliazione(Integer idDipendente,Integer idAzienda) throws SQLException{
+    public void aggiungiRichiestaAffiliazione(Integer idDipendente,Integer idAzienda) throws SQLException{
         try(Connection connection = this.dataSource.getConnection()){
             RichiestaAffiliazioneAziendaDAO dao = new RichiestaAffiliazioneAziendaDAO(connection);
-            return dao.aggiungiRichiestaAffiliazioneAzienda(idDipendente,idAzienda);
+            dao.aggiungiRichiestaAffiliazioneAzienda(idDipendente,idAzienda);
         }
     }
 }

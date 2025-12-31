@@ -14,81 +14,56 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardDipendente")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerHomeDipendente {
 
     @Autowired private DipendenteService dipendenteService;
 
     @GetMapping("/prossimoViaggio")
-    public ResponseEntity<RichiestaNoleggioDTO> getProssimoNoleggioDipendente(HttpSession session){
-        Integer idAzienda=(Integer )session.getAttribute("idAziendaAssociata");
-        if(idAzienda==null){
+    public ResponseEntity<RichiestaNoleggioDTO> getProssimoNoleggioDipendente(HttpSession session) throws SQLException {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAziendaAssociata");
+        Integer idDipendente = (Integer) session.getAttribute("idUtente");
+
+        if(idAzienda==null || idDipendente==null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        try{
-            return ResponseEntity.ok(this.dipendenteService.getProssimoNoleggioDipendente((Integer) session.getAttribute("idUtente"),idAzienda));
-        }catch(SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
-        }
+
+        return ResponseEntity.ok(this.dipendenteService.getProssimoNoleggioDipendente(idDipendente,idAzienda));
     }
 
     @GetMapping("/statisticheDipendente")
-    public ResponseEntity<StatisticheDipendenteDTO> getStatisticheDipendente(HttpSession session){
+    public ResponseEntity<StatisticheDipendenteDTO> getStatisticheDipendente(HttpSession session) throws SQLException {
         Integer idAzienda=(Integer) session.getAttribute("idAziendaAssociata");
-        if(idAzienda==null){
+        Integer idDipendente = (Integer) session.getAttribute("idUtente");
+
+        if(idAzienda==null || idDipendente==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        try{
-            return ResponseEntity.ok(this.dipendenteService.getStatisticheDipendente((Integer) session.getAttribute("idUtente"),idAzienda));
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(this.dipendenteService.getStatisticheDipendente(idDipendente,idAzienda));
     }
 
     @GetMapping("/luoghiAzienda")
-    public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session){
+    public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session) throws SQLException {
+
         Integer idAziendaAssociata=(Integer) session.getAttribute("idAziendaAssociata");
         if(idAziendaAssociata==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        try{
-            return ResponseEntity.ok(this.dipendenteService.getLuoghiAziendaAssociata(idAziendaAssociata));
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(this.dipendenteService.getLuoghiAziendaAssociata(idAziendaAssociata));
     }
 
     @GetMapping("/richiediNome")
-    public  ResponseEntity<String> getRichiediNome(HttpSession session){
+    public  ResponseEntity<String> getRichiediNome(HttpSession session) throws SQLException {
         Integer idDipendente=(Integer) session.getAttribute("idUtente");
 
         if(idDipendente==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
-        try{
-            return ResponseEntity.ok(this.dipendenteService.getNomeDipendente(idDipendente));
-        }catch (SQLException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(this.dipendenteService.getNomeDipendente(idDipendente));
     }
 
     @PostMapping("/inviaSegnalazione")
-    public ResponseEntity<String> inviaSegnalazione(@RequestBody String messaggio, HttpSession session){
+    public ResponseEntity<String> inviaSegnalazione(@RequestBody String messaggio, HttpSession session) throws SQLException {
         Integer idDipendente = (Integer) session.getAttribute("idUtente");
         Integer idAzienda = (Integer) session.getAttribute("idAziendaAssociata");
 
@@ -96,11 +71,7 @@ public class ControllerHomeDipendente {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        try{
-            dipendenteService.inviaSegnalazione(messaggio, idDipendente, idAzienda);
-            return ResponseEntity.status(HttpStatus.OK).body("Richiesta di assistenza invia con successo");
-        } catch(SQLException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        dipendenteService.inviaSegnalazione(messaggio, idDipendente, idAzienda);
+        return ResponseEntity.status(HttpStatus.OK).body("Richiesta di assistenza invia con successo");
     }
 }

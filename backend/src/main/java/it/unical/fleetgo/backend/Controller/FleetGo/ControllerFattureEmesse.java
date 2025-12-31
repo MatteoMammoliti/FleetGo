@@ -13,40 +13,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerFattureEmesse {
 
     @Autowired private FleetGoService fleetGoService;
 
     @GetMapping("/downloadFattura/{idFattura}")
-    public ResponseEntity<byte[]> downloadFattura(@PathVariable Integer idFattura) {
-
-        try {
-            byte[] pdf = fleetGoService.downloadFattura(idFattura);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "fattura_" + idFattura + ".pdf");
-            return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<byte[]> downloadFattura(@PathVariable Integer idFattura) throws SQLException {
+        byte[] pdf = fleetGoService.downloadFattura(idFattura);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "fattura_" + idFattura + ".pdf");
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
 
     @GetMapping("/getFatture/{anno}")
-    public ResponseEntity<List<FatturaDTO>> getFattureEmesse(@PathVariable Integer anno) {
-        try {
-            return new ResponseEntity<>(fleetGoService.getFatturePerAnno(anno), HttpStatus.OK);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<List<FatturaDTO>> getFattureEmesse(@PathVariable Integer anno) throws SQLException {
+        return ResponseEntity.ok(fleetGoService.getFatturePerAnno(anno));
     }
 
     @GetMapping("/getAnni")
-    public ResponseEntity<List<Integer>> getAnni() {
-        try {
-            return new ResponseEntity<>(fleetGoService.getAnni(), HttpStatus.OK);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<List<Integer>> getAnni() throws SQLException {
+        return ResponseEntity.ok(fleetGoService.getAnni());
     }
 }

@@ -1,4 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Exceptions.EmailEsistente;
+import it.unical.fleetgo.backend.Exceptions.PIVAEsistente;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
@@ -43,20 +45,7 @@ public class UtenteDAO {
         }
         return null;
     }
-    /**
-     * Elimina l'utente associato ad idUtente.
-     *
-     * @param idUtente
-     */
-    public void eliminaUtente(Integer idUtente){
-        String query="DELETE FROM Utente WHERE id_utente=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
-            st.setInt(1,idUtente);
-            st.executeUpdate();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
+
     /**
      * Dato un id Restituisce il DIPENDENTE associato.
      * @param idUtente
@@ -126,7 +115,7 @@ public class UtenteDAO {
         }
     }
 
-    public Integer getAziendaAssociataDipendente(Integer idUtente) throws SQLException{
+    public Integer getAziendaAssociataDipendente(Integer idUtente){
         String query="SELECT id_azienda FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND accettata=true";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idUtente);
@@ -134,6 +123,8 @@ public class UtenteDAO {
             if(rs.next()){
                 return rs.getInt("id_azienda");
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -152,7 +143,7 @@ public class UtenteDAO {
         return null;
     }
 
-    public void modificaDatiUtente(ModificaDatiUtenteDTO dati) throws RuntimeException, SQLException {
+    public void modificaDatiUtente(ModificaDatiUtenteDTO dati) throws RuntimeException {
         try{
             con.setAutoCommit(false);
             if(dati.getNome()!=null || dati.getCognome() !=null || dati.getData()!=null) {
@@ -227,26 +218,34 @@ public class UtenteDAO {
             }
             con.commit();
         } catch (Exception e) {
-            con.rollback();
-            if(e instanceof SQLException sqlEccezione){
-                String state = sqlEccezione.getSQLState();
-                String msg = sqlEccezione.getMessage().toLowerCase();
-                if("23505".equals(state)){
-                    if(msg.contains("email")){
-                        throw new RuntimeException("Email già presente");
-                    }
-                    else if(msg.contains("p_iva")){
-                        throw new RuntimeException("P.Iva già registrata da un'altra azienda");
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            if (e instanceof SQLException sqlEx) {
+                String state = sqlEx.getSQLState();
+                String msg = sqlEx.getMessage().toLowerCase();
+
+                if ("23505".equals(state)) {
+                    if (msg.contains("email")) {
+                        throw new EmailEsistente();
+                    } else if (msg.contains("p_iva") || msg.contains("partita_iva")) {
+                        throw new PIVAEsistente();
                     }
                 }
             }
-            throw new RuntimeException(e);
-        }finally {
-            con.setAutoCommit(true);
+            throw new RuntimeException("Errore durante la modifica dati", e);
+        } finally {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ignored) {}
         }
     }
 
-    public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente){
+    public ModificaDatiUtenteDTO getDatiAdminAziendale(Integer idUtente){
+
         String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,l.nome_luogo,a.p_iva FROM utente u JOIN" +
                 " credenziali_utente c ON u.id_utente=c.id_utente LEFT JOIN azienda a ON u.id_utente=a.id_admin_azienda LEFT JOIN luogo_azienda l ON a.sede_azienda = l.id_luogo WHERE u.id_utente =?";
         try(PreparedStatement st = con.prepareStatement(query)){
@@ -262,7 +261,32 @@ public class UtenteDAO {
                         rs.getString("p_iva"),
                         null);
             }
-        }catch (Exception e){
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public ModificaDatiUtenteDTO getDatiDipendente(Integer idUtente){
+
+        String query="SELECT c.email,u.nome_utente,u.cognome,u.data_nascita,a.nome_azienda,l.nome_luogo,a.p_iva FROM utente u JOIN" +
+                " credenziali_utente c ON u.id_utente=c.id_utente " +
+                " LEFT JOIN richiesta_affiliazione_azienda ra ON u.id_utente = ra.id_dipendente " +
+                " LEFT JOIN azienda a ON ra.id_azienda=a.id_azienda LEFT JOIN luogo_azienda l ON a.sede_azienda = l.id_luogo WHERE u.id_utente =?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return new ModificaDatiUtenteDTO(rs.getString("nome_utente"),
+                        rs.getString("cognome"),
+                        rs.getDate("data_nascita").toString(),
+                        rs.getString("email"),
+                        rs.getString("nome_azienda"),
+                        rs.getString("nome_luogo"),
+                        rs.getString("p_iva"),
+                        null);
+            }
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
         return null;
@@ -297,7 +321,7 @@ public class UtenteDAO {
                         rs.getInt("guadagno_mensile")
                 );
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
         return null;
@@ -323,7 +347,7 @@ public class UtenteDAO {
         return null;
     }
 
-    public Dipendente getDipendenteDaId(Integer idDipendente) throws SQLException {
+    public Dipendente getDipendenteDaId(Integer idDipendente) {
         String query="SELECT * FROM utente WHERE id_utente=? AND tipo_utente=?";
         try(PreparedStatement st = con.prepareStatement(query)){
             st.setInt(1,idDipendente);
@@ -337,6 +361,8 @@ public class UtenteDAO {
                 dipendente.setDataNascitaUtente(LocalDate.parse(rs.getDate("data_nascita").toString()));
                 return dipendente;
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

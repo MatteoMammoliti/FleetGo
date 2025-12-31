@@ -1,10 +1,10 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Exceptions.ManutenzioneEsistente;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumericheManutezioni;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaManutenzioneProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaManutenzione;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,33 +15,40 @@ public class RichiesteManutenzioneDAO {
     public RichiesteManutenzioneDAO(Connection con) {this.con=con;}
 
     public void aggiungiRichiestaManutenzione(RichiestaManutenzioneDTO richiestaManutenzioneDTO) throws SQLException {
+        String checkPreventivo = "SELECT 1 FROM richiesta_manutenzione WHERE id_veicolo = ? AND completata = false AND accettata IS NOT FALSE";
         String query = "INSERT INTO richiesta_manutenzione (id_admin_azienda, id_veicolo, data_richiesta, tipo_manutenzione) VALUES (?,?,?,?)";
         String rendiVeicoloNonNoleggiabile = "UPDATE gestione_veicolo_azienda SET disponibile_per_noleggio = false WHERE id_veicolo = ?";
 
         try{
             con.setAutoCommit(false);
 
-            PreparedStatement st = con.prepareStatement(query);
-            st.setInt(1,richiestaManutenzioneDTO.getIdAdminAzienda());
-            st.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
-            st.setDate(3, Date.valueOf(richiestaManutenzioneDTO.getDataRichiesta()));
-            st.setString(4,richiestaManutenzioneDTO.getTipoManutenzione());
+            PreparedStatement st = con.prepareStatement(checkPreventivo);
+            st.setInt(1, richiestaManutenzioneDTO.getIdVeicolo());
+            ResultSet rs = st.executeQuery();
 
-            if(st.executeUpdate() == 0){
+            if(rs.next()){
+                throw new ManutenzioneEsistente("Esiste già una richiesta di manutenzione");
+            }
+
+            PreparedStatement st2 = con.prepareStatement(query);
+            st2.setInt(1,richiestaManutenzioneDTO.getIdAdminAzienda());
+            st2.setInt(2,richiestaManutenzioneDTO.getIdVeicolo());
+            st2.setDate(3, Date.valueOf(richiestaManutenzioneDTO.getDataRichiesta()));
+            st2.setString(4,richiestaManutenzioneDTO.getTipoManutenzione());
+
+            if(st2.executeUpdate() == 0){
                 con.rollback();
                 return;
             }
 
-            PreparedStatement st2 = con.prepareStatement(rendiVeicoloNonNoleggiabile);
-            st2.setInt(1,richiestaManutenzioneDTO.getIdVeicolo());
+            PreparedStatement st3 = con.prepareStatement(rendiVeicoloNonNoleggiabile);
+            st3.setInt(1,richiestaManutenzioneDTO.getIdVeicolo());
 
-            if(st2.executeUpdate()==0){
-                System.out.println("sono qui");
+            if(st3.executeUpdate()==0){
                 con.rollback();
                 return;
             }
 
-            System.out.println("tutto apposto");
             con.commit();
 
         } catch(SQLException e){
@@ -128,7 +135,7 @@ public class RichiesteManutenzioneDAO {
             }
         catch(SQLException e){
             con.rollback();
-            throw e;
+            throw new RuntimeException(e);
             }
         }
         finally{
@@ -136,7 +143,7 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    public boolean contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione) throws SQLException {
+    public void contrassegnaRichiestaManutenzioneComeCompletata(Integer idManutenzione) throws SQLException {
         String modificaRichiesta="UPDATE richiesta_manutenzione SET completata=? WHERE id_manutenzione=?";
         String cambioStatusVeicolo="UPDATE veicolo v SET in_manutenzione=? FROM richiesta_manutenzione rm WHERE v.id_veicolo=rm.id_veicolo AND rm.id_manutenzione=?";
         String esisteRecordInGestioneVeicoloAzienda = "SELECT 1 FROM gestione_veicolo_azienda gv JOIN richiesta_manutenzione rm ON gv.id_veicolo = rm.id_veicolo WHERE rm.id_manutenzione = ?";
@@ -149,7 +156,7 @@ public class RichiesteManutenzioneDAO {
                 st.setInt(2,idManutenzione);
                 if(st.executeUpdate()==0){
                     con.rollback();
-                    return false;
+                    return;
                 }
             }
             try(PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo)){
@@ -157,7 +164,7 @@ public class RichiesteManutenzioneDAO {
                 st2.setInt(2,idManutenzione);
                 if(st2.executeUpdate()==0){
                     con.rollback();
-                    return false;
+                    return;
                 }
             }
 
@@ -171,14 +178,13 @@ public class RichiesteManutenzioneDAO {
                         st4.setInt(2,idManutenzione);
                         if(st4.executeUpdate()==0){
                             con.rollback();
-                            return false;
+                            return;
                         }
                     }
                 }
             }
 
             con.commit();
-            return true;
 
         }catch(SQLException e){
             con.rollback();
@@ -188,7 +194,7 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    public RichiestaManutenzione getRichiestaManutenzione(Integer idManutenzione) throws SQLException {
+    public RichiestaManutenzione getRichiestaManutenzione(Integer idManutenzione) {
         String query="SELECT * FROM richiesta_manutenzione WHERE id_manutenzione=?";
         try(PreparedStatement st =con.prepareStatement(query)){
             st.setInt(1,idManutenzione);
@@ -199,6 +205,8 @@ public class RichiesteManutenzioneDAO {
                 return richiesta;
 
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -239,33 +247,7 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-//    public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
-//        List<RichiestaManutenzione> richieste = new ArrayList<>();
-//        String  query="SELECT * FROM richiesta_manutenzione WHERE completata=?  AND accettata=? AND id_admin_azienda=?";
-//        try(PreparedStatement st = con.prepareStatement(query)){
-//            st.setBoolean(1,false);
-//            st.setBoolean(2,true);
-//            st.setInt(3,idAdmin);
-//            ResultSet rs = st.executeQuery();
-//            while(rs.next()){
-//                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
-//                richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
-//                richiesta.setIdAdmin(rs.getInt("id_admin"));
-//                richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
-//                richiesta.setDataRichiesta(rs.getDate("data_richiesta").toString());
-//                richiesta.setTipoManutenzione(rs.getString("tipo_manutenzione"));
-//                richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
-//                richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
-//                richieste.add(richiesta);
-//            }
-//
-//            return richieste;
-//        }catch(SQLException e){
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() throws SQLException {
+    public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() {
         String query="SELECT " +
                 " (SELECT COUNT(*) FROM richiesta_manutenzione WHERE accettata=true AND completata=false) as attualmente_in_corso," +
                 " (SELECT COUNT(*) FROM richiesta_manutenzione WHERE accettata=true AND completata=true) as interventi_conclusi";
@@ -278,6 +260,8 @@ public class RichiesteManutenzioneDAO {
                 return contenitore;
             }
             return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -292,7 +276,6 @@ public class RichiesteManutenzioneDAO {
             estraiRichiestaSingolaManutenzione(r, ps);
             return r;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

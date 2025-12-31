@@ -87,12 +87,7 @@ public class CredenzialiDAO {
             LocalDateTime scadenza = LocalDateTime.now().plusMinutes(5);
             st.setTimestamp(2, Timestamp.valueOf(scadenza));
             st.setString(3, email);
-
-            int righe = st.executeUpdate();
-
-            if(righe == 0) {
-                throw new IllegalArgumentException("Email non trovata");
-            }
+            st.executeUpdate();
 
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -112,7 +107,7 @@ public class CredenzialiDAO {
                 LocalDateTime scadenza = rs.getTimestamp("scadenza_codice_otp").toLocalDateTime();
 
                 if(codice != codiceOTP || scadenza.isBefore(LocalDateTime.now())) {
-                    throw new RuntimeException("Codice OTP errato o scaduto");
+                    return false;
                 }
 
                 String query = "UPDATE credenziali_utente SET password=?, codice_otp = NULL, scadenza_codice_otp = NULL WHERE email=?";
@@ -180,5 +175,31 @@ public class CredenzialiDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public String getUrlPatente(Integer idUtente) {
+        String query = "SELECT immagine_patente FROM credenziali_utente WHERE id_utente=?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, idUtente);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getString("immagine_patente");
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public void updateUrlPatente(Integer idUtente, String urlPatente) {
+        String query = "UPDATE credenziali_utente SET immagine_patente = ? WHERE id_utente=?";
+
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setString(1, urlPatente);
+            ps.setInt(2, idUtente);
+            ps.executeUpdate();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 }

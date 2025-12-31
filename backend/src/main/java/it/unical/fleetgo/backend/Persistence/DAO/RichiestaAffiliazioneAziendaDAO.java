@@ -14,30 +14,18 @@ public class RichiestaAffiliazioneAziendaDAO {
 
     public RichiestaAffiliazioneAziendaDAO(Connection con) {this.connection =con;}
 
-    /**
-     * Aggiunge una richiesta affiliazione ad un'azienda da parte del dipendente.
-     * @param idDipendente
-     * @param idAzienda
-     * @return
-     */
-    public boolean aggiungiRichiestaAffiliazioneAzienda(Integer idDipendente,Integer idAzienda){
+    public void aggiungiRichiestaAffiliazioneAzienda(Integer idDipendente,Integer idAzienda){
         String query ="INSERT INTO richiesta_affiliazione_azienda (id_dipendente,id_azienda) VALUES (?,?)";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);
-            return st.executeUpdate()>0;
-        }catch (Exception e){
+            st.executeUpdate();
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
 
-    /**
-     * Elimina una richiesta affiliazione ad un'azienda da parte del dipendente.
-     *
-     * @param idDipendente
-     * @param idAzienda
-     */
-    public boolean rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda,Boolean affiliato) throws SQLException{
+    public void rimuoviRichiestaAffiliazioneAzienda(Integer idDipendente, Integer idAzienda,Boolean affiliato) {
         String query;
         if(affiliato){
             query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=? AND data_risposta IS NOT NULL";
@@ -48,15 +36,12 @@ public class RichiestaAffiliazioneAziendaDAO {
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idDipendente);
             st.setInt(2,idAzienda);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
-    /**
-     * Cerca tutti i dipendenti di una data azienda.
-     * @param idAzienda
-     * @return
-     */
     public List<Dipendente> getDipendentiAzienda(Integer idAzienda) throws RuntimeException {
         List<Dipendente> dipendenti=new ArrayList<>();
 
@@ -83,12 +68,6 @@ public class RichiestaAffiliazioneAziendaDAO {
         return dipendenti;
     }
 
-    /**
-     * Restituisce le richieste affiliazione da valutare per la propria azienda.
-     * Cercherà le richieste connection valore "data_accettazione" = null.
-     * @param idAzienda
-     * @return
-     */
     public List<RichiestaAffiliazioneAzienda> getRichiesteAffiliazioneDaAccettare(Integer idAzienda){
         String query="SELECT * FROM richiesta_affiliazione_azienda WHERE id_azienda = ? AND accettata = false AND data_risposta IS NULL";
         try(PreparedStatement st = connection.prepareStatement(query)){
@@ -124,17 +103,14 @@ public class RichiestaAffiliazioneAziendaDAO {
         }
     }
 
-    /**
-     * Funzione che restituisce l'id dell'azienda affiliata dell'utente idUtente
-     * @param idUtente
-     * @return
-     */
+
     public Integer getIdAziendaDipendente(Integer idUtente) {
 
-        String query = "SELECT id_azienda FROM richiesta_affiliazione_azienda WHERE accettata = ?";
+        String query = "SELECT id_azienda FROM richiesta_affiliazione_azienda WHERE accettata = ? AND id_dipendente = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, true);
+            ps.setInt(2, idUtente);
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()) return rs.getInt("id_azienda");
@@ -152,13 +128,13 @@ public class RichiestaAffiliazioneAziendaDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()) return rs.getInt("somma");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
     }
 
-    public ContenitoreDatiAzienda getRichiestaInAttesaDipendente(Integer idDipendente) throws SQLException{
+    public ContenitoreDatiAzienda getRichiestaInAttesaDipendente(Integer idDipendente) {
         String query="SELECT a.* FROM richiesta_affiliazione_azienda ra JOIN azienda a ON a.id_azienda=ra.id_azienda" +
                 " WHERE id_dipendente=? AND data_risposta IS NULL AND accettata=?";
         try(PreparedStatement ps = connection.prepareStatement(query)){
@@ -172,6 +148,8 @@ public class RichiestaAffiliazioneAziendaDAO {
                 return contenitoreDatiAzienda;
             }
             return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

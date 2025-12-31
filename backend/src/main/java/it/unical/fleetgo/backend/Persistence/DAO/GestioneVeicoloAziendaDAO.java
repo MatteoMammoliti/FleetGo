@@ -30,7 +30,6 @@ public class GestioneVeicoloAziendaDAO {
 
             } catch (SQLException e) {
                 connection.rollback();
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
 
@@ -41,14 +40,12 @@ public class GestioneVeicoloAziendaDAO {
                 ps.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
 
             connection.commit();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new RuntimeException(ex);
         } finally {
             connection.setAutoCommit(true);
@@ -62,8 +59,7 @@ public class GestioneVeicoloAziendaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idVeicolo);
             return ps.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -74,7 +70,7 @@ public class GestioneVeicoloAziendaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -123,7 +119,6 @@ public class GestioneVeicoloAziendaDAO {
                 veicolo.setIdModello(rs.getInt("modello_veicolo"));
                 veicolo.setUrlImmagine(rs.getString("url_immagine"));
                 veicolo.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
-                veicolo.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
                 veicolo.setStatusContrattualeVeicolo(rs.getString("status_contrattuale"));
                 veicolo.setInManutenzione(rs.getBoolean("in_manutenzione"));
                 veicolo.setStatoAttuale(rs.getString("stato_attuale"));

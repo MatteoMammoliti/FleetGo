@@ -38,9 +38,8 @@ public class ModelloDAO {
         try(PreparedStatement ps = connection.prepareStatement(count)) {
             ps.setInt(1, idModello);
             ResultSet rs = ps.executeQuery();
-
-            if(rs.next() && rs.getInt("numero") > 0) {
-                throw new IllegalStateException("Modello non eliminabile");
+            if(rs.next() && rs.getInt("numero") > 0){
+                return false;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

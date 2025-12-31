@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardAdminAziendale")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerModificaDati {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
@@ -24,7 +23,7 @@ public class ControllerModificaDati {
     @Autowired private AziendaService aziendaService;
 
     @PostMapping("/modificaDatiAdmin")
-    public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) {
+    public ResponseEntity<String> modificaDatiUtente(@RequestBody ModificaDatiUtenteDTO dati,HttpSession session) throws SQLException {
 
         Integer idUtente= (Integer)session.getAttribute("idUtente");
 
@@ -33,28 +32,12 @@ public class ControllerModificaDati {
         }
 
         dati.setIdUtente(idUtente);
-
-        try{
-            adminAziendaleService.modificaDati(dati);
-            return  ResponseEntity.status(HttpStatus.OK).body("Dati modificati con successo!");
-
-        }catch (RuntimeException | SQLException e){
-            String errore = e.getMessage();
-
-            if(errore.equals("Email già presente")){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(errore);
-            }
-
-            if(errore.equals("P.Iva già registrata da un'altra azienda")){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(errore);
-            }
-
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
-        }
+        adminAziendaleService.modificaDati(dati);
+        return  ResponseEntity.status(HttpStatus.OK).body("Dati modificati con successo!");
     }
 
     @GetMapping("/datiUtente")
-    public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session){
+    public ResponseEntity<ModificaDatiUtenteDTO> invioDatiUtente(HttpSession session) throws SQLException {
 
         Integer idUtente = (Integer)session.getAttribute("idUtente");
 
@@ -62,16 +45,12 @@ public class ControllerModificaDati {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        try{
-            ModificaDatiUtenteDTO dati=utenteService.getDatiUtente(idUtente);
-            return  ResponseEntity.status(HttpStatus.OK).body(dati);
-        }catch (SQLException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        ModificaDatiUtenteDTO dati=utenteService.getDatiUtente(idUtente);
+        return  ResponseEntity.status(HttpStatus.OK).body(dati);
     }
 
     @GetMapping("/luoghiAzienda")
-    public ResponseEntity<List<LuogoDTO>> getLuoghiCorrenti(HttpSession session) {
+    public ResponseEntity<List<LuogoDTO>> getLuoghiCorrenti(HttpSession session) throws SQLException {
 
         Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
 
@@ -79,16 +58,12 @@ public class ControllerModificaDati {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    adminAziendaleService.getLuoghiCorrenti(idAzienda));
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                adminAziendaleService.getLuoghiCorrenti(idAzienda));
     }
 
     @PostMapping("/aggiungiLuogo")
-    public ResponseEntity<String> aggiungiLuogo(@RequestBody LuogoDTO luogo, HttpSession session){
+    public ResponseEntity<String> aggiungiLuogo(@RequestBody LuogoDTO luogo, HttpSession session) throws SQLException {
 
         Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
 
@@ -96,29 +71,20 @@ public class ControllerModificaDati {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        try {
-            luogo.setIdAzienda(idAzienda);
-            adminAziendaleService.aggiungiLuogo(luogo);
-            return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al DB");
-        }
+        luogo.setIdAzienda(idAzienda);
+        adminAziendaleService.aggiungiLuogo(luogo);
+        return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
     }
 
     @PostMapping("/eliminaLuogo")
-    public ResponseEntity<String> eliminaLuogo(@RequestBody Integer idLuogo){
-        try {
-            if(adminAziendaleService.eliminaLuogo(idLuogo))
-                return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
-            else
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore di connessione al DB");
-        }
+    public ResponseEntity<String> eliminaLuogo(@RequestBody Integer idLuogo) throws SQLException {
+        if(adminAziendaleService.eliminaLuogo(idLuogo))
+            return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
     @PostMapping("/impostaSede")
-    public ResponseEntity<String> impostaSede(@RequestBody Integer idLuogo, HttpSession session){
+    public ResponseEntity<String> impostaSede(@RequestBody Integer idLuogo, HttpSession session) throws SQLException {
 
         Integer idAzienda =  (Integer)session.getAttribute("idAzienda");
 
@@ -126,12 +92,8 @@ public class ControllerModificaDati {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        try {
-            if(aziendaService.impostaSede(idLuogo, idAzienda))
-                return ResponseEntity.status(HttpStatus.OK).body("Sede modificati con successo!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
-        }
+        if(aziendaService.impostaSede(idLuogo, idAzienda))
+            return ResponseEntity.status(HttpStatus.OK).body("Sede modificati con successo!");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel sistema");
     }
 }

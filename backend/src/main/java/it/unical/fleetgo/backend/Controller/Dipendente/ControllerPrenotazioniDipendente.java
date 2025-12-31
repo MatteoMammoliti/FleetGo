@@ -8,54 +8,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardDipendente")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerPrenotazioniDipendente {
 
     @Autowired private DipendenteService dipendenteService;
     @Autowired private PrenotazioniDipendentiService prenotazioniDipendentiService;
 
     @GetMapping("/leMiePrenotazioni")
-    public ResponseEntity<List<RichiestaNoleggioDTO>> getLeMiePrenotazioni(HttpSession session){
+    public ResponseEntity<List<RichiestaNoleggioDTO>> getLeMiePrenotazioni(HttpSession session) throws SQLException {
 
         Integer idAzienda=(Integer)session.getAttribute("idAziendaAssociata");
+        Integer idUtente =  (Integer) session.getAttribute("idUtente");
 
-        if(idAzienda==null){
+        if(idAzienda==null || idUtente==null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        try{
-            return ResponseEntity.ok(this.dipendenteService.getRichiesteNoleggioDipendente(
-                    (Integer) session.getAttribute("idUtente"),
-                    idAzienda));
-
-        }catch (SQLException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(this.dipendenteService.getRichiesteNoleggioDipendente(
+                idUtente,
+                idAzienda)
+        );
     }
 
     @PostMapping("/eliminaRichiesta")
-    public ResponseEntity eliminaRichiesta(@RequestBody Integer idRichiesta, HttpSession session) {
+    public ResponseEntity<String> eliminaRichiesta(@RequestBody Integer idRichiesta, HttpSession session) throws SQLException {
         Integer idDipendente=(Integer) session.getAttribute("idUtente");
-        System.out.println(idDipendente);
+
         if(idDipendente == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        try{
-            return ResponseEntity.ok(this.prenotazioniDipendentiService.eliminaRichiesta(idRichiesta));
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
-        }
+
+        this.prenotazioniDipendentiService.eliminaRichiesta(idRichiesta);
+        return ResponseEntity.ok("Prenotazione eliminata con successo");
     }
 }

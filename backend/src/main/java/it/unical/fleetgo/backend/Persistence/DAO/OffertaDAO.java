@@ -25,7 +25,7 @@ public class OffertaDAO {
             ps.setInt(4, offertaDTO.getPercentualeSconto());
             ps.setString(5, offertaDTO.getImmagineCopertina());
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -55,7 +55,7 @@ public class OffertaDAO {
             }
 
             return offerteDisponibili;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -66,7 +66,7 @@ public class OffertaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idOfferta);
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -88,7 +88,7 @@ public class OffertaDAO {
                 o.setImmagineCopertina(rs.getString("immagine_copertina"));
                 return o;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -99,7 +99,7 @@ public class OffertaDAO {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

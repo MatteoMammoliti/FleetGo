@@ -4,6 +4,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import it.unical.fleetgo.backend.Exceptions.EmailEsistente;
 import it.unical.fleetgo.backend.Models.DTO.*;
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
@@ -12,6 +13,7 @@ import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -24,10 +26,59 @@ public class AdminAziendaleService {
 
     @Autowired private DataSource dataSource;
     @Autowired private EmailService emailService;
+    @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private GeneratorePdfService generatorePdfService;
 
     @Value("${stripe.api.key}") private String stripeApiKey;
     @Value("${app.frontend.url}") private String urlReinderizzazione;
+
+    public void registraAdminEAzienda(ContenitoreDatiRegistrazioneAzienda contenitore) throws SQLException {
+
+        Connection connection = this.dataSource.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+
+            if(utenteDAO.esisteEmail(contenitore.getAdminAziendale().getEmail())){
+                throw new EmailEsistente();
+            }
+
+            Integer idUtente = utenteDAO.inserisciUtente(contenitore.getAdminAziendale());
+
+            if(idUtente == null) {
+                connection.rollback();
+            }
+
+            String passwordCriptata = passwordEncoder.encode(contenitore.getAdminAziendale().getPassword());
+
+            if(!credenzialiDAO.creaCredenzialiUtente(
+                    idUtente,
+                    contenitore.getAdminAziendale().getEmail().toLowerCase(),
+                    passwordCriptata,
+                    null)){
+                connection.rollback();
+            }
+
+            contenitore.getAzienda().setIdAdminAzienda(idUtente);
+
+            AziendaDAO aziendaDAO = new  AziendaDAO(connection);
+            aziendaDAO.inserisciAzienda(contenitore.getAzienda());
+
+            emailService.inviaCredenzialiAdAdminAziendale(
+                    contenitore.adminAziendale.getEmail(),
+                    contenitore.adminAziendale.getPassword()
+            );
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
 
     public void modificaDati(ModificaDatiUtenteDTO dati) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
@@ -105,18 +156,14 @@ public class AdminAziendaleService {
         Connection connection = this.dataSource.getConnection();
 
         try{
-
-            System.out.println("sono qui");
-            System.out.println("arrivato:" + luogo.getIdLuogo() + luogo.getNomeLuogo() + luogo.getIdAzienda());
             connection.setAutoCommit(false);
 
-            Integer idLuogo = null;
+            Integer idLuogo;
 
             try {
                 LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
                 idLuogo = luogoAziendaDAO.inserisciLuogo(luogo);
             } catch (Exception e) {
-                e.printStackTrace();
                 connection.rollback();
                 return;
             }
@@ -128,14 +175,12 @@ public class AdminAziendaleService {
                     luogo.setIdLuogo(idLuogo);
                     aziendaDAO.impostaSedeAzienda(luogo.getIdLuogo(), luogo.getIdAzienda());
                 } catch (Exception e) {
-                    e.printStackTrace();
                     connection.rollback();
                     return;
                 }
             }
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
             connection.rollback();
             throw new SQLException(e);
         } finally {

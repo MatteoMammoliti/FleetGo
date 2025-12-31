@@ -1,5 +1,7 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Exceptions.FattureDaGenerare;
+import it.unical.fleetgo.backend.Exceptions.NoleggiInCorsoPresenti;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
@@ -16,19 +18,10 @@ public class AziendaService {
 
     @Autowired private DataSource dataSource;
 
-    public void registraAzienda(AziendaDTO azienda) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            AziendaDAO aziendaDAO = new AziendaDAO(connection);
-            if(!aziendaDAO.inserisciAzienda(azienda)) {
-                throw new RuntimeException("Problema durante l'inserimento dell'azienda");
-            }
-        }
-    }
-
-    public boolean riabilitaAzienda(Integer idAzienda) throws SQLException {
+    public void riabilitaAzienda(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             AziendaDAO aziendaDAO =  new AziendaDAO(connection);
-            return aziendaDAO.gestisciAttivitaAzienda(idAzienda, true);
+            aziendaDAO.gestisciAttivitaAzienda(idAzienda, true);
         }
     }
 
@@ -47,12 +40,12 @@ public class AziendaService {
 
                 if(generaFatturaDAO.ciSonoFattureDaGenerare(idAzienda)){
                     connection.rollback();
-                    throw new IllegalStateException("Esistono fatture da generare");
+                    throw new FattureDaGenerare();
                 }
 
                 if(richiestaNoleggioDAO.getRichiesteAccettateEInCorso(idAzienda)) {
                     connection.rollback();
-                    throw new IllegalStateException("Esistono richieste di noleggio in corso o accettate");
+                    throw new NoleggiInCorsoPresenti();
                 }
 
                 richiestaNoleggioDAO.eliminaRichiesteInAttesa(idAzienda);
@@ -65,7 +58,7 @@ public class AziendaService {
                 connection.commit();
             }catch (SQLException e){
                 connection.rollback();
-                throw new SQLException("Errore durante le operazioni nel DB");
+                throw new RuntimeException(e);
             }finally {
                 connection.setAutoCommit(true);
             }

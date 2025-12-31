@@ -15,7 +15,6 @@ public class VeicoloDTO {
     private Integer idModello;
     private String nomeModello;
     private String tipoDistribuzioneVeicolo;
-    private Integer livelloCarburante;
     private String statusContrattualeVeicolo;
     private Boolean inManutenzione;
     private String nomeAziendaAffiliata;
@@ -32,7 +31,6 @@ public class VeicoloDTO {
         this.idModello = veicolo.getIdModello();
         this.nomeModello = veicolo.getNomeModello();
         this.tipoDistribuzioneVeicolo = veicolo.getTipoDistribuzioneVeicolo();
-        this.livelloCarburante = veicolo.getLivelloCarburante();
         this.inManutenzione = veicolo.getInManutenzione();
         this.statusContrattualeVeicolo = veicolo.getStatusContrattualeVeicolo();
         this.nomeAziendaAffiliata = veicolo.getNomeAziendaAffiliata();

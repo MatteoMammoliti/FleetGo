@@ -1,4 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
+import it.unical.fleetgo.backend.Exceptions.TargaPresente;
+import it.unical.fleetgo.backend.Exceptions.VeicoloAssegnato;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
@@ -17,15 +19,21 @@ public class VeicoloDAO {
         this.connection = connection;
     }
 
-    public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
-        String query = "INSERT INTO veicolo(targa, modello_veicolo, tipo_distribuzione_veicolo, livello_carburante_veicolo) VALUES (?, ?, ?, ?)";
+    public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) {
+        String query = "INSERT INTO veicolo(targa, modello_veicolo, tipo_distribuzione_veicolo) VALUES (?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query))  {
             ps.setString(1, veicoloDTO.getTargaVeicolo());
             ps.setInt(2, veicoloDTO.getIdModello());
             ps.setString(3, veicoloDTO.getTipoDistribuzioneVeicolo());
-            ps.setInt(4, veicoloDTO.getLivelloCarburante());
             return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+
+            if(e.getSQLState().equals("23505")) {
+                throw new TargaPresente();
+            }
+
+            throw new RuntimeException(e);
         }
     }
 
@@ -38,7 +46,7 @@ public class VeicoloDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()) {
-                throw new IllegalStateException("Veicolo assegnato ad un azienda. Revocarlo prima di eliminarlo");
+                throw new VeicoloAssegnato("Veicolo assegnato ad un azienda. Revocarlo prima di eliminarlo");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -149,7 +157,6 @@ public class VeicoloDAO {
                 return getVeicoloDaResultSet(rs,true,false);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return null;
@@ -167,18 +174,6 @@ public class VeicoloDAO {
         }
     }
 
-    public boolean cambiaStatusManutenzioneVeicolo(Boolean manutenzione, Integer idVeicolo) {
-        String query = "UPDATE veicolo SET in_manutenzione = ? WHERE id_veicolo = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setBoolean(1, manutenzione);
-            ps.setInt(2, idVeicolo);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Veicolo getVeicoloDaResultSet(ResultSet rs,boolean conLuogo,boolean soloAzienda) throws SQLException {
         Veicolo v = new Veicolo();
         v.setIdVeicolo(rs.getInt("id_veicolo"));
@@ -187,7 +182,6 @@ public class VeicoloDAO {
         v.setIdModello(rs.getInt("modello_veicolo"));
         v.setUrlImmagine(rs.getString("url_immagine"));
         v.setTipoDistribuzioneVeicolo(rs.getString("tipo_distribuzione_veicolo"));
-        v.setLivelloCarburante(rs.getInt("livello_carburante_veicolo"));
         v.setStatusContrattualeVeicolo(rs.getString("status_contrattuale"));
         v.setInManutenzione(rs.getBoolean("in_manutenzione"));
         if(conLuogo){
@@ -200,8 +194,6 @@ public class VeicoloDAO {
             v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));;
             v.setIdAziendaAffiliata(rs.getInt("id_azienda"));
             v.setLuogo(luogo);
-
-            System.out.println("sto settendo l'id" + v.getIdAziendaAffiliata());
         }
         if(soloAzienda){
             v.setNomeAziendaAffiliata(rs.getString("nome_azienda"));

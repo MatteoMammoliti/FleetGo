@@ -3,8 +3,8 @@
     <div class="lg:col-span-3 flex flex-col gap-3 sticky top-6">
       <button (click)="cambiaTab('Profilo')"
               class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
-              [ngClass]="tabSelezionata === 'Profilo' 
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50' 
+              [ngClass]="tabSelezionata === 'Profilo'
+                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
              [ngClass]="tabSelezionata === 'Profilo' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
@@ -15,8 +15,8 @@
 
       <button (click)="cambiaTab('Patente')"
               class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
-              [ngClass]="tabSelezionata === 'Patente' 
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50' 
+              [ngClass]="tabSelezionata === 'Patente'
+                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
              [ngClass]="tabSelezionata === 'Patente' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
@@ -27,8 +27,8 @@
 
       <button (click)="cambiaTab('Azienda')"
               class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
-              [ngClass]="tabSelezionata === 'Azienda' 
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50' 
+              [ngClass]="tabSelezionata === 'Azienda'
+                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
              [ngClass]="tabSelezionata === 'Azienda' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
@@ -40,27 +40,27 @@
     </div>
 
     <div class="lg:col-span-9">
-      
+
       @if (sezione === 'Profilo') {
-        <app-profilo-personale 
+        <app-profilo-personale
             [utente]="utente"
             (clickSalva)="inviaModifiche($event)">
         </app-profilo-personale>
       }
 
       @else if (sezione === 'Patente') {
-        <app-patente-documenti 
-            [datiPatente]="estraiDatiPatente()"
-            (salva)="aggiornaPatente($event)"
-            (cambioImmagine)="aggiornaFotoPatente($event)">
+        <app-patente-documenti
+            [datiPatente]="urlPatente"
+            (salva)="aggiornaPatente($event)">
         </app-patente-documenti>
       }
 
       @else if (sezione === 'Azienda'){
-        <app-affiliazione-azienda [datiAzienda]="utente">
+        <app-affiliazione-azienda
+          [datiAzienda]="utente">
         </app-affiliazione-azienda>
       }
-      
+
     </div>
 
   </div>

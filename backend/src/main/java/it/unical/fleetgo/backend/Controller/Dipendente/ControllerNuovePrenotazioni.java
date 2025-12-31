@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardDipendente")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerNuovePrenotazioni {
 
     @Autowired private AziendaService aziendaService;
@@ -28,69 +27,38 @@ public class ControllerNuovePrenotazioni {
                                                                    @RequestParam("oraInizio")String oraInizio,
                                                                    @RequestParam("oraFine") String oraFine,
                                                                    @RequestParam("nomeLuogo") String nomeLuogo,
-                                           HttpSession session){
+                                           HttpSession session) throws SQLException {
         Integer idAziendaAssociata= (Integer) session.getAttribute("idAziendaAssociata");
         if(idAziendaAssociata==null){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        try{
-            return ResponseEntity.ok(service.getVeicoli(idAziendaAssociata,dataRitiro,dataConsegna,oraInizio,oraFine,nomeLuogo));
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+
+        return ResponseEntity.ok(service.getVeicoli(
+                idAziendaAssociata,dataRitiro,dataConsegna,oraInizio,oraFine,nomeLuogo)
+        );
     }
 
     @GetMapping("/caricaLuoghi")
-    public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session){
+    public ResponseEntity<List<LuogoDTO>> getLuoghiAzienda(HttpSession session) throws SQLException {
         Integer idAziendaAssociata= (Integer) session.getAttribute("idAziendaAssociata");
         if(idAziendaAssociata==null){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        try{
-            return ResponseEntity.ok(service.getLuogoAzienda(idAziendaAssociata));
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getLuogoAzienda(idAziendaAssociata));
     }
 
     @PostMapping("/inviaRichiesta")
-    public ResponseEntity<String> inviaNuovaRichiesta(@RequestBody RichiestaNoleggioDTO richiesta, HttpSession session){
+    public ResponseEntity<String> inviaNuovaRichiesta(@RequestBody RichiestaNoleggioDTO richiesta, HttpSession session) throws SQLException {
         Integer idDipendente= (Integer) session.getAttribute("idUtente");
         Integer idAzienda=(Integer) session.getAttribute("idAziendaAssociata");
 
-        try {
-            if(idDipendente==null || idAzienda==null || !aziendaService.isAziendaAttiva(idAzienda)){
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
-        } catch (SQLException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        if(idDipendente==null || idAzienda==null || !aziendaService.isAziendaAttiva(idAzienda)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         richiesta.setIdDipendente(idDipendente);
         richiesta.setIdAziendaRiferimento(idAzienda);
-
-        try{
-            Integer richiestaGenerata=this.service.inviaRichiestaNoleggio(richiesta);
-            if(richiestaGenerata!=null){
-                return new ResponseEntity<>("Richiesta generata con successo", HttpStatus.CREATED);
-            }else
-            {
-                return new ResponseEntity<>("Richiesta non valido", HttpStatus.BAD_REQUEST);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.service.inviaRichiestaNoleggio(richiesta);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Richiesta generata con successo");
     }
 }

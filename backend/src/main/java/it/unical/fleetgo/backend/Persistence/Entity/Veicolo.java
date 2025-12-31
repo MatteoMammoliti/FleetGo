@@ -12,7 +12,6 @@ public class Veicolo {
     private Integer idModello;
     private String nomeModello;
     private String tipoDistribuzioneVeicolo;
-    private Integer livelloCarburante;
     private String statusContrattualeVeicolo;
     private String nomeAziendaAffiliata;
     private Integer idAziendaAffiliata;

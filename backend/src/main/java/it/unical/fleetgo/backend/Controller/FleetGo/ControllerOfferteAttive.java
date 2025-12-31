@@ -9,46 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dashboardFleetGo")
-@CrossOrigin(value ="http://localhost:4200",allowCredentials = "true")
 public class ControllerOfferteAttive {
 
     @Autowired FleetGoService fleetGoService;
-    @Autowired SalvataggioImmagineService salvataggioImmagineService;
 
     @PostMapping(path = "/inserisciOfferta", consumes = { "multipart/form-data" })
-    public ResponseEntity<String> inserisciNuovaOfferta(@RequestPart("offerta") OffertaDTO offerta, @RequestPart("immagine")MultipartFile immagine) {
-        try {
-            String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
-            offerta.setImmagineCopertina(urlImmagine);
-            fleetGoService.inserisciNuovaOfferta(offerta);
-            return ResponseEntity.status(HttpStatus.OK).body("Inserimento offerta riuscito");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inserimento non riuscito");
-        }
+    public ResponseEntity<String> inserisciNuovaOfferta(@RequestPart("offerta") OffertaDTO offerta, @RequestPart("immagine")MultipartFile immagine) throws IOException, SQLException {
+
+        fleetGoService.inserisciNuovaOfferta(offerta, immagine);
+        return ResponseEntity.status(HttpStatus.OK).body("Inserimento offerta riuscito");
     }
 
     @PostMapping("/eliminaOfferta")
-    public ResponseEntity<String> eliminaOfferta(@RequestBody Integer idOfferta) {
-        try {
-            fleetGoService.eliminaOfferta(idOfferta);
-            return ResponseEntity.status(HttpStatus.OK).body("Eliminazione offerta riuscito");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inserimento non riuscito");
-        }
+    public ResponseEntity<String> eliminaOfferta(@RequestBody Integer idOfferta) throws SQLException {
+        fleetGoService.eliminaOfferta(idOfferta);
+        return ResponseEntity.status(HttpStatus.OK).body("Eliminazione offerta riuscito");
     }
 
     @GetMapping("/getOfferte")
-    public ResponseEntity<List<OffertaDTO>> getOfferteAttive() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    fleetGoService.getOfferteAttive()
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<List<OffertaDTO>> getOfferteAttive() throws SQLException {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                fleetGoService.getOfferteAttive()
+        );
     }
 }

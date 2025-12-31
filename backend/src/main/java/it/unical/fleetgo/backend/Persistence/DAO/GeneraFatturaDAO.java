@@ -5,6 +5,7 @@ import it.unical.fleetgo.backend.Models.DTO.FatturaDaGenerareDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class GeneraFatturaDAO {
                         rs.getFloat("totale_da_fatturare"));
                 fatturaDaGenerare.add(fatturaDaGenerareDTO);
             }
-        }catch (Exception ex){
+        }catch (SQLException ex){
             throw new RuntimeException(ex);
         }
         return fatturaDaGenerare;
@@ -44,7 +45,7 @@ public class GeneraFatturaDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()) return rs.getFloat("totale_da_fatturare");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -58,7 +59,7 @@ public class GeneraFatturaDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()) return rs.getFloat("totale_da_fatturare") > 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return false;

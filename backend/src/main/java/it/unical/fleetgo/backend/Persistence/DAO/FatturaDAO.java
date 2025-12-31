@@ -33,7 +33,7 @@ public class FatturaDAO {
             }
 
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -43,7 +43,7 @@ public class FatturaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, numeroFattura);
             return ps.executeUpdate() > 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -54,7 +54,7 @@ public class FatturaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, anno);
             return creaListaFattura(ps);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -96,7 +96,7 @@ public class FatturaDAO {
             }
 
             return anni;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -116,7 +116,7 @@ public class FatturaDAO {
             }
 
             return anni;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -127,7 +127,7 @@ public class FatturaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
             return creaListaFattura(ps);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

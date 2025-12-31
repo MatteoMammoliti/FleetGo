@@ -1,5 +1,7 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Exceptions.EmailEsistente;
+import it.unical.fleetgo.backend.Exceptions.PIVAEsistente;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
@@ -42,26 +44,29 @@ public class AziendaDAO {
         }
     }
 
-    public boolean inserisciAzienda(AziendaDTO azienda){
+    public void inserisciAzienda(AziendaDTO azienda){
         String query = "INSERT INTO azienda(id_admin_azienda, nome_azienda, p_iva) VALUES (?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, azienda.getIdAdminAzienda());
             ps.setString(2, azienda.getNomeAzienda());
             ps.setString(3, azienda.getPIva());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e){
+            if (e.getSQLState().equals("23505") && (e.getMessage().contains("p_iva") || e.getMessage().contains("partita_iva"))) {
+                throw new PIVAEsistente();
+            }
             throw new RuntimeException(e);
         }
     }
 
-    public boolean gestisciAttivitaAzienda(Integer idAzienda, Boolean status) {
+    public void gestisciAttivitaAzienda(Integer idAzienda, Boolean status) {
         String query = "UPDATE azienda SET attiva = ? WHERE id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, status);
             ps.setInt(2, idAzienda);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

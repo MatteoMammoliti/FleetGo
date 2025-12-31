@@ -28,7 +28,7 @@ public class LuogoAziendaDAO {
             if (rs.next()) {
                 return rs.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -40,7 +40,7 @@ public class LuogoAziendaDAO {
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id_luogo);
             return ps.execute();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +64,7 @@ public class LuogoAziendaDAO {
                 luoghi.add(l);
             }
             return luoghi;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

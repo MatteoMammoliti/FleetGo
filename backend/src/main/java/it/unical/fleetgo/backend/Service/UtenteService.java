@@ -1,5 +1,8 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Exceptions.CodiceOTPErrato;
+import it.unical.fleetgo.backend.Exceptions.EmailEsistente;
+import it.unical.fleetgo.backend.Exceptions.EmailNonEsistente;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.ModificaDatiUtenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
@@ -10,7 +13,10 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -20,15 +26,16 @@ public class UtenteService {
     @Autowired private EmailService emailService;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private DataSource dataSource;
+    @Autowired private SalvataggioImmagineService salvataggioImmagineService;
 
-    public Integer registraUtente(UtenteDTO utenteDTO) throws SQLException {
+    public void registraUtente(UtenteDTO utenteDTO, MultipartFile immagine) throws SQLException, IOException {
 
         try(Connection connection = dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
 
             if(utenteDAO.esisteEmail(utenteDTO.getEmail())){
-                throw new IllegalArgumentException("Email non valida");
+                throw new EmailEsistente();
             }
 
             try {
@@ -38,27 +45,25 @@ public class UtenteService {
 
                 if (idAggiunta == null) {
                     connection.rollback();
-                    throw new RuntimeException("Problema durante l'inserimento dell'utente");
                 }
 
-                String urlImmagine = null;
-                if(utenteDTO instanceof DipendenteDTO) {
-                    urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
-                }
+                String urlImg = salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                ((DipendenteDTO) utenteDTO).setUrlImmagine(urlImg);
 
+                String urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
                 String passwordCriptata = passwordEncoder.encode(utenteDTO.getPassword());
 
                 if (!credenzialiDAO.creaCredenzialiUtente(idAggiunta, utenteDTO.getEmail().toLowerCase(), passwordCriptata, urlImmagine)) {
                     connection.rollback();
-                    throw new RuntimeException("Problema durante l'inserimento delle credenziali");
                 }
 
                 connection.commit();
-                return idAggiunta;
 
             }catch (SQLException ex) {
                 throw new RuntimeException(ex);
-            }finally {
+            } catch (IOException e) {
+                throw new IOException(e);
+            } finally {
 
                 try {
                     connection.setAutoCommit(true);
@@ -67,17 +72,10 @@ public class UtenteService {
         }
     }
 
-    public void eliminaUtente(Integer idUtente) throws SQLException {
-        try(Connection connection = dataSource.getConnection()) {
-            UtenteDAO utenteDAO = new UtenteDAO(connection);
-            utenteDAO.eliminaUtente(idUtente);
-        }
-    }
-
     public ModificaDatiUtenteDTO getDatiUtente(Integer idUtente) throws SQLException {
         try(Connection connection = dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
-            return utenteDAO.getDatiUtente(idUtente);
+            return utenteDAO.getDatiAdminAziendale(idUtente);
         }
     }
 
@@ -92,6 +90,11 @@ public class UtenteService {
 
         try(Connection connection = this.dataSource.getConnection()) {
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+            UtenteDAO utenteDAO = new UtenteDAO(connection);
+
+            if (!utenteDAO.esisteEmail(email)) {
+                throw new EmailNonEsistente();
+            }
 
             int codiceOTP = RandomUtils.nextInt(100000, 999999);
             emailService.inviaCodiceOtp(email, codiceOTP);
@@ -111,13 +114,12 @@ public class UtenteService {
 
             if(!credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email)) {
                 connection.rollback();
-                throw new RuntimeException("Problema durante l'inserimento della password");
+                throw new CodiceOTPErrato();
             }
 
             if(credenzialiDAO.getRuoloByEmail(email).equals("AdminAziendale")) {
                 if(!credenzialiDAO.impostaPrimoAccesso(email)){
                     connection.rollback();
-                    throw new RuntimeException("Problema durante l'inserimento della password");
                 }
             }
 

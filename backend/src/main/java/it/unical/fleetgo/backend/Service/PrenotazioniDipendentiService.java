@@ -1,5 +1,8 @@
 package it.unical.fleetgo.backend.Service;
 
+import it.unical.fleetgo.backend.Exceptions.DatePrenotazioneNonValide;
+import it.unical.fleetgo.backend.Exceptions.PrenotazioneEsistente;
+import it.unical.fleetgo.backend.Exceptions.PrenotazioneNonEsistente;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloPrenotazioneDTO;
@@ -40,7 +43,6 @@ public class PrenotazioniDipendentiService {
                 veicoloDTO.setNomeModello(v.getNomeModello());
                 veicoloDTO.setTargaVeicolo(v.getTargaVeicolo());
                 veicoloDTO.setTipoDistribuzioneVeicolo(v.getTipoDistribuzioneVeicolo());
-                veicoloDTO.setLivelloCarburante(v.getLivelloCarburante());
                 LuogoDTO luogoDTO = new LuogoDTO();
                 luogoDTO.setNomeLuogo(v.getLuogo().getNomeLuogo());
                 veicoloDTO.setLuogoRitiroDeposito(luogoDTO);
@@ -64,18 +66,25 @@ public class PrenotazioniDipendentiService {
         }
     }
 
-    public Integer inviaRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio) throws SQLException {
+    public boolean inviaRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
             Double prezzoStimato=this.calcoloPrezzoRichiesta(richiestaNoleggio);
-            return dao.aggiungiRichiestaNoleggio(richiestaNoleggio,prezzoStimato);
+
+            if(dao.aggiungiRichiestaNoleggio(richiestaNoleggio,prezzoStimato)) {
+                return true;
+            }
+            throw new PrenotazioneEsistente();
         }
     }
 
     public boolean eliminaRichiesta(Integer idRichiestaNoleggio) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            return dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio);
+            if(dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio)){
+                return true;
+            }
+            throw new PrenotazioneNonEsistente();
         }
     }
 
@@ -84,11 +93,11 @@ public class PrenotazioniDipendentiService {
         LocalDateTime inizio = LocalDateTime.parse(richiesta.getDataRitiro() + "T" + richiesta.getOraInizio());
         LocalDateTime fine = LocalDateTime.parse(richiesta.getDataConsegna()+ "T" + richiesta.getOraFine());
         long minutiTotali = ChronoUnit.MINUTES.between(inizio, fine);
+
         if (minutiTotali <= 0) {
-            throw new RuntimeException("Le date inserite non sono valide (fine prima dell'inizio)");
+            throw new DatePrenotazioneNonValide();
         }
-        return minutiTotali * this.TARRIFA;
 
+        return minutiTotali * TARRIFA;
     }
-
 }
