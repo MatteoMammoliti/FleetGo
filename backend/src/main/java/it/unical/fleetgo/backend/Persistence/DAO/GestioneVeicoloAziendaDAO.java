@@ -135,19 +135,6 @@ public class GestioneVeicoloAziendaDAO {
         }
     }
 
-    public Integer getVeicoliNoleggiatiByIdAzienda(Integer idAzienda){
-        String query = "SELECT COUNT(*) as numero_noleggi FROM gestione_veicolo_azienda WHERE id_azienda = ? AND disponibile_per_noleggio = false";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)){
-            ps.setInt(1, idAzienda);
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) return rs.getInt("numero_noleggi");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
 
     public boolean impostaLuogoVeicolo(VeicoloDTO veicoloDTO) {
         String query = "UPDATE gestione_veicolo_azienda SET luogo_ritiro_consegna = ?, disponibile_per_noleggio = true WHERE id_veicolo = ? AND id_azienda = ?";

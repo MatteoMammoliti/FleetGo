@@ -181,8 +181,8 @@ public class AdminAziendaleService {
 
     public Integer getVeicoliNoleggiati(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
-            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
-            return gestioneVeicoloAziendaDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
+            return richiestaNoleggioDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
         }
     }
 
