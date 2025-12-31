@@ -66,23 +66,23 @@ public class PrenotazioniDipendentiService {
         }
     }
 
-    public boolean inviaRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio) throws SQLException {
+    public void inviaRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
             Double prezzoStimato=this.calcoloPrezzoRichiesta(richiestaNoleggio);
 
             if(dao.aggiungiRichiestaNoleggio(richiestaNoleggio,prezzoStimato)) {
-                return true;
+                return;
             }
             throw new PrenotazioneEsistente();
         }
     }
 
-    public boolean eliminaRichiesta(Integer idRichiestaNoleggio) throws SQLException {
+    public void eliminaRichiesta(Integer idRichiestaNoleggio) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
             if(dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio)){
-                return true;
+                return;
             }
             throw new PrenotazioneNonEsistente();
         }

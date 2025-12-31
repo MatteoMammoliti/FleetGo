@@ -34,49 +34,49 @@ public class AdminAziendaleService {
 
     public void registraAdminEAzienda(ContenitoreDatiRegistrazioneAzienda contenitore) throws SQLException {
 
-        Connection connection = this.dataSource.getConnection();
+        try(Connection connection = this.dataSource.getConnection()){
+            try {
+                connection.setAutoCommit(false);
 
-        try {
-            connection.setAutoCommit(false);
+                UtenteDAO utenteDAO = new UtenteDAO(connection);
+                CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
 
-            UtenteDAO utenteDAO = new UtenteDAO(connection);
-            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+                if(utenteDAO.esisteEmail(contenitore.getAdminAziendale().getEmail())){
+                    throw new EmailEsistente();
+                }
 
-            if(utenteDAO.esisteEmail(contenitore.getAdminAziendale().getEmail())){
-                throw new EmailEsistente();
-            }
+                Integer idUtente = utenteDAO.inserisciUtente(contenitore.getAdminAziendale());
 
-            Integer idUtente = utenteDAO.inserisciUtente(contenitore.getAdminAziendale());
+                if(idUtente == null) {
+                    connection.rollback();
+                }
 
-            if(idUtente == null) {
+                String passwordCriptata = passwordEncoder.encode(contenitore.getAdminAziendale().getPassword());
+
+                if(!credenzialiDAO.creaCredenzialiUtente(
+                        idUtente,
+                        contenitore.getAdminAziendale().getEmail().toLowerCase(),
+                        passwordCriptata,
+                        null)){
+                    connection.rollback();
+                }
+
+                contenitore.getAzienda().setIdAdminAzienda(idUtente);
+
+                AziendaDAO aziendaDAO = new  AziendaDAO(connection);
+                aziendaDAO.inserisciAzienda(contenitore.getAzienda());
+
+                emailService.inviaCredenzialiAdAdminAziendale(
+                        contenitore.adminAziendale.getEmail(),
+                        contenitore.adminAziendale.getPassword()
+                );
+
+                connection.commit();
+            } catch (SQLException e) {
                 connection.rollback();
+            } finally {
+                connection.setAutoCommit(true);
             }
-
-            String passwordCriptata = passwordEncoder.encode(contenitore.getAdminAziendale().getPassword());
-
-            if(!credenzialiDAO.creaCredenzialiUtente(
-                    idUtente,
-                    contenitore.getAdminAziendale().getEmail().toLowerCase(),
-                    passwordCriptata,
-                    null)){
-                connection.rollback();
-            }
-
-            contenitore.getAzienda().setIdAdminAzienda(idUtente);
-
-            AziendaDAO aziendaDAO = new  AziendaDAO(connection);
-            aziendaDAO.inserisciAzienda(contenitore.getAzienda());
-
-            emailService.inviaCredenzialiAdAdminAziendale(
-                    contenitore.adminAziendale.getEmail(),
-                    contenitore.adminAziendale.getPassword()
-            );
-
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-        } finally {
-            connection.setAutoCommit(true);
         }
     }
 
@@ -153,38 +153,38 @@ public class AdminAziendaleService {
 
     public void aggiungiLuogo(LuogoDTO luogo) throws SQLException {
 
-        Connection connection = this.dataSource.getConnection();
+        try(Connection connection = this.dataSource.getConnection()){
+            try{
+                connection.setAutoCommit(false);
 
-        try{
-            connection.setAutoCommit(false);
-
-            Integer idLuogo;
-
-            try {
-                LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
-                idLuogo = luogoAziendaDAO.inserisciLuogo(luogo);
-            } catch (Exception e) {
-                connection.rollback();
-                return;
-            }
-
-            if(!this.isSedeImpostata(luogo.getIdAzienda()) && idLuogo != null) {
+                Integer idLuogo;
 
                 try {
-                    AziendaDAO aziendaDAO = new  AziendaDAO(connection);
-                    luogo.setIdLuogo(idLuogo);
-                    aziendaDAO.impostaSedeAzienda(luogo.getIdLuogo(), luogo.getIdAzienda());
+                    LuogoAziendaDAO luogoAziendaDAO = new LuogoAziendaDAO(connection);
+                    idLuogo = luogoAziendaDAO.inserisciLuogo(luogo);
                 } catch (Exception e) {
                     connection.rollback();
                     return;
                 }
+
+                if(!this.isSedeImpostata(luogo.getIdAzienda()) && idLuogo != null) {
+
+                    try {
+                        AziendaDAO aziendaDAO = new  AziendaDAO(connection);
+                        luogo.setIdLuogo(idLuogo);
+                        aziendaDAO.impostaSedeAzienda(luogo.getIdLuogo(), luogo.getIdAzienda());
+                    } catch (Exception e) {
+                        connection.rollback();
+                        return;
+                    }
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new SQLException(e);
+            } finally {
+                connection.setAutoCommit(true);
             }
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw new SQLException(e);
-        } finally {
-            connection.setAutoCommit(true);
         }
     }
 
@@ -431,29 +431,29 @@ public class AdminAziendaleService {
 
     public void approvazioneConRifiutoAutomatico(Integer idDaApprovare, List<Integer> idRichiesteDaRifiutare) throws SQLException {
 
-        Connection connection = this.dataSource.getConnection();
+        try(Connection connection = this.dataSource.getConnection()){
+            try{
 
-        try{
+                connection.setAutoCommit(false);
 
-            connection.setAutoCommit(false);
+                RichiestaNoleggioDAO richiestaNoleggioDAO = new   RichiestaNoleggioDAO(connection);
+                boolean approvata = richiestaNoleggioDAO.accettaRichiestaNoleggio(idDaApprovare);
 
-            RichiestaNoleggioDAO richiestaNoleggioDAO = new   RichiestaNoleggioDAO(connection);
-            boolean approvata = richiestaNoleggioDAO.accettaRichiestaNoleggio(idDaApprovare);
+                if(!approvata) {
+                    connection.rollback();
+                }
 
-            if(!approvata) {
+                for(Integer id: idRichiesteDaRifiutare) {
+                    richiestaNoleggioDAO.rifiutaRichiestaNoleggio(id);
+                }
+
+                connection.commit();
+            } catch (SQLException e) {
                 connection.rollback();
+                throw new RuntimeException(e);
+            } finally {
+                connection.setAutoCommit(true);
             }
-
-            for(Integer id: idRichiesteDaRifiutare) {
-                richiestaNoleggioDAO.rifiutaRichiestaNoleggio(id);
-            }
-
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw new RuntimeException(e);
-        } finally {
-            connection.setAutoCommit(true);
         }
     }
 

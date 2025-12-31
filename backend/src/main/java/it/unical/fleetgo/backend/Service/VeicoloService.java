@@ -77,60 +77,60 @@ public class VeicoloService {
 
     public void disassociaVeicolo(VeicoloDTO veicoloDTO) throws SQLException {
 
-        Connection connection = this.dataSource.getConnection();
+        try(Connection connection = this.dataSource.getConnection()){
+            try{
 
-        try{
+                connection.setAutoCommit(false);
 
-            connection.setAutoCommit(false);
+                RichiestaNoleggioDAO richiestaNoleggioDAO =  new RichiestaNoleggioDAO(connection);
+                if(richiestaNoleggioDAO.getRichiesteAccettateEInCorsoPerVeicolo(veicoloDTO.getIdAziendaAffiliata(), veicoloDTO.getIdVeicolo())){
+                    connection.rollback();
+                    throw new NoleggiInCorsoDissociamentoVeicolo("Sono in corso noleggi per questo veicolo");
+                };
 
-            RichiestaNoleggioDAO richiestaNoleggioDAO =  new RichiestaNoleggioDAO(connection);
-            if(richiestaNoleggioDAO.getRichiesteAccettateEInCorsoPerVeicolo(veicoloDTO.getIdAziendaAffiliata(), veicoloDTO.getIdVeicolo())){
+                richiestaNoleggioDAO.eliminaRichiesteInAttesaPerVeicolo(veicoloDTO.getIdAziendaAffiliata(),  veicoloDTO.getIdVeicolo());
+
+                GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO =  new GestioneVeicoloAziendaDAO(connection);
+                if(!gestioneVeicoloAziendaDAO.eliminaVeicoloGestito(veicoloDTO.getIdVeicolo())){
+                    connection.rollback();
+                };
+
+                VeicoloDAO veicoloDAO =  new VeicoloDAO(connection);
+                if(!veicoloDAO.cambiaStatusContrattualeVeicolo("Disponibile", veicoloDTO.getIdVeicolo())){
+                    connection.rollback();
+                }
+
+                connection.commit();
+            } catch (SQLException e) {
                 connection.rollback();
-                throw new NoleggiInCorsoDissociamentoVeicolo("Sono in corso noleggi per questo veicolo");
-            };
-
-            richiestaNoleggioDAO.eliminaRichiesteInAttesaPerVeicolo(veicoloDTO.getIdAziendaAffiliata(),  veicoloDTO.getIdVeicolo());
-
-            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO =  new GestioneVeicoloAziendaDAO(connection);
-            if(!gestioneVeicoloAziendaDAO.eliminaVeicoloGestito(veicoloDTO.getIdVeicolo())){
-                connection.rollback();
-            };
-
-            VeicoloDAO veicoloDAO =  new VeicoloDAO(connection);
-            if(!veicoloDAO.cambiaStatusContrattualeVeicolo("Disponibile", veicoloDTO.getIdVeicolo())){
-                connection.rollback();
+                throw new RuntimeException("Errore durante le operazioni nel DB");
+            } finally {
+                connection.setAutoCommit(true);
             }
-
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw new RuntimeException("Errore durante le operazioni nel DB");
-        } finally {
-            connection.setAutoCommit(true);
         }
     }
 
     public void aggiuntaModello(ModelloDTO modello, MultipartFile immagine) throws SQLException, IOException {
 
-        Connection conn = this.dataSource.getConnection();
+        try(Connection conn = this.dataSource.getConnection()){
+            try {
+                conn.setAutoCommit(false);
 
-        try {
-            conn.setAutoCommit(false);
+                String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                modello.setUrlImmagine(urlImmagine);
 
-            String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
-            modello.setUrlImmagine(urlImmagine);
+                ModelloDAO modelloDAO = new ModelloDAO(conn);
+                modelloDAO.inserisciModello(modello);
 
-            ModelloDAO modelloDAO = new ModelloDAO(conn);
-            modelloDAO.inserisciModello(modello);
-
-        } catch (IOException e) {
-            conn.rollback();
-            throw new IOException(e);
-        } catch (SQLException e) {
-            conn.rollback();
-            throw new  RuntimeException(e);
-        } finally {
-            conn.setAutoCommit(true);
+            } catch (IOException e) {
+                conn.rollback();
+                throw new IOException(e);
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new  RuntimeException(e);
+            } finally {
+                conn.setAutoCommit(true);
+            }
         }
     }
 
@@ -156,10 +156,10 @@ public class VeicoloService {
         }
     }
 
-    public Boolean impostaLuogoVeicolo(VeicoloDTO veicolo) throws SQLException {
+    public void impostaLuogoVeicolo(VeicoloDTO veicolo) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()){
             GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
-            return gestioneVeicoloAziendaDAO.impostaLuogoVeicolo(veicolo);
+            gestioneVeicoloAziendaDAO.impostaLuogoVeicolo(veicolo);
         }
     }
 

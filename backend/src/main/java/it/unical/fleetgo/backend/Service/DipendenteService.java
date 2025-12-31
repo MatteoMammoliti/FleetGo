@@ -50,24 +50,24 @@ public class DipendenteService {
 
     public void aggiornaUrlPatente(Integer idDipendente, MultipartFile patente) throws SQLException, IOException {
 
-        Connection connection = dataSource.getConnection();
+        try(Connection connection = dataSource.getConnection()){
+            try {
+                connection.setAutoCommit(false);
 
-        try {
-            connection.setAutoCommit(false);
+                String url = salvataggioImmagineService.salvaImmagine(patente, "immagini-patenti");
+                CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+                credenzialiDAO.updateUrlPatente(idDipendente, url);
 
-            String url = salvataggioImmagineService.salvaImmagine(patente, "immagini-patenti");
-            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
-            credenzialiDAO.updateUrlPatente(idDipendente, url);
-
-            connection.commit();
-        } catch (IOException e){
-            connection.rollback();
-            throw new IOException();
-        } catch (SQLException e){
-            connection.rollback();
-            throw new SQLException();
-        } finally {
-            connection.setAutoCommit(true);
+                connection.commit();
+            } catch (IOException e){
+                connection.rollback();
+                throw new IOException();
+            } catch (SQLException e){
+                connection.rollback();
+                throw new SQLException();
+            } finally {
+                connection.setAutoCommit(true);
+            }
         }
     }
 
@@ -153,33 +153,34 @@ public class DipendenteService {
     }
 
     public void lasciaAzienda(Integer idUtente, Integer idAzienda) throws SQLException {
-        Connection connection = this.dataSource.getConnection();
 
-        try {
+        try(Connection connection = this.dataSource.getConnection()){
+            try {
 
-            connection.setAutoCommit(false);
+                connection.setAutoCommit(false);
 
-            RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
+                RichiestaNoleggioDAO richiestaNoleggioDAO = new  RichiestaNoleggioDAO(connection);
 
-            if(richiestaNoleggioDAO.controlloRichiestaInCorsoDipendente(idUtente)){
+                if(richiestaNoleggioDAO.controlloRichiestaInCorsoDipendente(idUtente)){
+                    connection.rollback();
+                    throw  new DissociazioneAziendaNonConsentita("Sono presenti noleggi in corso o accettati. Dissociazione non permessa");
+                }
+
+                richiestaNoleggioDAO.eliminaRichiesteNoleggioDipendenteEliminato(idUtente,idAzienda);
+
+                RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
+                richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(
+                        idUtente,
+                        idAzienda,
+                        true
+                );
+
+                connection.commit();
+            } catch (SQLException e) {
                 connection.rollback();
-                throw  new DissociazioneAziendaNonConsentita("Sono presenti noleggi in corso o accettati. Dissociazione non permessa");
+            } finally{
+                connection.setAutoCommit(true);
             }
-
-            richiestaNoleggioDAO.eliminaRichiesteNoleggioDipendenteEliminato(idUtente,idAzienda);
-
-            RichiestaAffiliazioneAziendaDAO richiestaAffiliazioneAziendaDAO = new RichiestaAffiliazioneAziendaDAO(connection);
-            richiestaAffiliazioneAziendaDAO.rimuoviRichiestaAffiliazioneAzienda(
-                    idUtente,
-                    idAzienda,
-                    true
-            );
-
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-        } finally{
-            connection.setAutoCommit(true);
         }
     }
 }

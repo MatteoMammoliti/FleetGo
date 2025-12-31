@@ -33,6 +33,7 @@ public class FleetGoService {
             return generaFatturaDAO.getFatturaDaGenerare();
         }
     }
+
     public List<RichiestaManutenzioneDTO> getRichiesteManutenzioneDaAccettare() throws SQLException {
         List<RichiestaManutenzioneDTO> richiesteDTO = new ArrayList<>();
         try(Connection connection=this.dataSource.getConnection()){
@@ -162,25 +163,25 @@ public class FleetGoService {
 
     public void inserisciNuovaOfferta(OffertaDTO offertaDTO, MultipartFile immagine) throws IOException, SQLException {
 
-        Connection conn = this.dataSource.getConnection();
+        try(Connection conn = this.dataSource.getConnection()){
+            try {
+                conn.setAutoCommit(false);
 
-        try {
-            conn.setAutoCommit(false);
+                String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                offertaDTO.setImmagineCopertina(urlImmagine);
 
-            String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
-            offertaDTO.setImmagineCopertina(urlImmagine);
+                OffertaDAO offertaDAO = new OffertaDAO(conn);
+                offertaDAO.inserisciOfferta(offertaDTO);
 
-            OffertaDAO offertaDAO = new OffertaDAO(conn);
-            offertaDAO.inserisciOfferta(offertaDTO);
-
-        } catch (IOException e) {
-            conn.rollback();
-            throw new IOException(e);
-        } catch (SQLException e) {
-            conn.rollback();
-            throw new  RuntimeException(e);
-        } finally {
-            conn.setAutoCommit(true);
+            } catch (IOException e) {
+                conn.rollback();
+                throw new IOException(e);
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new  RuntimeException(e);
+            } finally {
+                conn.setAutoCommit(true);
+            }
         }
     }
 

@@ -60,8 +60,10 @@ public class UtenteService {
                 connection.commit();
 
             }catch (SQLException ex) {
+                connection.rollback();
                 throw new RuntimeException(ex);
             } catch (IOException e) {
+                connection.rollback();
                 throw new IOException(e);
             } finally {
 
@@ -104,32 +106,32 @@ public class UtenteService {
 
     public void modificaPassword(String email, Integer codiceOTP, String nuovaPassword) throws SQLException {
 
-        Connection connection = this.dataSource.getConnection();
+        try(Connection connection = this.dataSource.getConnection()){
+            try{
+                connection.setAutoCommit(false);
 
-        try{
-            connection.setAutoCommit(false);
+                CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
+                String passwordCriptata = passwordEncoder.encode(nuovaPassword);
 
-            CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
-            String passwordCriptata = passwordEncoder.encode(nuovaPassword);
-
-            if(!credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email)) {
-                connection.rollback();
-                throw new CodiceOTPErrato();
-            }
-
-            if(credenzialiDAO.getRuoloByEmail(email).equals("AdminAziendale")) {
-                if(!credenzialiDAO.impostaPrimoAccesso(email)){
+                if(!credenzialiDAO.modificaPassword(codiceOTP, passwordCriptata, email)) {
                     connection.rollback();
+                    throw new CodiceOTPErrato();
                 }
+
+                if(credenzialiDAO.getRuoloByEmail(email).equals("AdminAziendale")) {
+                    if(!credenzialiDAO.impostaPrimoAccesso(email)){
+                        connection.rollback();
+                    }
+                }
+
+                connection.commit();
+
+            } catch (SQLException ex) {
+                connection.rollback();
+                throw new RuntimeException(ex);
+            } finally {
+                connection.setAutoCommit(true);
             }
-
-            connection.commit();
-
-        } catch (SQLException ex) {
-            connection.rollback();
-            throw new RuntimeException(ex);
-        } finally {
-            connection.setAutoCommit(true);
         }
     }
 
