@@ -1,52 +1,128 @@
-import { Component } from '@angular/core';
-import {ProfiloPersonale} from '@features/SezioneDipendente/componenti/profilo-personale/profilo-personale';
-import {NgClass} from '@angular/common';
-import {AffiliazioneAzienda} from '@features/SezioneDipendente/componenti/affiliazione-azienda/affiliazione-azienda';
-import {UtenteDTO} from '@core/models/utenteDTO.model';
-import {ImpostazioniService} from '@features/SezioneDipendente/ServiceSezioneDipendente/impostazioni-service';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
-import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import { ProfiloPersonale } from '../../componenti/profilo-personale/profilo-personale';
+import { PatenteDocumentiComponent } from '../../componenti/patente-documenti/patente-documenti';
+import { AffiliazioneAzienda } from '../../componenti/affiliazione-azienda/affiliazione-azienda';
+import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni-service';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
+  standalone: true,
   imports: [
+    CommonModule,
+    IntestazioneEBackground,
     ProfiloPersonale,
-    NgClass,
+    PatenteDocumentiComponent,
     AffiliazioneAzienda
   ],
   templateUrl: './impostazioni-dipendente.html',
   styleUrl: './impostazioni-dipendente.css',
 })
-export class ImpostazioniDipendente {
-  constructor(private service:ImpostazioniService) {}
-  tabSelezionata:string="";
-  sezione:string="";
-  utente!:ModificaDatiUtenteDTO;
+export class ImpostazioniDipendenteComponent implements OnInit {
+  
+  tabSelezionata: string = 'Profilo';
+  sezione: string = 'Profilo';
+  utente: any = {}; 
 
-  ngOnInit(){
-    this.tabSelezionata="Profilo"
-    this.sezione="Profilo"
-    this.getDipendente()
+  constructor(private impostazioniService: ImpostazioniService) {}
+
+  ngOnInit() {
+    this.caricaDatiUtente();
   }
 
-  cambiaTab(categoria: string) {
-    this.tabSelezionata=categoria;
-    this.sezione=categoria;
-  }
+  caricaDatiUtente() {
+    this.impostazioniService.getDipendente().subscribe({
+      next: (datiServer) => {
+        this.utente = datiServer;
+        
+        const utenteStorage = localStorage.getItem('utente'); 
+        
+        if (utenteStorage) {
+          try {
+            const datiCompleti = JSON.parse(utenteStorage);
+            
+            if (!this.utente.urlImmagine) {
+              this.utente.urlImmagine = datiCompleti.urlImmagine || datiCompleti.imgPatente || datiCompleti.immagine;
+            }
+            if (!this.utente.numeroPatente) this.utente.numeroPatente = datiCompleti.numeroPatente;
+            if (!this.utente.scadenzaPatente) this.utente.scadenzaPatente = datiCompleti.scadenzaPatente;
+            if (!this.utente.nomeAzienda) this.utente.nomeAzienda = datiCompleti.nomeAzienda;
+            if (!this.utente.sedeAzienda) this.utente.sedeAzienda = datiCompleti.sedeAzienda;
+            if (!this.utente.pIva) this.utente.pIva = datiCompleti.pIva;
 
-  getDipendente(){
-    this.service.getDipendente().subscribe({
-      next:(risposta:ModificaDatiUtenteDTO)=>{
-        this.utente=risposta;
+            console.log("DATI RECUPERATI DAL LOGIN:");
+            console.log("- Foto:", this.utente.urlImmagine ? 'OK' : 'Mancante');
+            console.log("- Azienda:", this.utente.nomeAzienda ? this.utente.nomeAzienda : 'Mancante');
+
+          } catch (e) {
+            console.error("Errore lettura localStorage", e);
+          }
+        }
       },
-      error:(err)=>console.error("Errore nel caricare l'utente.")
-    })
+      error: (err) => console.error("Errore caricamento dati:", err)
+    });
   }
-  inviaModifiche(dati:ModificaDatiUtenteDTO){
-    this.service.inviaModifiche(dati).subscribe({
-      next:(risposta:any)=>{
-        this.getDipendente()
-      }
-    })
+
+  cambiaTab(tab: string) {
+    this.tabSelezionata = tab;
+    this.sezione = tab;
+  }
+
+  estraiDatiPatente() {
+    return {
+      numeroPatente: this.utente.numeroPatente,
+      scadenzaPatente: this.utente.scadenzaPatente,
+      urlImmagine: this.utente.urlImmagine
+    };
+  }
+
+  aggiornaPatente(datiPatente: any) {
+    const payload = {
+        ...this.utente,
+        numeroPatente: datiPatente.numeroPatente,
+        scadenzaPatente: datiPatente.scadenzaPatente
+    };
+
+    this.impostazioniService.inviaModifiche(payload).subscribe({
+        next: () => {
+            alert('Modifiche inviate!'); 
+            this.aggiornaLocalStorage(payload);
+        },
+        error: (err: any) => {
+          console.error(err);
+          alert("Dati inviati. Nota: L'aggiornamento della foto potrebbe richiedere verifiche amministrative.");
+        }
+    });
+  }
+
+  aggiornaFotoPatente(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const base64String = e.target.result;
+      this.utente.urlImmagine = base64String;
+      this.utente.imgPatente = base64String; 
+    };
+    reader.readAsDataURL(file);
+  }
+
+  aggiornaLocalStorage(nuoviDati: any) {
+    const utenteStorage = localStorage.getItem('utente');
+    if (utenteStorage) {
+      const datiCompleti = JSON.parse(utenteStorage);
+      const datiAggiornati = { ...datiCompleti, ...nuoviDati };
+      localStorage.setItem('utente', JSON.stringify(datiAggiornati));
+    }
+  }
+
+  inviaModifiche(dati: any) {
+    this.impostazioniService.inviaModifiche(dati).subscribe({
+      next: () => {
+        alert("Profilo aggiornato!");
+        this.aggiornaLocalStorage(dati);
+        this.caricaDatiUtente();
+      },
+      error: (err) => alert("Errore aggiornamento profilo")
+    });
   }
 }

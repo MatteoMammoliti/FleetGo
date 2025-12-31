@@ -13,15 +13,21 @@ export class ImpostazioniService{
 
   constructor(private http: HttpClient) {}
 
-  public getDipendente():Observable<ModificaDatiUtenteDTO>{
-    return this.http.get<ModificaDatiUtenteDTO>(`${this.apiUrl}/dettagliUtente`, {
+  public getDipendente():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/dettagliUtente`, {
       withCredentials:true
     })
   }
 
-  public inviaModifiche(dati:ModificaDatiUtenteDTO):Observable<any>{
+  public inviaModifiche(dati:any):Observable<any>{
     return this.http.post(`${this.apiUrl}/applicaModifiche`, dati,{
       withCredentials:true
     })
+  }
+  public abbandonaAzienda(): Observable<any>{
+    return this.http.post(`${this.apiUrl}/abbandonaAzienda`, {}, {
+      withCredentials: true,
+      responseType: 'text'
+    });
   }
 }

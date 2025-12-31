@@ -11,6 +11,7 @@ export interface LoginResponse {
   idAzienda?:number | null;
   primoAccesso: boolean;
   isAziendaAttiva: boolean | null;
+  [key: string]: any;
 }
 
 @Injectable({
@@ -67,7 +68,7 @@ export class AuthService {
     });
   }
 
-  salvaDatiLogin(response: LoginResponse) {
+  salvaDatiLogin(response: any) {
 
     this.ruoloUtenteCorrente.set(response.ruolo);
     this.idAzienda.set(response.idAzienda || null);
@@ -84,6 +85,7 @@ export class AuthService {
 
     localStorage.setItem('primoAccesso', String(response.primoAccesso));
     localStorage.setItem('isAziendaAttiva', String(response.isAziendaAttiva));
+    localStorage.setItem('utente', JSON.stringify(response));
   }
 
   logout(){
@@ -97,6 +99,7 @@ export class AuthService {
     localStorage.removeItem('ruoloUtenteCorrente');
     localStorage.removeItem('primoAccesso');
     localStorage.removeItem('isAziendaAttiva');
+    localStorage.removeItem('utente');
 
     return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text', withCredentials: true });
   }

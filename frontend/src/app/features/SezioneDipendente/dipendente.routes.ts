@@ -8,7 +8,7 @@ import {
   PrenotazioniDipendente
 } from '@features/SezioneDipendente/Pagine/prenotazioni-dipendente/prenotazioni-dipendente';
 import {
-  ImpostazioniDipendente
+  ImpostazioniDipendenteComponent
 } from '@features/SezioneDipendente/Pagine/impostazioni-dipendente/impostazioni-dipendente';
 
 export const DIPENDENTE_ROUTES: Routes = [
@@ -20,6 +20,6 @@ export const DIPENDENTE_ROUTES: Routes = [
       { path: 'homepage', component: DashboardDipendente },
       {path:'prenotazioni',component:PrenotazioniDipendente},
       {path:'nuovaPrenotazione',component:CreaPrenotazione},
-      {path:'impostazioni',component:ImpostazioniDipendente}
+      {path:'impostazioni',component:ImpostazioniDipendenteComponent}
     ]
   }]

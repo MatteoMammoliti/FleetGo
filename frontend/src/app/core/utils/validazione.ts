@@ -12,8 +12,8 @@ export class validazione {
   }
   checkPassword(password: string): boolean {
       return true;
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      return passwordRegex.test(password);
+      //const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      //return passwordRegex.test(password);
   }
 
   checkNome(nome: string): boolean {

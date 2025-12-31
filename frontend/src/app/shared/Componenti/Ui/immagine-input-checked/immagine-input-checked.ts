@@ -14,7 +14,7 @@ export class ImmagineInputChecked {
 
   @Output() fileSelezionato = new EventEmitter<File>();
 
-  anteprimaUrl: string | null = null;
+  @Input() anteprimaUrl: string | null = null;
 
   onFileChange(event: any) {
     const file = event.target.files[0];
