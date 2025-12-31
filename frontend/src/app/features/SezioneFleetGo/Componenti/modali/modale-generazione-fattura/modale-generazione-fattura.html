@@ -12,13 +12,13 @@
 
           </div>
           <div class="border-b-2 py-3">
-            <div class="flex items-center gap-3">
-              <label class="font-bold">Promozione: </label>
+            <div class=" gap-3">
+              <label class="font-bold pb-3">Promozione: </label>
               <app-scelta-tendina (valoreChange)="offertaSelezionata=$event; calcolaSconto()" [lista]="offerteAttive" [valore]="offertaSelezionata" [placeholder]="'Nessuna offerta attiva'" [chiaveVisuale]="'nomeOfferta'"></app-scelta-tendina>
             </div>
 
             @if(offertaSelezionata) {
-              <div class="bg-azzurro/10 px-3 py-1 w-fit rounded-xl gap-1 flex items-center mt-2">
+              <div class="bg-azzurro/10 px-3 py-1 w-fit rounded-xl gap-1 flex items-center">
                 <i class="bi bi-info-circle text-s text-azzurro-scuro"></i>
                 <small>{{ offertaSelezionata.descrizioneOfferta }}</small>
               </div>

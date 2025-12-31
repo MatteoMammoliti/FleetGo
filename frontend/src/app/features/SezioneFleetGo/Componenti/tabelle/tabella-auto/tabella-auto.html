@@ -1,0 +1,93 @@
+<div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm">
+
+  <div class="group overflow-x-auto max-h-[600px] overflow-y-auto">
+    @if (listaVeicoli.length>0){
+    <table class="w-full text-left border-collapse">
+
+      <thead class="sticky top-0 z-10 bg-slate-50">
+        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-bold">
+          <th class="p-4 py-5">Veicolo</th>
+          <th class="p-4 py-5">Targa</th>
+          <th class="p-4 py-5">Azienda Assegnata</th>
+          <th class="p-4 py-5 text-center">Stato</th>
+          <th class="p-4 py-5 text-right">Azioni</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-100">
+
+          @for (auto of listaVeicoli; track auto.targaVeicolo) {
+            <tr class="group hover:bg-blue-50/50 transition-all ">
+
+              <td class="p-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+                    <i class="bi-car-front-fill"></i>
+                  </div>
+                  <div class="flex flex-col">
+                  <span class="font-semibold text-slate-700 text-[0.95rem]">
+                    {{ auto.nomeModello || 'Modello sconosciuto' }}
+                  </span>
+                    <span class="text-xs text-slate-400">
+                    {{ auto.tipoDistribuzioneVeicolo || 'Alimentazione n.d.' }}
+                  </span>
+                  </div>
+                </div>
+              </td>
+
+              <td class="p-4">
+              <span class="font-mono text-slate-500 text-sm bg-slate-100 px-2 py-1 rounded border border-slate-200">
+                {{ auto.targaVeicolo }}
+              </span>
+              </td>
+
+              <td class="p-4 text-slate-600">
+                <div class="flex items-center gap-2 text-sm font-medium">
+                  @if (auto.nomeAziendaAffiliata) {
+                    {{ auto.nomeAziendaAffiliata }}
+                  } @else {
+                    <span class="text-grigio-scuro italic">Nessuna</span>
+                  }
+                </div>
+              </td>
+              <td class="p-4 text-center">
+                <app-icona-stato
+                  [testo]="auto.inManutenzione ? 'Manutenzione' : auto.statusContrattualeVeicolo"
+                  [stato]="getBadgeStatus(auto)">
+                </app-icona-stato>
+              </td>
+
+              <td class="p-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+
+                  <button (click)="apriInfoVeicolo.emit(auto.targaVeicolo)"
+                          class="text-grigio-scuro hover:text-blue-600 hover:bg-blue-50 w-8 h-8 rounded-lg transition-all flex items-center justify-center"
+                          title="Dettagli Veicolo">
+                    <i class="bi-info-circle text-lg"></i>
+                  </button>
+
+                  <button (click)="eliminaVeicolo(auto.targaVeicolo)"
+                          class="text-grigio-scuro hover:text-red-600 hover:bg-red-50 w-8 h-8 rounded-lg transition-all flex items-center justify-center"
+                          title="Rimuovi Veicolo">
+                    <i class="bi-trash3 text-lg"></i>
+                  </button>
+
+                </div>
+              </td>
+
+            </tr>
+          }
+          </tbody>
+      </table>
+        } @else  {
+      <div class="p-20 flex justify-center items-center">
+        <app-messaggio-card-vuota
+          testoPrimario="Nessun Veicolo trovato!"
+          icona="bi-car-front-fill"
+          testoSecondario="Aggiungi un nuovo veicolo alla flotta">
+        </app-messaggio-card-vuota>
+      </div>
+      }
+
+  </div>
+</div>

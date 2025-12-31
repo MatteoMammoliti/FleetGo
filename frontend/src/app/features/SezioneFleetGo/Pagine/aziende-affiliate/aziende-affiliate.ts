@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabella-aziende/tabella-aziende';
-import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
+import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabelle/tabella-aziende/tabella-aziende';
+import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import { AziendaDTO } from '@core/models/aziendaDTO';

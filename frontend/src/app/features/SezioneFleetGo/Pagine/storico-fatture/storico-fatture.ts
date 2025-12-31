@@ -7,7 +7,7 @@ import {CardStatisticheDashboardFleet} from '@shared/Componenti/Ui/card-statisti
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   TabellaStoricoFatture
-} from '@features/SezioneFleetGo/Componenti/tabella-storico-fatture/tabella-storico-fatture';
+} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-storico-fatture/tabella-storico-fatture';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 

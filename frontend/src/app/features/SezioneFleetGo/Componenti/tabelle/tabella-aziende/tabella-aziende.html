@@ -1,6 +1,6 @@
 <div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm">
 
-  <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+  <div class="overflow-x-auto max-h-[600px] overflow-y-auto group">
     <table class="w-full text-left border-collapse">
 
       <thead class="sticky top-0 z-10 bg-slate-50">
@@ -14,7 +14,7 @@
       </tr>
       </thead>
 
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-slate-100 ">
 
         @for (azienda of listaAziende; track azienda.idAzienda) {
           <tr class="group hover:bg-slate-50 transition-all duration-200">
@@ -88,13 +88,12 @@
         @if (listaAziende.length === 0) {
           <tr>
             <td colspan="6" class="p-12 text-center">
-              <div class="flex flex-col items-center justify-center gap-3 text-slate-400">
-                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-2">
-                  <i class="bi-buildings text-3xl opacity-50"></i>
-                </div>
-                <p class="text-lg font-medium text-slate-600">
-                  {{ modalitaArchivio ? 'Nessuna azienda disabilitata' : 'Nessuna azienda attiva trovata' }}
-                </p>
+              <div class="p-20 flex justify-center items-center">
+                <app-messaggio-card-vuota
+                  testoPrimario="Non sono presenti aziende!"
+                  icona="bi-building-fill-x"
+                  >
+                </app-messaggio-card-vuota>
               </div>
             </td>
           </tr>

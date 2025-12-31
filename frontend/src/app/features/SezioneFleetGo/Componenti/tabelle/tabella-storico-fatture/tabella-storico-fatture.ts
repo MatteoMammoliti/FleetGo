@@ -25,7 +25,7 @@ export class TabellaStoricoFatture {
   @Input() fatture: FatturaDTO[] = [];
   @Output() richiestaDownload: EventEmitter<number> = new EventEmitter<number>();
   protected annoSelezionato: number = new Date().getFullYear();
-  protected aziendaSelezionata: any = "";
+  protected aziendaSelezionata: any = null;
   @Output() aggiornaTabella=new EventEmitter();
   @Input()  anniFatture: number[] = [];
   @Input() listaAziende: AziendaDTO[] = [];

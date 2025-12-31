@@ -3,11 +3,11 @@ import {ContenitoreStatisticheNumericheManutezioni} from '@core/models/Contenito
 import {SezioneManutenzioneService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/sezione-manutenzione-service';
 import {
   TabellaManutenzioniInCorso
-} from '@features/SezioneFleetGo/Componenti/tabella-manutenzioni-in-corso/tabella-manutenzioni-in-corso';
+} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-manutenzioni-in-corso/tabella-manutenzioni-in-corso';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {
   TabellaStoricoManutenzioni
-} from '@features/SezioneFleetGo/Componenti/tabella-storico-manutenzioni/tabella-storico-manutenzioni';
+} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-storico-manutenzioni/tabella-storico-manutenzioni';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {
   CardStatisticheDashboardFleet

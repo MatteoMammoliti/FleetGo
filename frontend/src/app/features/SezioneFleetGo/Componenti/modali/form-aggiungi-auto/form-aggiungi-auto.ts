@@ -40,10 +40,6 @@ export class FormAggiungiAuto {
   tipoDistribuzioneVeicolo:any= null;
   errore='';
 
-  impostaAlimentazione(valore: string) {
-    this.tipoDistribuzioneVeicolo = valore;
-    if (valore) this.mappaErrori.tipoDistribuzioneVeicolo = false;
-  }
 
   salva() {
     this.reset();

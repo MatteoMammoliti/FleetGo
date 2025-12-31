@@ -3,12 +3,14 @@ import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {FormsModule} from '@angular/forms';
 import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-tabella-auto',
   imports: [
     FormsModule,
-    IconaStato
+    IconaStato,
+    MessaggioCardVuota
   ],
   templateUrl: './tabella-auto.html',
   styleUrl: './tabella-auto.css',

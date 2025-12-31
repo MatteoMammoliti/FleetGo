@@ -29,7 +29,7 @@
       <div class="fade-in-up">
         <app-card-offerta
           [offerta]="offerta"
-          (eliminaOfferta)="onRimuoviOfferta($event)">
+          (eliminaOfferta)="offertaDaEliminare=$event;checkElimina=true">
         </app-card-offerta>
       </div>
     }
@@ -47,3 +47,12 @@
   @if(successoBanner){
     <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
   }
+
+  @if(checkElimina){
+    <app-template-finestra-modale titolo="Elimina Offerta" tastoBlu="Conferma" larghezza="max-w-md"  tastoBianco="Annulla" (chiudi)="checkElimina=false" (annulla)="checkElimina=false; offertaDaEliminare=null" (conferma)="onRimuoviOfferta(); checkElimina=false" >
+      <div class="px-3 py-3">
+        <span>Sei sicuro di voler eliminare questa offerta?</span>
+      </div>
+    </app-template-finestra-modale>
+
+}

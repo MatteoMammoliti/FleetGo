@@ -3,11 +3,12 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
 import {CommonModule} from '@angular/common';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-tabella-aziende',
   standalone: true,
-  imports: [CommonModule, TemplateFinestraModale, IconaStato],
+  imports: [CommonModule, TemplateFinestraModale, IconaStato, MessaggioCardVuota],
   templateUrl: './tabella-aziende.html',
   styleUrl: './tabella-aziende.css'
 })

@@ -26,7 +26,7 @@
     [class.text-gray-700]="valore">
 
     @if (placeholder) {
-      <option [ngValue]="null" disabled selected>{{ placeholder }}</option>
+      <option [ngValue]="null">{{ placeholder }}</option>
     }
 
     @for (item of lista; track item) {

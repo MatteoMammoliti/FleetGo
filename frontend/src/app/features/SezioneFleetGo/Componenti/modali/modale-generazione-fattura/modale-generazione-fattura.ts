@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
@@ -24,11 +24,13 @@ export class ModaleGenerazioneFattura {
   @Input() offerteAttive: OffertaDTO[] = [];
   @Output() chiudiPagina = new EventEmitter<void>();
   @Output() confermaGenerazione = new EventEmitter<FatturaDaGenerareDTO>();
-  offertaSelezionata: any = "";
+  offertaSelezionata: any = null;
   prezzoScontato = 0;
   scontoDaSottrarre = 0;
-  ngOnInit(){
-    this.calcolaSconto();
+  ngOnChanges(changes: SimpleChanges){
+    if (changes['fattura'] && this.fattura) {
+          this.calcolaSconto();
+    }
   }
 
   chiudiModale() { this.chiudiPagina.emit(); }

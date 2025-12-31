@@ -85,9 +85,9 @@ export class ModaleAggiuntaOfferta {
     this.resetErrori();
   }
 
-  onFileSelected(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      this.immagineCopertina = event.target.files[0];
+  onFileSelected(file:File) {
+    if (file) {
+      this.immagineCopertina = file;
       this.mappaErrori.immagineCopertina = false;
     }
   }

@@ -1,19 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {CardOfferta} from '@features/SezioneFleetGo/Componenti/card-offerta/card-offerta';
+import {CardOfferta} from '@features/SezioneFleetGo/Componenti/card/card-offerta/card-offerta';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/offerte-attive-service';
-import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modale-aggiunta-offerta/modale-aggiunta-offerta';
+import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modali/modale-aggiunta-offerta/modale-aggiunta-offerta';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-offerte-attive',
-    imports: [
-        CardOfferta,
-        ModaleAggiuntaOfferta,
-        BannerErrore
-    ],
+  imports: [
+    CardOfferta,
+    ModaleAggiuntaOfferta,
+    BannerErrore,
+    TemplateFinestraModale
+  ],
   templateUrl: './offerte-attive.html',
   styleUrl: './offerte-attive.css',
 })
@@ -26,6 +27,9 @@ export class OfferteAttive implements OnInit {
   apriModale = false;
   erroreBanner="";
   successoBanner="";
+
+  checkElimina=false;
+  offertaDaEliminare:any=null;
 
   ngOnInit() { this.getOfferteAttive() }
 
@@ -44,8 +48,8 @@ export class OfferteAttive implements OnInit {
     })
   }
 
-  onRimuoviOfferta(idOfferta: number) {
-    this.offerteService.eliminaOfferta(idOfferta).subscribe({
+  onRimuoviOfferta() {
+    this.offerteService.eliminaOfferta(this.offertaDaEliminare).subscribe({
       next: value => {
         this.getOfferteAttive();
         this.gestisciSuccesso("Offerta rimossa con successo");

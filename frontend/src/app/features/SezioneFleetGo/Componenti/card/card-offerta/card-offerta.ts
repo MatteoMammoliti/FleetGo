@@ -17,6 +17,7 @@ export class CardOfferta {
   @Input() offerta!: OffertaDTO;
   @Output() eliminaOfferta = new EventEmitter<number>();
 
+
   elimina() {
     this.eliminaOfferta.emit(this.offerta.idOfferta);
   }
