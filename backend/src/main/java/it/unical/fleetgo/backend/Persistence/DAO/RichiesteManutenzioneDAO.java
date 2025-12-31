@@ -54,14 +54,13 @@ public class RichiesteManutenzioneDAO {
     }
 
     public boolean rimuoviRichiestaManutenzione(Integer idManutenzione,Integer idVeicolo) throws SQLException {
-        String eliminoRichiesta = "DELETE FROM richiesta_manutenzione WHERE id_manutenzione=? AND accettata=?";
-        String cambioStatusVeicolo = "UPDATE veicolo SET in_manutenzione = false WHERE id_veicolo = ?";
+        String eliminoRichiesta = "DELETE FROM richiesta_manutenzione WHERE id_manutenzione=? AND accettata IS NOT TRUE";
+        String rendiVeicoloNoleggiabile = "UPDATE gestione_veicolo_azienda SET disponibile_per_noleggio = true WHERE id_veicolo = ?";
 
         try{
             con.setAutoCommit(false);
             PreparedStatement st = con.prepareStatement(eliminoRichiesta);
             st.setInt(1,idManutenzione);
-            st.setBoolean(2,false);
             int riga=st.executeUpdate();
 
             if(riga==0){
@@ -69,7 +68,7 @@ public class RichiesteManutenzioneDAO {
                 return false;
             }
 
-            PreparedStatement st2 = con.prepareStatement(cambioStatusVeicolo);
+            PreparedStatement st2 = con.prepareStatement(rendiVeicoloNoleggiabile);
             st2.setInt(1,idVeicolo);
 
             if(st2.executeUpdate()==0){
@@ -240,31 +239,31 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
-    public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
-        List<RichiestaManutenzione> richieste = new ArrayList<>();
-        String  query="SELECT * FROM richiesta_manutenzione WHERE completata=?  AND accettata=? AND id_admin_azienda=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
-            st.setBoolean(1,false);
-            st.setBoolean(2,true);
-            st.setInt(3,idAdmin);
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
-                richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
-                richiesta.setIdAdmin(rs.getInt("id_admin"));
-                richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
-                richiesta.setDataRichiesta(rs.getDate("data_richiesta").toString());
-                richiesta.setTipoManutenzione(rs.getString("tipo_manutenzione"));
-                richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
-                richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
-                richieste.add(richiesta);
-            }
-
-            return richieste;
-        }catch(SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
+//    public List<RichiestaManutenzione> getRichiesteManutenzioneInCorsoAzienda(Integer idAdmin){
+//        List<RichiestaManutenzione> richieste = new ArrayList<>();
+//        String  query="SELECT * FROM richiesta_manutenzione WHERE completata=?  AND accettata=? AND id_admin_azienda=?";
+//        try(PreparedStatement st = con.prepareStatement(query)){
+//            st.setBoolean(1,false);
+//            st.setBoolean(2,true);
+//            st.setInt(3,idAdmin);
+//            ResultSet rs = st.executeQuery();
+//            while(rs.next()){
+//                RichiestaManutenzioneProxy richiesta = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
+//                richiesta.setIdManutenzione(rs.getInt("id_manutenzione"));
+//                richiesta.setIdAdmin(rs.getInt("id_admin"));
+//                richiesta.setIdVeicolo(rs.getInt("id_veicolo"));
+//                richiesta.setDataRichiesta(rs.getDate("data_richiesta").toString());
+//                richiesta.setTipoManutenzione(rs.getString("tipo_manutenzione"));
+//                richiesta.setRichiestaAccettata(rs.getBoolean("accettata"));
+//                richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
+//                richieste.add(richiesta);
+//            }
+//
+//            return richieste;
+//        }catch(SQLException e){
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public ContenitoreStatisticheNumericheManutezioni getStatisticheManutenzioni() throws SQLException {
         String query="SELECT " +
@@ -282,6 +281,22 @@ public class RichiesteManutenzioneDAO {
         }
     }
 
+    public RichiestaManutenzione getRichiestaManutenzioneByIdVeicolo(Integer idVeicolo, Integer idAdminAzienda){
+        String query = "SELECT * FROM richiesta_manutenzione WHERE id_veicolo = ? AND id_admin_azienda = ? AND completata = false AND accettata IS NOT FALSE";
+
+        try(PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, idVeicolo);
+            ps.setInt(2, idAdminAzienda);
+
+            RichiestaManutenzione r = new RichiestaManutenzioneProxy(new VeicoloDAO(con));
+            estraiRichiestaSingolaManutenzione(r, ps);
+            return r;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     private void estraiRichiesteManutenzione(List<RichiestaManutenzione> richieste, PreparedStatement st) throws SQLException {
         ResultSet rs = st.executeQuery();
         while(rs.next()){
@@ -296,6 +311,7 @@ public class RichiesteManutenzioneDAO {
             richieste.add(richiesta);
         }
     }
+
     private void estraiRichiestaSingolaManutenzione(RichiestaManutenzione richiesta, PreparedStatement st) throws SQLException {
         ResultSet rs = st.executeQuery();
         if (rs.next()){

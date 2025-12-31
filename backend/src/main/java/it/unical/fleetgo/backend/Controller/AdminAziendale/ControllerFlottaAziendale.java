@@ -66,4 +66,33 @@ public class ControllerFlottaAziendale {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/getRichiestaManutenzione/{idVeicolo}")
+    public ResponseEntity<RichiestaManutenzioneDTO> getRichiestaManutenzione(@PathVariable Integer idVeicolo, HttpSession session) {
+        Integer idAdmin = (Integer) session.getAttribute("idUtente");
+
+        if(idAdmin == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    veicoloService.getManutenzioneVeicolo(idVeicolo, idAdmin)
+            );
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/eliminaRichiesta")
+    public ResponseEntity<String> eliminaRichiestaManutenzione(@RequestBody RichiestaManutenzioneDTO richiesta) {
+        try{
+            if(veicoloService.eliminaRichiestaManutenzione(richiesta)){
+                return ResponseEntity.status(HttpStatus.OK).body("Richiesta eliminata con successo");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore durante l'eliminazione");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

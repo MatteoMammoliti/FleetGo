@@ -1,11 +1,9 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.ModelloDTO;
+import it.unical.fleetgo.backend.Models.DTO.RichiestaManutenzioneDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloDTO;
-import it.unical.fleetgo.backend.Persistence.DAO.GestioneVeicoloAziendaDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.ModelloDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
-import it.unical.fleetgo.backend.Persistence.DAO.VeicoloDAO;
+import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Modello;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,13 +115,6 @@ public class VeicoloService {
         }
     }
 
-    public void cambiaStatusManutenzioneVeicolo(VeicoloDTO veicolo) throws SQLException {
-        try(Connection connection = this.dataSource.getConnection()) {
-            VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
-            veicoloDAO.cambiaStatusManutenzioneVeicolo(veicolo.getInManutenzione(), veicolo.getIdVeicolo());
-        }
-    }
-
     public boolean aggiuntaModello(ModelloDTO modello) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
             ModelloDAO modelloDAO = new ModelloDAO(connection);
@@ -155,6 +146,26 @@ public class VeicoloService {
         try(Connection connection = this.dataSource.getConnection()){
             GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
             return gestioneVeicoloAziendaDAO.impostaLuogoVeicolo(veicolo);
+        }
+    }
+
+    public RichiestaManutenzioneDTO getManutenzioneVeicolo(Integer idVeicolo, Integer idAdminAzienda) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO richiesteManutenzioneDAO = new  RichiesteManutenzioneDAO(connection);
+            return new RichiestaManutenzioneDTO(
+                    richiesteManutenzioneDAO.getRichiestaManutenzioneByIdVeicolo(idVeicolo, idAdminAzienda),
+                    false
+            );
+        }
+    }
+
+    public boolean eliminaRichiestaManutenzione(RichiestaManutenzioneDTO richiestaManutenzione) throws SQLException {
+        try(Connection connection = this.dataSource.getConnection()) {
+            RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
+            return richiesteManutenzioneDAO.rimuoviRichiestaManutenzione(
+                    richiestaManutenzione.getIdManutenzione(),
+                    richiestaManutenzione.getIdVeicolo()
+            );
         }
     }
 }

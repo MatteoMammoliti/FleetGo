@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './card-auto-aziendale.html',
   styleUrl: './card-auto-aziendale.css',
 })
+
 export class CardAutoAziendale {
   @Input() veicolo: any;
   @Output() apriDettagli=new EventEmitter<any>();

@@ -20,15 +20,18 @@ declare var google: any;
   templateUrl: './modale-gestisci-veicolo.html',
   styleUrl: './modale-gestisci-veicolo.css',
 })
+
 export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
 
   @Input() veicoloInput: any;
   @Input() listaLuoghi: LuogoDTO[] = [];
   @Output() chiudi = new EventEmitter<void>();
+
   veicolo: any = null;
   loading: boolean = true;
   mostraFormManutenzione: boolean = false;
   tipoManutenzioneSelezionato: string = '';
+  richiestaManutenzione: RichiestaManutenzioneDTO | null = null;
 
   opzioniManutenzione = [
     'Guasto meccanico',
@@ -57,10 +60,22 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
     if (this.veicoloInput && this.veicoloInput.targaVeicolo) {
       this.caricaDettagliVeicolo(this.veicoloInput.targaVeicolo);
     }
+    this.caricaManutenzione();
   }
 
   ngOnDestroy() {
     this.map = null;
+  }
+
+  caricaManutenzione() {
+    this.dettagliService.richiediManutenzioneVeicolo(this.veicoloInput.idVeicolo).subscribe({
+      next: data => {
+        if(data) {
+          console.log("ho ricevuto", data);
+          this.richiestaManutenzione = data;
+        }
+      }, error: error => console.log(error)
+    })
   }
 
   caricaDettagliVeicolo(targa: string) {
@@ -187,5 +202,13 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
         alert("Impossibile inviare la richiesta.");
       }
     });
+  }
+
+  annullaRichiesta(richiesta: RichiestaManutenzioneDTO) {
+    this.dettagliService.annullaRichiesta(richiesta).subscribe({
+      next: (res) => {
+        if(res) this.ngOnInit();
+      }, error: (err) => console.error(err)
+    })
   }
 }

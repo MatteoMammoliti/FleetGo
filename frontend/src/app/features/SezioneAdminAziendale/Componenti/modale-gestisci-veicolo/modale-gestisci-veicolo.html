@@ -1,19 +1,19 @@
 <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
   <div (click)="chiudi.emit()" class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-all"></div>
   <div class="relative w-full md:w-[70%] max-h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-pop-in">
-    
-    <app-template-finestra-modale 
-      [titolo]="mostraFormManutenzione ? 'Nuova Richiesta Manutenzione' : 'Dettagli Veicolo'" 
+
+    <app-template-finestra-modale
+      [titolo]="mostraFormManutenzione ? 'Nuova Richiesta Manutenzione' : 'Dettagli Veicolo'"
       (chiudi)="chiudi.emit()">
-      
+
       <div class="p-6 flex flex-col gap-6 h-full overflow-y-auto">
-        
+
         @if (loading) {
           <div class="flex flex-col items-center justify-center py-20 text-slate-400">
             <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
             <p>Caricamento dati...</p>
           </div>
-        } 
+        }
 
         @else if (veicolo && !mostraFormManutenzione) {
           <div class="flex flex-col md:flex-row gap-6">
@@ -84,7 +84,7 @@
                           </option>
                         }
                       </select>
-                      <button (click)="impostaLuogo()" [disabled]="!luogoSelezionatoId" 
+                      <button (click)="impostaLuogo()" [disabled]="!luogoSelezionatoId"
                               class="px-4 py-2 font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all">
                         Salva
                       </button>
@@ -94,14 +94,48 @@
             </div>
           </div>
 
-          <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2">
-            <button (click)="mostraFormManutenzione = true"
-                    class="px-5 py-2 rounded-lg bg-amber-50 text-yellow-700 border border-yellow-700 font-bold hover:bg-yellow-100 transition-colors flex items-center gap-2 text-sm">
-              <i class="bi-wrench-adjustable"></i>
-              Richiedi Manutenzione
-            </button>
+          <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2 gap-4">
 
-            <button (click)="chiudi.emit()" class="px-5 py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors text-sm">
+            @if (veicolo.inManutenzione || richiestaManutenzione?.idManutenzione) {
+              <div class="flex-grow flex items-center gap-3 bg-amber-50 px-4 py-2.5 rounded-lg border border-amber-200">
+                <div class="text-amber-600 text-xl">
+                  <i class="bi bi-exclamation-circle-fill"></i>
+                </div>
+                <div class="flex-grow leading-tight">
+                  <p class="text-[10px] font-bold text-amber-800 uppercase tracking-wide">
+                    Stato Attuale
+                  </p>
+                  <p class="text-sm font-semibold text-slate-800">
+                    {{ richiestaManutenzione?.tipoManutenzione || 'Veicolo in Manutenzione' }}
+                  </p>
+                  <p class="text-xs text-slate-500">
+                    Richiesta del: {{ (richiestaManutenzione?.dataRichiesta | date:'dd/MM/yyyy') || 'N/D' }}
+                  </p>
+                </div>
+
+                @if (richiestaManutenzione && !richiestaManutenzione.accettata) {
+                  <button (click)="annullaRichiesta(richiestaManutenzione)"
+                          class="px-3 py-1.5 text-xs font-bold text-red-600 bg-white border border-red-200 rounded hover:bg-red-50 transition-colors shadow-sm whitespace-nowrap">
+                    Annulla Richiesta
+                  </button>
+                } @else {
+                  <span class="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-700 rounded uppercase border border-green-200">
+                    In Lavorazione
+                  </span>
+                }
+              </div>
+            }
+
+            @else {
+              <button (click)="mostraFormManutenzione = true"
+                      class="px-5 py-2 rounded-lg bg-amber-50 text-yellow-700 border border-yellow-700 font-bold hover:bg-yellow-100 transition-colors flex items-center gap-2 text-sm">
+                <i class="bi-wrench-adjustable"></i>
+                Richiedi Manutenzione
+              </button>
+            }
+
+            <button (click)="chiudi.emit()"
+                    class="px-5 py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors text-sm whitespace-nowrap">
               Chiudi
             </button>
           </div>
@@ -109,7 +143,7 @@
 
         @else if (veicolo && mostraFormManutenzione) {
           <div class="flex flex-col items-center justify-center gap-6 py-4 animate-fade-in h-full">
-            
+
             <div class="text-center space-y-2">
               <div class="w-16 h-16 flex items-center justify-center mx-auto text-yellow-400 text-3xl mb-4">
                 <i class="bi-exclamation-triangle-fill"></i>
@@ -123,7 +157,7 @@
             <div class="w-full max-w-md space-y-4">
               <div class="flex flex-col gap-2 text-left">
                 <label class="text-sm font-bold text-grigio-scuro ml-1">Tipologia Guasto</label>
-                <select [(ngModel)]="tipoManutenzioneSelezionato" 
+                <select [(ngModel)]="tipoManutenzioneSelezionato"
                         class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:border-yellow-500 outline-none transition-all cursor-pointer">
                   <option value="" disabled selected>Seleziona il tipo di problema</option>
                   @for (opzione of opzioniManutenzione; track opzione) {
@@ -134,12 +168,12 @@
             </div>
 
             <div class="flex gap-4 w-full max-w-md mt-auto">
-              <button (click)="mostraFormManutenzione = false" 
+              <button (click)="mostraFormManutenzione = false"
                       class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all">
                 Annulla
               </button>
-              
-              <button (click)="inviaManutenzione()" 
+
+              <button (click)="inviaManutenzione()"
                       [disabled]="!tipoManutenzioneSelezionato"
                       class="flex-1 py-3 rounded-xl bg-yellow-500 text-slate-600 font-bold hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
                 Invia Segnalazione
