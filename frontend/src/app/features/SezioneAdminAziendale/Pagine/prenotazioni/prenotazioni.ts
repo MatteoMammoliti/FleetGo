@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ModaleDettagliPrenotazione} from '@features/SezioneAdminAziendale/Componenti/modale-dettagli-prenotazione/modale-dettagli-prenotazione';
-import {TabellaPrenotazioni} from '@features/SezioneAdminAziendale/Componenti/tabella-prenotazioni/tabella-prenotazioni';
+import {ModaleDettagliPrenotazione} from '@features/SezioneAdminAziendale/Componenti/modali/modale-dettagli-prenotazione/modale-dettagli-prenotazione';
+import {TabellaPrenotazioni} from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-prenotazioni/tabella-prenotazioni';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {PrenotazioniService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/prenotazioni-service';
 import {
@@ -9,7 +9,7 @@ import {
 import {FormsModule} from '@angular/forms';
 import {
   ModaleApprovazioneNoleggi
-} from '@features/SezioneAdminAziendale/Componenti/modale-approvazione-noleggi/modale-approvazione-noleggi';
+} from '@features/SezioneAdminAziendale/Componenti/modali/modale-approvazione-noleggi/modale-approvazione-noleggi';
 import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiNoleggio';
 
 @Component({

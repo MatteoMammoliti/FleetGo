@@ -43,8 +43,9 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
       if(this.slides.length > 1) {
         this.avanzaCarosello();
       }
-    }, 4000)
+    }, 3000)
   }
+
 
   avanzaCarosello() {
     if(this.slides.length > 0) {
@@ -60,7 +61,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         tipo: "AFFILIAZIONE",
         titolo: "Richieste di affiliazione in attesa",
         contatore: this.contatoreRichiesteAffiliazioneInAttesa,
-        colore: "blue-theme",
+        colore: "bg-azzurro-scuro",
         icona: "bi-buildings-fill",
         rotta: '/dashboardAzienda/dipendenti'
       }
@@ -73,7 +74,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         tipo: "NOLEGGIO",
         titolo: "Richieste di noleggio in attesa",
         contatore: this.contatoreRichiesteNoleggioInAttesa,
-        colore: "purple-theme",
+        colore: "bg-azzurro-chiaro",
         icona: "bi-car-front-fill",
         rotta: '/dashboardAzienda/prenotazioni'
       }
@@ -86,7 +87,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         tipo: "FATTURE",
         titolo: "Numero di fatture da pagare",
         contatore: this.contatoreFattureDaPagare,
-        colore: "blue-theme",
+        colore: "bg-blu",
         icona: "bi-car-front-fill",
         rotta: '/dashboardAzienda/storico-fatture'
       }
@@ -99,7 +100,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
         tipo: "VUOTO",
         titolo: "Stai andando alla grande, la tua azienda è gestita",
         contatore: this.contatoreRichiesteAffiliazioneInAttesa,
-        colore: "green-theme",
+        colore: "bg-azzurro",
         icona: "bi-check-circle-fill",
         rotta: "/dashboardAzienda/dashboard"
       }
@@ -112,4 +113,6 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
     const rotta = this.slides[this.indiceCorrente].rotta;
     this.router.navigate([rotta]);
   }
+
+
 }

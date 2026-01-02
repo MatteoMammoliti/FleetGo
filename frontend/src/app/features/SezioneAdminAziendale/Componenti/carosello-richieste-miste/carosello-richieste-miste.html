@@ -1,34 +1,52 @@
-<div class="widget-card" (click)="naviga()"
+<div (click)="naviga()"
      [ngClass]="slides[indiceCorrente].colore"
-     [class.clickable]="slides[indiceCorrente].tipo !== 'VUOTO'">
+     [class.cursor-pointer]="slides[indiceCorrente].tipo !== 'VUOTO'"
+     class="relative w-full h-full min-h-[180px] rounded-3xl p-8 transition-all duration-500 shadow-xl overflow-hidden group">
 
-  <div class="slide-content fade-in"> <div class="icon-circle">
-    <i class="bi" [class]="slides[indiceCorrente].icona"></i>
-  </div>
+  <div class="absolute inset-0 opacity-10 pointer-events-none "></div>
 
-    <div class="info-area">
-      @if (slides[indiceCorrente].tipo !== 'VUOTO') {
-        <span class="count-number">{{ slides[indiceCorrente].contatore }}</span>
-        <span class="label-text">{{ slides[indiceCorrente].titolo }}</span>
-        <span class="sub-label">In attesa di approvazione</span>
-      } @else {
-        <span class="empty-title">Nessuna Attività</span>
-        <span class="empty-sub">Hai gestito tutte le richieste!</span>
-      }
+  <div class="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"></div>
+
+  <div class="relative z-10 flex items-center justify-between h-full animate-in fade-in slide-in-from-right-10 duration-700">
+
+    <div class="flex items-center gap-8">
+      <div class="flex-shrink-0 w-20 h-20 rounded-3xl bg-white/15 backdrop-blur-xl flex items-center justify-center border border-white/20 shadow-inner">
+        <i class="bi text-4xl text-white drop-shadow-md" [class]="slides[indiceCorrente].icona"></i>
+      </div>
+
+      <div class="flex flex-col text-white">
+        @if (slides[indiceCorrente].tipo !== 'VUOTO') {
+          <div class="flex items-baseline gap-2">
+            <span class="text-6xl font-black tracking-tighter leading-none">
+              {{ slides[indiceCorrente].contatore }}
+            </span>
+            <span class="text-sm font-bold uppercase tracking-wide opacity-80">Notifiche</span>
+          </div>
+          <h2 class="text-xl font-bold mt-2 leading-tight uppercase tracking-wide">
+            {{ slides[indiceCorrente].titolo }}
+          </h2>
+          <p class="text-xs font-medium opacity-60 italic mt-1 text-grigio">In attesa di gestione</p>
+        } @else {
+          <h2 class="text-3xl font-black tracking-tight leading-tight">Ottimo lavoro!</h2>
+          <p class="text-grigio opacity-80 font-medium">Hai gestito tutte le richieste pendenti.</p>
+        }
+      </div>
     </div>
 
-    @if (slides[indiceCorrente].tipo !== 'VUOTO') {
-      <div class="arrow-indicator">
-        <i class="bi bi-chevron-right"></i>
-      </div>
-    }
-
+    <div class="hidden cursor-pointer lg:flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full text-white text-sm font-bold transition-all transform translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+      Gestisci ora <i class="bi bi-arrow-right"></i>
+    </div>
   </div>
 
   @if (slides.length > 1) {
-    <div class="dots-container">
+    <div class="absolute bottom-6 left-10 flex gap-2">
       @for (slide of slides; track $index) {
-        <span class="dot" [class.active]="$index === indiceCorrente"></span>
+        <div class="h-1.5 rounded-full bg-white transition-all duration-500 shadow-sm"
+             [class.w-10]="$index === indiceCorrente"
+             [class.w-2]="$index !== indiceCorrente"
+             [class.opacity-100]="$index === indiceCorrente"
+             [class.opacity-30]="$index !== indiceCorrente">
+        </div>
       }
     </div>
   }

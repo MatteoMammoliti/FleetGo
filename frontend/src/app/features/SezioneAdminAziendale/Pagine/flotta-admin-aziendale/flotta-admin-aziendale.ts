@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import { FlottaAdminAziendaleService } from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
-import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modale-gestisci-veicolo/modale-gestisci-veicolo';
+import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
 import { FlottaGlobaleService } from '../../../SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 

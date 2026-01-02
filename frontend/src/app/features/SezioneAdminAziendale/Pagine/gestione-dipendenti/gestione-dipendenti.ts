@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/elenco-dipendenti/elenco-dipendenti';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {DipendentiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dipendenti-service';
-import {ModaleDettagliDipendente} from '@features/SezioneAdminAziendale/Componenti/modale-dettagli-dipendente/modale-dettagli-dipendente';
+import {ModaleDettagliDipendente} from '@features/SezioneAdminAziendale/Componenti/modali/modale-dettagli-dipendente/modale-dettagli-dipendente';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {BannerRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/banner-richieste-affiliazione/banner-richieste-affiliazione';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
-import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modale-richieste-affiliazione/modale-richieste-affiliazione';
+import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richieste-affiliazione/modale-richieste-affiliazione';
 
 @Component({
   selector: 'app-gestione-dipendenti',

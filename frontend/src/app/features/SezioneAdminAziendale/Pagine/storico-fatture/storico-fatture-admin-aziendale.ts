@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TabellaStoricoFatture} from '@features/SezioneAdminAziendale/Componenti/tabella-storico-fatture/tabella-storico-fatture';
+import {TabellaStoricoFatture} from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-storico-fatture/tabella-storico-fatture';
 import {FatturaDTO} from '@core/models/FatturaDTO.models';
 import {StoricoFattureServiceAdminAziendale} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/storico-fatture-service-admin-aziendale';
 import {CurrencyPipe} from '@angular/common';

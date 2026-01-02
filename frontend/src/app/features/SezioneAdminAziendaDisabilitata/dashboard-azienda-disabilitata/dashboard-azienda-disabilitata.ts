@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
+import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
 import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dashboard-service';
 import {Router} from '@angular/router';
 

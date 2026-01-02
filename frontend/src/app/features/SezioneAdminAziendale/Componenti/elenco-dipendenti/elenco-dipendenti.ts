@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import { RouterLink } from '@angular/router';
-import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card-dipendente/card-dipendente';
+import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card/card-dipendente/card-dipendente';
 
 @Component({
   selector: 'app-elenco-dipendenti',

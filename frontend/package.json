@@ -5,7 +5,7 @@
     "ng": "ng",
     "watch": "ng build --watch --configuration development",
     "config": "node scripts/set-env.js",
-    "start": "npm run config && npm install && ng serve",
+    "start": "npm run config && npm install --legacy-peer-deps && ng serve",
     "build": "npm run config && ng build",
     "test": "npm run config && ng test"
   },
@@ -32,6 +32,7 @@
     "@angular/router": "^20.3.0",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.1",
+    "ng2-charts": "^8.0.0",
     "rxjs": "~7.8.0",
     "tailwindcss-animate": "^1.0.7",
     "tslib": "^2.3.0",

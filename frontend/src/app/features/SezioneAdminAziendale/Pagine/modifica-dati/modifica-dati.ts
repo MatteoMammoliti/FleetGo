@@ -9,7 +9,7 @@ import {
 } from '@features/SezioneAdminAziendale/Componenti/mappa-gestione-luoghi/mappa-gestione-luoghi';
 import {
   TabellaGestioneLuoghi
-} from '@features/SezioneAdminAziendale/Componenti/tabella-gestione-luoghi/tabella-gestione-luoghi';
+} from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-gestione-luoghi/tabella-gestione-luoghi';
 import {NgClass} from '@angular/common';
 
 @Component({

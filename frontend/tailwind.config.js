@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         azzurro: '#0061FF',
         'azzurro-scuro': '#0052d9',
+        'azzurro-chiaro': '#0075ff',
 
         'blu-notte': '#020617',
 

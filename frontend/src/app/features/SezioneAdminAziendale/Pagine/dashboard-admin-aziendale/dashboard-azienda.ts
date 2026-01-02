@@ -3,16 +3,26 @@ import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAd
 import {CaroselloOfferte} from '@features/SezioneAdminAziendale/Componenti/carosello-offerte/carosello-offerte';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Componenti/carosello-richieste-miste/carosello-richieste-miste';
-import {CardStatisticheDashboard} from '@features/SezioneAdminAziendale/Componenti/card-statistiche-dashboard/card-statistiche-dashboard';
+import {CardStatisticheDashboard} from '@features/SezioneAdminAziendale/Componenti/card/card-statistiche-dashboard/card-statistiche-dashboard';
 import {CurrencyPipe} from '@angular/common';
-import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
-import {ModaleObbligoImpostazioneSede} from '@features/SezioneAdminAziendale/Componenti/modale-obbligo-impostazione-sede/modale-obbligo-impostazione-sede';
+import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richiesta-appuntamento/modale-richiesta-appuntamento';
+import {ModaleObbligoImpostazioneSede} from '@features/SezioneAdminAziendale/Componenti/modali/modale-obbligo-impostazione-sede/modale-obbligo-impostazione-sede';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
+import {
+  GraficoTortaFlotta
+} from '@features/SezioneAdminAziendale/Componenti/grafici/grafico-torta-flotta/grafico-torta-flotta';
+import {
+  CardStatisticheDashboardFleet
+} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-dashboard-azienda',
-  imports: [CaroselloOfferte, CaroselloRichiesteMiste, CurrencyPipe, CardStatisticheDashboard, ModaleRichiestaAppuntamento, ModaleObbligoImpostazioneSede],
+  imports: [CaroselloOfferte,
+    CaroselloRichiesteMiste,
+    CurrencyPipe,
+    GraficoTortaFlotta, CardStatisticheDashboardFleet, TemplateTitoloSottotitolo],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
@@ -21,6 +31,10 @@ export class DashboardAzienda implements OnInit{
 
   constructor(private dashboardService:DashboardService,
               private modificaDatiService: ModificaDatiService) {}
+
+  veicoliInUso = 6;
+  veicoliDisponibili = 3;
+  veicoliInManutenzione = 1;
 
   offerteAttive: OffertaDTO[] = [];
   contatoreRichiesteAffiliazione = 0;
@@ -71,6 +85,7 @@ export class DashboardAzienda implements OnInit{
       }, error: err => { console.error(err); }
     })
   }
+
 
   caricaOfferteAttive() {
     this.dashboardService.getOfferteAttive().subscribe({

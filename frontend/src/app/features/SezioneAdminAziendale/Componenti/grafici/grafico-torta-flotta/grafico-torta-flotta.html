@@ -1,0 +1,54 @@
+<div class="w-full bg-white rounded-2xl border border-grigio p-5 shadow-md">
+
+  <div class="mb-4">
+    <h3 class="text-sm font-bold text-testo-p tracking-tight uppercase">Stato Flotta</h3>
+    <div class="h-0.5 w-8 bg-azzurro mt-1 rounded-full"></div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="relative h-44 w-full mb-2 mt-5">
+      <canvas baseChart
+              [data]="chartData()"
+              [type]="chartType"
+              [options]="chartOptions">
+      </canvas>
+
+      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+      <span class="text-3xl font-black text-blu tracking-tighter leading-none">
+        {{ totale() }}
+      </span>
+        <span class="text-[12px] uppercase tracking-widest text-testo-s font-semibold mt-1">
+        Totali
+      </span>
+      </div>
+    </div>
+
+    <div class="grid  border-t border-grigio pt-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-azzurro"></div>
+            <span class="text-s font-medium text-testo-s">In uso</span>
+          </div>
+          <span class="text-s font-bold text-testo-p">{{ inUso() }}</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-blu"></div>
+            <span class="text-s font-medium text-testo-s">Disponibili</span>
+          </div>
+          <span class="text-s font-bold text-testo-p">{{ disponibili() }}</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-grigio-scuro"></div>
+            <span class="text-s font-medium text-testo-s">Manutenzione</span>
+          </div>
+          <span class="text-s font-bold text-testo-p">{{ inManutenzione() }}</span>
+        </div>
+    </div>
+
+  </div>
+
+</div>

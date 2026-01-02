@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TemplateFinestraModale } from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 import { GoogleMapsService } from '@core/services/google-maps-service';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
+import { DettagliVeicoloAziendaleService } from '../../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 import { RichiestaManutenzioneDTO } from '@core/models/RichiestaManutenzioneDTO';
 import { FlottaAdminAziendaleService } from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
 declare var google: any;
