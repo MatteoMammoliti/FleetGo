@@ -201,21 +201,4 @@ public class VeicoloDAO {
         }
         return v;
     }
-
-    public Integer getNumeroVeicoliAssegnatiAzienda(Integer idAzienda) {
-        String query = "SELECT COUNT(*) FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
-                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello WHERE a.id_azienda = ?";
-
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, idAzienda);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-            return 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

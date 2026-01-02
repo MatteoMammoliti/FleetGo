@@ -22,7 +22,7 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-s
   imports: [CaroselloOfferte,
     CaroselloRichiesteMiste,
     CurrencyPipe,
-    GraficoTortaFlotta, CardStatisticheDashboardFleet, TemplateTitoloSottotitolo],
+    GraficoTortaFlotta, CardStatisticheDashboardFleet, TemplateTitoloSottotitolo, ModaleRichiestaAppuntamento, ModaleObbligoImpostazioneSede],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })

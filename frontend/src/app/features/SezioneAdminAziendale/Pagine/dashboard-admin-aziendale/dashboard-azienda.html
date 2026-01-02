@@ -80,3 +80,19 @@
 
   </div>
 </app-template-titolo-sottotitolo>
+
+@if (modaleAppuntamentoVisibile) {
+  <app-modale-richiesta-appuntamento
+    [paginaVisibile]="modaleAppuntamentoVisibile"
+    [offertaSelezionata]="offertaSelezionata"
+    [appuntamentoRichiesto]="appuntamentoRichiesto"
+    (chiudiPagina)="chiudiModaleRichiestaAppuntamento()"
+    (richiediAppuntamento)="richiediAppuntamento()">
+  </app-modale-richiesta-appuntamento>
+}
+
+@if (nessunaSedeImpostata) {
+  <app-modale-obbligo-impostazione-sede
+    (impostaSede)="impostaSede($event)">
+  </app-modale-obbligo-impostazione-sede>
+}

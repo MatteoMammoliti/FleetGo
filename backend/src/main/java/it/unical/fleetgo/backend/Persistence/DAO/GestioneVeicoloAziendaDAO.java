@@ -131,14 +131,31 @@ public class GestioneVeicoloAziendaDAO {
     }
 
 
-    public boolean impostaLuogoVeicolo(VeicoloDTO veicoloDTO) {
+    public void impostaLuogoVeicolo(VeicoloDTO veicoloDTO) {
         String query = "UPDATE gestione_veicolo_azienda SET luogo_ritiro_consegna = ?, disponibile_per_noleggio = true WHERE id_veicolo = ? AND id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, veicoloDTO.getLuogoRitiroDeposito().getIdLuogo());
             ps.setInt(2, veicoloDTO.getIdVeicolo());
             ps.setInt(3, veicoloDTO.getIdAziendaAffiliata());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer getNumeroVeicoliAssegnatiAzienda(Integer idAzienda) {
+        String query = "SELECT COUNT(*) FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello WHERE a.id_azienda = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

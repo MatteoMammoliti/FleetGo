@@ -485,21 +485,21 @@ public class AdminAziendaleService {
         }
     }
 
-    public GraficoTortaFlotta getDatiGraficoTorta(Integer idAzienda) throws SQLException {
+    public ContenitoreStatisticheNumeriche getDatiGraficoTorta(Integer idAzienda) throws SQLException {
         try (Connection connection = this.dataSource.getConnection()) {
             RichiesteManutenzioneDAO richiesteManutenzioneDAO = new RichiesteManutenzioneDAO(connection);
             RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
-            VeicoloDAO veicoloDAO = new VeicoloDAO(connection);
-            GraficoTortaFlotta dati = new GraficoTortaFlotta();
-            int inManutenzione=richiesteManutenzioneDAO.getNumeroRichiesteManutenzioneInCorsoByIdAzienda(idAzienda);
-            int noleggiati=richiestaNoleggioDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
-            int disponibili= veicoloDAO.getNumeroVeicoliAssegnatiAzienda(idAzienda) - noleggiati - inManutenzione;
+            GestioneVeicoloAziendaDAO gestioneVeicoloAziendaDAO = new GestioneVeicoloAziendaDAO(connection);
 
-            dati.setDisponibili(disponibili);
-            dati.setInManutenzione(inManutenzione);
-            dati.setInUso(noleggiati);
-            return dati;
+            int inManutenzione = richiesteManutenzioneDAO.getNumeroRichiesteManutenzioneInCorsoByIdAzienda(idAzienda);
+            int noleggiati = richiestaNoleggioDAO.getVeicoliNoleggiatiByIdAzienda(idAzienda);
+            int disponibili = gestioneVeicoloAziendaDAO.getNumeroVeicoliAssegnatiAzienda(idAzienda) - noleggiati - inManutenzione;
+
+            return new ContenitoreStatisticheNumeriche(
+                    noleggiati,
+                    disponibili,
+                    inManutenzione
+            );
         }
-
     }
 }

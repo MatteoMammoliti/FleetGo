@@ -315,10 +315,9 @@ public class RichiesteManutenzioneDAO {
             st.setInt(1, idAzienda);
             st.setBoolean(2,true);
             st.setBoolean(3,false);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
             }
             return 0;
         }catch(SQLException e){
