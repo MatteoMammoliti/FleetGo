@@ -63,6 +63,7 @@ export class DashboardAzienda implements OnInit{
     this.caricaOfferteAttive();
     this.caricaContatori();
     this.inizializzaStatistiche();
+    this.caricaDatiGrafico();
 
     this.dashboardService.getNomeAziendaGestita().subscribe({
       next: value => {
@@ -83,6 +84,20 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.isSedeImpostata().subscribe({
       next: value => { this.nessunaSedeImpostata = !value;
       }, error: err => { console.error(err); }
+    })
+  }
+
+
+  caricaDatiGrafico(){
+    this.dashboardService.getDatiGraficoTorta().subscribe({
+      next: value => {
+        if(value !== null && value !== undefined) {
+          this.veicoliInUso=value.inUso;
+          this.veicoliDisponibili = value.disponibili;
+          this.veicoliInManutenzione = value.inManutenzione;
+        }
+        },
+        error: err => { console.error(err); }
     })
   }
 
@@ -138,6 +153,12 @@ export class DashboardAzienda implements OnInit{
   chiudiModaleRichiestaAppuntamento() {
     this.modaleAppuntamentoVisibile = false;
     this.offertaSelezionata = {} as OffertaDTO;
+  }
+
+  richiediDatiGraficoTortaFlotta() {
+
+
+
   }
 
   richiediAppuntamento() {

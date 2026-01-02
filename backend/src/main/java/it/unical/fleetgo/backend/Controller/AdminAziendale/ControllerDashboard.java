@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Controller.AdminAziendale;
 
 import it.unical.fleetgo.backend.Models.DTO.OffertaDTO;
+import it.unical.fleetgo.backend.Persistence.Entity.GraficoTortaFlotta;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,17 @@ public class ControllerDashboard {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 adminAziendaleService.getVeicoliNoleggiati(idAzienda));
+    }
+
+    @GetMapping("/getDatiGraficoTorta")
+    public ResponseEntity<GraficoTortaFlotta> getDatiGraficoTorta(HttpSession session) throws SQLException {
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+        if(idAzienda == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        GraficoTortaFlotta dati = adminAziendaleService.getDatiGraficoTorta(idAzienda);
+        return ResponseEntity.status(HttpStatus.OK).body(dati);
+
     }
 
     @GetMapping("/getNomeCognomeAdmin")

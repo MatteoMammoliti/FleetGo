@@ -350,4 +350,22 @@ public class RichiestaNoleggioDAO {
         }
         return null;
     }
+
+    public Integer getVeicoliDisponibiliByIdAzienda(Integer idAzienda) {
+        this.aggiornaStatiNoleggi();
+        String query = "SELECT COUNT(*) as numero_noleggi FROM richiesta_noleggio WHERE id_azienda = ? AND richiesta_annullata = false AND stato_richiesta=?";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, idAzienda);
+            ps.setString(2,"Disponibile");
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getInt("numero_noleggi");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+
 }

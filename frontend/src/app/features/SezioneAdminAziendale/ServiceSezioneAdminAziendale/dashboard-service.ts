@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {GraficoTortaFlottaDTO} from '@core/models/graficoTortaFlottaDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -58,4 +59,9 @@ export class DashboardService {
   isSedeImpostata() {
     return this.http.get<boolean>(`${this.apiUrl}/isSedeImpostata`, { withCredentials:true })
   }
+
+  getDatiGraficoTorta() : Observable<GraficoTortaFlottaDTO> {
+    return this.http.get<GraficoTortaFlottaDTO>(`${this.apiUrl}/getDatiGraficoTorta`, { withCredentials: true });
+  }
+
 }

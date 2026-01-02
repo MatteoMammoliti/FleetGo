@@ -307,4 +307,22 @@ public class RichiesteManutenzioneDAO {
             richiesta.setRichiestaCompletata(rs.getBoolean("completata"));
         }
     }
+
+
+    public Integer getNumeroRichiesteManutenzioneInCorsoByIdAzienda(Integer idAzienda) throws SQLException {
+        String  query="SELECT COUNT(*) FROM richiesta_manutenzione as r JOIN azienda as a on r.id_admin_azienda=a.id_admin_azienda WHERE a.id_azienda=? AND r.accettata=? AND r.completata=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1, idAzienda);
+            st.setBoolean(2,true);
+            st.setBoolean(3,false);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+            return 0;
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }
