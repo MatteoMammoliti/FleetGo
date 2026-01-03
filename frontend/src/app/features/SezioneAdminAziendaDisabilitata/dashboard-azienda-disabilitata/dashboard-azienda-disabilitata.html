@@ -81,7 +81,6 @@
 
 @if(modaleRichiestaAppuntamentoVisibile) {
   <app-modale-richiesta-appuntamento
-    [paginaVisibile]="modaleRichiestaAppuntamentoVisibile"
     (chiudiPagina)="gestisciVisibilitaModale()"
     (richiediAppuntamento)="richiediAppuntamento()"
     [appuntamentoRichiesto]="appuntamentoRichiesto">

@@ -10,7 +10,7 @@ public class ContenitoreStatisticheNumeriche {
     private int veicoliAssegnati;
     private int veicoliDisponibili;
     private int veicoliManutenzione;
-    private int veicoliNoleggati;
+    private int veicoliNoleggiati;
     private int totaleAziende;
     private int fattureDaGenerare;
     private int guadagnoMensile;
@@ -28,8 +28,8 @@ public class ContenitoreStatisticheNumeriche {
         this.guadagnoMensile=guadagnoMensile;
     }
 
-    public ContenitoreStatisticheNumeriche(int veicoliNoleggati, int veicoliDisponibili, int veicoliManutenzione) {
-        this.veicoliNoleggati = veicoliNoleggati;
+    public ContenitoreStatisticheNumeriche(int veicoliNoleggiati, int veicoliDisponibili, int veicoliManutenzione) {
+        this.veicoliNoleggiati = veicoliNoleggiati;
         this.veicoliDisponibili = veicoliDisponibili;
         this.veicoliManutenzione = veicoliManutenzione;
     }

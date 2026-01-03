@@ -32,9 +32,9 @@ export class DashboardAzienda implements OnInit{
   constructor(private dashboardService:DashboardService,
               private modificaDatiService: ModificaDatiService) {}
 
-  veicoliInUso = 6;
-  veicoliDisponibili = 3;
-  veicoliInManutenzione = 1;
+  veicoliInUso = 0;
+  veicoliDisponibili = 0;
+  veicoliInManutenzione = 0;
 
   offerteAttive: OffertaDTO[] = [];
   contatoreRichiesteAffiliazione = 0;
@@ -92,9 +92,9 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getDatiGraficoTorta().subscribe({
       next: value => {
         if(value !== null && value !== undefined) {
-          this.veicoliInUso=value.inUso;
-          this.veicoliDisponibili = value.disponibili;
-          this.veicoliInManutenzione = value.inManutenzione;
+          this.veicoliInUso=value.veicoliNoleggiati;
+          this.veicoliDisponibili = value.veicoliDisponibili;
+          this.veicoliInManutenzione = value.veicoliManutenzione;
         }
         },
         error: err => { console.error(err); }
@@ -155,11 +155,6 @@ export class DashboardAzienda implements OnInit{
     this.offertaSelezionata = {} as OffertaDTO;
   }
 
-  richiediDatiGraficoTortaFlotta() {
-
-
-
-  }
 
   richiediAppuntamento() {
     this.dashboardService.inoltraRichiestaDiAppuntamento().subscribe({
@@ -168,8 +163,9 @@ export class DashboardAzienda implements OnInit{
           this.appuntamentoRichiesto = true;
           setInterval( () => {
             this.chiudiModaleRichiestaAppuntamento();
-          }, 3000)
+          }, 2000)
         }
+
       }, error: err => { console.error(err); }
     })
   }

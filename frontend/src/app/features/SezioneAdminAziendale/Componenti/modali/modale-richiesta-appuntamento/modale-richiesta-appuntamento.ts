@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OffertaDTO } from '@core/models/offertaDTO.models';
 import { DatePipe, CommonModule } from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-richiesta-appuntamento',
@@ -12,10 +13,6 @@ import { DatePipe, CommonModule } from '@angular/common';
   styleUrl: './modale-richiesta-appuntamento.css',
 })
 export class ModaleRichiestaAppuntamento {
-
-  constructor() {}
-
-  @Input() paginaVisibile = false;
 
   @Input() offertaSelezionata: OffertaDTO | null = null;
 
@@ -29,7 +26,6 @@ export class ModaleRichiestaAppuntamento {
   caricamentoInCorso = false;
 
   onChiudiPagina() {
-    this.paginaVisibile = false;
     this.chiudiPagina.emit();
   }
 
