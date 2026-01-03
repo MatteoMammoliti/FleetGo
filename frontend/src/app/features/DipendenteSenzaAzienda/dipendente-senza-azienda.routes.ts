@@ -3,7 +3,7 @@ import {DashboardAziendaDisabilitata} from '@features/SezioneAdminAziendaDisabil
 import {HomeDipendenteSenzaAzienda} from '@features/DipendenteSenzaAzienda/home-dipendente-senza-azienda/home-dipendente-senza-azienda';
 import {
   GeneralLayoutDipendenteSenzaAzienda
-} from '../../layouts/general-layout-dipendente/general-layout-dipendente-senza-azienda';
+} from '../../layouts/general-layout-dipendente-senza-azienda/general-layout-dipendente-senza-azienda';
 
 export const DIPENDENTE_SENZA_AZIENDA: Routes = [
   {

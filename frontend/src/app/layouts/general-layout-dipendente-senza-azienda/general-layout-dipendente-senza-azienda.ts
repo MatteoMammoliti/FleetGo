@@ -7,7 +7,7 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-general-layout-dipendente',
-  imports: [Sidebar, RouterLink, RouterLinkActive, RouterOutlet, Footer, BannerErrore],
+  imports: [Sidebar, RouterOutlet, Footer, BannerErrore],
   standalone: true,
   templateUrl: './general-layout-dipendente-senza-azienda.html',
   styleUrl: './general-layout-dipendente-senza-azienda.css',
