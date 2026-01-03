@@ -1,64 +1,81 @@
-<div class="page-container">
+<app-intestazione-ebackground 
+  [titolo]="'Le mie Prenotazioni'">
+  <div class="pb-20">
+    <div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+      
+      <app-bottone-pillola
+        [label]="'Tutte'"
+        [attivo]="filtroAttivo === 'Tutte'"
+        [variante]="'blu'"
+        (clickBtn)="impostaFiltro('Tutte')">
+      </app-bottone-pillola>
 
-  <div class="page-header">
-    <h2>Le mie Prenotazioni</h2>
-    <p>Gestisci lo storico e i futuri noleggi della flotta.</p>
-  </div>
+      <app-bottone-pillola
+        [label]="'In attesa'"
+        [attivo]="filtroAttivo === 'In attesa'"
+        [variante]="'giallo'"
+        (clickBtn)="impostaFiltro('In attesa')">
+      </app-bottone-pillola>
 
-  <div class="filters-container">
-    <button class="filter-pill"
-            [class.active]="filtroAttivo === 'Tutte'"
-            (click)="impostaFiltro('Tutte')">
-      Tutte
-    </button>
+      <app-bottone-pillola
+        [label]="'Da ritirare'"
+        [attivo]="filtroAttivo === 'Da ritirare'"
+        [variante]="'viola'"
+        (clickBtn)="impostaFiltro('Da ritirare')">
+      </app-bottone-pillola>
 
-    <button class="filter-pill"
-            [class.active]="filtroAttivo === 'In corso'"
-            (click)="impostaFiltro('In corso')">
-      In corso
-    </button>
+      <app-bottone-pillola
+        [label]="'In corso'"
+        [attivo]="filtroAttivo === 'In corso'"
+        [variante]="'verde'"
+        (clickBtn)="impostaFiltro('In corso')">
+      </app-bottone-pillola>
 
-    <button class="filter-pill"
-            [class.active]="filtroAttivo === 'Da ritirare'"
-            (click)="impostaFiltro('Da ritirare')">
-      Da ritirare
-    </button>
+      <app-bottone-pillola
+        [label]="'Terminate'"
+        [attivo]="filtroAttivo === 'Terminata'"
+        [variante]="'grigio'"
+        (clickBtn)="impostaFiltro('Terminata')">
+      </app-bottone-pillola>
 
-    <button class="filter-pill"
-            [class.active]="filtroAttivo === 'Terminata'"
-            (click)="impostaFiltro('Terminata')">
-      Terminate
-    </button>
-    <button class="filter-pill"
-            [class.active]="filtroAttivo === 'In attesa'"
-            (click)="impostaFiltro('In attesa')">
-      In attesa di accettazione
-    </button>
-  </div> <div class="list-container">
-
-  @if (daVisualizzare.length > 0) {
-
-    @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
-      <app-prenotazione-card
-        (annullaRichiesta)="eliminaPrenotazione($event)"
-        [prenotazione]="prenotazione">
-      </app-prenotazione-card>
-    }
-
-  } @else {
-    <div class="empty-state">
-      <div class="empty-img">
-        <i class="bi bi-journal-x"></i>
-      </div>
-      <h3>Nessuna prenotazione {{filtroAttivo === 'Tutte' ? '' : filtroAttivo}}</h3>
-      <p>Non ci sono richieste in questa categoria.</p>
-
-      @if(filtroAttivo === 'Tutte') {
-        <button class="btn-primary" (click)="clickNuovaPrenotazione()">Nuova Prenotazione</button>
-      } @else {
-        <button class="btn-secondary" (click)="impostaFiltro('Tutte')">Mostra Tutte</button>
-      }
     </div>
-  }
 
-</div> </div>
+    @if (daVisualizzare.length > 0) {
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
+        @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
+          <app-prenotazione-card
+            class="h-full"
+            (annullaRichiesta)="eliminaPrenotazione($event)"
+            [prenotazione]="prenotazione">
+          </app-prenotazione-card>
+        }
+      </div>
+
+    } @else {
+      
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center animate-fade-in">
+        
+        <app-messaggio-card-vuota
+          [icona]="'bi-journal-x'"
+          [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo)"
+          [testoSecondario]="'Non sono presenti richieste che corrispondono a questo filtro.'">
+        </app-messaggio-card-vuota>
+
+        <div class="mt-4">
+          @if(filtroAttivo === 'Tutte') {
+            <button (click)="clickNuovaPrenotazione()" 
+                    class="px-6 py-3 bg-blu text-white font-bold rounded-xl shadow-lg shadow-blue-100 hover:bg-blue-700 hover:scale-105 transition-all">
+              <i class="bi bi-plus-lg mr-2"></i>Nuova Prenotazione
+            </button>
+          } @else {
+            <button (click)="impostaFiltro('Tutte')" 
+                    class="px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
+              Mostra Tutte
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</app-intestazione-ebackground>
