@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="IT-it">
+<head>
+  <style>
+    body { font-family: sans-serif; background-color: #f4f4f4; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+    .otp-code { font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1e3a8a; margin: 20px 0; background: #f0f9ff; padding: 15px; border-radius: 4px; display: inline-block;}
+    h1 { color: #333; }
+    .footer { font-size: 12px; color: #888; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 th:text="${titolo}">FleetGo | Procedura di Modifica Password</h1>
+  <p th:text="${messaggio}">Testo messaggio</p>
+
+  <div class="otp-code" th:text="${otp}">123456</div>
+
+  <p>Se non hai richiesto questo codice, ignora questa email.</p>
+  <div class="footer">FleetGo S.p.A. | Tutti i diritti riservati</div>
+</div>
+</body>
+</html>

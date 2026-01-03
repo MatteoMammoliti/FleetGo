@@ -2,6 +2,7 @@ package it.unical.fleetgo.backend.Controller;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiModificaPasswordDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Service.UtenteService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class ControllerAutenticazione {
     }
 
     @PostMapping(value = "/richiediCodiceOTP", consumes = "multipart/form-data")
-    public ResponseEntity<String> recuperoPassword(@RequestPart("email") String email) throws SQLException {
+    public ResponseEntity<String> recuperoPassword(@RequestPart("email") String email) throws SQLException, MessagingException {
         utenteService.invioCodice(email);
         return ResponseEntity.status(HttpStatus.CREATED).body("Codice OTP inviato con successo");
     }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="IT-it">
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .alert-box { border-left: 5px solid #eab308; background-color: #fefce8; padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="alert-box">
+    <h3>Nuova Richiesta Appuntamento</h3>
+    <p>L'Admin Aziendale <strong th:text="${nomeAdmin}">Nome</strong> dell'azienda <strong th:text="${nomeAzienda}">Azienda</strong> ha richiesto un appuntamento commerciale.</p>
+    <p>Email di contatto: <a th:href="'mailto:' + ${emailAdmin}" th:text="${emailAdmin}"></a></p>
+    <hr>
+    <p>Rispondi a questa email per fissare data e ora.</p>
+</div>
+
+<div class="footer">FleetGo S.p.A. | Tutti i diritti riservati</div>
+</body>
+</html>

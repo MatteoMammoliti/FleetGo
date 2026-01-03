@@ -9,6 +9,7 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.CredenzialiUtente;
+import jakarta.mail.MessagingException;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -104,7 +105,7 @@ public class UtenteService {
         }
     }
 
-    public void invioCodice(String email) throws SQLException {
+    public void invioCodice(String email) throws SQLException, MessagingException {
 
         try(Connection connection = this.dataSource.getConnection()) {
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);

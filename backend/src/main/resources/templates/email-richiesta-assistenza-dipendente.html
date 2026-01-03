@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="IT-it">
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .msg-box { border: 1px solid #ddd; padding: 20px; border-radius: 5px; background: #fff; }
+    </style>
+</head>
+<body>
+    <h3>Richiesta Supporto Tecnico</h3>
+    <p><strong>Da Dipendente ID:</strong> <span th:text="${idDipendente}"></span></p>
+    <p><strong>Email Mittente:</strong> <span th:text="${emailMittente}"></span></p>
+
+    <div class="msg-box">
+        <h4>Messaggio lasciato dal Dipendente:</h4>
+        <p th:text="${messaggio}" style="white-space: pre-wrap;"></p>
+    </div>
+
+    <div class="footer">FleetGo S.p.A. | Tutti i diritti riservati</div>
+</body>
+</html>

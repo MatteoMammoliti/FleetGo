@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="IT-it">
+<head>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .card { max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; }
+        .header { background-color: #1e3a8a; color: white; padding: 20px; text-align: center; }
+        .body { padding: 30px; color: #333; }
+        .creds-box { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .btn { display: inline-block; background-color: #1e3a8a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h2 style="margin:0;">Benvenuto a Bordo!</h2>
+    </div>
+    <div class="body">
+        <p>Gentile Admin,</p>
+        <p>La tua azienda è stata registrata con successo su FleetGo. Ecco le tue credenziali provvisorie:</p>
+
+        <div class="creds-box">
+            <p><strong>Username:</strong> <span th:text="${emailAdmin}">user</span></p>
+            <p><strong>Password:</strong> <span th:text="${password}">pass</span></p>
+        </div>
+
+        <p>Al primo accesso ti sarà chiesto di modificare la password.</p>
+        <a th:href="${loginLink}" class="btn">Accedi alla Dashboard</a>
+    </div>
+    <div class="footer">FleetGo S.p.A. | Tutti i diritti riservati</div>
+</div>
+</body>
+</html>

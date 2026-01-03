@@ -27,8 +27,8 @@ export class FormAggiungiAdminAzienda implements OnInit {
   cognome = '';
   dataNascita = '';
   email = '';
-  password = '';
   nomeAzienda = '';
+  password = "";
   partitaIva = '';
   errore = '';
 
@@ -37,7 +37,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
     cognome: false,
     email: false,
     dataNascita: false,
-    password: false,
     nomeAzienda: false,
     partitaIva: false,
   };
@@ -49,12 +48,11 @@ export class FormAggiungiAdminAzienda implements OnInit {
   salva() {
     this.reset();
 
-    if (!this.nome || !this.cognome || !this.email || !this.password || !this.nomeAzienda || !this.partitaIva) {
+    if (!this.nome || !this.cognome || !this.email || !this.nomeAzienda || !this.partitaIva) {
       this.errore = "Riempi tutti i campi";
       this.mappaErrori.nome = this.nome == '';
       this.mappaErrori.cognome = this.cognome == '';
       this.mappaErrori.email = this.email == '';
-      this.mappaErrori.password = this.password == '';
       this.mappaErrori.nomeAzienda = this.nomeAzienda == '';
       this.mappaErrori.partitaIva = this.partitaIva == '';
       this.mappaErrori.dataNascita = this.dataNascita == '';
@@ -67,21 +65,9 @@ export class FormAggiungiAdminAzienda implements OnInit {
       return;
     }
 
-    if (!this.validatore.checkPassword(this.password)) {
-      this.errore = 'Password non valida';
-      this.mappaErrori.password = true;
-      return;
-    }
-
     if (!this.validatore.checkEmail(this.email)) {
       this.errore = 'Email non valida';
       this.mappaErrori.email = true;
-      return;
-    }
-
-    if (!this.validatore.checkPartitaIva(this.partitaIva)) {
-      this.errore = 'Partita IVA non valida';
-      this.mappaErrori.partitaIva = true;
       return;
     }
 
@@ -115,7 +101,6 @@ export class FormAggiungiAdminAzienda implements OnInit {
       cognome: false,
       dataNascita: false,
       email: false,
-      password: false,
       nomeAzienda: false,
       partitaIva: false,
     };

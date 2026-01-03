@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Controller.AdminAziendale;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreStatisticheNumeriche;
 import it.unical.fleetgo.backend.Models.DTO.OffertaDTO;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -111,7 +112,7 @@ public class ControllerDashboard {
     }
 
     @PostMapping("/richiediAppuntamento")
-    public ResponseEntity<String> richiediAppuntamento(HttpSession session) throws SQLException {
+    public ResponseEntity<String> richiediAppuntamento(HttpSession session) throws SQLException, MessagingException {
 
         Integer idUtente = (Integer) session.getAttribute("idUtente");
 

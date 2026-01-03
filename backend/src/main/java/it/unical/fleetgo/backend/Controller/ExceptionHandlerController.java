@@ -2,6 +2,7 @@ package it.unical.fleetgo.backend.Controller;
 
 import com.stripe.exception.StripeException;
 import it.unical.fleetgo.backend.Exceptions.*;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -110,6 +111,11 @@ public class ExceptionHandlerController {
     @ExceptionHandler(DatePrenotazioneNonValide.class)
     public ResponseEntity<String> gestisciErroreDateNonValide(DatePrenotazioneNonValide e) {
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<String> gestisciErroreInvioEmail(MessagingException e) {
+        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

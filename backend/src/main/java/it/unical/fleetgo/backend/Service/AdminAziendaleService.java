@@ -11,6 +11,7 @@ import it.unical.fleetgo.backend.Models.DTO.Utente.DipendenteDTO;
 import it.unical.fleetgo.backend.Persistence.DAO.*;
 import it.unical.fleetgo.backend.Persistence.Entity.*;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +24,6 @@ import java.util.List;
 
 @Service
 public class AdminAziendaleService {
-
-    private static final String EMAIL_FLEETGO = "fleetgo@fleetgo.com";
 
     @Autowired private DataSource dataSource;
     @Autowired private EmailService emailService;
@@ -74,7 +73,7 @@ public class AdminAziendaleService {
                 );
 
                 connection.commit();
-            } catch (SQLException e) {
+            } catch (SQLException | MessagingException e) {
                 connection.rollback();
             } finally {
                 connection.setAutoCommit(true);
@@ -288,15 +287,13 @@ public class AdminAziendaleService {
         }
     }
 
-    public void richiediAppuntamento(Integer idUtente) throws SQLException {
+    public void richiediAppuntamento(Integer idUtente) throws SQLException, MessagingException {
         try(Connection connection = this.dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
+            CredenzialiDAO credenzialiDAO = new  CredenzialiDAO(connection);
             AdminAziendaleDTO admin = new AdminAziendaleDTO(utenteDAO.getAdminAziendaDaId(idUtente), true);
-
-            this.emailService.inviaMailRichiestaAppuntamento(
-                    admin,
-                    EMAIL_FLEETGO
-            );
+            String emailAdmin = credenzialiDAO.getEmailAdminAziendale(admin.getIdAziendaGestita());
+            this.emailService.inviaMailRichiestaAppuntamento(admin, emailAdmin);
         }
     }
 

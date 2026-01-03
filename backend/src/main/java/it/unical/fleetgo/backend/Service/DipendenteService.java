@@ -7,6 +7,7 @@ import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
 import it.unical.fleetgo.backend.Persistence.Entity.Utente.Dipendente;
 import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -152,7 +153,7 @@ public class DipendenteService {
         }
     }
 
-    public void inviaSegnalazione(String messaggio, Integer idUtente, Integer idAzienda) throws SQLException {
+    public void inviaSegnalazione(String messaggio, Integer idUtente, Integer idAzienda) throws SQLException, MessagingException {
         try(Connection connection = dataSource.getConnection()) {
             CredenzialiDAO credenzialiDAO = new  CredenzialiDAO(connection);
 

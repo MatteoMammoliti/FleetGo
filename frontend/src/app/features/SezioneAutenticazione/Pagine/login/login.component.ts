@@ -15,7 +15,9 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 
 export class LoginComponent {
-  validator = inject(validazione);
+
+  constructor(private authService: AuthService,
+              private router: Router,) {}
 
   email = '';
   password = '';
@@ -25,17 +27,14 @@ export class LoginComponent {
     password: false,
   };
 
-  private router = inject(Router);
-  private authService = inject(AuthService);
-
   errore='';
 
   onSubmit() {
     this.errore="";
     this.mappaErrori = {
-    email: false,
-    password: false,
-  };
+      email: false,
+      password: false,
+    };
 
     const email = this.email;
     const password = this.password;
@@ -48,23 +47,6 @@ export class LoginComponent {
       return;
     } else {
       this.errore = "";
-    }
-
-
-    if (!this.validator.checkEmail(this.email) || !this.validator.checkPassword(this.password)) {
-      if (!this.validator.checkEmail(this.email)) {
-        this.errore = "Email non valida";
-        this.mappaErrori.email = true;
-      } else {
-        this.errore = "";
-      }
-      if (!this.validator.checkPassword(this.password)) {
-        this.errore = "Password non valida";
-        this.mappaErrori.password = true;
-      } else {
-        this.errore = "";
-      }
-      return;
     }
 
     this.errore = "";

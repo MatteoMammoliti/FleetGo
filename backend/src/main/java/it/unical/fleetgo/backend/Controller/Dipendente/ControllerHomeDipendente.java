@@ -4,6 +4,7 @@ import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Service.DipendenteService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class ControllerHomeDipendente {
     }
 
     @PostMapping("/inviaSegnalazione")
-    public ResponseEntity<String> inviaSegnalazione(@RequestBody String messaggio, HttpSession session) throws SQLException {
+    public ResponseEntity<String> inviaSegnalazione(@RequestBody String messaggio, HttpSession session) throws SQLException, MessagingException {
         Integer idDipendente = (Integer) session.getAttribute("idUtente");
         Integer idAzienda = (Integer) session.getAttribute("idAziendaAssociata");
 
