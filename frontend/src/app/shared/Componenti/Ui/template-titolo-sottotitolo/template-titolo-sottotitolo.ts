@@ -9,5 +9,6 @@ import {Component, Input} from '@angular/core';
 export class TemplateTitoloSottotitolo {
   @Input() titolo:string="";
   @Input() sottotitolo:string="";
-  @Input() azienda:string="";
+  @Input() testoDestro:string="";
+  @Input() iconaDestra="bi-building-fill";
 }

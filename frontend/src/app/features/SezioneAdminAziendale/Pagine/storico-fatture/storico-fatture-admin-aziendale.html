@@ -1,61 +1,40 @@
-<div class="p-8 min-h-screen bg-slate-50">
+<app-template-titolo-sottotitolo titolo="Monitora la fiscalità" sottotitolo="Il report completo delle Fatture FleetGo"
+                                 [testoDestro]="totaleDaPagare > 0 ? (totaleDaPagare | currency:'EUR':'symbol':'1.2-2') + ' da saldare': 'Tutto in Ordine'"
+                                 [iconaDestra]="totaleDaPagare > 0 ? 'bi-exclamation-circle' : 'bi-check-circle'">
 
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-    <div>
-      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Storico Fatture</h1>
-      <p class="text-slate-500">Gestisci i pagamenti e scarica le ricevute del tuo abbonamento FleetGo.</p>
-    </div>
+  <div class="bg-white px-3 pt-3 pb-2 rounded-xl shadow-sm border-b border-slate-200 mb-6 flex flex-col sm:flex-row gap-4 items-center">
+    <div class="flex justify-between w-full">
+      <div class="text-sm font-medium text-slate-700 flex items-center gap-2 animate-fade-up animate-once animate-duration-1000">
+        <span class="text-lg ml-5 text-azzurro">
+          Scarica le tue fatture con un click
+        </span>
 
-    @if (totaleDaPagare > 0) {
-      <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg shadow-sm flex items-center gap-3 animate-pulse">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-        </svg>
-        <div>
-          <p class="text-sm font-bold">Attenzione</p>
-          <p class="text-xs">Hai {{ totaleDaPagare | currency:'EUR' }} in sospeso.</p>
-        </div>
       </div>
-    } @else {
-      <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg shadow-sm flex items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-        </svg>
-        <div>
-          <p class="text-sm font-bold">Tutto in regola</p>
-          <p class="text-xs">Tutte le fatture sono state saldate.</p>
+      <div class="flex gap-5">
+        <div class="w-full md:w-48">
+          <app-scelta-tendina
+            titolo="Seleziona Anno"
+            [lista]="anniDisponibili"
+            [(valore)]="filtroAnno">
+          </app-scelta-tendina>
         </div>
+
+        <div class="w-full md:w-48">
+          <app-scelta-tendina
+            titolo="Stato Pagamento"
+            [lista]="[ 'Pagate', 'Da pagare']"
+            [(valore)]="filtroStato"
+            placeholder="Tutte">
+          </app-scelta-tendina>
+        </div>
+
       </div>
-    }
-  </div>
 
-  <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row gap-4 items-center">
-    <div class="text-sm font-medium text-slate-700 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-indigo-600">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-      </svg>
-      Filtra per:
     </div>
 
-    <select
-      [(ngModel)]="filtroAnno"
-      class="block w-full sm:w-48 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 cursor-pointer bg-white">
-      @for(anno of anniDisponibili; track anno) {
-        <option [value]="anno">{{ anno }}</option>
-      }
-    </select>
 
-    <select
-      [(ngModel)]="filtroStato"
-      class="block w-full sm:w-48 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 cursor-pointer bg-white">
-      <option value="Tutti">Tutte</option>
-      <option value="Pagate">Pagate</option>
-      <option value="Da pagare">Da pagare</option>
-    </select>
 
-    <div class="ml-auto text-xs text-slate-400 hidden sm:block">
-      Visualizzazione di {{ fattureFiltrate.length }} fatture
-    </div>
+
   </div>
 
   <app-tabella-storico-fatture
@@ -64,4 +43,5 @@
     (scaricaFattura)="scaricaFattura($event)">
   </app-tabella-storico-fatture>
 
-</div>
+
+</app-template-titolo-sottotitolo>

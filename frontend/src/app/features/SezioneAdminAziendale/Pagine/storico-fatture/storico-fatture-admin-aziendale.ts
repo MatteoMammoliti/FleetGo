@@ -5,13 +5,17 @@ import {StoricoFattureServiceAdminAziendale} from '@features/SezioneAdminAzienda
 import {CurrencyPipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {TemplateTitoloSottotitolo} from "@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo";
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-storico-fatture-admin-aziendale',
   imports: [
     TabellaStoricoFatture,
     CurrencyPipe,
-    FormsModule
+    FormsModule,
+    TemplateTitoloSottotitolo,
+    SceltaTendina
   ],
   templateUrl: './storico-fatture-admin-aziendale.html',
   styleUrl: './storico-fatture-admin-aziendale.css',
@@ -22,8 +26,8 @@ export class StoricoFattureAdminAziendale implements OnInit{
   totaleDaPagare = 0;
   anniDisponibili: number[] = [];
 
-  filtroAnno: number = 0;
-  filtroStato: string = '';
+  filtroAnno: any=null;
+  filtroStato: any = null;
 
   constructor(private storicoFattureService: StoricoFattureServiceAdminAziendale,
               private route: ActivatedRoute,

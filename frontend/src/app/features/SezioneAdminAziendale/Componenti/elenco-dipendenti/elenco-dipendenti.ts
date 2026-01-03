@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import { RouterLink } from '@angular/router';
 import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card/card-dipendente/card-dipendente';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-elenco-dipendenti',
-  imports: [FormsModule, CardDipendente],
+  imports: [FormsModule, CardDipendente, MessaggioCardVuota, InputChecked],
   standalone: true,
   templateUrl: './elenco-dipendenti.html',
   styleUrl: './elenco-dipendenti.css',
@@ -35,4 +37,5 @@ export class ElencoDipendenti {
   apriDettagli(dipendente: DipendenteDTO) {
     this.apriDettagliDipendente.emit(dipendente);
   }
+
 }

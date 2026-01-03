@@ -1,39 +1,52 @@
-<div class="dashboard-container p-8 min-h-screen bg-slate-50">
+<app-template-titolo-sottotitolo titolo="Monitora la salute del tuo team" sottotitolo="Gestisci e monitora i dipendenti"
+                                 [testoDestro]="richiesteAffiliazione.length > 0 ? 'Azione richiesta' : 'Tutto in ordine'"
+                             [iconaDestra]="richiesteAffiliazione.length > 0 ? 'bi-person-exclamation' : 'bi-check-circle'">
 
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-    <div>
-      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Il tuo Team</h1>
-      <p class="text-slate-500">Gestisci i dipendenti, monitora le patenti e le assegnazioni.</p>
-    </div>
+  <div class="px-3 py-5">
+    <app-banner-richieste-affiliazione
+      [richiesteAffiliazione]="richiesteAffiliazione[0]"
+      [numRichiesteInAttesa]="richiesteAffiliazione.length"
+      (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
+      (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)"
+      (apriModaleRichieste)="apriModaleRichiesteAffiliazione()">
+    </app-banner-richieste-affiliazione>
+
+    <app-elenco-dipendenti
+      [listaDipendenti]=listaDipendentiAzienda
+      (richiestaRimozioneDipendente)=apriModaleRimuovi($event)
+      (apriDettagliDipendente)="apriDettagliDipendente($event)">
+    </app-elenco-dipendenti>
+
+    <app-modale-dettagli-dipendente
+      [dipendente]="dipendenteDaVisualizzare"
+      [paginaVisibile]="modaleDettaglioDipendenteVisibile"
+      (chiudiPagina)="chiudiModale()"
+      [storicoNoleggi]="richiesteNoleggio">
+    </app-modale-dettagli-dipendente>
+
+    <app-modale-richieste-affiliazione
+      [modaleVisibile]="modaleRichiesteAffiliazione"
+      [richiesteAffiliazione]="richiesteAffiliazione"
+      (chiudiModale)="chiudiModaleRichiestaAffiliazione()"
+      (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
+      (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)">
+    </app-modale-richieste-affiliazione>
+
   </div>
 
-  <app-banner-richieste-affiliazione
-    [richiesteAffiliazione]="richiesteAffiliazione[0]"
-    [numRichiesteInAttesa]="richiesteAffiliazione.length"
-    (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
-    (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)"
-    (apriModaleRichieste)="apriModaleRichiesteAffiliazione()">
-  </app-banner-richieste-affiliazione>
 
-  <app-elenco-dipendenti
-    [listaDipendenti]=listaDipendentiAzienda
-    (richiestaRimozioneDipendente)=rimuoviDipendente($event)
-    (apriDettagliDipendente)="apriDettagliDipendente($event)">
-  </app-elenco-dipendenti>
+</app-template-titolo-sottotitolo>
 
-  <app-modale-dettagli-dipendente
-    [dipendente]="dipendenteDaVisualizzare"
-    [paginaVisibile]="modaleDettaglioDipendenteVisibile"
-    (chiudiPagina)="chiudiModale()"
-    [storicoNoleggi]="richiesteNoleggio">
-  </app-modale-dettagli-dipendente>
+@if(OnRimuovi){
+  <app-template-finestra-modale
+    titolo="Attenzione"
+    tastoBlu="Conferma"
+    tastoBianco="Annulla"
+    (chiudi)="chiudiModaleRimuovi()"
+    (annulla)="chiudiModaleRimuovi()"
+    (conferma)="rimuoviDipendente()"
+  >
+    <span class="messaggioModaleConferma">Cliccando su conferma il dipendente verà eliminato.</span>
+  </app-template-finestra-modale>
 
-  <app-modale-richieste-affiliazione
-    [modaleVisibile]="modaleRichiesteAffiliazione"
-    [richiesteAffiliazione]="richiesteAffiliazione"
-    (chiudiModale)="chiudiModaleRichiestaAffiliazione()"
-    (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
-    (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)">
-  </app-modale-richieste-affiliazione>
-
-</div>
+}

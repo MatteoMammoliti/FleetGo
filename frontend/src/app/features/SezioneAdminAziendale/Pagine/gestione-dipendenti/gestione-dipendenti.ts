@@ -7,11 +7,13 @@ import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {BannerRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/banner-richieste-affiliazione/banner-richieste-affiliazione';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
 import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richieste-affiliazione/modale-richieste-affiliazione';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-gestione-dipendenti',
   standalone: true,
-  imports: [ElencoDipendenti, ModaleDettagliDipendente, BannerRichiesteAffiliazione, ModaleRichiesteAffiliazione],
+  imports: [ElencoDipendenti, ModaleDettagliDipendente, BannerRichiesteAffiliazione, ModaleRichiesteAffiliazione, TemplateTitoloSottotitolo, TemplateFinestraModale],
   templateUrl: './gestione-dipendenti.html',
   styleUrl: './gestione-dipendenti.css'
 })
@@ -28,6 +30,8 @@ export class GestioneDipendentiComponent implements OnInit{
   dipendenteDaVisualizzare: DipendenteDTO = {} as DipendenteDTO;
 
   modaleRichiesteAffiliazione = false;
+  OnRimuovi: boolean=false;
+  idDipendenteDaRimuovere:any= null;
 
   ngOnInit() {
     this.getDipendenti();
@@ -70,16 +74,18 @@ export class GestioneDipendentiComponent implements OnInit{
     })
   }
 
-  rimuoviDipendente(idDipendente:number | undefined) {
-
-    this.service.rimuoviDipendente(idDipendente).subscribe({
-      next: (response) => {
-        this.getDipendenti();
-      },
-      error: (error) => {
-        console.error('Errore durante la rimozione del dipendente:', error);
-      }
-    });
+  rimuoviDipendente() {
+    if(this.idDipendenteDaRimuovere){
+      this.service.rimuoviDipendente(this.idDipendenteDaRimuovere).subscribe({
+        next: (response) => {
+          this.getDipendenti();
+          this.chiudiModaleRimuovi();
+        },
+        error: (error) => {
+          console.error('Errore durante la rimozione del dipendente:', error);
+        }
+      });
+    }
   }
 
   apriDettagliDipendente(dipendente: DipendenteDTO) {
@@ -121,5 +127,14 @@ export class GestioneDipendentiComponent implements OnInit{
 
   chiudiModaleRichiestaAffiliazione() {
     this.modaleRichiesteAffiliazione = false;
+  }
+
+  apriModaleRimuovi(idDipendente:number ) {
+    this.idDipendenteDaRimuovere=idDipendente;
+    this.OnRimuovi = true;
+  }
+  chiudiModaleRimuovi() {
+    this.idDipendenteDaRimuovere=null;
+    this.OnRimuovi = false;
   }
 }

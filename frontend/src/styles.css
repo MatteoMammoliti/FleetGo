@@ -67,6 +67,9 @@
     @apply text-xs bg-green-100  text-green-600 px-2 py-[4px] rounded-md
   }
 
+  .messaggioModaleConferma{
+    @apply text-gray-600 px-6 flex mt-3 mb-3;
+  }
 
   .layout-container {
     display: flex;

@@ -1,13 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, LOCALE_ID, NgModule, OnInit, Output} from '@angular/core';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {DatePipe, NgClass} from '@angular/common';
+import {DatePipe, DecimalPipe, NgClass, registerLocaleData} from '@angular/common';
+import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-modale-dettagli-dipendente',
   imports: [
     DatePipe,
-    NgClass
+    NgClass,
+    IconaStato,
+    DecimalPipe,
+    MessaggioCardVuota
   ],
   templateUrl: './modale-dettagli-dipendente.html',
   styleUrl: './modale-dettagli-dipendente.css',
@@ -19,6 +24,7 @@ export class ModaleDettagliDipendente implements OnInit{
   @Input() dipendente: DipendenteDTO | null = null;
   @Input() storicoNoleggi: RichiestaNoleggioDTO[] = []
   @Output() chiudiPagina = new EventEmitter<void>();
+
   approvazioneInCorso = false;
   tabAttiva = "INFO";
 

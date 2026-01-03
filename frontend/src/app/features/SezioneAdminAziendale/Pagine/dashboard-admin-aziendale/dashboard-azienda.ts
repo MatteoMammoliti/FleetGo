@@ -49,9 +49,10 @@ export class DashboardAzienda implements OnInit{
 
   offertaSelezionata: OffertaDTO = {} as OffertaDTO;
   modaleAppuntamentoVisibile = false;
-  appuntamentoRichiesto = false;
 
   nessunaSedeImpostata = false;
+
+  richiesteContattoInCorso = new Set<any>();
 
   get sommaRichieste(): number {
     return this.contatoreRichiesteAffiliazione +
@@ -85,6 +86,11 @@ export class DashboardAzienda implements OnInit{
       next: value => { this.nessunaSedeImpostata = !value;
       }, error: err => { console.error(err); }
     })
+
+    const salvate = localStorage.getItem('richieste_effettuate');
+    if (salvate) {
+      this.richiesteContattoInCorso = new Set(JSON.parse(salvate));
+    }
   }
 
 
@@ -157,11 +163,15 @@ export class DashboardAzienda implements OnInit{
 
 
   richiediAppuntamento() {
+    const idOfferta = this.offertaSelezionata.idOfferta;
+    if (!idOfferta || this.richiesteContattoInCorso.has(idOfferta)) return;
+
     this.dashboardService.inoltraRichiestaDiAppuntamento().subscribe({
       next: value => {
         if(value) {
-          this.appuntamentoRichiesto = true;
-          setInterval( () => {
+          this.richiesteContattoInCorso.add(this.offertaSelezionata.idOfferta);
+          localStorage.setItem('richieste_effettuate', JSON.stringify(Array.from(this.richiesteContattoInCorso)));
+          setTimeout( () => {
             this.chiudiModaleRichiestaAppuntamento();
           }, 2000)
         }
