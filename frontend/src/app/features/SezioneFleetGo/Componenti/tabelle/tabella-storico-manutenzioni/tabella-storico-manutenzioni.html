@@ -12,7 +12,14 @@
       </div>
 
     </div>
+  @if(listaStorico==null){
+    <div class="flex flex-col items-center justify-center py-20 w-full">
+      <div class="relative">
+        <i class="bi bi-arrow-clockwise text-4xl text-slate-300 animate-spin inline-block"></i>
+      </div>
+    </div>
 
+  } @else {
 
   @if(listaStorico.length > 0) {
     <div class="div-table min-h-[200px] max-h-[378px] px-5">
@@ -57,6 +64,6 @@
       <app-messaggio-card-vuota testoPrimario="Nessun veicolo presente!" testoSecondario="Prova a cambiare filtro" icona="bi-search"></app-messaggio-card-vuota>
     </div>
   }
-
+  }
 </div>
 

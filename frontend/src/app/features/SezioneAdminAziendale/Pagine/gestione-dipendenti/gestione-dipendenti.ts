@@ -22,8 +22,8 @@ export class GestioneDipendentiComponent implements OnInit{
 
   constructor(private service: DipendentiService) { }
 
-  listaDipendentiAzienda: DipendenteDTO[] = [];
-  richiesteNoleggio: RichiestaNoleggioDTO[] = [];
+  listaDipendentiAzienda: DipendenteDTO[]|null = null;
+  richiesteNoleggio: RichiestaNoleggioDTO[]|null  = null;
   richiesteAffiliazione: RichiestaAffiliazioneAziendaDTO[] = [];
 
   modaleDettaglioDipendenteVisibile = false;

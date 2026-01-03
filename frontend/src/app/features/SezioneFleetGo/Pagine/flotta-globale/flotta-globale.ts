@@ -41,7 +41,7 @@ export class FlottaGlobale implements OnInit{
               private route: Router,
               private aziendeService: AziendeAffiliateService) {}
 
-  veicoliOriginali: VeicoloDTO[] = [];
+  veicoliOriginali: VeicoloDTO[] |null = null;
 
   testoRicerca: string = '';
   filtroAzienda: AziendaDTO | null = null;
@@ -100,7 +100,11 @@ export class FlottaGlobale implements OnInit{
     })
   }
 
-  get veicoliFiltrati() {
+  get veicoliFiltrati():VeicoloDTO[]|null {
+    if(this.veicoliOriginali==null) {
+      return null;
+    }
+
     return this.veicoliOriginali.filter(veicolo => {
 
       let matchAzienda = true;

@@ -36,8 +36,8 @@ constructor(private service:SezioneManutenzioneService) {}
     attualmenteInOfficina:0
   }
 
-  listeManutezioniInCorso:RichiestaManutenzioneDTO[]=[]
-  listaManutenzioniStorico:RichiestaManutenzioneDTO[]=[]
+  listeManutezioniInCorso:RichiestaManutenzioneDTO[]|null=null;
+  listaManutenzioniStorico:RichiestaManutenzioneDTO[]|null=null;
 
 
   erroreBanner='';

@@ -15,7 +15,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
 
 export class TabellaAziendeComponent {
 
-  @Input() listaAziende:AziendaDTO[] = [];
+  @Input() listaAziende:AziendaDTO[]|null=null;
   @Input() modalitaArchivio = false;
   @Output() riabilitaAzienda = new EventEmitter<number>();
   @Output() disabilitaAzienda = new EventEmitter<number>();
@@ -32,7 +32,6 @@ export class TabellaAziendeComponent {
       this.modaleDisabilitaAzienda=true;
       this.nomeAziendaInteressataModale=nomeAzienda;
     }
-
   }
   chiudiModale(){
     this.aziendaInteressataModale=null;

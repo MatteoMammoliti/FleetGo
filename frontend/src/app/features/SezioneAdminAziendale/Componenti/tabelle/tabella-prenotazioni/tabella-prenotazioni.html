@@ -13,6 +13,17 @@
       </tr>
       </thead>
       <tbody class="text-sm text-slate-700 divide-y divide-slate-100">
+      @if (richiesteNoleggio === null) {
+        <tr>
+          <td colspan="5" class="h-[300px]">
+            <div class="flex items-center justify-center h-full">
+              <i class="bi bi-arrow-repeat text-4xl text-slate-300 animate-spin"></i>
+            </div>
+          </td>
+        </tr>
+
+      } @else {
+
         @for (p of richiesteNoleggio; track p.idRichiesta) {
           <tr class="hover:bg-slate-50 transition cursor-pointer" (click)="apriDettaglio.emit(p.idRichiesta)">
             <td class="px-6 py-4 font-medium">#{{ p.idDipendente }}</td>
@@ -44,7 +55,7 @@
               Nessuna prenotazione trovata.
             </td>
           </tr>
-        }
+        }}
       </tbody>
     </table>
   </div>

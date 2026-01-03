@@ -19,7 +19,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   styleUrl: './richieste-manutenzione-da-gestire.css',
 })
 export class RichiesteManutenzioneDaGestire {
-  @Input() richiesteManutenzioneDaGestire:RichiestaManutenzioneDTO[] = []
+  @Input() richiesteManutenzioneDaGestire:RichiestaManutenzioneDTO[]|null = null;
   @Output() inviaRichiesta:EventEmitter<number>=new EventEmitter<number>();
 
   gestisciRichiesta(idManutenzione:number){

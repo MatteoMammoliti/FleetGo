@@ -28,7 +28,7 @@ export class Prenotazioni implements OnInit{
 
   constructor(private prenotazioniService:PrenotazioniService) {}
 
-  richiesteNoleggio: RichiestaNoleggioDTO[] = [];
+  richiesteNoleggio: RichiestaNoleggioDTO[]|null = null;
   modaleDettaglioAperto = false;
   dettaglioDellaPrenotazione = {} as RichiestaNoleggioDTO;
 
@@ -64,6 +64,7 @@ export class Prenotazioni implements OnInit{
   }
 
   get prenotazioniFiltrate() {
+    if(!this.richiesteNoleggio) {return null}
     return this.richiesteNoleggio.filter(richiestaNoleggio => {
 
       const stato = richiestaNoleggio.statoRichiesta ? richiestaNoleggio.statoRichiesta?.toLowerCase() : "";

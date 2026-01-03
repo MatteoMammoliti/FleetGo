@@ -1,9 +1,11 @@
 
 <app-template-titolo-sottotitolo titolo="Gestione Manutenzioni" sottotitolo="Gestisci la salute della tua flotta.">
   <div>
-    @if (!richiesteManutenzioneDaGestire) {
-      <app-messaggio-card-vuota testoPrimario="Caricamento richieste in corso..." tagliaIcona="3xl" icona="bi-hourglass-split"></app-messaggio-card-vuota>
-    }
+    @if(richiesteManutenzioneDaGestire==null){
+      <div class="flex items-center justify-center w-full min-h-[200px] mb-5">
+        <i class="bi bi-arrow-clockwise caricamento "></i>
+      </div>
+    } @else {
 
     @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
       <app-messaggio-card-vuota testoPrimario="La tua flotta è in salute!" testoSecondario="Nessuna richiesta di manutenzione" icona="bi-check" tagliaIcona="3xl"></app-messaggio-card-vuota>
@@ -55,7 +57,7 @@
 
         </table>
       </div>
-    }
+    }}
   </div>
 
 </app-template-titolo-sottotitolo>

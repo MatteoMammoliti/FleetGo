@@ -29,7 +29,7 @@ export class StoricoFatture {
   constructor(private storicoFattureService:StoricoFattureService,
               private aziendeAffiliateService: AziendeAffiliateService) {}
 
-  fatturePerAnno: FatturaDTO[] = [];
+  fatturePerAnno: FatturaDTO[] | null = null;
   listaAziende: AziendaDTO[] = [];
   anniFatture: number[] = [];
 
@@ -101,6 +101,7 @@ export class StoricoFatture {
   }
 
   private calcolaDati() {
+    if(!this.fatturePerAnno) return;
 
     this.totaleFattureAnnoSelezionato = this.fatturePerAnno.length;
 
@@ -116,7 +117,8 @@ export class StoricoFatture {
     }
   }
 
-  get FattureFiltrate(): FatturaDTO[] {
+  get FattureFiltrate(): FatturaDTO[]|null {
+    if(!this.fatturePerAnno) return null;
     if(!this.aziendaSelezionata) return this.fatturePerAnno;
 
     return this.fatturePerAnno.filter(

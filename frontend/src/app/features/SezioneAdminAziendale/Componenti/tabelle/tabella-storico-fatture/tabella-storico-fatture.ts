@@ -6,20 +6,21 @@ import {BottonePillola} from '@shared/Componenti/Ui/bottone-pillola/bottone-pill
 import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
+
 @Component({
   selector: 'app-tabella-storico-fatture',
   imports: [
     CurrencyPipe,
     IconaStato,
     BottoneChiaro,
-    MessaggioCardVuota
+    MessaggioCardVuota,
   ],
   templateUrl: './tabella-storico-fatture.html',
   styleUrl: './tabella-storico-fatture.css',
 })
 export class TabellaStoricoFatture {
 
-  @Input() fattureEmesse: FatturaDTO[] = [];
+  @Input() fattureEmesse: FatturaDTO[]|null = null;
   @Output() scaricaFattura = new EventEmitter<number>();
   @Output() pagaFattura = new EventEmitter<number>();
 

@@ -22,7 +22,7 @@ import {TableSortService} from '@core/services/table-sort-service';
 
 export class TabellaStoricoFatture {
   constructor(private sortTable: TableSortService) {}
-  @Input() fatture: FatturaDTO[] = [];
+  @Input() fatture: FatturaDTO[] |null = null;
   @Output() richiestaDownload: EventEmitter<number> = new EventEmitter<number>();
   protected annoSelezionato: number = new Date().getFullYear();
   protected aziendaSelezionata: any = null;
@@ -33,6 +33,9 @@ export class TabellaStoricoFatture {
 
 
   sortColonna(chiave:string){
+    if(!this.fatture){
+      return;
+    }
     this.fatture=this.sortTable.sortArray(this.fatture, chiave);
   }
 

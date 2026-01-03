@@ -17,10 +17,13 @@ import {TableSortService} from '@core/services/table-sort-service';
 })
 export class TabellaStoricoManutenzioni {
   constructor(private sortTable: TableSortService) {}
-  @Input() listaStorico:RichiestaManutenzioneDTO[]=[]
+  @Input() listaStorico:RichiestaManutenzioneDTO[]|null=null;
   filtroTarga=new FormControl('', { nonNullable: true });
 
   get listaStoricoFiltrata():RichiestaManutenzioneDTO[]{
+    if (!this.listaStorico) {
+      return [];
+    }
     const testoRicerca = this.filtroTarga.value.trim().toUpperCase();
     if (!testoRicerca) {
       return this.listaStorico;
@@ -32,7 +35,8 @@ export class TabellaStoricoManutenzioni {
   }
 
   sortColonna( chiave : string) {
-    this.listaStorico = this.sortTable.sortArray(this.listaStorico, chiave);
-   }
+    if (this.listaStorico) {
+      this.listaStorico = this.sortTable.sortArray([...this.listaStorico], chiave);
+    }   }
 
 }

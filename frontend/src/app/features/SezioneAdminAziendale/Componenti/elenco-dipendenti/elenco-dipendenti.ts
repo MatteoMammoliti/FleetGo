@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
-import { RouterLink } from '@angular/router';
 import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card/card-dipendente/card-dipendente';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
@@ -15,15 +14,16 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 export class ElencoDipendenti {
   cercaDipendente: string = '';
-  @Input() listaDipendenti: DipendenteDTO[] = [];
+  @Input() listaDipendenti: DipendenteDTO[]|null=null;
   @Output() richiestaRimozioneDipendente= new EventEmitter<number>();
   @Output() apriDettagliDipendente = new EventEmitter<DipendenteDTO>();
 
-  get dipendentiFiltrati(): DipendenteDTO[] {
+  get dipendentiFiltrati(): DipendenteDTO[]|null {
+    if(!this.listaDipendenti) {return null;}
+
     if (!this.cercaDipendente) {
       return this.listaDipendenti;
     }
-
     return this.listaDipendenti.filter(d =>
       (d.nomeUtente && d.nomeUtente.toLowerCase().includes(this.cercaDipendente.toLowerCase())) ||
       (d.cognomeUtente && d.cognomeUtente.toLowerCase().includes(this.cercaDipendente.toLowerCase()))

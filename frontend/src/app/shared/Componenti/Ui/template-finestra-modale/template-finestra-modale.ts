@@ -20,4 +20,16 @@ export class TemplateFinestraModale {
 
   @Input() larghezza="max-w-xl";
 
+  chiusuraInCorso = false;
+
+  private eseguiChiusura(eventEmitter: EventEmitter<any>) {
+    this.chiusuraInCorso = true;
+    setTimeout(() => {
+      eventEmitter.emit();
+    }, 250);
+  }
+
+  chiudiModale() { this.eseguiChiusura(this.chiudi); }
+  annullaModale() { this.eseguiChiusura(this.annulla); }
+  confermaModale() { this.eseguiChiusura(this.conferma); }
 }

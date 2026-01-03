@@ -24,13 +24,16 @@ export class ModaleRichiestaAppuntamento {
 
   @Input() appuntamentoRichiesto = false;
   caricamentoInCorso = false;
+  chiusuraInCorso = false;
 
-  onChiudiPagina() {
-    this.chiudiPagina.emit();
+  private eseguiChiusura(eventEmitter: EventEmitter<any>) {
+    this.chiusuraInCorso = true;
+    setTimeout(() => {
+      eventEmitter.emit();
+    }, 250);
   }
 
-  inoltraRichiestaAppuntamento() {
-    this.caricamentoInCorso = true;
-    this.richiediAppuntamento.emit();
-  }
+
+  chiudiModale() { this.eseguiChiusura(this.chiudiPagina); }
+  confermaModale() {this.caricamentoInCorso = true; this.eseguiChiusura(this.richiediAppuntamento); }
 }

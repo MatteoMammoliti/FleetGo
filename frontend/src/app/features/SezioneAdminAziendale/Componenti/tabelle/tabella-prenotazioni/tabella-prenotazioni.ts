@@ -12,6 +12,7 @@ import {DatePipe} from '@angular/common';
 })
 export class TabellaPrenotazioni {
 
-  @Input() richiesteNoleggio: RichiestaNoleggioDTO[] = [];
+  @Input() richiesteNoleggio: RichiestaNoleggioDTO[]|null = null;
   @Output() apriDettaglio = new EventEmitter<number>();
+
 }

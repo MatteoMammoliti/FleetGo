@@ -19,7 +19,7 @@ import {TableSortService} from '@core/services/table-sort-service';
 })
 export class TabellaManutenzioniInCorso {
 
-  @Input() listaRichieste:RichiestaManutenzioneDTO[]=[]
+  @Input() listaRichieste:RichiestaManutenzioneDTO[]|null=null
   @Output() chiudiRichiesta=new EventEmitter<number>()
 
   onConcludi(idRichiesta:number){

@@ -16,7 +16,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   styleUrl: './tabella-auto.css',
 })
 export class TabellaAuto {
-  @Input() listaVeicoli: VeicoloDTO[] = [];
+  @Input() listaVeicoli: VeicoloDTO[]|null = null;
   @Input() listaAziende: AziendaDTO[] = [];
   @Output() richiestaEliminazione = new EventEmitter<string>();
   @Output() apriInfoVeicolo=new EventEmitter<string>();

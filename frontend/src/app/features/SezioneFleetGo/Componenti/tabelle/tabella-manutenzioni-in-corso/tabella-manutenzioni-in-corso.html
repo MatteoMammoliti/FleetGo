@@ -1,42 +1,54 @@
 <app-template-titolo-sottotitolo titolo="Interventi in corso" sottotitolo="veicoli attualmente non disponibili nella flotta">
-  @if (listaRichieste.length === 0) {
-    <app-messaggio-card-vuota testoPrimario="Tutti i veicoli sono in salute!" testoSecondario="Nessun veicolo in manutenzione" icona="bi-heart-pulse"></app-messaggio-card-vuota>
-  } @else {
-    <div class="div-table min-h-[200px] max-h-[308px] px-5">
-      <table class="table-base">
-        <thead>
-        <tr class="tr-superiore">
-          <th class="pl-6">Veicolo</th>
-          <th>Data Inizio</th>
-          <th>Tipo Intervento</th>
-          <th class="text-center">Stato</th>
-          <th class="pr-9 text-right">Azioni</th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (richiesta of listaRichieste; track richiesta.idManutenzione) {
-            <tr class="tr-inferiore group">
-              <td class="td-sinistro">
-                <div class="flex flex-col">
-                  <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
-                  <small class="uppercase text-xs text-gray-500">{{ richiesta.veicolo?.nomeModello }}</small>
-                </div>
-              </td>
-              <td  class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
-              <td  class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
-              <td  class="td-base text-center"><span class="text-xs font-bold text-azzurro-scuro">Manutenzione in corso</span></td>
-              <td class="td-destro pr-6">
-                <div class="flex justify-end">
-                  <app-bottone-chiaro (click)="onConcludi(richiesta.idManutenzione)">
-                  <i class="bi bi-check-lg"></i> Concludi
-                </app-bottone-chiaro>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+  @if(listaRichieste==null){
+    <div class="flex flex-col items-center justify-center py-20 w-full">
+      <div class="relative">
+        <i class="bi bi-arrow-clockwise text-4xl text-slate-300 animate-spin inline-block"></i>
+      </div>
     </div>
+
+  } @else {
+
+    @if (listaRichieste.length === 0) {
+      <app-messaggio-card-vuota testoPrimario="Tutti i veicoli sono in salute!" testoSecondario="Nessun veicolo in manutenzione" icona="bi-heart-pulse"></app-messaggio-card-vuota>
+    } @else {
+      <div class="div-table min-h-[200px] max-h-[308px] px-5">
+        <table class="table-base">
+          <thead>
+          <tr class="tr-superiore">
+            <th class="pl-6">Veicolo</th>
+            <th>Data Inizio</th>
+            <th>Tipo Intervento</th>
+            <th class="text-center">Stato</th>
+            <th class="pr-9 text-right">Azioni</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (richiesta of listaRichieste; track richiesta.idManutenzione) {
+              <tr class="tr-inferiore group">
+                <td class="td-sinistro">
+                  <div class="flex flex-col">
+                    <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
+                    <small class="uppercase text-xs text-gray-500">{{ richiesta.veicolo?.nomeModello }}</small>
+                  </div>
+                </td>
+                <td  class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
+                <td  class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
+                <td  class="td-base text-center"><span class="text-xs font-bold text-azzurro-scuro">Manutenzione in corso</span></td>
+                <td class="td-destro pr-6">
+                  <div class="flex justify-end">
+                    <app-bottone-chiaro (click)="onConcludi(richiesta.idManutenzione)">
+                      <i class="bi bi-check-lg"></i> Concludi
+                    </app-bottone-chiaro>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
   }
+
 </app-template-titolo-sottotitolo>
 

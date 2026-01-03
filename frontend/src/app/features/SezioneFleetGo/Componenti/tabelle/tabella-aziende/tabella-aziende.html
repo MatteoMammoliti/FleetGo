@@ -13,8 +13,17 @@
         <th class="p-4 py-5 text-right">Azioni</th>
       </tr>
       </thead>
-
       <tbody class="divide-y divide-slate-100 ">
+      @if (!listaAziende) {
+        <tr>
+          <td colspan="5" class="h-[600px]">
+            <div class="flex items-center justify-center h-full">
+              <i class="caricamento bi bi-arrow-clockwise"></i>
+            </div>
+          </td>
+        </tr>
+
+      } @else {
 
         @for (azienda of listaAziende; track azienda.idAzienda) {
           <tr class="group hover:bg-slate-50 transition-all duration-200">
@@ -97,7 +106,7 @@
               </div>
             </td>
           </tr>
-        }
+        }}
       </tbody>
     </table>
   </div>

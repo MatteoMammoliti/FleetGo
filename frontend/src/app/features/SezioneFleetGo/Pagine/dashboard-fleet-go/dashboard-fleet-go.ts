@@ -38,12 +38,12 @@ export class DashboardFleetGo implements OnInit{
   percentualeNoleggiati=0;
   descrizionePercentuale:string=""
 
-  richiesteManutenzione:RichiestaManutenzioneDTO[]=[];
+  richiesteManutenzione:RichiestaManutenzioneDTO[]|null=null;
   richiestaSelezionata:RichiestaManutenzioneDTO | null = null;
 
   apriPaginaGenerazioneOfferte = false;
 
-  fatture:FatturaDaGenerareDTO[]=[];
+  fatture:FatturaDaGenerareDTO[]|null=null;
   offerteAttive: OffertaDTO[] = [];
   fatturaDaGenerare: FatturaDaGenerareDTO = {} as FatturaDaGenerareDTO;
   successoBanner="";

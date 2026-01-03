@@ -10,54 +10,59 @@
         <th class="px-6 py-4 border-b border-slate-100 text-right">Azioni</th>
       </tr>
       </thead>
+
       <tbody class="text-sm text-slate-700">
-        @for (f of fattureEmesse; track f.numeroFattura) {
-          <tr class="tr-inferiore group">
-            <td class="td-sinistro">
-              #{{ f.numeroFattura }}
-            </td>
-
-            <td class="td-base">
-              {{ getNomeMese(f.meseFattura) }} {{ f.annoFattura }}
-            </td>
-
-            <td class="td-base">
-              {{ f.costo | currency:'EUR':'symbol':'1.2-2' }}
-            </td>
-
-            <td class="td-base">
-              @if (f.fatturaPagata) {
-                <app-icona-stato testo="Pagata"></app-icona-stato>
-              } @else {
-                <app-icona-stato testo="Da Pagare" stato="rosso"></app-icona-stato>
-              }
-            </td>
-
-            <td class="td-destro">
-              <div class="flex items-center justify-end pr-6">
-                <button (click)="scaricaFattura.emit(f.numeroFattura)"
-                        class="text-slate-400 hover:text-indigo-600 transition-colors p-2"
-                        title="Scarica PDF">
-                  <i class="bi bi-download text-blu-notte text-lg"></i>
-                </button>
-
-                @if (!f.fatturaPagata) {
-                  <app-bottone-chiaro (click)="pagaFattura.emit(f.numeroFattura)">
-                    <div class="p-1">
-
-                      <span> <i class="bi bi-credit-card"></i> Paga Ora</span>
-                    </div>
-                  </app-bottone-chiaro>
-                }
+        @if (fattureEmesse === null) {
+          <tr>
+            <td colspan="5" class="h-[300px]">
+              <div class="flex items-center justify-center h-full">
+                <i class="caricamento bi bi-arrow-clockwise"></i>
               </div>
             </td>
           </tr>
-        } @empty {
-          <tr>
-            <td colspan="5" >
-              <app-messaggio-card-vuota testoPrimario="Nessuna Fattura trovata" testoSecondario="Prova a cambiare i filtri" icona="bi-archive"></app-messaggio-card-vuota>
-            </td>
-          </tr>
+
+        } @else {
+          @for (f of fattureEmesse; track f.numeroFattura) {
+            <tr class="tr-inferiore group">
+              <td class="td-sinistro">#{{ f.numeroFattura }}</td>
+              <td class="td-base">{{ getNomeMese(f.meseFattura) }} {{ f.annoFattura }}</td>
+              <td class="td-base">{{ f.costo | currency:'EUR':'symbol':'1.2-2' }}</td>
+              <td class="td-base">
+                @if (f.fatturaPagata) {
+                  <app-icona-stato testo="Pagata"></app-icona-stato>
+                } @else {
+                  <app-icona-stato testo="Da Pagare" stato="rosso"></app-icona-stato>
+                }
+              </td>
+              <td class="td-destro">
+                <div class="flex items-center justify-end pr-6 gap-2">
+                  <button (click)="scaricaFattura.emit(f.numeroFattura)"
+                          class="text-slate-400 hover:text-indigo-600 transition-colors p-2"
+                          title="Scarica PDF">
+                    <i class="bi bi-download text-blu-notte text-lg"></i>
+                  </button>
+
+                  @if (!f.fatturaPagata) {
+                    <app-bottone-chiaro (click)="pagaFattura.emit(f.numeroFattura)">
+                      <div class="p-1">
+                        <span><i class="bi bi-credit-card mr-1"></i> Paga Ora</span>
+                      </div>
+                    </app-bottone-chiaro>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="py-10">
+                <app-messaggio-card-vuota
+                  testoPrimario="Nessuna Fattura trovata"
+                  testoSecondario="Non ci sono documenti corrispondenti ai filtri selezionati."
+                  icona="bi-archive">
+                </app-messaggio-card-vuota>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>

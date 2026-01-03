@@ -30,8 +30,8 @@ export class AziendeAffiliate implements OnInit {
   @ViewChild('formAggiungiAdminAzienda') formAggiunta!: FormAggiungiAdminAzienda;
 
   testoRicerca: string = '';
-  listaAziendeAttive: AziendaDTO[] = [];
-  listaAziendeDisabilitate: AziendaDTO[] = [];
+  listaAziendeAttive: AziendaDTO[]|null = null;
+  listaAziendeDisabilitate: AziendaDTO[]|null = null;
 
   mostraModale = false;
   mostraAziendeArchiviate = false
@@ -55,12 +55,14 @@ export class AziendeAffiliate implements OnInit {
   }
 
   get filtraAziende() {
-
+    const listaTarget = !this.mostraAziendeArchiviate ? this.listaAziendeAttive : this.listaAziendeDisabilitate
+    if(!listaTarget){
+      return null;
+    }
     if (!this.testoRicerca || this.testoRicerca.trim() === '') {
       return !this.mostraAziendeArchiviate ? this.listaAziendeAttive : this.listaAziendeDisabilitate;
     }
 
-    const listaTarget = !this.mostraAziendeArchiviate ? this.listaAziendeAttive : this.listaAziendeDisabilitate
 
     return listaTarget.filter(azienda => {
 

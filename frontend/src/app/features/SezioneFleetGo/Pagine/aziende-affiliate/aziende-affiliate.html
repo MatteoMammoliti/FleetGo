@@ -33,7 +33,7 @@
                 [class.hover:text-slate-700]="!mostraAziendeArchiviate">
           <i class="bi bi-archive-fill"></i>
           Archivio
-          @if (listaAziendeDisabilitate.length > 0) {
+          @if (listaAziendeDisabilitate && listaAziendeDisabilitate.length > 0) {
             <span class="bg-slate-200 text-slate-600 text-[10px] px-1.5 py-0.5 rounded-full">
               {{ listaAziendeDisabilitate.length }}
             </span>
@@ -62,7 +62,7 @@
         }
       </h3>
       <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-        {{ filtraAziende.length }} risultati
+        {{ filtraAziende?.length }} risultati
       </span>
     </div>
 

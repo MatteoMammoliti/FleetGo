@@ -171,9 +171,7 @@ export class DashboardAzienda implements OnInit{
         if(value) {
           this.richiesteContattoInCorso.add(this.offertaSelezionata.idOfferta);
           localStorage.setItem('richieste_effettuate', JSON.stringify(Array.from(this.richiesteContattoInCorso)));
-          setTimeout( () => {
-            this.chiudiModaleRichiestaAppuntamento();
-          }, 2000)
+
         }
 
       }, error: err => { console.error(err); }

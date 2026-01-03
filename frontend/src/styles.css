@@ -15,6 +15,11 @@
     scroll-padding-top: 100px;
   }
 
+  .caricamento{
+    @apply text-3xl text-slate-300 animate-spin
+  }
+
+
   .ricerca-testo{
     @apply  flex bg-white px-2 py-1 rounded-xl border border-gray-50 h-8 focus-within:border-azzurro-scuro hover:border-azzurro-scuro
   }

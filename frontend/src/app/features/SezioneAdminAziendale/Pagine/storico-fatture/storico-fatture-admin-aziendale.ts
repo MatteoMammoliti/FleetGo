@@ -22,7 +22,7 @@ import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina
 })
 export class StoricoFattureAdminAziendale implements OnInit{
 
-  fattureEmesse: FatturaDTO[] = [];
+  fattureEmesse: FatturaDTO[]|null = null ;
   totaleDaPagare = 0;
   anniDisponibili: number[] = [];
 
@@ -57,6 +57,7 @@ export class StoricoFattureAdminAziendale implements OnInit{
   }
 
   get fattureFiltrate() {
+    if(!this.fattureEmesse) return null;
     return this.fattureEmesse.filter(fattura => {
 
       const matchAnno = fattura.annoFattura.toString() === this.filtroAnno.toString();

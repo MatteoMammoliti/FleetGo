@@ -22,10 +22,11 @@ export class ModaleDettagliDipendente implements OnInit{
 
   @Input() paginaVisibile = false;
   @Input() dipendente: DipendenteDTO | null = null;
-  @Input() storicoNoleggi: RichiestaNoleggioDTO[] = []
+  @Input() storicoNoleggi: RichiestaNoleggioDTO[] | null= null;
   @Output() chiudiPagina = new EventEmitter<void>();
 
   tabAttiva = "INFO";
+  chiusuraInCorso: boolean=false;
 
   ngOnInit() {
     this.tabAttiva = "INFO";
@@ -42,8 +43,16 @@ export class ModaleDettagliDipendente implements OnInit{
     this.tabAttiva = tipologia;
   }
 
-  chiudiModale() {
+
+
+  private eseguiChiusura(eventEmitter: EventEmitter<any>) {
     this.tabAttiva = "INFO";
-    this.chiudiPagina.emit()
+    this.chiusuraInCorso = true;
+    setTimeout(() => {
+      eventEmitter.emit();
+      this.chiusuraInCorso = false;
+    }, 250);
   }
+
+  chiudiModale() { this.eseguiChiusura(this.chiudiPagina); }
 }
