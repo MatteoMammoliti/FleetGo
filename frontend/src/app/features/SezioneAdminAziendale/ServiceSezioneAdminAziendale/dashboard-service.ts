@@ -64,5 +64,4 @@ export class DashboardService {
   getDatiGraficoTorta() : Observable<ContenitoreStatisticheNumeriche> {
     return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/getDatiGraficoTorta`, { withCredentials: true });
   }
-
 }

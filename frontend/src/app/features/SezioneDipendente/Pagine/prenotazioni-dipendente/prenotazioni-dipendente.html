@@ -1,8 +1,8 @@
-<app-intestazione-ebackground 
+<app-intestazione-ebackground
   [titolo]="'Le mie Prenotazioni'">
   <div class="pb-20">
     <div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-      
+
       <app-bottone-pillola
         [label]="'Tutte'"
         [attivo]="filtroAttivo === 'Tutte'"
@@ -38,12 +38,19 @@
         (clickBtn)="impostaFiltro('Terminata')">
       </app-bottone-pillola>
 
+      <app-bottone-pillola
+        [label]="'Rifiutate'"
+        [attivo]="filtroAttivo === 'Rifiutate'"
+        [variante]="'grigio'"
+        (clickBtn)="impostaFiltro('Rifiutate')">
+      </app-bottone-pillola>
+
     </div>
 
-    @if (daVisualizzare.length > 0) {
-      
+    @if (prenotazioniFiltrate.length > 0) {
+
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
-        @for (prenotazione of daVisualizzare; track prenotazione.idRichiesta) {
+        @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta) {
           <app-prenotazione-card
             class="h-full"
             (annullaRichiesta)="eliminaPrenotazione($event)"
@@ -53,9 +60,9 @@
       </div>
 
     } @else {
-      
+
       <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center animate-fade-in">
-        
+
         <app-messaggio-card-vuota
           [icona]="'bi-journal-x'"
           [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo)"
@@ -64,12 +71,12 @@
 
         <div class="mt-4">
           @if(filtroAttivo === 'Tutte') {
-            <button (click)="clickNuovaPrenotazione()" 
+            <button (click)="clickNuovaPrenotazione()"
                     class="px-6 py-3 bg-blu text-white font-bold rounded-xl shadow-lg shadow-blue-100 hover:bg-blue-700 hover:scale-105 transition-all">
               <i class="bi bi-plus-lg mr-2"></i>Nuova Prenotazione
             </button>
           } @else {
-            <button (click)="impostaFiltro('Tutte')" 
+            <button (click)="impostaFiltro('Tutte')"
                     class="px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
               Mostra Tutte
             </button>

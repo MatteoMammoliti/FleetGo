@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {PrenotazioneCard} from '@features/SezioneDipendente/componenti/prenotazione-card/prenotazione-card';
 import {PrenotazioniService} from '@features/SezioneDipendente/ServiceSezioneDipendente/prenotazioni-service';
@@ -20,9 +20,11 @@ import { BottonePillola } from '@shared/Componenti/Ui/bottone-pillola/bottone-pi
   templateUrl: './prenotazioni-dipendente.html',
   styleUrl: './prenotazioni-dipendente.css',
 })
-export class PrenotazioniDipendente {
-  constructor(private service:PrenotazioniService,private router:Router) {
-  }
+
+export class PrenotazioniDipendente implements OnInit {
+  constructor(private service:PrenotazioniService,
+              private router:Router) {}
+
   prenotazioni:RichiestaNoleggioDTO[]=[];
   daVisualizzare:RichiestaNoleggioDTO[]=[]
   filtroAttivo:string="Tutte"
@@ -56,21 +58,24 @@ export class PrenotazioniDipendente {
     this.router.navigate(['/dashboardDipendente/nuovaPrenotazione'])
   }
 
-  impostaFiltro(categoria: string) {
-    this.filtroAttivo = categoria;
-    
-    if (categoria === "Tutte") {
-      this.daVisualizzare = this.prenotazioni;
-    } else {
-      this.daVisualizzare = this.prenotazioni.filter(p => {
-        const stato = p.statoRichiesta || '';
-        const isAnnullata = !!p.richiestaAnnullata;
-
-        if (categoria === "Terminata") {
-          return stato === 'Terminata' || stato === 'Rifiutata' || isAnnullata;
-        }
-        return stato === categoria && !isAnnullata;
-      });
+  get prenotazioniFiltrate() {
+    if(this.filtroAttivo === 'Tutte'){
+      return this.prenotazioni;
     }
+
+    return this.prenotazioni.filter(prenotazione => {
+
+      let stato: boolean | undefined = false;
+
+      if(this.filtroAttivo === 'Rifiutate'){
+        stato = prenotazione.richiestaAnnullata;
+      } else {
+        stato = prenotazione.statoRichiesta == this.filtroAttivo && !prenotazione.richiestaAnnullata;
+      }
+
+      return stato;
+    });
   }
+
+  impostaFiltro(categoria: string) { this.filtroAttivo = categoria; }
 }
