@@ -11,7 +11,6 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   imports: [
     CurrencyPipe,
     IconaStato,
-    BottonePillola,
     BottoneChiaro,
     MessaggioCardVuota
   ],

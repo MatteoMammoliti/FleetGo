@@ -25,10 +25,11 @@ export class ModaleDettagliDipendente implements OnInit{
   @Input() storicoNoleggi: RichiestaNoleggioDTO[] = []
   @Output() chiudiPagina = new EventEmitter<void>();
 
-  approvazioneInCorso = false;
   tabAttiva = "INFO";
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tabAttiva = "INFO";
+  }
 
   get iniziali(): string {
     if (!this.dipendente || !this.dipendente.nomeUtente || !this.dipendente.cognomeUtente) {
@@ -39,5 +40,10 @@ export class ModaleDettagliDipendente implements OnInit{
 
   impostaTab(tipologia: string) {
     this.tabAttiva = tipologia;
+  }
+
+  chiudiModale() {
+    this.tabAttiva = "INFO";
+    this.chiudiPagina.emit()
   }
 }
