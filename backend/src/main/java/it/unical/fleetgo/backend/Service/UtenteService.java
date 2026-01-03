@@ -30,6 +30,8 @@ public class UtenteService {
 
     public void registraUtente(UtenteDTO utenteDTO, MultipartFile immagine) throws SQLException, IOException {
 
+        String urlImg = null;
+
         try(Connection connection = dataSource.getConnection()) {
             UtenteDAO utenteDAO = new UtenteDAO(connection);
             CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
@@ -47,7 +49,7 @@ public class UtenteService {
                     connection.rollback();
                 }
 
-                String urlImg = salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                urlImg = salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
                 ((DipendenteDTO) utenteDTO).setUrlImmagine(urlImg);
 
                 String urlImmagine = ((DipendenteDTO) utenteDTO).getUrlImmagine();
@@ -61,9 +63,23 @@ public class UtenteService {
 
             }catch (SQLException ex) {
                 connection.rollback();
+
+                if (urlImg != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImg);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new RuntimeException(ex);
             } catch (IOException e) {
                 connection.rollback();
+
+                if (urlImg != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImg);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new IOException(e);
             } finally {
 

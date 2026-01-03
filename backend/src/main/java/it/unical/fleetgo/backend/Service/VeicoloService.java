@@ -112,11 +112,13 @@ public class VeicoloService {
 
     public void aggiuntaModello(ModelloDTO modello, MultipartFile immagine) throws SQLException, IOException {
 
+        String urlImmagine = null;
+
         try(Connection conn = this.dataSource.getConnection()){
             try {
                 conn.setAutoCommit(false);
 
-                String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
                 modello.setUrlImmagine(urlImmagine);
 
                 ModelloDAO modelloDAO = new ModelloDAO(conn);
@@ -124,9 +126,23 @@ public class VeicoloService {
 
             } catch (IOException e) {
                 conn.rollback();
+
+                if (urlImmagine != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImmagine);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new IOException(e);
             } catch (SQLException e) {
                 conn.rollback();
+
+                if (urlImmagine != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImmagine);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new  RuntimeException(e);
             } finally {
                 conn.setAutoCommit(true);

@@ -24,6 +24,8 @@ import java.util.List;
 @Service
 public class AdminAziendaleService {
 
+    private static final String EMAIL_FLEETGO = "fleetgo@fleetgo.com";
+
     @Autowired private DataSource dataSource;
     @Autowired private EmailService emailService;
     @Autowired private PasswordEncoder passwordEncoder;
@@ -293,7 +295,7 @@ public class AdminAziendaleService {
 
             this.emailService.inviaMailRichiestaAppuntamento(
                     admin,
-                    "fleetgo@fleetgo.com"
+                    EMAIL_FLEETGO
             );
         }
     }

@@ -163,11 +163,13 @@ public class FleetGoService {
 
     public void inserisciNuovaOfferta(OffertaDTO offertaDTO, MultipartFile immagine) throws IOException, SQLException {
 
+        String urlImmagine = null;
+
         try(Connection conn = this.dataSource.getConnection()){
             try {
                 conn.setAutoCommit(false);
 
-                String urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
+                urlImmagine = this.salvataggioImmagineService.salvaImmagine(immagine, "immagini-patenti");
                 offertaDTO.setImmagineCopertina(urlImmagine);
 
                 OffertaDAO offertaDAO = new OffertaDAO(conn);
@@ -175,9 +177,23 @@ public class FleetGoService {
 
             } catch (IOException e) {
                 conn.rollback();
+
+                if (urlImmagine != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImmagine);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new IOException(e);
             } catch (SQLException e) {
                 conn.rollback();
+
+                if (urlImmagine != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(urlImmagine);
+                    } catch (Exception ignored) {}
+                }
+
                 throw new  RuntimeException(e);
             } finally {
                 conn.setAutoCommit(true);

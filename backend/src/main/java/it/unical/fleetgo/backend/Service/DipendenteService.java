@@ -50,21 +50,37 @@ public class DipendenteService {
 
     public void aggiornaUrlPatente(Integer idDipendente, MultipartFile patente) throws SQLException, IOException {
 
+        String url = null;
+
         try(Connection connection = dataSource.getConnection()){
             try {
                 connection.setAutoCommit(false);
 
-                String url = salvataggioImmagineService.salvaImmagine(patente, "immagini-patenti");
+                url = salvataggioImmagineService.salvaImmagine(patente, "immagini-patenti");
                 CredenzialiDAO credenzialiDAO = new CredenzialiDAO(connection);
                 credenzialiDAO.updateUrlPatente(idDipendente, url);
 
                 connection.commit();
             } catch (IOException e){
                 connection.rollback();
-                throw new IOException();
+
+                if (url != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(url);
+                    } catch (Exception ignored) {}
+                }
+
+                throw new IOException(e);
             } catch (SQLException e){
                 connection.rollback();
-                throw new SQLException();
+
+                if (url != null) {
+                    try {
+                        salvataggioImmagineService.eliminaImmagine(url);
+                    } catch (Exception ignored) {}
+                }
+
+                throw new SQLException(e);
             } finally {
                 connection.setAutoCommit(true);
             }

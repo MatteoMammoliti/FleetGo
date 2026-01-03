@@ -113,13 +113,13 @@ public class ControllerDashboard {
     @PostMapping("/richiediAppuntamento")
     public ResponseEntity<String> richiediAppuntamento(HttpSession session) throws SQLException {
 
-        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+        Integer idUtente = (Integer) session.getAttribute("idUtente");
 
-        if(idAzienda == null){
+        if(idUtente == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        adminAziendaleService.richiediAppuntamento(idAzienda);
+        adminAziendaleService.richiediAppuntamento(idUtente);
         return ResponseEntity.status(HttpStatus.OK).body("Richiesta inviata con successo");
     }
 
