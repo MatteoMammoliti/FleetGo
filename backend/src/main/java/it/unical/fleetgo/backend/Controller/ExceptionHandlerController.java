@@ -15,7 +15,8 @@ import java.sql.SQLException;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(SQLException.class)
-    public ResponseEntity<String> gestisciErroreDatabase() {
+    public ResponseEntity<String> gestisciErroreDatabase(SQLException e) {
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Si è verificato un errore durante le operazioni nel Database");
     }

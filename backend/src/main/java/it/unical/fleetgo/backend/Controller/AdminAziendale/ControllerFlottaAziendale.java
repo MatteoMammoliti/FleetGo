@@ -39,7 +39,7 @@ public class ControllerFlottaAziendale {
         if(idAzienda == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
+        veicoloDTO.setIdAziendaAffiliata(idAzienda);
         veicoloService.impostaLuogoVeicolo(veicoloDTO);
         return ResponseEntity.ok("Luogo impostato correttamente");
     }
