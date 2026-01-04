@@ -6,6 +6,8 @@ import { PatenteDocumentiComponent } from '../../componenti/patente-documenti/pa
 import { AffiliazioneAzienda } from '../../componenti/affiliazione-azienda/affiliazione-azienda';
 import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
+import {AuthService} from '@core/auth/auth-service';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
@@ -28,7 +30,7 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   utente: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   urlPatente : string = '';
 
-  constructor(private impostazioniService: ImpostazioniService) {}
+  constructor(private impostazioniService: ImpostazioniService,private authService:AuthService,private router:Router) {}
 
   ngOnInit() {
     this.caricaDatiUtente();
@@ -66,6 +68,21 @@ export class ImpostazioniDipendenteComponent implements OnInit {
       }, error: err => console.error("Errore caricamento dati:", err)
     })
   }
+
+  inviaDisdetta(){
+    this.impostazioniService.abbandonaAzienda().subscribe({
+      next: () => {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Errore durante la disdetta.");
+      }
+    });
+  }
+
 
   inviaModifiche(dati: any) {
     this.impostazioniService.inviaModifiche(dati).subscribe({

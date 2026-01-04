@@ -57,6 +57,7 @@
 
       @else if (sezione === 'Azienda'){
         <app-affiliazione-azienda
+          (inviaRichiestaDisdetta)="inviaDisdetta()"
           [datiAzienda]="utente">
         </app-affiliazione-azienda>
       }

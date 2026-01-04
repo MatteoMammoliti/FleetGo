@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni-service';
@@ -23,7 +23,7 @@ import {AuthService} from '@core/auth/auth-service';
 export class AffiliazioneAzienda {
 
   @Input() datiAzienda: any = {};
-
+  @Output() inviaRichiestaDisdetta= new EventEmitter();
   constructor(
     private impostazioniService: ImpostazioniService,
     private authService: AuthService,
@@ -36,16 +36,7 @@ export class AffiliazioneAzienda {
   }
 
   confermaDisdetta() {
-    this.impostazioniService.abbandonaAzienda().subscribe({
-      next: () => {
-        this.mostraModaleConferma = false;
-        this.authService.logout();
-      },
-      error: (err) => {
-        console.error(err);
-        alert("Errore durante la disdetta.");
-        this.mostraModaleConferma = false;
-      }
-    });
+    this.inviaRichiestaDisdetta.emit();
+    this.mostraModaleConferma=false;
   }
 }
