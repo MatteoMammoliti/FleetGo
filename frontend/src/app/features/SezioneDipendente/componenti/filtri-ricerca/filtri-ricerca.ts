@@ -12,6 +12,13 @@ import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazi
   styleUrl: './filtri-ricerca.css',
 })
 export class FiltriRicerca {
+
+  ngOnInit() {
+    this.impostaMinimiDate();
+    this.impostaDateDefault();
+    this.cerca()
+  }
+
   dataConsegnaCompleta:string='';
   dataRitiroCompleta:string='';
 
@@ -46,10 +53,23 @@ export class FiltriRicerca {
       this.minDateConsegna = this.minDateRitiro;
     }
 
+  impostaDateDefault() {
+    const oggi = new Date();
+    this.dataRitiroCompleta = this.formattaDataLocale(oggi);
+    const domani = new Date();
+    domani.setDate(domani.getDate() + 1);
+    this.dataConsegnaCompleta = this.formattaDataLocale(domani);
+  }
+  private formattaDataLocale(data: Date): string {
+    const d = new Date(data);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  }
+
     onCambioRitiro() {
     if (this.dataRitiroCompleta) {
       this.minDateConsegna = this.dataRitiroCompleta;
-    
+
       if (this.dataConsegnaCompleta && this.dataConsegnaCompleta < this.dataRitiroCompleta) {
         this.dataConsegnaCompleta = '';
       }
