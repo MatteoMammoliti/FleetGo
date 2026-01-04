@@ -3,17 +3,17 @@
      [class.grayscale]="veicolo.statoAttuale === 'Non_disponibile'">
 
   <div class="relative h-56 overflow-hidden shrink-0 bg-slate-100">
-    
-    <img [src]="veicolo.urlImmagine" 
-         alt="{{ veicolo.nomeModello }}" 
+
+    <img [src]="veicolo.urlImmagine"
+         alt="{{ veicolo.nomeModello }}"
          class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110">
 
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90"></div>
 
     <div class="absolute top-4 right-4 z-10">
        <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide border shadow-sm backdrop-blur-md"
-            [ngClass]="veicolo.statoAttuale === 'Disponibile' 
-              ? 'bg-emerald-500/90 text-white border-emerald-400' 
+            [ngClass]="veicolo.statoAttuale === 'Disponibile'
+              ? 'bg-emerald-500/90 text-white border-emerald-400'
               : 'bg-slate-500/90 text-white border-slate-400'">
         {{ veicolo.statoAttuale }}
       </span>
@@ -40,7 +40,7 @@
   </div>
 
   <div class="p-5 flex flex-col justify-between flex-grow">
-    
+
     <div class="flex justify-between items-end mb-6">
        <div class="flex items-center gap-3 text-slate-500 font-medium text-sm">
          <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 border border-blue-100">
@@ -51,24 +51,24 @@
          </span>
        </div>
 
-       <div class="text-right shrink-0 ml-2">
-         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Costo Stimato</p>
-         <p class="text-xl font-black text-slate-800">
-           {{ costoStimato | currency:'EUR':'symbol':'1.0-0' }}
-         </p>
-       </div>
+      @if(veicolo.statoAttuale === 'Disponibile') {
+        <div class="text-right shrink-0 ml-2">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Costo Stimato</p>
+          <p class="text-xl font-black text-slate-800">
+            {{ costoStimato | currency:'EUR':'symbol':'1.0-0' }}
+          </p>
+        </div>
+      }
     </div>
 
     <button class="w-full py-3.5 rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
             [disabled]="veicolo.statoAttuale === 'Non_disponbile'"
             (click)="clickPrenota()"
-            [ngClass]="veicolo.statoAttuale === 'Disponibile' 
-              ? 'bg-blue-600 text-white shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg' 
+            [ngClass]="veicolo.statoAttuale === 'Disponibile'
+              ? 'bg-blue-600 text-white shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg'
               : 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none'">
       {{ veicolo.statoAttuale === 'Disponibile' ? 'Prenota Ora' : 'Non Disponibile' }}
       @if(veicolo.statoAttuale === 'Disponibile') { <i class="bi bi-arrow-right"></i> }
     </button>
-
   </div>
-
 </div>

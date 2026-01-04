@@ -22,7 +22,9 @@ public class ControllerFattureEmesse {
         byte[] pdf = fleetGoService.downloadFattura(idFattura);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "fattura_" + idFattura + ".pdf");
+
+        String nomeFileFattura = "Fattura_FleetGo_" + idFattura + ".pdf";
+        headers.setContentDispositionFormData("attachment", nomeFileFattura);
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
 

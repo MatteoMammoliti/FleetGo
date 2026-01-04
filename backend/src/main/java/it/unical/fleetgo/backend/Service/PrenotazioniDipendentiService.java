@@ -12,11 +12,13 @@ import it.unical.fleetgo.backend.Persistence.DAO.RichiestaNoleggioDAO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.VeicoloPrenotazione;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class PrenotazioniDipendentiService {
     public void inviaRichiestaNoleggio(RichiestaNoleggioDTO richiestaNoleggio) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            Double prezzoStimato=this.calcoloPrezzoRichiesta(richiestaNoleggio);
+            Double prezzoStimato = this.calcoloPrezzoRichiesta(richiestaNoleggio);
 
             if(dao.aggiungiRichiestaNoleggio(richiestaNoleggio,prezzoStimato)) {
                 return;
@@ -88,13 +90,12 @@ public class PrenotazioniDipendentiService {
         }
     }
 
-
     private Double calcoloPrezzoRichiesta(RichiestaNoleggioDTO richiesta){
         LocalDateTime inizio = LocalDateTime.parse(richiesta.getDataRitiro() + "T" + richiesta.getOraInizio());
         LocalDateTime fine = LocalDateTime.parse(richiesta.getDataConsegna()+ "T" + richiesta.getOraFine());
         long minutiTotali = ChronoUnit.MINUTES.between(inizio, fine);
 
-        if (minutiTotali <= 0) {
+        if (minutiTotali <= 0 || inizio.isBefore(LocalDateTime.now()) || fine.isBefore(LocalDateTime.now()) ) {
             throw new DatePrenotazioneNonValide();
         }
 

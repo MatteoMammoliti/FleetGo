@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {VeicoloCard} from '@features/SezioneDipendente/componenti/veicolo-card/veicolo-card';
 import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
@@ -11,9 +11,9 @@ import {
   RichiestaNoleggioForm
 } from '@features/SezioneDipendente/componenti/richiesta-noleggio-form/richiesta-noleggio-form';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
-import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-crea-prenotazione',
@@ -29,7 +29,8 @@ import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore'
   templateUrl: './crea-prenotazione.html',
   styleUrl: './crea-prenotazione.css',
 })
-export class CreaPrenotazione {
+
+export class CreaPrenotazione implements OnInit {
   listaVeicoli:VeicoloPrenotazioneDTO[]=[]
   listaLuoghi:LuogoDTO[]=[]
   nomeLuogoSelezionato:string = '';
@@ -47,11 +48,11 @@ export class CreaPrenotazione {
   erroreBanner: string = '';
   successoBanner: string = '';
 
-  constructor(private service:CreaPrenotazioneService) {
-  }
+  constructor(private service:CreaPrenotazioneService){}
+
   ngOnInit(){
-    this.impostaDateDefault()
-    this.getListaLuoghi()
+    this.impostaDateDefault();
+    this.getListaLuoghi();
   }
 
   getListaLuoghi(){
@@ -73,7 +74,6 @@ export class CreaPrenotazione {
       },
       error:(err)=>console.error("Errore nel caricamento dei veicoli")
     })
-
   }
 
   clickApplicaFiltri(dati:DatiFiltriNuovaPrenotazione){
@@ -105,20 +105,21 @@ export class CreaPrenotazione {
     const giorno = date.getDate().toString().padStart(2, '0');
     return `${anno}-${mese}-${giorno}`;
   }
+
   clickCambioLuogo(){
     this.getRichiediVeicolo(this.dataInizio,this.dataFine,this.oraInizio,this.oraFine)
   }
+
   clickPrenotaOra(veicolo:VeicoloPrenotazioneDTO){
     this.veicoloSelezionato=veicolo;
-    const dati:ContenitoreFormNuovaRichiestaNoleggio={
-      veicolo:this.veicoloSelezionato,
-      dataInizio:this.dataInizio,
-      dataFine:this.dataFine,
-      oraInizio:this.oraInizio,
-      oraFine:this.oraFine,
-      motivazione:""
-    }
-    this.mostraModale=dati;
+    this.mostraModale={
+      veicolo: this.veicoloSelezionato,
+      dataInizio: this.dataInizio,
+      dataFine: this.dataFine,
+      oraInizio: this.oraInizio,
+      oraFine: this.oraFine,
+      motivazione: ""
+    };
   }
 
   chiudiModale() {
@@ -126,6 +127,18 @@ export class CreaPrenotazione {
   }
 
   inviaPrenotazione(dati: ContenitoreFormNuovaRichiestaNoleggio) {
+
+    const dataRitiroCheck = new Date(dati.dataInizio + 'T' + dati.oraInizio);
+    const dataConsegnaCheck = new Date(dati.dataFine + 'T' + dati.oraFine);
+    const adesso = new Date();
+    adesso.setSeconds(0,0);
+
+    if (dataRitiroCheck < adesso || dataConsegnaCheck < adesso) {
+      this.erroreBanner = "L'orario selezionato è scaduto! Per favore aggiorna la ricerca.";
+      this.chiudiModale();
+      return;
+    }
+
     const daInviare:RichiestaNoleggioDTO={
       idVeicolo:dati.veicolo.idVeicolo,
       dataRitiro:dati.dataInizio,
@@ -144,7 +157,7 @@ export class CreaPrenotazione {
       {
         this.erroreBanner=err.error;
       }
-        
+
     })
 
   }

@@ -16,9 +16,9 @@ export class VeicoloCard {
   @Input() veicolo:VeicoloPrenotazioneDTO={} as VeicoloPrenotazioneDTO;
   @Input() costoStimato:number=0;
   @Output() apriForm= new EventEmitter<VeicoloPrenotazioneDTO>()
+
   clickPrenota(){
+    if(this.veicolo.statoAttuale === 'Non_disponibile') return;
     this.apriForm.emit(this.veicolo);
   }
-
 }
-
