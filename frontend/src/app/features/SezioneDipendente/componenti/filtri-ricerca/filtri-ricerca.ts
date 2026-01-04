@@ -14,6 +14,9 @@ import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazi
 export class FiltriRicerca {
   dataConsegnaCompleta:string='';
   dataRitiroCompleta:string='';
+
+  minDateRitiro : string = '';
+  minDateConsegna : string = '';
   @Output() clickRicerca=new EventEmitter<DatiFiltriNuovaPrenotazione>()
 
   cerca() {
@@ -36,5 +39,23 @@ export class FiltriRicerca {
     }
     this.clickRicerca.emit(dati);
     }
+
+    impostaMinimiDate() {
+      const now = new Date();
+      this.minDateRitiro = now.toISOString().slice(0, 16);
+      this.minDateConsegna = this.minDateRitiro;
+    }
+
+    onCambioRitiro() {
+    if (this.dataRitiroCompleta) {
+      this.minDateConsegna = this.dataRitiroCompleta;
+    
+      if (this.dataConsegnaCompleta && this.dataConsegnaCompleta < this.dataRitiroCompleta) {
+        this.dataConsegnaCompleta = '';
+      }
+    }
+  }
+
+
 
 }

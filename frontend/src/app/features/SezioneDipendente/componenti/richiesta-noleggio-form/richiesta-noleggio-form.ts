@@ -2,12 +2,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFormNuovaRichiestaNoleggio';
 import {FormsModule} from '@angular/forms';
 import {CurrencyPipe} from '@angular/common';
+import { TemplateFinestraModale } from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-richiesta-noleggio-form',
   imports: [
     FormsModule,
-    CurrencyPipe
+    CurrencyPipe,
+    TemplateFinestraModale
   ],
   templateUrl: './richiesta-noleggio-form.html',
   styleUrl: './richiesta-noleggio-form.css',

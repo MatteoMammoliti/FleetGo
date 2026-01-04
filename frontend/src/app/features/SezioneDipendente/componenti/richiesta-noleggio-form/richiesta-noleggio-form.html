@@ -1,74 +1,90 @@
-<div class="modal-overlay" (click)="onClose()">
-  <div class="modal-container" (click)="$event.stopPropagation()">
+<app-template-finestra-modale
+  [titolo]="'Conferma Prenotazione'"
+  [sottotitolo]="'Riepilogo e conferma i dati della richiesta'"
+  [larghezza]="'max-w-2xl'"
+  [tastoBianco]="'Annulla'"
+  [tastoBlu]="'Conferma e Prenota'"
+  [confermaDisabilitata]="motivazione.trim().length < 5"
+  (chiudi)="onClose()"
+  (annulla)="onClose()"
+  (conferma)="onConfirm()">
 
-    <div class="modal-header">
-      <h3>Conferma Prenotazione</h3>
-      <button class="btn-close" (click)="onClose()">
-        <i class="bi bi-x-lg"></i>
-      </button>
+  <div class="space-y-6">
+
+    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+      <div class="w-24 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden shrink-0 border border-slate-200">
+        @if(dati.veicolo.urlImmagine) {
+          <img [src]="dati.veicolo.urlImmagine" class="w-full h-full object-cover" alt="Auto">
+        } @else {
+          <i class="bi-car-front-fill text-3xl text-slate-300"></i>
+        }
+      </div>
+      
+      <div>
+        <h4 class="font-bold text-slate-800 text-lg leading-tight">{{ dati.veicolo.nomeModello }}</h4>
+        <div class="flex flex-wrap items-center gap-2 mt-1.5">
+          <span class="text-[11px] font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-600 shadow-sm">
+            {{ dati.veicolo.targaVeicolo }}
+          </span>
+          <span class="text-xs text-slate-500 flex items-center gap-1 font-medium">
+            <i class="bi-geo-alt-fill text-blue-500"></i> {{ dati.veicolo.luogoRitiroDeposito?.nomeLuogo }}
+          </span>
+        </div>
+      </div>
     </div>
 
-    <div class="modal-body">
+    <div class="grid grid-cols-2 gap-4 relative">
+      <div class="absolute top-1/2 left-4 right-4 border-t-2 border-dashed border-slate-200 -z-10"></div>
 
-      <div class="vehicle-summary">
-        <div class="vehicle-img">
-          <img [src]="dati.veicolo.urlImmagine || 'assets/placeholder-car.png'" alt="Veicolo">
-        </div>
-        <div class="vehicle-info">
-          <h4>{{ dati.veicolo.nomeModello }}</h4>
-          <span class="badge">{{ dati.veicolo.targaVeicolo }}</span>
-          <p class="location"><i class="bi bi-geo-alt-fill"></i> {{ dati.veicolo.luogoRitiroDeposito?.nomeLuogo }}</p>
+      <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Ritiro</div>
+        <div class="font-bold text-slate-800 text-sm">{{ dati.dataInizio }}</div>
+        <div class="text-xs font-bold text-blue-600 bg-blue-50 inline-block px-2 py-0.5 rounded-full mt-1">
+          {{ dati.oraInizio }}
         </div>
       </div>
 
-      <div class="dates-grid">
-        <div class="date-box">
-          <label>RITIRO</label>
-          <div class="date-value">{{ dati.dataInizio }}</div>
-          <div class="time-value">{{ dati.oraInizio }}</div>
-        </div>
-
-        <div class="arrow-icon">
-          <i class="bi bi-arrow-right"></i>
-        </div>
-
-        <div class="date-box">
-          <label>CONSEGNA</label>
-          <div class="date-value">{{ dati.dataFine }}</div>
-          <div class="time-value">{{ dati.oraFine }}</div>
+      <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Consegna</div>
+        <div class="font-bold text-slate-800 text-sm">{{ dati.dataFine }}</div>
+        <div class="text-xs font-bold text-blue-600 bg-blue-50 inline-block px-2 py-0.5 rounded-full mt-1">
+          {{ dati.oraFine }}
         </div>
       </div>
-
-      <div class="cost-box">
-        <div class="cost-label">
-          <i class="bi bi-cash-coin"></i> COSTO STIMATO
-        </div>
-        <div class="cost-value">
-          {{ costoStimato | currency:'EUR':'symbol':'1.2-2' }}
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="motivazione">Motivazione Noleggio <span class="required">*</span></label>
-        <textarea
-          id="motivazione"
-          rows="3"
-          placeholder="Es. Trasferta cliente Milano..."
-          [(ngModel)]="motivazione">
-        </textarea>
-        <small class="hint">Campo obbligatorio per l'approvazione.</small>
-      </div>
-
     </div>
 
-    <div class="modal-footer">
-      <button class="btn-secondary" (click)="onClose()">Annulla</button>
-      <button
-        class="btn-primary"
-        [disabled]="motivazione.trim().length < 5"
-        (click)="onConfirm()">
-        Conferma e Prenota
-      </button>
+    <div class="flex items-center justify-between bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center border border-emerald-200">
+          <i class="bi-cash-coin text-xl"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider opacity-80">Costo Stimato</p>
+          <p class="text-xs text-emerald-600 font-medium">Tariffa base oraria</p>
+        </div>
+      </div>
+      <p class="text-2xl font-black text-emerald-700 tracking-tight">
+        {{ costoStimato | currency:'EUR':'symbol':'1.2-2' }}
+      </p>
     </div>
 
+    <div class="space-y-2">
+      <label for="motivazione" class="block text-sm font-bold text-slate-700">
+        Motivazione <span class="text-red-500">*</span>
+      </label>
+      <textarea
+        id="motivazione"
+        rows="3"
+        placeholder="Descrivi brevemente il motivo della trasferta..."
+        class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all resize-none shadow-sm"
+        [(ngModel)]="motivazione">
+      </textarea>
+      
+      @if (motivazione.trim().length < 5) {
+        <p class="text-xs text-slate-400 pl-1 flex items-center gap-1">
+          <i class="bi-info-circle"></i> Inserisci almeno 5 caratteri per confermare.
+        </p>
+      }
+    </div>
   </div>
-</div>
+</app-template-finestra-modale>

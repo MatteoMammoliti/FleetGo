@@ -1,37 +1,83 @@
-<div class="page-container">
+<app-intestazione-ebackground [titolo]="'Nuova Prenotazione'">
 
-  <div class="page-header">
-    <div class="header-texts">
-      <h1>Nuova Prenotazione</h1>
-      <p>Cerca il veicolo perfetto per la tua prossima trasferta.</p>
+  <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-8 -mt-2">
+    
+    <div class="relative z-10 animate-slide-in-left">
+      <p class="text-slate-500 font-medium text-lg tracking-wide max-w-2xl leading-relaxed">
+        Cerca il veicolo perfetto per la tua prossima trasferta.
+      </p>
     </div>
 
-    <div class="location-selector">
-      <i class="bi bi-geo-alt"></i>
+    <div class="flex flex-col md:flex-row items-end gap-2 relative z-10 animate-slide-in-right w-full xl:w-auto">
+      
+      <div class="w-full md:w-[260px]"> 
+        <app-scelta-tendina
+          [titolo]="'LUOGO DI RITIRO'"
+          [lista]="listaLuoghi"
+          [chiaveVisuale]="'nomeLuogo'"
+          [chiaveUtilizzata]="'nomeLuogo'"
+          [placeholder]="'Seleziona sede'"
+          [valore]="nomeLuogoSelezionato"
+          (valoreChange)="nomeLuogoSelezionato = $event; clickCambioLuogo()">
+        </app-scelta-tendina>
+      </div>
 
-      <select [(ngModel)]="nomeLuogoSelezionato" (change)="clickCambioLuogo()">
+      <div class="w-full md:w-auto">
+        <app-filtri-ricerca 
+          (clickRicerca)="clickApplicaFiltri($event)">
+        </app-filtri-ricerca>
+      </div>
 
-        @for (luogo of listaLuoghi; track luogo.idLuogo) {
-          <option [ngValue]="luogo.nomeLuogo">
-            {{ luogo.nomeLuogo }}
-          </option>
-        }
-
-      </select>
     </div>
   </div>
-  <app-filtri-ricerca  (clickRicerca)="clickApplicaFiltri($event)"></app-filtri-ricerca>
 
-  <div class="vehicles-grid">
-    @for (auto of listaVeicoli; track auto.idVeicolo) {
-      <app-veicolo-card [costoStimato]="costoStimato" [veicolo]="auto" (apriForm)="clickPrenotaOra($event)"></app-veicolo-card>
+  <div class="pb-20 min-h-[500px]">
+
+    @if (listaVeicoli.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        @for (auto of listaVeicoli; track auto.idVeicolo) {
+          <div class="animate-fade-in h-full">
+            <app-veicolo-card 
+              class="h-full block"
+              [costoStimato]="costoStimato" 
+              [veicolo]="auto" 
+              (apriForm)="clickPrenotaOra($event)">
+            </app-veicolo-card>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="bg-white rounded-3xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center animate-fade-in mt-6">
+        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 text-slate-300 shadow-inner">
+          <i class="bi bi-search text-3xl"></i>
+        </div>
+        <h3 class="text-slate-800 font-bold text-xl mb-2">Nessun veicolo disponibile</h3>
+        <p class="text-slate-500 max-w-md mx-auto">
+          Non abbiamo trovato veicoli disponibili per i criteri selezionati. Prova a cambiare date o sede.
+        </p>
+      </div>
     }
   </div>
-  @if (mostraModale) {
-    <app-richiesta-noleggio-form
-      (confermaRegistrazione)="inviaPrenotazione($event)" [dati]="mostraModale" [costoStimato]="costoStimato" (chiudi)="chiudiModale()">
 
-    </app-richiesta-noleggio-form>
+  @if (mostraModale) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fade-in">
+      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" (click)="chiudiModale()"></div>
+      <div class="relative w-full max-w-xl max-h-[90vh] bg-white rounded-3xl shadow-2xl overflow-y-auto scrollbar-hide ring-1 ring-black/5">
+        <app-richiesta-noleggio-form
+          (confermaRegistrazione)="inviaPrenotazione($event)" 
+          [dati]="mostraModale" 
+          [costoStimato]="costoStimato" 
+          (chiudi)="chiudiModale()">
+        </app-richiesta-noleggio-form>
+      </div>
+    </div>
   }
 
-</div>
+</app-intestazione-ebackground>
+
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

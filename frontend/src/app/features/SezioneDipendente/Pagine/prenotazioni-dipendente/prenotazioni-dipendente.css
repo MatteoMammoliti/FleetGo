@@ -1,48 +1,25 @@
-/* --- CONTENITORE DEI FILTRI --- */
-.filters-container {
-  display: flex;
-  flex-direction: row; /* Li mette in riga */
-  align-items: center; /* <--- FONDAMENTALE: Impedisce l'allungamento verticale mostruoso */
-  justify-content: flex-start; /* Li allinea a sinistra */
-  gap: 15px; /* Spazio tra un bottone e l'altro */
-
-  margin: 20px 0 30px 0; /* Un po' di aria sopra e sotto */
-  width: 100%;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* --- IL BOTTONE (La Pillola) --- */
-.filter-pill {
-  appearance: none; /* Rimuove stili di default strani dei browser */
-  background-color: #ffffff;
-  border: 1px solid #e0e6ed; /* Bordino grigio chiaro */
-  border-radius: 50px; /* Li rende ovali */
-
-  padding: 10px 24px; /* Spazio interno: alto/basso 10px, lati 24px */
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #6c757d; /* Colore testo spento */
-
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap; /* Impedisce al testo di andare a capo */
-
-  /* Sicurezza per evitare ereditarietà strane */
-  height: auto;
-  line-height: normal;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+.animate-fade-in {animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-/* --- AL PASSAGGIO DEL MOUSE (Hover) --- */
-.filter-pill:hover {
-  background-color: #f8f9fa;
-  border-color: #d1d7dc;
-  transform: translateY(-1px); /* Piccolo saltello */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
+.animate-slide-in-left { animation: slideInLeft 0.5s ease-out both; }
 
-/* --- BOTTONE ATTIVO (Selezionato) --- */
-.filter-pill.active {
-  background-color: #007bff; /* IL TUO BLU PRIMARIO */
-  color: #ffffff;
-  border-color: #007bff;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Ombra luminosa blu */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
+.animate-slide-in-right { animation: slideInRight 0.5s ease-out both; }

@@ -11,6 +11,9 @@ import {
   RichiestaNoleggioForm
 } from '@features/SezioneDipendente/componenti/richiesta-noleggio-form/richiesta-noleggio-form';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-crea-prenotazione',
@@ -18,7 +21,10 @@ import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
     VeicoloCard,
     FormsModule,
     FiltriRicerca,
-    RichiestaNoleggioForm
+    RichiestaNoleggioForm,
+    IntestazioneEBackground,
+    SceltaTendina,
+    BannerErrore
   ],
   templateUrl: './crea-prenotazione.html',
   styleUrl: './crea-prenotazione.css',
@@ -37,6 +43,9 @@ export class CreaPrenotazione {
   oraFine: string = '';
 
   mostraModale:ContenitoreFormNuovaRichiestaNoleggio | null=null
+
+  erroreBanner: string = '';
+  successoBanner: string = '';
 
   constructor(private service:CreaPrenotazioneService) {
   }
@@ -127,12 +136,15 @@ export class CreaPrenotazione {
     }
     this.service.inviaRichiestaNoleggio(daInviare).subscribe({
       next:(risposta:string)=>{
-        console.log(risposta)
         this.chiudiModale();
+        this.successoBanner="Prenotazione inviata con successo!";
+        setTimeout(() => this.successoBanner = '', 5000);
       },
       error:(err)=>
       {
-        console.error(err)}
+        this.erroreBanner=err.error;
+      }
+        
     })
 
   }
@@ -149,8 +161,10 @@ export class CreaPrenotazione {
     const minutiTotali = differenzaMs / (1000 * 60);
 
     if (minutiTotali < 0) {
-      console.error("La data di fine è precedente all'inizio!");
       this.costoStimato=0;
+      this.erroreBanner="La data di consegna non può essere precedente al ritiro!";
+    } else {
+      if (this.erroreBanner.includes("data di consegna")) this.erroreBanner='';
     }
 
     console.log(`Durata noleggio: ${minutiTotali} minuti`);

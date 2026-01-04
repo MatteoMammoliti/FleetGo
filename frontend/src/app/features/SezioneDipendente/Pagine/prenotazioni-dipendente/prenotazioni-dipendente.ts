@@ -7,6 +7,7 @@ import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebac
 import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import { CommonModule } from '@angular/common';
 import { BottonePillola } from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
+import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-prenotazioni-dipendente',
@@ -15,7 +16,8 @@ import { BottonePillola } from '@shared/Componenti/Ui/bottone-pillola/bottone-pi
     IntestazioneEBackground,
     MessaggioCardVuota
     ,CommonModule,
-    BottonePillola
+    BottonePillola,
+    BannerErrore
   ],
   templateUrl: './prenotazioni-dipendente.html',
   styleUrl: './prenotazioni-dipendente.css',
@@ -28,6 +30,9 @@ export class PrenotazioniDipendente implements OnInit {
   prenotazioni:RichiestaNoleggioDTO[]=[];
   daVisualizzare:RichiestaNoleggioDTO[]=[]
   filtroAttivo:string="Tutte"
+
+  successoBanner: string = '';
+  erroreBanner: string = '';
 
   ngOnInit(){
     this.getRichiesteDipendente();
@@ -48,11 +53,14 @@ export class PrenotazioniDipendente implements OnInit {
     this.service.eliminaPrenotazione(idPrenotazione).subscribe({
       next:(risposta:any)=>{
         this.getRichiesteDipendente()
-        console.log("Eliminata")
+        this.successoBanner= "Prenotazione annullata con successo!";
+        setTimeout(() => this.successoBanner = '', 5000); 
       },
-      error:(err)=>console.log("Errore durante l'eliminazione")
+      error:(err)=> {console.log("Errore durante l'eliminazione");
+      this.erroreBanner= err.error;}
     });
   }
+  
 
   clickNuovaPrenotazione(){
     this.router.navigate(['/dashboardDipendente/nuovaPrenotazione'])

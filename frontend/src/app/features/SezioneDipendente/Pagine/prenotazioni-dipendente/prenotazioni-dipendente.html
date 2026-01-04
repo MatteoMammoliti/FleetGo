@@ -45,7 +45,7 @@
     @if (prenotazioniFiltrate.length > 0) {
       
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta) {
+        @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta! + filtroAttivo) {
           <div class="h-full animate-fade-in">
             <app-prenotazione-card
               class="h-full block"
@@ -83,4 +83,11 @@
     }
 
   </div>
+
+  @if (erroreBanner) {
+    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+  }
+  @if(successoBanner){
+    <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+  }
 </app-intestazione-ebackground>

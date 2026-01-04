@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full relative pb-4">
+<div class="flex flex-col w-full relative">
   @if (titolo) {
     <label class="text-[10px] pt-[1px] font-bold ml-1 mb-0.5 uppercase tracking-wide transition-colors"
            [class.text-red-600]="haErrore"
@@ -11,7 +11,7 @@
     #tendina
     [ngModel]="valore"
     (ngModelChange)="aggiorna($event); tendina.blur()"
-    class="appearance-none w-full border font-medium py-2.5 px-4 pr-10 rounded-xl transition-all cursor-pointer outline-none"
+    class="appearance-none w-full border font-medium py-2.5 px-4 pr-10 rounded-xl transition-all cursor-pointer outline-none h-[42px]"
     [class.border-red-500]="haErrore"
     [class.bg-red-50]="haErrore"
     [class.focus:ring-red-200]="haErrore"

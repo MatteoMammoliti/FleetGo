@@ -3,6 +3,7 @@ import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-template-finestra-modale',
+  standalone : true,
     imports: [
     ],
   templateUrl: './template-finestra-modale.html',
@@ -19,6 +20,12 @@ export class TemplateFinestraModale {
   @Input() tastoBlu="";
 
   @Input() larghezza="max-w-xl";
+
+  @Input() confermaDisabilitata: boolean = false;
+  
+
+    
+
 
   chiusuraInCorso = false;
 

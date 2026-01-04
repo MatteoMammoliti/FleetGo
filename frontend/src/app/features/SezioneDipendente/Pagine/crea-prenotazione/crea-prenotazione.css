@@ -1,38 +1,43 @@
-:host {
-  display: block;
-  background: #f8fafc;
-  min-height: 100vh;
-  padding: 2rem 3rem;
-  padding-bottom: 150px; /* IMPORTANTE: Per non finire sotto il footer */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Header */
-.page-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 2rem;
-}
-.header-texts h1 { font-size: 1.8rem; font-weight: 800; margin: 0 0 5px 0; color: #0f172a; }
-.header-texts p { color: #64748b; margin: 0; }
-
-.location-selector {
-  background: white; border: 1px solid #e2e8f0;
-  padding: 8px 16px; border-radius: 50px;
-  display: flex; align-items: center; gap: 10px;
-  color: #0f172a; font-weight: 600;
-}
-.location-selector select { border: none; font-weight: 600; outline: none; background: transparent; }
-
-/* Griglia */
-.vehicles-grid {
-  display: grid;
-  /* Crea colonne automatiche larghe almeno 300px */
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+.animate-fade-in {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  :host { padding: 1.5rem; padding-bottom: 120px; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .location-selector { width: 100%; justify-content: space-between; }
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-left { animation: slideInLeft 0.5s ease-out both; }
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-right { animation: slideInRight 0.5s ease-out both; }
+
+:host ::ng-deep app-filtri-ricerca .search-bar-container {
+  margin: 0 !important;          
+  box-shadow: none !important;   
+  max-width: none !important;    
+  padding: 8px 15px !important;  
+  background-color: #fff !important;
+  border: 1px solid #e2e8f0;     
+  border-radius: 0.75rem !important; 
+}
+
+
+:host ::ng-deep app-filtri-ricerca .btn-cerca {
+  padding: 10px 25px !important;
+  font-size: 0.9rem !important;
+  margin-top: 0 !important; 
+  height: auto !important;
+}
+
+:host ::ng-deep app-filtri-ricerca .input-group label {
+  font-size: 0.65rem !important;
+  margin-bottom: 2px !important;
 }
