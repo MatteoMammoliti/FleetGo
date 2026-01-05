@@ -31,10 +31,6 @@ export class DashboardService {
     return this.http.get<number>(`${this.apiUrl}/getSpesaMensile`, { withCredentials:true })
   }
 
-  getNumeroNoleggi(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggi`, { withCredentials:true })
-  }
-
   getNomeAziendaGestita(): Observable<string> {
     return this.http.get(`${this.apiUrl}/getNomeAziendaGestita`, {
       withCredentials: true,
@@ -63,5 +59,9 @@ export class DashboardService {
 
   getDatiGraficoTorta() : Observable<ContenitoreStatisticheNumeriche> {
     return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/getDatiGraficoTorta`, { withCredentials: true });
+  }
+
+  getNumeroAutoSenzaLuogo() {
+    return this.http.get<number>(`${this.apiUrl}/getNumeroAutoSenzaLuogo`, { withCredentials: true });
   }
 }

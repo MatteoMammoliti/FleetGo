@@ -96,4 +96,5 @@ public class ControllerPrenotazioni {
         adminAziendaleService.approvazioneConRifiutoAutomatico(dto.getIdRichiestaDaApprovare(), dto.getIdRichiesteDaRifiutare());
         return ResponseEntity.status(HttpStatus.OK).body("Approvazione riuscita");
     }
+
 }

@@ -144,7 +144,7 @@ export class DashboardAzienda implements OnInit{
       }, error: err => { console.error(err); }
     })
 
-    this.dashboardService.getNumeroNoleggi().subscribe({
+    this.dashboardService.getNumeroAutoSenzaLuogo().subscribe({
       next: value => {
         if(value) this.statisticheFlotta = value;
       }, error: err => { console.error(err); }

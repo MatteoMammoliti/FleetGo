@@ -20,6 +20,7 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 
 export class GestioneDipendentiComponent implements OnInit{
 
+
   constructor(private service: DipendentiService) { }
 
   listaDipendentiAzienda: DipendenteDTO[]|null = null;
@@ -30,8 +31,12 @@ export class GestioneDipendentiComponent implements OnInit{
   dipendenteDaVisualizzare: DipendenteDTO = {} as DipendenteDTO;
 
   modaleRichiesteAffiliazione = false;
-  OnRimuovi: boolean=false;
+  OnRimuoviDipendente: boolean=false;
   idDipendenteDaRimuovere:any= null;
+
+  onRifiutaRichiesta: boolean=false;
+
+
 
   ngOnInit() {
     this.getDipendenti();
@@ -109,12 +114,13 @@ export class GestioneDipendentiComponent implements OnInit{
     })
   }
 
-  rifiutaRichiestaAffiliazione(idDipendente: number){
-    this.service.rispondiRichiesta(idDipendente, false).subscribe({
+  rifiutaRichiestaAffiliazione(){
+    this.service.rispondiRichiesta(this.idDipendenteDaRimuovere, false).subscribe({
       next: value => {
         if(value) {
           this.getRichiesteAffiliazione();
           this.getDipendenti();
+          this.chiudiModaleRifiuta()
         }
       }, error: error => {console.error(error); }
     })
@@ -131,10 +137,20 @@ export class GestioneDipendentiComponent implements OnInit{
 
   apriModaleRimuovi(idDipendente:number ) {
     this.idDipendenteDaRimuovere=idDipendente;
-    this.OnRimuovi = true;
+    this.OnRimuoviDipendente = true;
   }
   chiudiModaleRimuovi() {
     this.idDipendenteDaRimuovere=null;
-    this.OnRimuovi = false;
+    this.OnRimuoviDipendente = false;
   }
+
+  apriModaleRifiuta(idDipendente:number){
+    this.idDipendenteDaRimuovere=idDipendente;
+    this.onRifiutaRichiesta=true;
+  }
+  chiudiModaleRifiuta() {
+    this.idDipendenteDaRimuovere=null;
+    this.onRifiutaRichiesta = false;
+  }
+
 }

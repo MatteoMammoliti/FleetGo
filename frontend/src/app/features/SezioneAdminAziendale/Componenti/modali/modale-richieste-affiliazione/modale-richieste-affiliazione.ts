@@ -1,9 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
+import {DatePipe} from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-richieste-affiliazione',
-  imports: [],
+  imports: [
+    DatePipe,
+    TemplateFinestraModale
+  ],
   templateUrl: './modale-richieste-affiliazione.html',
   styleUrl: './modale-richieste-affiliazione.css',
 })

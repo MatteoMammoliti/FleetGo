@@ -11,6 +11,9 @@ import {
   ModaleApprovazioneNoleggi
 } from '@features/SezioneAdminAziendale/Componenti/modali/modale-approvazione-noleggi/modale-approvazione-noleggi';
 import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiNoleggio';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-prenotazioni',
@@ -19,7 +22,10 @@ import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiN
     TabellaPrenotazioni,
     BannerNoleggiDaApprovare,
     FormsModule,
-    ModaleApprovazioneNoleggi
+    ModaleApprovazioneNoleggi,
+    TemplateTitoloSottotitolo,
+    SceltaTendina,
+    TemplateFinestraModale
   ],
   templateUrl: './prenotazioni.html',
   styleUrl: './prenotazioni.css',
@@ -32,13 +38,23 @@ export class Prenotazioni implements OnInit{
   modaleDettaglioAperto = false;
   dettaglioDellaPrenotazione = {} as RichiestaNoleggioDTO;
 
-  filtroStato = "";
+  filtroStato = "Tutti";
   filtroDataInizio = "";
   filtroDataFine = "";
+
+  statiNoleggio = [
+    { etichetta: 'Tutti gli stati', id: 'Tutti' },
+    { etichetta: 'In corso', id: 'In corso' },
+    { etichetta: 'Terminate', id: 'Terminate' },
+    { etichetta: 'Da ritirare', id: 'Da ritirare' }
+  ];
 
   numeroNoleggiDaApprovare = 0;
   richiesteDaApprovare: RichiestaNoleggioDTO[] = [];
   modaleAccettazioneAperto = false;
+
+  mostraAlertConflitti: boolean=false;
+  richiesteDiInteresse:any=null;
 
   ngOnInit() {
     this.getPrenotazioni()
@@ -118,8 +134,11 @@ export class Prenotazioni implements OnInit{
     this.filtroDataFine = "";
   }
 
-  gestisciVisibilitaModaleAccettazioneNoleggi() {
-    this.modaleAccettazioneAperto = !this.modaleAccettazioneAperto;
+  gestisciVisibilitaModaleAccettazioneNoleggi(senzaSwitch:boolean = false) {
+    if(senzaSwitch === false) {
+      this.modaleAccettazioneAperto = !this.modaleAccettazioneAperto;
+
+    }
 
     if(this.modaleAccettazioneAperto) {
       this.prenotazioniService.getPrenotazioniDaAccettare().subscribe({
@@ -158,14 +177,26 @@ export class Prenotazioni implements OnInit{
     })
   }
 
-  accettazioneConRifiuto(dto: RisoluzioneConfilittiNoleggio) {
-    this.prenotazioniService.rifiutoAutomaticoRichieste(dto).subscribe({
+
+
+ apriModaleCheck(richieste : RisoluzioneConfilittiNoleggio) {
+
+   this.richiesteDiInteresse=richieste;
+   this.mostraAlertConflitti=true;
+ }
+
+
+  accettazioneConRifiuto() {
+    if(!this.richiesteDiInteresse) return;
+    this.prenotazioniService.rifiutoAutomaticoRichieste(this.richiesteDiInteresse).subscribe({
       next: value => {
         if(value) {
+
+          this.mostraAlertConflitti = false;
           this.getPrenotazioni();
           this.getNumeroNoleggiDaApprovare();
           this.resettaFiltri();
-          this.gestisciVisibilitaModaleAccettazioneNoleggi();
+          this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
         }
       }, error: err => { console.error(err); }
     })

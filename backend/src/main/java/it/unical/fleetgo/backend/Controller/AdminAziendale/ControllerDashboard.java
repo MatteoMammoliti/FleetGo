@@ -63,8 +63,8 @@ public class ControllerDashboard {
                 adminAziendaleService.getSpesaMensile(idAzienda));
     }
 
-    @GetMapping("/getNumeroNoleggi")
-    public ResponseEntity<Integer> getNumeroNoleggi(HttpSession session) throws SQLException {
+    @GetMapping("/getNumeroAutoSenzaLuogo")
+    public ResponseEntity<Integer> getNumeroAutoSenzaLuogo(HttpSession session) throws SQLException {
 
         Integer idAzienda = (Integer) session.getAttribute("idAzienda");
 
@@ -73,7 +73,7 @@ public class ControllerDashboard {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                adminAziendaleService.getVeicoliNoleggiati(idAzienda));
+                adminAziendaleService.getNumeroAutoSenzaLuogo(idAzienda));
     }
 
     @GetMapping("/getDatiGraficoTorta")

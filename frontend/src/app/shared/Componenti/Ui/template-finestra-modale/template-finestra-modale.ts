@@ -21,12 +21,7 @@ export class TemplateFinestraModale {
 
   @Input() larghezza="max-w-xl";
 
-  @Input() confermaDisabilitata: boolean = false;
-  
-
-    
-
-
+  @Input() visibile= '50';
   chiusuraInCorso = false;
 
   private eseguiChiusura(eventEmitter: EventEmitter<any>) {

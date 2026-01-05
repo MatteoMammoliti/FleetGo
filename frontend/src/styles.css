@@ -30,7 +30,7 @@
 
 
   .table-base{
-    @apply w-full text-sm text-left text-gray-500 border-separate border-spacing-y-2;
+    @apply w-full text-sm text-left text-gray-500 border-separate border-spacing-y-2 ;
   }
 
   .tr-inferiore{
@@ -38,11 +38,11 @@
   }
 
   .tr-superiore{
-    @apply text-left text-testo-s;
+    @apply text-center text-testo-s sticky top-0 bg-white z-20;
   }
 
   .td-base {
-    @apply py-3 bg-grigio align-middle transition-colors group-hover:bg-azzurro/10;
+    @apply py-3 bg-grigio align-middle text-center transition-colors group-hover:bg-azzurro/10;
   }
 
   .td-destro{

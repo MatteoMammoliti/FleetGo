@@ -7,7 +7,7 @@
       [richiesteAffiliazione]="richiesteAffiliazione[0]"
       [numRichiesteInAttesa]="richiesteAffiliazione.length"
       (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
-      (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)"
+      (rifiutaAffiliazione)="apriModaleRifiuta($event)"
       (apriModaleRichieste)="apriModaleRichiesteAffiliazione()">
     </app-banner-richieste-affiliazione>
 
@@ -29,7 +29,7 @@
       [richiesteAffiliazione]="richiesteAffiliazione"
       (chiudiModale)="chiudiModaleRichiestaAffiliazione()"
       (accettaAffiliazione)="accettaRichiestaAffiliazione($event)"
-      (rifiutaAffiliazione)="rifiutaRichiestaAffiliazione($event)">
+      (rifiutaAffiliazione)="apriModaleRifiuta($event)">
     </app-modale-richieste-affiliazione>
 
   </div>
@@ -37,7 +37,7 @@
 
 </app-template-titolo-sottotitolo>
 
-@if(OnRimuovi){
+@if(OnRimuoviDipendente){
   <app-template-finestra-modale
     titolo="Attenzione"
     tastoBlu="Conferma"
@@ -47,6 +47,17 @@
     (conferma)="rimuoviDipendente()"
   >
     <span class="messaggioModaleConferma">Cliccando su conferma il dipendente verà eliminato.</span>
-  </app-template-finestra-modale>
-
-}
+  </app-template-finestra-modale>}
+  @if(onRifiutaRichiesta){
+    <app-template-finestra-modale
+      [visibile]="'60'"
+      titolo="Attenzione"
+      tastoBlu="Conferma"
+      tastoBianco="Annulla"
+      (chiudi)="chiudiModaleRifiuta()"
+      (annulla)="chiudiModaleRifiuta()"
+      (conferma)="rifiutaRichiestaAffiliazione()"
+    >
+      <span class="messaggioModaleConferma">Cliccando su conferma la richiesta di affiliazione verrà rifiutata.</span>
+    </app-template-finestra-modale>
+    }

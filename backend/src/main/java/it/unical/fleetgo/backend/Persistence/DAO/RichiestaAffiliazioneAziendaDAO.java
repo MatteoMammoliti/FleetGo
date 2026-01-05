@@ -90,17 +90,31 @@ public class RichiestaAffiliazioneAziendaDAO {
     }
 
     public void rispondiRichiestaAffiliazione(Integer idAzienda, Integer idDipendente, boolean risposta){
-        String query="UPDATE richiesta_affiliazione_azienda SET accettata = ?, data_risposta = CURRENT_DATE " +
-        "WHERE id_azienda=? AND id_dipendente=?";
-
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setBoolean(1, risposta);
-            st.setInt(2,idAzienda);
-            st.setInt(3,idDipendente);
-            st.executeUpdate();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
+        if(risposta){
+            String query="UPDATE richiesta_affiliazione_azienda SET accettata = ?, data_risposta = CURRENT_DATE " +
+                    "WHERE id_azienda=? AND id_dipendente=?";
+            try(PreparedStatement st = connection.prepareStatement(query)){
+                st.setBoolean(1, risposta);
+                st.setInt(2,idAzienda);
+                st.setInt(3,idDipendente);
+                st.executeUpdate();
+            }catch (SQLException e){
+                throw new RuntimeException(e);
+            }
         }
+        else {
+            System.out.println(idDipendente);
+            String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=?";
+            try(PreparedStatement st = connection.prepareStatement(query)){
+                st.setInt(1,idDipendente);
+                st.setInt(2,idAzienda);
+                st.executeUpdate();
+            }catch (SQLException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+
     }
 
 

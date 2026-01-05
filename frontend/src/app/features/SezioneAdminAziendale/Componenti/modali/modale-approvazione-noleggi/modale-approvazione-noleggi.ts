@@ -2,11 +2,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {DatePipe} from '@angular/common';
 import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiNoleggio';
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-approvazione-noleggi',
   imports: [
-    DatePipe
+    DatePipe,
+    TemplateFinestraModale
   ],
   templateUrl: './modale-approvazione-noleggi.html',
   styleUrl: './modale-approvazione-noleggi.css',
@@ -31,9 +33,9 @@ export class ModaleApprovazioneNoleggi {
     if(this.conflittiTrovati.length > 0){
       this.richiestaInAnalisi = richiesta;
       this.mostraAlertConfiltti = true;
+      this.confermaApprovazione();
       return;
     }
-
     this.approvaRichiesta.emit(richiesta.idRichiesta);
   }
 

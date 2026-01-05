@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CardAutoAziendale} from '@shared/Componenti/Ui/card-auto-aziendale/card-auto-aziendale';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,8 @@ import { FlottaAdminAziendaleService } from '../../ServiceSezioneAdminAziendale/
 import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
 import { FlottaGlobaleService } from '../../../SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
+import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
@@ -23,7 +25,13 @@ import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziend
   styleUrl: './flotta-admin-aziendale.css',
 })
 
+
+
 export class FlottaAdminAziendale implements OnInit {
+
+  @ViewChild('mioModale') modale!: ModaleGestisciVeicolo;
+
+
   veicoli: any[] = [];
 
   testoRicerca: string = '';
@@ -32,6 +40,11 @@ export class FlottaAdminAziendale implements OnInit {
   veicoloSelezionato:any=null;
   listaLuoghi:any[]=[];
   constructor(private flottaService: FlottaAdminAziendaleService, private dettagliService: DettagliVeicoloAziendaleService) {}
+
+
+  loading:boolean = false;
+
+
 
   ngOnInit(): void {
     this.caricaVeicoli();
@@ -119,4 +132,56 @@ export class FlottaAdminAziendale implements OnInit {
     this.mostraModale = false;
     this.veicoloSelezionato = null;
   }
+
+
+
+
+
+  caricaDettagliVeicolo(targa: string) {
+    this.loading = true;
+    this.dettagliService.richiediVeicolo(targa).subscribe({
+      next: (data) => {
+        console.log("Dettagli completi ricevuti:", data);
+        this.veicoloSelezionato = data;
+        this.loading = false;
+        if (this.veicoloSelezionato.luogoRitiroDeposito &&
+          this.veicoloSelezionato.luogoRitiroDeposito.latitudine &&
+          this.veicoloSelezionato.luogoRitiroDeposito.longitudine) {
+          this.modale.initMappa();
+        }
+      },
+      error: (err) => {
+        console.error("Errore caricamento dettagli:", err);
+        this.loading = false;
+      }
+    });
+  }
+
+
+
+
+  impostaLuogo(luogoScelto: LuogoDTO ) {
+
+
+      if(luogoScelto){
+        const veicoloAggiornato = {
+          ...this.veicoloSelezionato,
+          luogoRitiroDeposito: luogoScelto,
+        };
+
+        this.veicoloSelezionato.luogoRitiroDeposito = luogoScelto;
+        this.dettagliService.aggiornaPosizioneVeicolo(veicoloAggiornato).subscribe({
+          next: (res) => {
+            this.veicoloSelezionato=veicoloAggiornato;
+            console.log("Luogo salvato con successo", res);
+            },
+          error: (err) => {
+            console.error("Errore durante il salvataggio:", err);
+            alert("Impossibile salvare la sede. Riprova");
+          }
+        });
+      }
+  }
+
+
 }

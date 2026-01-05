@@ -1,35 +1,28 @@
 @if (noleggiDaApprovare > 0) {
   <div (click)="apriModale.emit()"
-       class="cursor-pointer mb-8 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl shadow-lg p-6 text-white flex items-center justify-between hover:scale-[1.01] transition-transform duration-200">
+       class="cursor-pointer mb-6 mt-3 bg-gradient-to-r from-azzurro to-azzurro-scuro rounded-xl shadow-lg p-6 text-white flex items-center justify-between hover:scale-[1.01] transition-transform duration-200">
     <div class="flex items-center gap-4">
-      <div class="bg-white/20 p-3 rounded-full">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-white">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-        </svg>
+      <div class="bg-white/20 px-3 py-2 rounded-full">
+        <i class="bi bi-wrench"></i>
       </div>
       <div>
         <h2 class="text-2xl font-bold">{{ noleggiDaApprovare}} Richieste in Attesa</h2>
         <p class="text-orange-100 text-sm">Clicca qui per gestire le approvazioni.</p>
       </div>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-    </svg>
+    <i class="bi bi-chevron-right"></i>
   </div>
 } @else {
-  <div class="cursor-pointer mb-8 bg-gradient-to-r from-green-600 to-green-800 rounded-xl shadow-lg p-6 text-white flex items-center justify-between hover:scale-[1.01] transition-transform duration-200">    <div class="flex items-center gap-4">
+  <div class="cursor-pointer mb-6 mt-3 bg-gradient-to-r from-white to-gray-50 rounded-xl shadow-lg p-6 text-azzurro flex items-center justify-between hover:scale-[1.01] transition-transform duration-200">
+    <div class="flex items-center gap-4">
       <div class="bg-white/20 p-3 rounded-full">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-white">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-        </svg>
+        <i class="bi bi-check-circle text-3xl"></i>
       </div>
       <div>
         <h2 class="text-2xl font-bold">Tutto apposto</h2>
-        <p class="text-orange-100 text-sm">Nessuna richiesta di noleggio pervenuta</p>
+        <p class="text-grigio-scuro text-sm">Nessuna richiesta di noleggio pervenuta</p>
       </div>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-    </svg>
+    <i class="bi bi-heart-pulse text-azzurro-scuro"></i>
   </div>
 }

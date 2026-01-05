@@ -160,4 +160,21 @@ public class GestioneVeicoloAziendaDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer getNumeroAutoSenzaLuogo(Integer idAzienda) {
+        String query = "SELECT COUNT(*) FROM gestione_veicolo_azienda WHERE id_azienda = ? AND luogo_ritiro_consegna IS NULL";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idAzienda);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

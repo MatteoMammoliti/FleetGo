@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, OnDestroy, SimpleChanges, OnChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TemplateFinestraModale } from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
@@ -21,17 +21,31 @@ declare var google: any;
   styleUrl: './modale-gestisci-veicolo.css',
 })
 
-export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
+export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
 
   @Input() veicoloInput: any;
+
   @Input() listaLuoghi: LuogoDTO[] = [];
   @Output() chiudi = new EventEmitter<void>();
 
+
+  @Output() richiediVeicolo = new EventEmitter<string>();
+  @Output() inviaLuogo = new EventEmitter<LuogoDTO>();
+  @Output() inviaRichiestaManutenzione = new EventEmitter<RichiestaManutenzioneDTO>();
+
+
+
+
+
   veicolo: any = null;
-  loading: boolean = true;
-  mostraFormManutenzione: boolean = false;
+
+  @Input() loading: any;
+  @Input() mostraFormManutenzione: boolean = false;
+
   tipoManutenzioneSelezionato: string = '';
   richiestaManutenzione: RichiestaManutenzioneDTO | null = null;
+
+
 
   opzioniManutenzione = [
     'Guasto meccanico',
@@ -56,11 +70,17 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
     private flottaService: FlottaAdminAziendaleService
   ) {}
 
+
   ngOnInit() {
-    if (this.veicoloInput && this.veicoloInput.targaVeicolo) {
-      this.caricaDettagliVeicolo(this.veicoloInput.targaVeicolo);
-    }
     this.caricaManutenzione();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['veicoloInput'] && this.veicoloInput) {
+      this.veicolo = this.veicoloInput;
+
+      if (this.veicolo.luogoRitiroDeposito) this.initMappa();
+    }
   }
 
   ngOnDestroy() {
@@ -78,26 +98,11 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
     })
   }
 
+
   caricaDettagliVeicolo(targa: string) {
-    this.loading = true;
-    this.dettagliService.richiediVeicolo(targa).subscribe({
-      next: (data) => {
-        console.log("Dettagli completi ricevuti:", data);
-        this.veicolo = data;
-        this.loading = false;
-        if (this.veicolo.luogoRitiroDeposito &&
-            this.veicolo.luogoRitiroDeposito.latitudine &&
-            this.veicolo.luogoRitiroDeposito.longitudine) {
-          this.initMappa();
-        }
-      },
-      error: (err) => {
-        console.error("Errore caricamento dettagli:", err);
-        this.veicolo = this.veicoloInput;
-        this.loading = false;
-      }
-    });
+        this.richiediVeicolo.emit(targa);
   }
+
 
   initMappa() {
     const luogo = this.veicolo.luogoRitiroDeposito;
@@ -162,24 +167,15 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
     this.infoWindow.close();
   }
 
+
+
+
+
   impostaLuogo() {
-    if (this.luogoSelezionatoId) {
-      const luogoScelto = this.listaLuoghi.find(l => l.idLuogo == this.luogoSelezionatoId);
-      if(luogoScelto){
-         this.veicolo.luogoRitiroDeposito = luogoScelto;
-         this.dettagliService.aggiornaPosizioneVeicolo(this.veicolo).subscribe({
-           next: (res) => {
-             console.log("Luogo salvato con successo", res);
-             this.ngOnInit();
-           },
-           error: (err) => {
-             console.error("Errore durante il salvataggio:", err);
-             alert("Impossibile salvare la sede. Riprova");
-           }
-          });
-        }
-    }
+    const luogoScelto = this.listaLuoghi.find(l => l.idLuogo == this.luogoSelezionatoId);
+    this.inviaLuogo.emit(luogoScelto);
   }
+
 
   inviaManutenzione() {
     if (!this.tipoManutenzioneSelezionato) return;
@@ -196,6 +192,7 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
         this.mostraFormManutenzione = false;
         this.tipoManutenzioneSelezionato = '';
         this.ngOnInit();
+        this.initMappa();
       },
       error: (err: any) => {
         console.error(err);
@@ -207,8 +204,14 @@ export class ModaleGestisciVeicolo implements OnInit, OnDestroy {
   annullaRichiesta(richiesta: RichiestaManutenzioneDTO) {
     this.dettagliService.annullaRichiesta(richiesta).subscribe({
       next: (res) => {
-        if(res) this.ngOnInit();
+        if(res) {
+          this.ngOnInit();
+          this.initMappa();
+        }
       }, error: (err) => console.error(err)
     })
   }
+
+
+
 }

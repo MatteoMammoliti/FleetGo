@@ -39,6 +39,6 @@ export class PrenotazioniService {
   }
 
   public rifiutoAutomaticoRichieste(dto: RisoluzioneConfilittiNoleggio) {
-    return this.http.post(`${this.apiUrl}/approvaConConflitti`, dto, {responseType: 'text', withCredentials: true});
+    return this.http.post(`${this.apiUrl}/accettazioneConRifiuto`, dto, {responseType: 'text', withCredentials: true});
   }
 }

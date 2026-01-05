@@ -67,8 +67,12 @@
   </div>
   @if (mostraModale) {
     <app-modale-gestisci-veicolo
+      (inviaLuogo)="impostaLuogo($event)"
+    (richiediVeicolo)="caricaDettagliVeicolo($event)"
+    [loading]="loading"
     [veicoloInput]="veicoloSelezionato"
-    [listaLuoghi]="listaLuoghi"  (chiudi)="chiudiModale()">
+    [listaLuoghi]="listaLuoghi"  (chiudi)="chiudiModale()"
+    >
   </app-modale-gestisci-veicolo>
     }
 

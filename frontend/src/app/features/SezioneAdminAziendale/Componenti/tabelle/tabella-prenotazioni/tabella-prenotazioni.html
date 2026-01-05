@@ -1,21 +1,21 @@
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-  <div class="overflow-x-auto">
-    <table class="w-full text-left border-collapse">
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+  <div class="overflow-auto px-2 max-h-[600px]">
+    <table class="table-base">
       <thead>
-      <tr class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold tracking-wider">
-        <th class="px-6 py-4 border-b border-slate-100">ID Dipendente.</th>
+      <tr class="tr-superiore">
+        <th class="px-6 py-4 border-b text-left border-slate-100">ID Dipendente.</th>
         <th class="px-6 py-4 border-b border-slate-100">ID Veicolo</th>
         <th class="px-6 py-4 border-b border-slate-100">Ritiro</th>
         <th class="px-6 py-4 border-b border-slate-100">Consegna</th>
         <th class="px-6 py-4 border-b border-slate-100">Orari</th>
         <th class="px-6 py-4 border-b border-slate-100 text-center">Stato</th>
-        <th class="px-6 py-4 border-b border-slate-100"></th>
+        <th class="px-6 py-4 border-b border-slate-100 text-right">Info</th>
       </tr>
       </thead>
       <tbody class="text-sm text-slate-700 divide-y divide-slate-100">
       @if (richiesteNoleggio === null) {
-        <tr>
-          <td colspan="5" class="h-[300px]">
+        <tr class="tr-inferiore">
+          <td colspan="7" class="h-[300px]">
             <div class="flex items-center justify-center h-full">
               <i class="bi bi-arrow-repeat text-4xl text-slate-300 animate-spin"></i>
             </div>
@@ -25,28 +25,42 @@
       } @else {
 
         @for (p of richiesteNoleggio; track p.idRichiesta) {
-          <tr class="hover:bg-slate-50 transition cursor-pointer" (click)="apriDettaglio.emit(p.idRichiesta)">
-            <td class="px-6 py-4 font-medium">#{{ p.idDipendente }}</td>
+          <tr class="tr-inferiore group" (click)="apriDettaglio.emit(p.idRichiesta)">
+            <td class="td-sinistro">#{{ p.idDipendente }}</td>
 
-            <td class="px-6 py-4">#{{ p.idVeicolo }}</td>
+            <td class="td-base">#{{ p.idVeicolo }}</td>
 
-            <td class="px-6 py-4">{{ p.dataRitiro | date:'dd/MM/yyyy' }}</td>
-            <td class="px-6 py-4">{{ p.dataConsegna | date:'dd/MM/yyyy' }}</td>
+            <td class="td-base">{{ p.dataRitiro | date:'dd/MM/yyyy' }}</td>
+            <td class="td-base">{{ p.dataConsegna | date:'dd/MM/yyyy' }}</td>
 
-            <td class="px-6 py-4 text-xs font-mono text-slate-500">
+            <td class="td-base">
               {{ p.oraInizio }} - {{ p.oraFine }}
             </td>
 
-            <td class="px-6 py-4 text-center">
-                <span [class]="'px-2 py-1 rounded-full text-xs font-medium '">
-                  {{ p.statoRichiesta }}
-                </span>
+            <td class="td-base ">
+              @if(p.statoRichiesta=="Terminata"){
+                <app-icona-stato
+                  testo="Conclusa"
+                ></app-icona-stato>
+              } @else if (p.statoRichiesta=="In corso"){
+                <app-icona-stato
+                  stato="giallo"
+                  testo="In Corso"
+                ></app-icona-stato>
+              }
+              @else{
+                <app-icona-stato
+                  stato="rosso"
+                  testo="Da ritirare"
+                ></app-icona-stato>
+              }
             </td>
 
-            <td class="px-6 py-4 text-right text-slate-400">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-              </svg>
+            <td class="td-destro text-right pr-7 text-azzurro hover:text-azzurro-scuro">
+              <div class="hover:-translate-y-1">
+                <i class="bi bi-info-circle "></i>
+              </div>
+
             </td>
           </tr>
         } @empty {

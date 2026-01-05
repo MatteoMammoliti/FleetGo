@@ -1,75 +1,50 @@
 @if (modaleVisibile) {
-  <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" (click)="chiudiModale.emit()"></div>
-
-      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-      <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
-
-        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-gray-100">
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-              Gestione Richieste Affiliazione
-            </h3>
-            <button (click)="chiudiModale.emit()" class="text-gray-400 hover:text-gray-500">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-white px-4 py-4 sm:p-6 max-h-[60vh] overflow-y-auto">
+ <app-template-finestra-modale (chiudi)="chiudiModale.emit()" (annulla)="chiudiModale.emit()" [visibile]="'40'" larghezza="max-w-3xl" tastoBianco="Chiudi" titolo="Gestione nuovi dipendenti" sottotitolo="Qui trovi tutte le nuove richieste di affiliazione" >
           @if (richiesteAffiliazione.length === 0) {
-            <p class="text-center text-gray-500 py-4">Nessuna richiesta in attesa.</p>
+            <p class="text-center text-gray-500 py-4 min-h-[270px]">Nessuna richiesta in attesa.</p>
           } @else {
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+            <div class="min-h-[270px] ">
+            <table class="table-base">
+              <thead class="bg-white sticky top-0 z-20 text-left">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utente</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data di nascita</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Azioni</th>
+                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Utente</th>
+                <th scope="col" class="py-4 font-bold tracking-wider text-center">Email</th>
+                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Data di nascita</th>
+                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Azioni</th>
               </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody class="divide-y divide-slate-100">
                 @for (req of richiesteAffiliazione; track req.idUtente) {
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm font-medium text-gray-900">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}</div>
+                  <tr class="tr-inferiore group">
+                    <td class="td-sinistro">
+                      <div class="text-sm font-medium text-gray-600">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="td-base text-center">
                       <div class="text-sm text-gray-500">{{ req.utente?.email }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-500">{{ req.utente?.dataNascitaUtente }}</div>
+                    <td class="td-base text-center">
+                      <div class="text-sm text-gray-500">{{ req.utente?.dataNascitaUtente | date:'dd/MM/yyyy' }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        (click)="accettaAffiliazione.emit(req.idUtente)"
-                        class="text-green-600 hover:text-green-900 bg-green-50 px-3 py-1 rounded-md border border-green-200 mr-2">
-                        Accetta
-                      </button>
+                    <td class="td-destro text-center">
                       <button
                         (click)="rifiutaAffiliazione.emit(req.idUtente)"
-                        class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md border border-green-200 mr-2">
+                        class="text-gray-600 bg-grigio hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded-md mr-2 border border-gray-200 hover:border-red-50">
                         Rifiuta
                       </button>
+                      <button
+                        (click)="accettaAffiliazione.emit(req.idUtente)"
+                        class="text-white hover:bg-azzurro-scuro bg-azzurro px-3 py-1 rounded-md border border-blue-200 mr-2 ">
+                        Accetta
+                      </button>
+
                     </td>
                   </tr>
                 }
               </tbody>
             </table>
+              </div>
           }
-        </div>
 
-        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button type="button" (click)="chiudiModale.emit()" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-            Chiudi
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </app-template-finestra-modale>
 }
+
