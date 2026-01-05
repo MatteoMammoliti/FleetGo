@@ -3,12 +3,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-modifica-dati-admin-aziendale',
   imports: [
     ReactiveFormsModule,
     FormsModule,
+    InputChecked,
   ],
   templateUrl: './form-modifica-dati-admin-aziendale.html',
   styleUrl: './form-modifica-dati-admin-aziendale.css',
@@ -20,7 +22,6 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
 
   @Input() datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   @Input() luoghi: LuogoDTO[] = [];
-  @Input() erroreBackend="";
   @Input() luoghiCorrenti: LuogoDTO[] = [];
 
   @Output() richiestaModifica= new EventEmitter<ModificaDatiUtenteDTO>();
@@ -107,6 +108,12 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
     if(!this.validator.checkEmail(this.email)){
       this.errore = "Email non valida";
       this.mappaErrori.email = true;
+      return;
+    }
+
+    if(!this.validator.checkPartitaIva(this.partitaIva)) {
+      this.errore = "Partita Iva non valida";
+      this.mappaErrori.partitaIva = true;
       return;
     }
 

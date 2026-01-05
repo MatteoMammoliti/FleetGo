@@ -11,6 +11,7 @@ import {
   TabellaGestioneLuoghi
 } from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-gestione-luoghi/tabella-gestione-luoghi';
 import {NgClass} from '@angular/common';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-modifica-dati',
@@ -20,7 +21,8 @@ import {NgClass} from '@angular/common';
     FormModificaDatiAdminAziendale,
     MappaGestioneLuoghi,
     TabellaGestioneLuoghi,
-    NgClass
+    NgClass,
+    BannerErrore
   ],
   templateUrl: './modifica-dati.html',
   styleUrl: './modifica-dati.css'
@@ -35,6 +37,9 @@ export class ModificaDatiComponent implements OnInit{
   utenteDaModificare: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   luoghiEsistenti: LuogoDTO[] = [];
   modalitaAggiunta = false;
+
+  erroreBanner="";
+  successoBanner="";
 
   ngOnInit(){
     this.caricaDatiAdmin();
@@ -51,6 +56,11 @@ export class ModificaDatiComponent implements OnInit{
         this.luoghiEsistenti.push(luogo);
         this.iniziaAggiuntaLuogo();
         this.caricaLuoghiEsistenti();
+        this.gestisciSuccesso('Luogo aggiunto con successo!');
+
+      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -61,10 +71,11 @@ export class ModificaDatiComponent implements OnInit{
         if(res) {
           this.caricaDatiAdmin();
         }
-        this.errore = 'Dati modificati con successo';
+        this.gestisciSuccesso('Dati modificati con successo!');
+
       },
       error: (err) => {
-        console.log('Errore durante la modifica dati', err);
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -73,15 +84,12 @@ export class ModificaDatiComponent implements OnInit{
     this.service.getDati().subscribe({
       next: (datiRicevuti) => {
 
-        console.log("Dati arrivati dal backend:", datiRicevuti);
-
         if(datiRicevuti) {
           this.utenteDaModificare=datiRicevuti;
         }
       },
       error: (err) => {
-        console.error('Errore nel caricamento dati', err);
-        this.errore = 'Impossibile caricare i dati utente';
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -90,10 +98,9 @@ export class ModificaDatiComponent implements OnInit{
     this.service.getLuoghi().subscribe({
       next: value => {
         this.luoghiEsistenti = [...value];
-        console.log("luoghi ricevuti:", value);
       },
       error: err => {
-        console.log(err);
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -104,9 +111,10 @@ export class ModificaDatiComponent implements OnInit{
         if(value) {
           this.caricaDatiAdmin();
           this.caricaLuoghiEsistenti();
+          this.gestisciSuccesso('Sede impostata con successo!');
         }
       }, error: err => {
-        console.log(err);
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -117,10 +125,25 @@ export class ModificaDatiComponent implements OnInit{
         if(value) {
           this.caricaDatiAdmin();
           this.caricaLuoghiEsistenti();
+          this.gestisciSuccesso('Luogo eliminato con successo!');
+
         }
       }, error: err => {
-        console.log(err);
+        this.gestisciErrore(err.error);
       }
     })
+  }
+
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

@@ -5,10 +5,13 @@ import { FormsModule } from '@angular/forms';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import { FlottaAdminAziendaleService } from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
 import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
-import { FlottaGlobaleService } from '../../../SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
@@ -17,8 +20,11 @@ import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
     CardAutoAziendale,
     CommonModule,
     FormsModule,
-    IntestazioneEBackground,
-    ModaleGestisciVeicolo
+    ModaleGestisciVeicolo,
+    SceltaTendina,
+    InputChecked,
+    BannerErrore,
+    TemplateTitoloSottotitolo
   ],
 
   templateUrl: './flotta-admin-aziendale.html',
@@ -32,33 +38,41 @@ export class FlottaAdminAziendale implements OnInit {
   @ViewChild('mioModale') modale!: ModaleGestisciVeicolo;
 
 
-  veicoli: any[] = [];
+  veicoli: any[]|null =null;
 
   testoRicerca: string = '';
-  filtroStato: string = '';
+  filtroStato: any = null;
   mostraModale= false;
   veicoloSelezionato:any=null;
   listaLuoghi:any[]=[];
-  constructor(private flottaService: FlottaAdminAziendaleService, private dettagliService: DettagliVeicoloAziendaleService) {}
+  constructor(private flottaService: FlottaAdminAziendaleService, private dettagliService: DettagliVeicoloAziendaleService, private route: ActivatedRoute, private router:Router) {}
 
 
   loading:boolean = false;
+
+  erroreBanner="";
+  successoBanner="";
 
 
 
   ngOnInit(): void {
     this.caricaVeicoli();
     this.caricaLuoghi();
+    this.route.queryParams.subscribe(params => {
+      if (params['stato']) {
+        this.filtroStato = params['stato'].toUpperCase();
+
+      }
+    });
   }
 
   caricaLuoghi() {
     this.flottaService.richiediLuoghi().subscribe({
       next: (data) => {
         this.listaLuoghi = data;
-        console.log("Luoghi caricati:", this.listaLuoghi);
       },
       error: (err) => {
-        console.error("Errore caricamento luoghi:", err);
+        this.gestisciErrore(err.error())
       }
     });
   }
@@ -69,41 +83,79 @@ export class FlottaAdminAziendale implements OnInit {
       next: (data) => {
         if (data) {
           this.veicoli = data;
-          console.log("Dati caricati:", this.veicoli);
-        }
-        else{
-          console.log("Nessun veicolo trovato", this.veicoli);
         }
       },
       error: (err) => {
-        console.error("Errore nel caricamento:", err);
+        this.gestisciErrore(err.error())
       }
     });
   }
 
   get veicoliFiltrati() {
+    if(this.veicoli==null){
+      return
+    }
     return this.veicoli.filter(v => {
       const targa = v.targaVeicolo || '';
       const modello = v.nomeModello || '';
       const matchTesto = (targa.toLowerCase().includes(this.testoRicerca.toLowerCase()) ||
-                          modello.toLowerCase().includes(this.testoRicerca.toLowerCase()));
-      const stato = v.statusContrattualeVeicolo?.toUpperCase() || '';
-      const matchStato = this.filtroStato ? stato === this.filtroStato?.toUpperCase() : true;
+        modello.toLowerCase().includes(this.testoRicerca.toLowerCase()));
+
+      let matchStato = true;
+
+      if (this.filtroStato) {
+        switch (this.filtroStato.toUpperCase()) {
+          case 'DISPONIBILE':
+            matchStato = (v.inManutenzione === false) && v.luogoRitiroDeposito?.nomeLuogo != null;
+            break;
+
+          case 'MANUTENZIONE':
+            matchStato = v.inManutenzione === true;
+            break;
+
+          case 'SENZALUOGO':
+            matchStato = !v.luogoRitiroDeposito?.nomeLuogo;
+            break;
+
+          default:
+            matchStato = true;
+            break;
+        }
+      }
 
       return matchTesto && matchStato;
     });
   }
 
   getConteggio(stato: string): number {
-    if (!this.veicoli) return 0;
-    return this.veicoli.filter(v =>
-      v.statusContrattualeVeicolo?.toUpperCase() === stato.toUpperCase()
-    ).length;
+    if (!this.veicoli || this.veicoli.length === 0) return 0;
+
+    return this.veicoli.filter(v => {
+      switch (stato.toUpperCase()) {
+        case 'DISPONIBILE':
+          return (v.inManutenzione === false) && v.luogoRitiroDeposito?.nomeLuogo != null;
+
+        case 'MANUTENZIONE':
+          return v.inManutenzione === true;
+
+        case 'SENZALUOGO':
+          return !v.luogoRitiroDeposito?.nomeLuogo;
+
+        default:
+          return false;
+      }
+    }).length;
   }
 
   resetFiltri() {
     this.testoRicerca = '';
-    this.filtroStato = '';
+    this.filtroStato = null;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { stato: null },
+      queryParamsHandling: 'merge'
+    });
   }
 
   apriModaleDettagli(veicoloDallaLista: any) {
@@ -114,10 +166,9 @@ export class FlottaAdminAziendale implements OnInit {
         next: (veicoloCompleto) => {
           this.veicoloSelezionato = veicoloCompleto;
           this.mostraModale = true;
-          console.log("Dettagli completi caricati:", this.veicoloSelezionato);
         },
         error: (err) => {
-          console.error("Impossibile scaricare dettagli, uso dati parziali", err);
+          this.gestisciErrore(err.error());
           this.veicoloSelezionato = veicoloDallaLista;
           this.mostraModale = true;
         }
@@ -141,7 +192,6 @@ export class FlottaAdminAziendale implements OnInit {
     this.loading = true;
     this.dettagliService.richiediVeicolo(targa).subscribe({
       next: (data) => {
-        console.log("Dettagli completi ricevuti:", data);
         this.veicoloSelezionato = data;
         this.loading = false;
         if (this.veicoloSelezionato.luogoRitiroDeposito &&
@@ -151,7 +201,7 @@ export class FlottaAdminAziendale implements OnInit {
         }
       },
       error: (err) => {
-        console.error("Errore caricamento dettagli:", err);
+        this.gestisciErrore(err.error());
         this.loading = false;
       }
     });
@@ -160,28 +210,49 @@ export class FlottaAdminAziendale implements OnInit {
 
 
 
-  impostaLuogo(luogoScelto: LuogoDTO ) {
+  impostaLuogo(luogoScelto: LuogoDTO) {
 
+    if (luogoScelto && this.veicoloSelezionato) {
+      const veicoloAggiornato = {
+        ...this.veicoloSelezionato,
+        luogoRitiroDeposito: luogoScelto,
+        inManutenzione: false
+      };
 
-      if(luogoScelto){
-        const veicoloAggiornato = {
-          ...this.veicoloSelezionato,
-          luogoRitiroDeposito: luogoScelto,
-        };
+      this.dettagliService.aggiornaPosizioneVeicolo(veicoloAggiornato).subscribe({
+        next: (res) => {
+          this.veicoloSelezionato = veicoloAggiornato;
+          if(this.veicoli==null) return;
 
-        this.veicoloSelezionato.luogoRitiroDeposito = luogoScelto;
-        this.dettagliService.aggiornaPosizioneVeicolo(veicoloAggiornato).subscribe({
-          next: (res) => {
-            this.veicoloSelezionato=veicoloAggiornato;
-            console.log("Luogo salvato con successo", res);
-            },
-          error: (err) => {
-            console.error("Errore durante il salvataggio:", err);
-            alert("Impossibile salvare la sede. Riprova");
+          const index = this.veicoli.findIndex(v => v.targaVeicolo === veicoloAggiornato.targaVeicolo);
+
+          if (index !== -1) {
+            const nuoviVeicoli = [...this.veicoli];
+            nuoviVeicoli[index] = veicoloAggiornato;
+
+            this.veicoli = nuoviVeicoli;
           }
-        });
-      }
+          this.gestisciSuccesso("Luogo impostato con successo!");
+
+        },
+        error: (err) => {
+          this.gestisciErrore(err.error())
+        }
+      });
+    }
   }
 
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 
 }

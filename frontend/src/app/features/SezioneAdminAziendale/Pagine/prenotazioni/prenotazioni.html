@@ -1,11 +1,13 @@
 <app-template-titolo-sottotitolo titolo="Prenotazioni Noleggio" sottotitolo="Visualizza lo storico e le richieste di noleggio dei tuoi dipendenti.">
     <div class="px-3">
-      <app-banner-noleggi-da-approvare
-        [noleggiDaApprovare]="numeroNoleggiDaApprovare"
-        (apriModale)="gestisciVisibilitaModaleAccettazioneNoleggi()">
-      </app-banner-noleggi-da-approvare>
+      <div class="animate-fade-up animate-duration-1000">
+        <app-banner-noleggi-da-approvare
+          [noleggiDaApprovare]="numeroNoleggiDaApprovare"
+          (apriModale)="gestisciVisibilitaModaleAccettazioneNoleggi()">
+        </app-banner-noleggi-da-approvare>
+      </div>
 
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-3">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-3 animate-fade-down animate-duration-1000 animate-delay-150">
         <div class="flex gap-4 items-end">
           <div class="flex mb-4">
             <div class="w-72">
@@ -31,7 +33,7 @@
 
 
 
-          <div class="w-full md:w-48">
+          <div class="w-48 ">
             <app-scelta-tendina
               titolo="Stato Noleggio"
               [lista]="statiNoleggio"
@@ -79,4 +81,10 @@
   >
     <label>Questo veicolo ha più richieste in attesa di approvazione, accettando questa prenotazione le altre verranno automaticamente rifiutate.</label>
   </app-template-finestra-modale>
+}
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }

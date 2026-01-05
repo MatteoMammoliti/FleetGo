@@ -1,5 +1,6 @@
-<div class="px-5 bg-gray-50">
-  <div class="flex justify-between mb-8 border-b py-3">
+<div class="px-5 bg-gray-50 animate-fade-down durati animate-duration-1000">
+  <div class="h-[580px]">
+  <div class="flex justify-between mb-8 border-b py-3 ">
     <h1 class="text-blu font-bold text-3xl ">Gestione Offerte Attive</h1>
 
     <div class="flex max-h-10">
@@ -11,7 +12,6 @@
     </div>
   </div>
 
-  </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-5 mb-10">
 
     <div (click)="apriPaginaInserimentoOfferta()"
@@ -34,12 +34,16 @@
       </div>
     }
 
-  </div>
+
+
   <app-modale-aggiunta-offerta
     [paginaVisibile]="apriModale"
     (chiudiPagina)="chiudiPaginaInserimentoOfferta()"
     (salva)="salvaOfferta($event)">
   </app-modale-aggiunta-offerta>
+  </div>
+  </div>
+</div>
 
   @if (erroreBanner) {
     <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>

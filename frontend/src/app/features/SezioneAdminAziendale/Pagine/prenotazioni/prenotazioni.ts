@@ -14,19 +14,21 @@ import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiN
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-prenotazioni',
-  imports: [
-    ModaleDettagliPrenotazione,
-    TabellaPrenotazioni,
-    BannerNoleggiDaApprovare,
-    FormsModule,
-    ModaleApprovazioneNoleggi,
-    TemplateTitoloSottotitolo,
-    SceltaTendina,
-    TemplateFinestraModale
-  ],
+    imports: [
+        ModaleDettagliPrenotazione,
+        TabellaPrenotazioni,
+        BannerNoleggiDaApprovare,
+        FormsModule,
+        ModaleApprovazioneNoleggi,
+        TemplateTitoloSottotitolo,
+        SceltaTendina,
+        TemplateFinestraModale,
+        BannerErrore
+    ],
   templateUrl: './prenotazioni.html',
   styleUrl: './prenotazioni.css',
 })
@@ -41,6 +43,9 @@ export class Prenotazioni implements OnInit{
   filtroStato = "Tutti";
   filtroDataInizio = "";
   filtroDataFine = "";
+
+  erroreBanner="";
+  successoBanner="";
 
   statiNoleggio = [
     { etichetta: 'Tutti gli stati', id: 'Tutti' },
@@ -66,7 +71,7 @@ export class Prenotazioni implements OnInit{
       next: value => {
         if(value) this.richiesteNoleggio = value;
       }, error: err => {
-        console.error(err);
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -75,7 +80,7 @@ export class Prenotazioni implements OnInit{
     this.prenotazioniService.getNumeroNoleggiDaApprovare().subscribe({
       next: value => {
         if(value !== undefined && value !== null) this.numeroNoleggiDaApprovare = value;
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -117,7 +122,7 @@ export class Prenotazioni implements OnInit{
       next: value => {
         if(value) this.dettaglioDellaPrenotazione = value;
       }, error: err => {
-        console.error(err);
+        this.gestisciErrore(err.error);
       }
     })
     this.modaleDettaglioAperto = true;
@@ -144,7 +149,7 @@ export class Prenotazioni implements OnInit{
       this.prenotazioniService.getPrenotazioniDaAccettare().subscribe({
         next: value => {
           if(value) this.richiesteDaApprovare = value;
-        }, error: err => { console.error(err); }
+        }, error: err => { this.gestisciErrore(err.error); }
       })
     } else {
       this.richiesteDaApprovare = [];
@@ -159,8 +164,9 @@ export class Prenotazioni implements OnInit{
           this.getNumeroNoleggiDaApprovare();
           this.resettaFiltri();
           this.gestisciVisibilitaModaleAccettazioneNoleggi();
+          this.gestisciSuccesso('Prenotazione accettata con successo!')
         }
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -172,8 +178,9 @@ export class Prenotazioni implements OnInit{
           this.getNumeroNoleggiDaApprovare();
           this.resettaFiltri();
           this.gestisciVisibilitaModaleAccettazioneNoleggi();
+          this.gestisciSuccesso('Prenotazione rifiutata con successo!');
         }
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -198,7 +205,20 @@ export class Prenotazioni implements OnInit{
           this.resettaFiltri();
           this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
         }
-      }, error: err => { console.error(err); }
+        this.gestisciSuccesso('Prenotazione accettata con successo!')
+      }, error: err => { this.gestisciErrore(err.error); }
     })
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

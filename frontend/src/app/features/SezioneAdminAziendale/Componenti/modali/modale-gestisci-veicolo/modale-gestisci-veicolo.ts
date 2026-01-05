@@ -7,6 +7,10 @@ import {LuogoDTO} from '@core/models/luogoDTO.models';
 import { DettagliVeicoloAziendaleService } from '../../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 import { RichiestaManutenzioneDTO } from '@core/models/RichiestaManutenzioneDTO';
 import { FlottaAdminAziendaleService } from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
+import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
+import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
+import {BottonePillola} from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 declare var google: any;
 
 @Component({
@@ -16,6 +20,8 @@ declare var google: any;
     CommonModule,
     TemplateFinestraModale,
     FormsModule,
+    IconaStato,
+    SceltaTendina,
   ],
   templateUrl: './modale-gestisci-veicolo.html',
   styleUrl: './modale-gestisci-veicolo.css',
@@ -42,7 +48,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   @Input() loading: any;
   @Input() mostraFormManutenzione: boolean = false;
 
-  tipoManutenzioneSelezionato: string = '';
+  tipoManutenzioneSelezionato: any = null;
   richiestaManutenzione: RichiestaManutenzioneDTO | null = null;
 
 
@@ -63,6 +69,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   private zoomIniziale: number = 15;
 
   luogoSelezionatoId: number | null = null;
+  erroreSelezioneManutenzione: boolean=false;
 
   constructor(
     private googleMapsService: GoogleMapsService,
@@ -73,6 +80,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
 
   ngOnInit() {
     this.caricaManutenzione();
+    this.initMappa()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -178,7 +186,12 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
 
 
   inviaManutenzione() {
-    if (!this.tipoManutenzioneSelezionato) return;
+    if (!this.tipoManutenzioneSelezionato || this.tipoManutenzioneSelezionato === '') {
+      this.erroreSelezioneManutenzione = true;
+      return;
+    }
+
+    this.erroreSelezioneManutenzione = false;
 
     const richiesta: RichiestaManutenzioneDTO = {
       idManutenzione: 0,
@@ -187,10 +200,13 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
       tipoManutenzione: this.tipoManutenzioneSelezionato,
     };
 
+    this.erroreSelezioneManutenzione=false;
+
     this.flottaService.inviaRichiestaManutenzione(richiesta).subscribe({
       next: (res) => {
         this.mostraFormManutenzione = false;
-        this.tipoManutenzioneSelezionato = '';
+        this.tipoManutenzioneSelezionato = null;
+        this.caricaManutenzione();
         this.ngOnInit();
         this.initMappa();
       },

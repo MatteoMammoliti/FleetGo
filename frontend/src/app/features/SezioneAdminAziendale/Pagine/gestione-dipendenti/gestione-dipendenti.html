@@ -61,3 +61,10 @@
       <span class="messaggioModaleConferma">Cliccando su conferma la richiesta di affiliazione verrà rifiutata.</span>
     </app-template-finestra-modale>
     }
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+

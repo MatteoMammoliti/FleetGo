@@ -56,7 +56,7 @@
         icona="bi-wallet2">
       </app-card-statistiche-dashboard-fleet>
 
-        <app-card-statistiche-dashboard-fleet
+        <app-card-statistiche-dashboard-fleet (click)="navigaFlottaSenzaLuogo()"
           titolo="Veicoli senza luogo"
           [valore]="statisticheFlotta"
           descrizione="Asssegna un luogo per attivare i veicoli"
@@ -101,3 +101,11 @@
     (impostaSede)="impostaSede($event)">
   </app-modale-obbligo-impostazione-sede>
 }
+
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+

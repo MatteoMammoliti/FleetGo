@@ -63,7 +63,8 @@ public class VeicoloDAO {
     }
 
     public List<Veicolo> getVeicoliDisponibiliInPiattaforma() {
-        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello FROM veicolo v LEFT JOIN " +
+                " gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
                 " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
@@ -82,8 +83,10 @@ public class VeicoloDAO {
 
 
     public List<Veicolo> getVeicoliAssegnatiAzienda(Integer idAzienda) {
-        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello FROM veicolo v LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
-                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello WHERE a.id_azienda = ?";
+        String query = "SELECT v.*,a.nome_azienda,a.id_azienda, m.url_immagine, m.nome_modello, l.* FROM veicolo v " +
+                " LEFT JOIN  gestione_veicolo_azienda g ON v.id_veicolo=g.id_veicolo LEFT JOIN azienda a " +
+                " ON a.id_azienda = g.id_azienda JOIN modelli_veicolo m ON v.modello_veicolo = m.id_modello " +
+                " LEFT JOIN luogo_azienda l ON l.id_luogo = g.luogo_ritiro_consegna WHERE a.id_azienda = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idAzienda);
@@ -92,7 +95,7 @@ public class VeicoloDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                veicoli.add(getVeicoloDaResultSet(rs,false,true));
+                veicoli.add(getVeicoloDaResultSet(rs,true,true));
             }
             return veicoli;
         } catch (SQLException e) {
@@ -201,4 +204,10 @@ public class VeicoloDAO {
         }
         return v;
     }
+
+
+
+
+
+
 }

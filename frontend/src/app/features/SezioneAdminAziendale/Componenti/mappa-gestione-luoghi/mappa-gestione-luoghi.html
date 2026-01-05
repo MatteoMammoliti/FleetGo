@@ -1,16 +1,23 @@
-<div class="map-wrapper">
+<div class="relative w-full h-[300px] rounded-xl overflow-hidden border border-slate-200 shadow-inner">
 
-  <input id="search-box" type="text" class="map-search-input"
+  <input id="search-box" type="text"
+         class="absolute top-4 left-1/2 -translate-x-1/2 z-20 w-[90%] md:w-[70%] px-4 py-3
+                rounded-xl border-none shadow-2xl outline-none focus:ring-2 focus:ring-azzurro
+                text-sm text-slate-700 bg-white/95 backdrop-blur-sm transition-all"
          placeholder="Cerca indirizzo da aggiungere..."
          [hidden]="!modalitaAggiuntaLuogo">
 
-  <div id="google-map" class="google-map-render"></div>
+  <div id="google-map" class="w-full h-full z-10"></div>
 
-  <div class="floating-action-container" *ngIf="luogoDaAggiungere && modalitaAggiuntaLuogo">
-    <div class="preview-box">
-      <button class="btn-confirm" (click)="confermaLuogoSelezionato()">
-        <i class="bi bi-check-lg"></i> Conferma Aggiunta
+  @if (luogoDaAggiungere && modalitaAggiuntaLuogo) {
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 animate-bounce-in">
+      <button (click)="confermaLuogoSelezionato()"
+              class="flex items-center gap-2 px-8 py-3.5 bg-azzurro hover:bg-azzurro-scuro
+                     text-white font-bold rounded-2xl shadow-[0_8px_25px_rgba(0,174,239,0.4)]
+                     transition-all active:scale-95 whitespace-nowrap">
+        <i class="bi bi-check-circle-fill text-lg"></i>
+        Conferma Posizione Sede
       </button>
     </div>
-  </div>
+  }
 </div>

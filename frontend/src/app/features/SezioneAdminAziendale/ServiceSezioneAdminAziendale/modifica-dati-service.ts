@@ -36,6 +36,6 @@ export class ModificaDatiService {
   }
 
   public eliminaLuogo(idLuogo: number) {
-    return this.http.post(`${this.apiUrl}/impostaSede`,idLuogo, { responseType: "text", withCredentials: true });
+    return this.http.post(`${this.apiUrl}/eliminaLuogo`,idLuogo, { responseType: "text", withCredentials: true });
   }
 }

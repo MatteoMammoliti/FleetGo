@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 
 @Component({
   selector: 'app-card-auto-aziendale',

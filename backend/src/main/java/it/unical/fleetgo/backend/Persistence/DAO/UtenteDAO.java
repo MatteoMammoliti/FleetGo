@@ -182,7 +182,7 @@ public class UtenteDAO {
             }
             if(dati.getEmail()!=null){
                 try(PreparedStatement st = con.prepareStatement("UPDATE credenziali_utente SET email=? WHERE id_utente=?")){
-                    st.setString(1,dati.getEmail());
+                    st.setString(1,dati.getEmail().toLowerCase());
                     st.setInt(2,dati.getIdUtente());
                     if(st.executeUpdate()==0){
                         con.rollback();

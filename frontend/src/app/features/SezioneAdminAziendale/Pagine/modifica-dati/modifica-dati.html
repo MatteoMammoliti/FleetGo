@@ -1,48 +1,64 @@
-<div class="flex flex-col gap-8 p-8 min-h-screen bg-slate-50">
+<div class="flex flex-col gap-8 p-8 min-h-screen bg-slate-50 ">
 
-  <div>
+  <div class="animate-fade-down animate-duration-1000">
     <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Impostazioni Azienda</h1>
     <p class="text-slate-500">Gestisci i dati amministrativi, le sedi operative e la tua presenza sul territorio.</p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start h-max-[800px]">
+    <div class="animate-fade-right animate-duration-1000 h-full">
+      <app-form-modifica-dati-admin-aziendale
+        [datiCorrenti]="utenteDaModificare"
+        (richiestaModifica)="modificaDatiUtente($event)">
+      </app-form-modifica-dati-admin-aziendale>
+    </div>
+    <div class="flex flex-col animate-fade-left animate-duration-1000 ">
+      <div class="w-full relative ">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+          <div class="py-3 px-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <i class="bi bi-map-fill text-blue-600"></i> Mappa Interattiva
+            </h3>
 
-    <app-form-modifica-dati-admin-aziendale
-      [datiCorrenti]="utenteDaModificare"
-      [erroreBackend]="errore"
-      (richiestaModifica)="modificaDatiUtente($event)">
-    </app-form-modifica-dati-admin-aziendale>
+            <button (click)="iniziaAggiuntaLuogo()"
+                    class="px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
+                    [ngClass]="modalitaAggiunta ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200'">
+              <i class="bi" [class]="modalitaAggiunta ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+              {{ modalitaAggiunta ? 'Annulla Inserimento' : 'Aggiungi Nuovo Luogo' }}
+            </button>
+          </div>
+          <div class="h-[300px]">
+            <app-mappa-gestione-luoghi
+              [luoghiSalvati]="luoghiEsistenti"
+              [modalitaAggiuntaLuogo]="modalitaAggiunta"
+              (luogoSelezionato)="aggiungiLuogo($event)">
+            </app-mappa-gestione-luoghi>
 
-    <app-tabella-gestione-luoghi
-      [luoghi]="luoghiEsistenti"
-      [nomeSedeAttuale]="utenteDaModificare.sedeAzienda"
-      (impostaSede)="impostaSede($event)"
-      (eliminaLuogo)="eliminaLuogo($event)">
-    </app-tabella-gestione-luoghi>
+          </div>
+
+      </div>
+      <div>
+        <app-tabella-gestione-luoghi
+          [luoghi]="luoghiEsistenti"
+          [nomeSedeAttuale]="utenteDaModificare.sedeAzienda"
+          (impostaSede)="impostaSede($event)"
+          (eliminaLuogo)="eliminaLuogo($event)">
+        </app-tabella-gestione-luoghi>
+      </div>
+    </div>
+
 
   </div>
 
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-      <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-        <i class="bi bi-map-fill text-blue-600"></i> Mappa Interattiva
-      </h3>
 
-      <button (click)="iniziaAggiuntaLuogo()"
-              class="px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center gap-2 shadow-sm"
-              [ngClass]="modalitaAggiunta ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200'">
-        <i class="bi" [class]="modalitaAggiunta ? 'bi-x-lg' : 'bi-plus-lg'"></i>
-        {{ modalitaAggiunta ? 'Annulla Inserimento' : 'Aggiungi Nuovo Luogo' }}
-      </button>
-    </div>
 
-    <div class="h-[500px] w-full relative">
-      <app-mappa-gestione-luoghi
-        [luoghiSalvati]="luoghiEsistenti"
-        [modalitaAggiuntaLuogo]="modalitaAggiunta"
-        (luogoSelezionato)="aggiungiLuogo($event)">
-      </app-mappa-gestione-luoghi>
-    </div>
   </div>
 
 </div>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+

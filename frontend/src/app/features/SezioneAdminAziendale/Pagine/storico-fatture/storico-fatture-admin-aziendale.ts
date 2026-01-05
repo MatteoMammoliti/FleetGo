@@ -7,16 +7,18 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {TemplateTitoloSottotitolo} from "@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo";
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-storico-fatture-admin-aziendale',
-  imports: [
-    TabellaStoricoFatture,
-    CurrencyPipe,
-    FormsModule,
-    TemplateTitoloSottotitolo,
-    SceltaTendina
-  ],
+    imports: [
+        TabellaStoricoFatture,
+        CurrencyPipe,
+        FormsModule,
+        TemplateTitoloSottotitolo,
+        SceltaTendina,
+        BannerErrore
+    ],
   templateUrl: './storico-fatture-admin-aziendale.html',
   styleUrl: './storico-fatture-admin-aziendale.css',
 })
@@ -28,6 +30,9 @@ export class StoricoFattureAdminAziendale implements OnInit{
 
   filtroAnno: any=null;
   filtroStato: any = null;
+
+  erroreBanner="";
+  successoBanner="";
 
   constructor(private storicoFattureService: StoricoFattureServiceAdminAziendale,
               private route: ActivatedRoute,
@@ -52,7 +57,7 @@ export class StoricoFattureAdminAziendale implements OnInit{
           }
 
         }
-      }, error: err => { console.log(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -74,10 +79,11 @@ export class StoricoFattureAdminAziendale implements OnInit{
     this.storicoFattureService.getAnniDisponibili().subscribe({
       next: data => {
         if(data) {
-          this.anniDisponibili = data;
+          this.anniDisponibili = data.sort((a, b) => b - a);
+
           this.filtroAnno = this.anniDisponibili[0];
         }
-      }, error: err => { console.log(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -85,7 +91,7 @@ export class StoricoFattureAdminAziendale implements OnInit{
     this.storicoFattureService.pagaFattura(numeroFattura).subscribe({
       next: data => {
         window.location.href = data;
-      }, error: err => { console.log(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -119,8 +125,9 @@ export class StoricoFattureAdminAziendale implements OnInit{
       next: () => {
         this.getFattureEmesse();
         this.pulisciUrl();
+        this.gestisciSuccesso('Fattura pagata con successo!');
       }, error: err => {
-        console.log(err);
+        this.gestisciErrore(err.error);
         this.pulisciUrl();
       }
     });
@@ -132,5 +139,18 @@ export class StoricoFattureAdminAziendale implements OnInit{
       queryParams: {},
       replaceUrl: true
     });
+  }
+
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

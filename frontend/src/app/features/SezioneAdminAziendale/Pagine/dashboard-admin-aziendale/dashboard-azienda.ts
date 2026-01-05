@@ -16,13 +16,15 @@ import {
   CardStatisticheDashboardFleet
 } from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {Router} from '@angular/router';
+import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-dashboard-azienda',
   imports: [CaroselloOfferte,
     CaroselloRichiesteMiste,
     CurrencyPipe,
-    GraficoTortaFlotta, CardStatisticheDashboardFleet, TemplateTitoloSottotitolo, ModaleRichiestaAppuntamento, ModaleObbligoImpostazioneSede],
+    GraficoTortaFlotta, CardStatisticheDashboardFleet, TemplateTitoloSottotitolo, ModaleRichiestaAppuntamento, ModaleObbligoImpostazioneSede, BannerErrore],
   templateUrl: './dashboard-azienda.html',
   styleUrl: './dashboard-azienda.css',
 })
@@ -30,7 +32,7 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-s
 export class DashboardAzienda implements OnInit{
 
   constructor(private dashboardService:DashboardService,
-              private modificaDatiService: ModificaDatiService) {}
+              private modificaDatiService: ModificaDatiService, private router:Router) {}
 
   veicoliInUso = 0;
   veicoliDisponibili = 0;
@@ -54,6 +56,9 @@ export class DashboardAzienda implements OnInit{
 
   richiesteContattoInCorso = new Set<any>();
 
+  erroreBanner="";
+  successoBanner="";
+
   get sommaRichieste(): number {
     return this.contatoreRichiesteAffiliazione +
       this.contatoreRichiesteNoleggio +
@@ -71,7 +76,7 @@ export class DashboardAzienda implements OnInit{
         if(value) {
           this.nomeAziendaGestita = value;
         }
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
 
     this.dashboardService.getNomeCognomeAdmin().subscribe({
@@ -79,12 +84,12 @@ export class DashboardAzienda implements OnInit{
         if(value) {
           this.nomeECognomeAdmin = value;
         }
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error()) }
     })
 
     this.dashboardService.isSedeImpostata().subscribe({
       next: value => { this.nessunaSedeImpostata = !value;
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
 
     const salvate = localStorage.getItem('richieste_effettuate');
@@ -103,7 +108,7 @@ export class DashboardAzienda implements OnInit{
           this.veicoliInManutenzione = value.veicoliManutenzione;
         }
         },
-        error: err => { console.error(err); }
+        error: err => { this.gestisciErrore(err.error())  }
     })
   }
 
@@ -112,7 +117,7 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getOfferteAttive().subscribe({
       next: value => {
         if(value !== null && value !== undefined) this.offerteAttive = value;
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
   }
 
@@ -120,19 +125,19 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getContatoreRichiesteAffiliazione().subscribe({
       next: value => {
         if(value !== null && value !== undefined) this.contatoreRichiesteAffiliazione = value;
-      }, error: error => { console.error(error); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
 
     this.dashboardService.getContatoreRichiesteNoleggio().subscribe({
       next: value => {
         if(value !== null && value !== undefined) this.contatoreRichiesteNoleggio = value;
-      }, error: error => { console.error(error); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
 
     this.dashboardService.getNumFattureDaPagare().subscribe({
       next: value => {
         if(value !== null && value !== undefined) this.contatoreFattureDaPagare = value;
-      }, error: error => { console.error(error); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
   }
 
@@ -141,13 +146,13 @@ export class DashboardAzienda implements OnInit{
     this.dashboardService.getSpesaMensile().subscribe({
       next: value => {
         if(value) this.statisticheGuadagno = value;
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
 
     this.dashboardService.getNumeroAutoSenzaLuogo().subscribe({
       next: value => {
         if(value) this.statisticheFlotta = value;
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
   }
 
@@ -171,10 +176,11 @@ export class DashboardAzienda implements OnInit{
         if(value) {
           this.richiesteContattoInCorso.add(this.offertaSelezionata.idOfferta);
           localStorage.setItem('richieste_effettuate', JSON.stringify(Array.from(this.richiesteContattoInCorso)));
+          this.gestisciSuccesso("Appuntamento richiesto con successo!");
 
         }
 
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error())  }
     })
   }
 
@@ -183,8 +189,30 @@ export class DashboardAzienda implements OnInit{
       next: value => {
         if(value) {
           this.nessunaSedeImpostata = false;
+          this.gestisciSuccesso("Sede impostata con successo!");
+
         }
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error()) }
     })
   }
+
+  navigaFlottaSenzaLuogo() {
+    this.router.navigate(['/dashboardAzienda/flotta'], {
+      queryParams: { stato: 'SENZALUOGO' }
+    });
+  }
+
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
+
 }

@@ -25,6 +25,4 @@ export class SceltaTendina {
     this.valore = nuovoVal;
     this.valoreChange.emit(this.valore);
   }
-
-
 }

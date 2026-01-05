@@ -9,11 +9,12 @@ import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazion
 import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richieste-affiliazione/modale-richieste-affiliazione';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-gestione-dipendenti',
   standalone: true,
-  imports: [ElencoDipendenti, ModaleDettagliDipendente, BannerRichiesteAffiliazione, ModaleRichiesteAffiliazione, TemplateTitoloSottotitolo, TemplateFinestraModale],
+    imports: [ElencoDipendenti, ModaleDettagliDipendente, BannerRichiesteAffiliazione, ModaleRichiesteAffiliazione, TemplateTitoloSottotitolo, TemplateFinestraModale, BannerErrore],
   templateUrl: './gestione-dipendenti.html',
   styleUrl: './gestione-dipendenti.css'
 })
@@ -36,6 +37,8 @@ export class GestioneDipendentiComponent implements OnInit{
 
   onRifiutaRichiesta: boolean=false;
 
+  erroreBanner="";
+  successoBanner="";
 
 
   ngOnInit() {
@@ -48,8 +51,8 @@ export class GestioneDipendentiComponent implements OnInit{
       next: (response: DipendenteDTO[]) => {
         this.listaDipendentiAzienda = response;
       },
-      error: (error) => {
-        console.error('Errore durante il recupero dei dipendenti:', error);
+      error: (err) => {
+        this.gestisciErrore(err.error);
       }
     })
   }
@@ -65,7 +68,7 @@ export class GestioneDipendentiComponent implements OnInit{
       next: value => {
         if(value) this.richiesteNoleggio = value;
       }, error: err => {
-        console.error(err);
+        this.gestisciErrore(err.error);
         this.richiesteNoleggio = [];
       }
     })
@@ -75,7 +78,7 @@ export class GestioneDipendentiComponent implements OnInit{
     this.service.getRichiesteAffiliazione().subscribe({
       next: value => {
         if(value) this.richiesteAffiliazione = value || [];
-      }, error: err => { console.error(err); }
+      }, error: err => { this.gestisciErrore(err.error); }
     })
   }
 
@@ -85,9 +88,10 @@ export class GestioneDipendentiComponent implements OnInit{
         next: (response) => {
           this.getDipendenti();
           this.chiudiModaleRimuovi();
+          this.gestisciSuccesso("Dipendente rimosso con successo!");
         },
-        error: (error) => {
-          console.error('Errore durante la rimozione del dipendente:', error);
+        error: (err) => {
+          this.gestisciErrore(err.error);
         }
       });
     }
@@ -109,8 +113,9 @@ export class GestioneDipendentiComponent implements OnInit{
         if(value) {
           this.getRichiesteAffiliazione();
           this.getDipendenti();
+          this.gestisciSuccesso("Affiliazione accettata con successo!");
         }
-      }, error: error => {console.error(error); }
+      }, error: err => {this.gestisciErrore(err.error); }
     })
   }
 
@@ -121,8 +126,9 @@ export class GestioneDipendentiComponent implements OnInit{
           this.getRichiesteAffiliazione();
           this.getDipendenti();
           this.chiudiModaleRifiuta()
+          this.gestisciSuccesso("Affiliazione rifiutata con successo!");
         }
-      }, error: error => {console.error(error); }
+      }, error: err => {this.gestisciErrore(err.error); }
     })
   }
 
@@ -153,4 +159,15 @@ export class GestioneDipendentiComponent implements OnInit{
     this.onRifiutaRichiesta = false;
   }
 
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 }

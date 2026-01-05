@@ -1,57 +1,62 @@
-<app-intestazione-ebackground titolo="Flotta Aziendale">
+<app-template-titolo-sottotitolo titolo="Flotta Aziendale" sottotitolo="GESTISCI LA TUA FLOTTA AZIENDALE">
+  <div class="h-[600px] ">
+    <div class="flex flex-col gap-8 animate-fade-up animate-duration-1000">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white px-4 pt-2 rounded-2xl shadow-sm border border-slate-100">
+      <div class="flex flex-col gap-2">
+        <div class="flex gap-3 text-sm bg-azzurro-scuro text-gray-100 p-2 rounded-xl pt-1">
+          <div class="flex items-center gap-2 ">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+            <span class="font-bold">{{ getConteggio('DISPONIBILE') }}</span> Disponibili
+          </div>
+          <div class="flex items-center gap-2 ">
+            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+            <span class="font-bold">{{ getConteggio('MANUTENZIONE') }}</span> Manutenzione
+          </div>
+          <div class="flex items-center gap-2 ">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            <span class="font-bold">{{ getConteggio('SENZALUOGO') }}</span> Senza luogo
+          </div>
+        </div>
 
-  <div class="flex flex-col gap-8">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-
-      <div class="flex gap-4 text-sm">
-        <div class="flex items-center gap-2 text-grigio-scuro">
-          <span class="w-2 h-2 rounded-full bg-green-500"></span>
-          <span class="font-bold">{{ getConteggio('DISPONIBILE') }}</span> Disponibili
-        </div>
-        <div class="flex items-center gap-2 text-grigio-scuro">
-          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-          <span class="font-bold">{{ getConteggio('NOLEGGIATO') }}</span> Noleggiati
-        </div>
-        <div class="flex items-center gap-2 text-grigio-scuro">
-          <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
-          <span class="font-bold">{{ getConteggio('MANUTENZIONE') }}</span> Manutenzione
-        </div>
       </div>
+
 
       <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
         <div class="relative w-full md:w-64">
-          <i class="bi-search absolute left-4 top-1/2 -translate-y-1/2 text-grigio-scuro"></i>
-          <input type="text" [(ngModel)]="testoRicerca" placeholder="Cerca targa o modello..."
-                 class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-slate-700">
+          <app-input-checked
+            [titolo]="'Cerca'"
+            [placeholder]="'Cerca targa o modello...'"
+            [(valore)]="testoRicerca"
+            (valoreChange)="testoRicerca = $event">
+          </app-input-checked>
         </div>
 
         <div class="relative w-full md:w-48">
-          <select [(ngModel)]="filtroStato"
-                  class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all appearance-none text-sm text-slate-700 cursor-pointer">
-            <option value="">Tutti gli stati</option>
-            <option value="DISPONIBILE">Disponibili</option>
-            <option value="NOLEGGIATO">Noleggiati</option>
-            <option value="MANUTENZIONE">In Manutenzione</option>
-          </select>
-          <i class="bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+            <app-scelta-tendina
+              [titolo]="'Filtra Stato'"
+              [placeholder]="'Tutti gli stati'"
+              [lista]="['DISPONIBILE', 'MANUTENZIONE', 'SENZALUOGO']"
+              [(valore)]="filtroStato"
+              (valoreChange)="filtroStato = $event">
+            </app-scelta-tendina>
         </div>
-          <button (click)="resetFiltri()"
-                  class="px-3 py-2.5 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-600 rounded-xl transition-colors flex items-center justify-center gap-2"
-                  title="Resetta filtri">
-            <i class="bi-x-lg"></i>
-          </button>
-      </div>
     </div>
-
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @if (veicoli === null) {
+        <div class="col-span-full py-24 flex flex-col items-center justify-center">
+          <div class="relative">
+              <i class="bi bi-arrow-clockwise text-4xl text-slate-300 animate-spin inline-block"></i>
+            </div>
+        </div>
+      } @else {
       @for (veicolo of veicoliFiltrati; track veicolo.targaVeicolo) {
         <app-card-auto-aziendale
           [veicolo]="veicolo"
           (apriDettagli)="apriModaleDettagli($event)">
         </app-card-auto-aziendale>
       }
-
-      @if (veicoliFiltrati.length === 0) {
+      @if (veicoliFiltrati?.length === 0) {
         <div class="col-span-full py-16 text-center">
           <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
             <i class="bi-search text-3xl"></i>
@@ -62,9 +67,11 @@
             Resetta filtri
           </button>
         </div>
-      }
+      }}
     </div>
   </div>
+  </div>
+
   @if (mostraModale) {
     <app-modale-gestisci-veicolo
       (inviaLuogo)="impostaLuogo($event)"
@@ -75,5 +82,10 @@
     >
   </app-modale-gestisci-veicolo>
     }
-
-</app-intestazione-ebackground>
+</app-template-titolo-sottotitolo>
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

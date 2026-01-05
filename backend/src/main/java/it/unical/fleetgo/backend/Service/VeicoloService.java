@@ -53,7 +53,7 @@ public class VeicoloService {
             List<VeicoloDTO> listaVeicoliDTO = new ArrayList<>();
 
             for(Veicolo v : listaVeicoli) {
-                VeicoloDTO veicoloDTO = new VeicoloDTO(v,false);
+                VeicoloDTO veicoloDTO = new VeicoloDTO(v,true);
                 listaVeicoliDTO.add(veicoloDTO);
             }
             return listaVeicoliDTO;
