@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
+import it.unical.fleetgo.backend.Exceptions.LuogoNonEliminabile;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
 
@@ -35,11 +36,23 @@ public class LuogoAziendaDAO {
     }
 
     public boolean rimuoviLuogo(Integer id_luogo) {
+
+        String controlloVeicoliAssociati = "SELECT 1 FROM gestione_veicolo_azienda WHERE luogo_ritiro_consegna = ?";
+
+        try(PreparedStatement ps = connection.prepareStatement(controlloVeicoliAssociati)) {
+            ps.setInt(1, id_luogo);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) throw new LuogoNonEliminabile("Impossibile eliminare il luogo poichè ci sono dei veicoli parcheggiati.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         String query = "DELETE FROM luogo_azienda WHERE id_luogo = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id_luogo);
-            return ps.execute();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

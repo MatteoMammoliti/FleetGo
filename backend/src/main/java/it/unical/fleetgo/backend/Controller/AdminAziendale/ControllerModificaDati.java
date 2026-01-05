@@ -79,8 +79,8 @@ public class ControllerModificaDati {
     @PostMapping("/eliminaLuogo")
     public ResponseEntity<String> eliminaLuogo(@RequestBody Integer idLuogo) throws SQLException {
         if(adminAziendaleService.eliminaLuogo(idLuogo))
-            return ResponseEntity.status(HttpStatus.OK).body("Luogo aggiunto con successo");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body("Luogo eliminato con successo");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Impossibile eliminare il luogo");
     }
 
     @PostMapping("/impostaSede")

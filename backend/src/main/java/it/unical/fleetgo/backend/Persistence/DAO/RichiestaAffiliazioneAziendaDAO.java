@@ -103,7 +103,6 @@ public class RichiestaAffiliazioneAziendaDAO {
             }
         }
         else {
-            System.out.println(idDipendente);
             String query="DELETE FROM richiesta_affiliazione_azienda WHERE id_dipendente=? AND id_azienda=?";
             try(PreparedStatement st = connection.prepareStatement(query)){
                 st.setInt(1,idDipendente);
@@ -113,8 +112,6 @@ public class RichiestaAffiliazioneAziendaDAO {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 
 

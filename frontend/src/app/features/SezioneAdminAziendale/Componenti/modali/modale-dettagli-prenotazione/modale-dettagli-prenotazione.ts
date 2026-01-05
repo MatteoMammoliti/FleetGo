@@ -7,7 +7,6 @@ import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
 @Component({
   selector: 'app-modale-dettagli-prenotazione',
   imports: [
-    NgClass,
     DatePipe,
     DecimalPipe,
     TemplateFinestraModale,

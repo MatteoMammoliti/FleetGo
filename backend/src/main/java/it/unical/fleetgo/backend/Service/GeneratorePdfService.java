@@ -47,7 +47,7 @@ public class GeneratorePdfService {
             } catch (Exception ignored) {}
 
             cellaConLogo.addElement(new Paragraph("FleetGo S.p.A.", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24, Font.BOLD, COLORE)));
-            cellaConLogo.addElement(new Paragraph("Via Pietro Bucci, Cubo 41C", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            cellaConLogo.addElement(new Paragraph("Via Pietro Bucci", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             cellaConLogo.addElement(new Paragraph("87036 Rende (CS) - Italia", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             cellaConLogo.addElement(new Paragraph("P.IVA: IT12345678901", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             cellaConLogo.addElement(new Paragraph("Email: admin@fleetgo.it", FontFactory.getFont(FontFactory.HELVETICA, 10)));

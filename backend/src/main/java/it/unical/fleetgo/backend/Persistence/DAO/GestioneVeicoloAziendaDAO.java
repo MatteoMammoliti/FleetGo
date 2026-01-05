@@ -176,5 +176,4 @@ public class GestioneVeicoloAziendaDAO {
             throw new RuntimeException(e);
         }
     }
-
 }

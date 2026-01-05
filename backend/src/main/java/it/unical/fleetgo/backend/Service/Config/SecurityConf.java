@@ -41,6 +41,7 @@ public class SecurityConf {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/autenticazione/**").permitAll()
+                        .requestMatchers("/sezionePubblica/**").permitAll()
                         .requestMatchers("/dashboardAdminAziendale/**").hasRole("AdminAziendale")
                         .requestMatchers("/dashboardFleetGo/**").hasRole("FleetGo")
                         .requestMatchers("/dashboardDipendente/**").hasRole("Dipendente")

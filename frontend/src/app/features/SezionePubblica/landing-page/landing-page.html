@@ -9,5 +9,6 @@
 <app-form-contatto id="contatti"
   [titolo]="'Contattaci'"
   [sottotitolo]="'Prenota un appuntamento con noi ed inizia a semplificare le trasferte dei tuoi dipendenti'"
-  [modalita]="'PUBLIC'">
+  [modalita]="'PUBLIC'" [invioInCorso]="invioInCorso"
+  (inviaForm)="invia($event)">
 </app-form-contatto>

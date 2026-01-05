@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
+import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,24 @@ public class EmailService {
                 "email-appuntamento",
                 variabiliEmail,
                 emailAdmin
+        );
+    }
+
+    @Async
+    public void inviaMailRichiestaContattoSezionePubblica(String nomeCognome, String email, String oggetto, String messaggio) throws MessagingException {
+
+        Map<String, Object> variabiliEmail = new HashMap<>();
+        variabiliEmail.put("nomeCompleto", nomeCognome);
+        variabiliEmail.put("emailUtente", email);
+        variabiliEmail.put("messaggio", messaggio);
+        String oggettoCompleto = "Richiesta di contatto: " + oggetto;
+
+        this.elaboraEdInviaEmail(
+                EMAIL_FLEET_GO,
+                oggettoCompleto,
+                "email-assistenza-sezione-pubblica",
+                variabiliEmail,
+                email
         );
     }
 

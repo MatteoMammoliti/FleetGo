@@ -114,6 +114,11 @@ public class ExceptionHandlerController {
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
+    @ExceptionHandler(LuogoNonEliminabile.class)
+    public ResponseEntity<String> gestisciLuogoNonEliminabile(LuogoNonEliminabile e) {
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<String> gestisciErroreInvioEmail(MessagingException e) {
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

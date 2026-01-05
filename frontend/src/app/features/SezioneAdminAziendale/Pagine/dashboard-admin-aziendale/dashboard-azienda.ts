@@ -214,5 +214,4 @@ export class DashboardAzienda implements OnInit{
     this.successoBanner = messaggio;
     setTimeout(() => this.successoBanner = '', 3000);
   }
-
 }
