@@ -55,7 +55,7 @@
 
 
   .messaggioErrore {
-    @apply text-[11px] text-red-500 font-bold uppercase animate-in fade-in
+    @apply text-[10px] text-red-500 font-bold uppercase
   }
 
   .erroreInput{

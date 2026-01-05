@@ -59,14 +59,14 @@
           (suInput)="mappaErrori.email = false">
         </app-input-checked>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 pb-3">
           <app-input-checked
             titolo="Password"
             type="password"
             placeholder="••••••••"
             [(valore)]="password"
             [haErrore]="mappaErrori.password"
-            messaggioErrore="Password richiesta"
+            messaggioErrore="Password non valida"
             (suInput)="mappaErrori.password = false">
           </app-input-checked>
 
@@ -76,7 +76,7 @@
             placeholder="••••••••"
             [(valore)]="ripetiPassword"
             [haErrore]="mappaErrori.ripetiPassword"
-            messaggioErrore="Le password non coincidono"
+            messaggioErrore=""
             (suInput)="mappaErrori.ripetiPassword = false">
           </app-input-checked>
         </div>
@@ -100,9 +100,9 @@
           }
         </div>
 
-        @if (errore) {
+        @if (errore=="Password non valida") {
           <div class="messaggioErrore">
-            <i class="bi-exclamation-circle mr-1"></i> {{ errore }}
+            <i class="bi-exclamation-circle mr-100"></i> Usa almeno 8 caratteri, una maiuscola, un numero e un simbolo.
           </div>
         }
 

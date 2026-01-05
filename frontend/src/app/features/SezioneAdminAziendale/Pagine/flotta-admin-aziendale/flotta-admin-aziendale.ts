@@ -12,6 +12,7 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
@@ -24,7 +25,8 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-s
     SceltaTendina,
     InputChecked,
     BannerErrore,
-    TemplateTitoloSottotitolo
+    TemplateTitoloSottotitolo,
+    MessaggioCardVuota
   ],
 
   templateUrl: './flotta-admin-aziendale.html',
