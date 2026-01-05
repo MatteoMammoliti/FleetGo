@@ -132,28 +132,30 @@
       </div>
     </div>
 
-    @if (mostraModaleInserimentoModello) {
-      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div (click)="gestisciVisibilitaModaleInserimentoModello()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
 
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
-          <app-form-aggiungi-modello
-            (onAnnulla)="gestisciVisibilitaModaleInserimentoModello()"
-            (confermaAggiunta)="aggiungiModello($event)">
-          </app-form-aggiungi-modello>
-        </div>
-      </div>
-    }
-
-    @if (mostraModale) {
-          <app-form-aggiungi-auto
-            [modelli]="listaModelli"
-            (onSalvataggio)="gestisciSalvataggio($event)"
-            (onAnnulla)="gestisciVisibilitaModale()">
-          </app-form-aggiungi-auto>
-    }
 
 </app-intestazione-ebackground>
+
+@if (mostraModaleInserimentoModello) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div (click)="gestisciVisibilitaModaleInserimentoModello()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"></div>
+
+    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-pop-in border border-slate-100">
+      <app-form-aggiungi-modello
+        (onAnnulla)="gestisciVisibilitaModaleInserimentoModello()"
+        (confermaAggiunta)="aggiungiModello($event)">
+      </app-form-aggiungi-modello>
+    </div>
+  </div>
+}
+
+@if (mostraModale) {
+  <app-form-aggiungi-auto
+    [modelli]="listaModelli"
+    (onSalvataggio)="gestisciSalvataggio($event)"
+    (onAnnulla)="gestisciVisibilitaModale()">
+  </app-form-aggiungi-auto>
+}
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>

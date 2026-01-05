@@ -76,15 +76,16 @@
     </app-tabella-aziende>
   </div>
 
-  @if(mostraModale) {
-          <app-form-aggiungi-admin-azienda
-            #formAggiungiAdminAzienda
-            (aziendaAggiunta)="onAziendaAggiunta($event)"
-            (chiudi)="mostraModale=false">
-          </app-form-aggiungi-admin-azienda>
-  }
 
 </app-intestazione-ebackground>
+@if(mostraModale) {
+  <app-form-aggiungi-admin-azienda
+    #formAggiungiAdminAzienda
+    (aziendaAggiunta)="onAziendaAggiunta($event)"
+    (chiudi)="mostraModale=false">
+  </app-form-aggiungi-admin-azienda>
+}
+
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>

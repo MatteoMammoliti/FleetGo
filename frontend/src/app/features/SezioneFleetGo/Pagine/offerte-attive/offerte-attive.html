@@ -36,11 +36,6 @@
 
 
 
-  <app-modale-aggiunta-offerta
-    [paginaVisibile]="apriModale"
-    (chiudiPagina)="chiudiPaginaInserimentoOfferta()"
-    (salva)="salvaOfferta($event)">
-  </app-modale-aggiunta-offerta>
   </div>
   </div>
 </div>
@@ -60,3 +55,9 @@
     </app-template-finestra-modale>
 
 }
+
+<app-modale-aggiunta-offerta
+  [paginaVisibile]="apriModale"
+  (chiudiPagina)="chiudiPaginaInserimentoOfferta()"
+  (salva)="salvaOfferta($event)">
+</app-modale-aggiunta-offerta>
