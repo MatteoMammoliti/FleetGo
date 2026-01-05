@@ -11,6 +11,7 @@ import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/supporto-fleetgo/supporto-fleetgo';
 import {DatePipe} from '@angular/common';
 import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/modale-richiesta-assistenza/modale-richiesta-assistenza';
+import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-dashboard-dipendente',
@@ -20,7 +21,8 @@ import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/
     StatisticheDipendente,
     MappaHub,
     SupportoFleetgo,
-    ModaleRichiestaAssistenza
+    ModaleRichiestaAssistenza,
+    IntestazioneEBackground
   ],
   providers: [DatePipe],
   templateUrl: './dashboard-dipendente.html',

@@ -1,46 +1,66 @@
-<div class="min-h-screen bg-grigio p-6 md:p-8">
+<app-intestazione-ebackground [titolo]="'Dashboard'">
 
-  <div class="mb-8">
-    <app-banner-home [nomeDipendente]="nomeDipendente"
-      (clickPrenotaVeicolo)="apriPrenotazioni()"
-      (clickMiePrenotazioni)="apriMieAttivita()">
-    </app-banner-home>
+  <div class="mb-8 -mt-2 animate-slide-in-left">
+    <p class="text-slate-500 font-medium text-lg tracking-wide max-w-3xl leading-relaxed">
+      Bentornato su FleetGo. Ecco il riepilogo della tua mobilità aziendale.
+    </p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+  <div class="pb-20">
+    
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-    <div class="lg:col-span-3 flex flex-col gap-8">
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.1s;">
+        <app-banner-home 
+          class="h-full block" 
+          [nomeDipendente]="nomeDipendente"
+          (clickPrenotaVeicolo)="apriPrenotazioni()"
+          (clickMiePrenotazioni)="apriMieAttivita()">
+        </app-banner-home>
+      </div>
 
-      <app-prossimo-viaggio [viaggio]="prossimoViaggio"></app-prossimo-viaggio>
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.2s;">
+        @if (statisticheDipendente) {
+          <app-statistiche-dipendente 
+            class="h-full block"
+            [statistiche]="statisticheDipendente">
+          </app-statistiche-dipendente>
+        }
+      </div>
 
-      <div class="w-full h-96 bg-blu rounded-3xl overflow-hidden shadow-xl relative">
-        <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.3s;">
+        <app-prossimo-viaggio 
+          class="h-full block"
+          [viaggio]="prossimoViaggio">
+        </app-prossimo-viaggio>
+      </div>
+
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.4s;">
+        <app-supporto-fleetgo
+          class="h-full block"
+          (apriModale)="gestisciVisibilita()">
+        </app-supporto-fleetgo>
+      </div>
+
+      <div class="xl:col-span-3 animate-fade-in mt-4" style="animation-delay: 0.5s;">
+        <div class="bg-white rounded-[2.5rem] p-3 shadow-sm border border-slate-200 h-[500px] relative hover:shadow-lg transition-all duration-300 group">
+           <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
+        </div>
       </div>
 
     </div>
-
-    <div class="flex flex-col gap-6">
-
-      @if (statisticheDipendente) {
-        <app-statistiche-dipendente [statistiche]="statisticheDipendente"></app-statistiche-dipendente>
-      }
-
-      <app-supporto-fleetgo
-        (apriModale)="gestisciVisibilita()"
-      ></app-supporto-fleetgo>
-    </div>
-
   </div>
-</div>
 
-@if(modaleContattoVisibile) {
-  <app-modale-richiesta-assistenza
-    (chiudiModale)="gestisciVisibilita()"
-    (inviaSegnalazione)="inviaSegnalazione($event)"
-    [caricamentoDati]="caricamentoDati"
-    (segnalaCategoriaCambiata)="caricaDatiContesto($event)"
-    [categorieContatto]="categorieContatto"
-    [listaOggettiDinamica]="listaOggettiDinamica"
-    [listaOggettiDinamicaVisibile]="listaOggettiDinamicaVisibile">
-  </app-modale-richiesta-assistenza>
-}
+  @if(modaleContattoVisibile) {
+    <app-modale-richiesta-assistenza
+      (chiudiModale)="gestisciVisibilita()"
+      (inviaSegnalazione)="inviaSegnalazione($event)"
+      [caricamentoDati]="caricamentoDati"
+      (segnalaCategoriaCambiata)="caricaDatiContesto($event)"
+      [categorieContatto]="categorieContatto"
+      [listaOggettiDinamica]="listaOggettiDinamica"
+      [listaOggettiDinamicaVisibile]="listaOggettiDinamicaVisibile">
+    </app-modale-richiesta-assistenza>
+  }
+
+</app-intestazione-ebackground>

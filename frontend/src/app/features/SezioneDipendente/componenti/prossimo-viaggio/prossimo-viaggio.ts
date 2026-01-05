@@ -1,11 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, NgModule} from '@angular/core';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-prossimo-viaggio',
   imports: [
-    DatePipe
+    DatePipe,
+    NgClass
   ],
   standalone:true,
   templateUrl: './prossimo-viaggio.html',
