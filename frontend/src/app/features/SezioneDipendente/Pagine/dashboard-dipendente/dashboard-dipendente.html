@@ -1,5 +1,4 @@
 <app-intestazione-ebackground [titolo]="'Dashboard'">
-
   <div class="mb-8 -mt-2 animate-slide-in-left">
     <p class="text-slate-500 font-medium text-lg tracking-wide max-w-3xl leading-relaxed">
       Bentornato su FleetGo. Ecco il riepilogo della tua mobilità aziendale.
@@ -7,10 +6,8 @@
   </div>
 
   <div class="pb-20">
-    
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
-      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.1s;">
+      <div class="xl:col-span-3 animate-fade-in" style="animation-delay: 0.1s;">
         <app-banner-home 
           class="h-full block" 
           [nomeDipendente]="nomeDipendente"
@@ -19,7 +16,14 @@
         </app-banner-home>
       </div>
 
-      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.2s;">
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.2s;">
+        <app-prossimo-viaggio 
+          class="h-full block"
+          [viaggio]="prossimoViaggio">
+        </app-prossimo-viaggio>
+      </div>
+
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.3s;">
         @if (statisticheDipendente) {
           <app-statistiche-dipendente 
             class="h-full block"
@@ -28,28 +32,23 @@
         }
       </div>
 
-      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.3s;">
-        <app-prossimo-viaggio 
-          class="h-full block"
-          [viaggio]="prossimoViaggio">
-        </app-prossimo-viaggio>
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.4s;">
+        <div class="bg-white rounded-[2.5rem] p-3 shadow-sm border border-slate-200 h-full min-h-[400px] relative hover:shadow-lg transition-all duration-300 group">
+           <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
+        </div>
       </div>
 
-      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.4s;">
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.5s;">
         <app-supporto-fleetgo
           class="h-full block"
           (apriModale)="gestisciVisibilita()">
         </app-supporto-fleetgo>
       </div>
 
-      <div class="xl:col-span-3 animate-fade-in mt-4" style="animation-delay: 0.5s;">
-        <div class="bg-white rounded-[2.5rem] p-3 shadow-sm border border-slate-200 h-[500px] relative hover:shadow-lg transition-all duration-300 group">
-           <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
-        </div>
-      </div>
-
     </div>
   </div>
+
+</app-intestazione-ebackground>
 
   @if(modaleContattoVisibile) {
     <app-modale-richiesta-assistenza
@@ -61,6 +60,4 @@
       [listaOggettiDinamica]="listaOggettiDinamica"
       [listaOggettiDinamicaVisibile]="listaOggettiDinamicaVisibile">
     </app-modale-richiesta-assistenza>
-  }
-
-</app-intestazione-ebackground>
+}

@@ -1,12 +1,14 @@
 <app-intestazione-ebackground [titolo]="'Impostazioni Account'">
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start py-8 pb-24">
-    <div class="lg:col-span-3 flex flex-col gap-3 sticky top-6">
+    
+    <div class="lg:col-span-3 flex flex-col gap-3 lg:sticky lg:top-6 z-10">
+      
       <button (click)="cambiaTab('Profilo')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
+              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
               [ngClass]="tabSelezionata === 'Profilo'
                 ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
              [ngClass]="tabSelezionata === 'Profilo' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
           <i class="bi-person-fill text-lg"></i>
         </div>
@@ -14,11 +16,11 @@
       </button>
 
       <button (click)="cambiaTab('Patente')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
+              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
               [ngClass]="tabSelezionata === 'Patente'
                 ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
              [ngClass]="tabSelezionata === 'Patente' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
           <i class="bi-postcard-fill text-lg"></i>
         </div>
@@ -26,11 +28,11 @@
       </button>
 
       <button (click)="cambiaTab('Azienda')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent"
+              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
               [ngClass]="tabSelezionata === 'Azienda'
                 ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
                 : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm"
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
              [ngClass]="tabSelezionata === 'Azienda' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
           <i class="bi-building-fill text-lg"></i>
         </div>
@@ -39,7 +41,7 @@
 
     </div>
 
-    <div class="lg:col-span-9">
+    <div class="lg:col-span-9 w-full">
 
       @if (sezione === 'Profilo') {
         <app-profilo-personale
