@@ -16,7 +16,10 @@
         [lista]="categorieContatto"
         [valore]="categoriaSelezionata"
         placeholder="Seleziona motivo..."
-        (valoreChange)="cambioCategoria($event)">
+        (valoreChange)="cambioCategoria($event)"
+        [haErrore]="erroreTendina"
+        messaggioErrore="Seleziona un valore valido!">
+
       </app-scelta-tendina>
     </div>
 

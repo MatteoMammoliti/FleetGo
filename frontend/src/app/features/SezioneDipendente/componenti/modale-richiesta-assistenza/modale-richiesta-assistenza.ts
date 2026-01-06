@@ -25,10 +25,11 @@ export class ModaleRichiestaAssistenza {
   @Input() listaOggettiDinamica: any[] = [];
   @Input() listaOggettiDinamicaVisibile = false;
 
-  oggettoSelezionato: any;
-  categoriaSelezionata = "";
+  oggettoSelezionato: any = null;
+  categoriaSelezionata: any = null;
   messaggio = "";
   errore = "";
+  erroreTendina= false;
 
   cambioCategoria(categoria: string) {
     this.categoriaSelezionata = categoria;
@@ -42,6 +43,7 @@ export class ModaleRichiestaAssistenza {
 
     if(!this.categoriaSelezionata || !this.messaggio) {
       this.errore = "Compila tutti i campi obbligatori";
+      this.erroreTendina=true;
       return;
     }
 
@@ -63,7 +65,9 @@ export class ModaleRichiestaAssistenza {
 
     datoDaInviare += " con messaggio " + this.messaggio;
 
-    if(datoDaInviare)
+    if(datoDaInviare) {
+      this.erroreTendina=false;
       this.inviaSegnalazione.emit(datoDaInviare);
+    }
   }
 }
