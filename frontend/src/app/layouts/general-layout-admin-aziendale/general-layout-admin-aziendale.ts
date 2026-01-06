@@ -36,4 +36,8 @@ export class GeneralLayoutAdminAziendale {
     this.erroreBanner = messaggio;
     setTimeout(() => this.erroreBanner = '', 5000);
   }
+
+  vaiAllaDashboard() {
+    this.router.navigate(['/dashboardAzienda/dashboard']);
+  }
 }

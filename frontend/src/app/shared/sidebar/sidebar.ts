@@ -1,4 +1,4 @@
-import { Component, HostListener} from '@angular/core';
+import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 import {Logo} from '@shared/Componenti/Ui/logo/logo';
 
 @Component({
@@ -10,6 +10,7 @@ import {Logo} from '@shared/Componenti/Ui/logo/logo';
 })
 export class Sidebar {
   isSidebarOpen: boolean = true;
+  @Output() clickLogo=new EventEmitter();
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

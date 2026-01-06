@@ -177,6 +177,7 @@ export class DashboardAzienda implements OnInit{
           this.richiesteContattoInCorso.add(this.offertaSelezionata.idOfferta);
           localStorage.setItem('richieste_effettuate', JSON.stringify(Array.from(this.richiesteContattoInCorso)));
           this.gestisciSuccesso("Appuntamento richiesto con successo!");
+          this.chiudiModaleRichiestaAppuntamento();
 
         }
 

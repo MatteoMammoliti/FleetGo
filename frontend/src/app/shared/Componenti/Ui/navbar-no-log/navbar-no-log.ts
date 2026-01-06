@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink} from '@angular/router'; 
+import {Component, EventEmitter, Output} from '@angular/core';
+import { RouterLink} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {Logo} from "../logo/logo";
 
@@ -12,6 +12,8 @@ import {Logo} from "../logo/logo";
 })
 export class NavbarNoLog {
   sidebarVisibile: boolean = false;
+
+  @Output() clickLogo = new EventEmitter();
 
   toggleSidebar(){
     this.sidebarVisibile = !this.sidebarVisibile;

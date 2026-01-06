@@ -7,40 +7,38 @@
         </app-banner-noleggi-da-approvare>
       </div>
 
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-3 animate-fade-down animate-duration-1000 animate-delay-150">
-        <div class="flex gap-4 items-end">
-          <div class="flex mb-4">
-            <div class="w-72">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-3">
+        <div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4 items-end text-left">
+
+            <div class="w-full mb-4">
               <label class="text-[11px] font-bold ml-1 mb-1 uppercase tracking-wide text-slate-700 block">
                 Da Mese/Anno
               </label>
               <input type="month" [(ngModel)]="filtroDataInizio"
                      class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 outline-none transition-all
-                      focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
+                focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
             </div>
 
-            <span class="text-slate-300 pb-3 font-light">→</span>
-
-            <div class="w-72">
+            <div class="w-full mb-4">
               <label class="text-[11px] font-bold ml-1 mb-1 uppercase tracking-wide text-slate-700 block">
                 A Mese/Anno
               </label>
               <input type="month" [(ngModel)]="filtroDataFine"
                      class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 outline-none transition-all
-                      focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
+                focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
             </div>
-          </div>
 
+            <div class="w-full">
+              <app-scelta-tendina
+                titolo="Stato Noleggio"
+                [lista]="statiNoleggio"
+                chiaveVisuale="etichetta"
+                chiaveUtilizzata="id"
+                [(valore)]="filtroStato">
+              </app-scelta-tendina>
+            </div>
 
-
-          <div class="w-48 ">
-            <app-scelta-tendina
-              titolo="Stato Noleggio"
-              [lista]="statiNoleggio"
-              chiaveVisuale="etichetta"
-              chiaveUtilizzata="id"
-              [(valore)]="filtroStato">
-            </app-scelta-tendina>
           </div>
         </div>
       </div>

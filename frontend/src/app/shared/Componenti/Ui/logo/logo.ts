@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-logo',
@@ -9,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class Logo {
 
+  @Output() clickLogo=new EventEmitter();
 }
