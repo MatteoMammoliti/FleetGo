@@ -1,25 +1,25 @@
 <section class="py-24 bg-white">
   <div class="container mx-auto px-6 md:px-12">
-    
+
     <div class="grid md:grid-cols-2 gap-16 items-center">
-      
+
       <div class="text-left">
-        
+
         <span class="text-azzurro-scuro font-bold text-5xl mb-6 block">
           Chi siamo
         </span>
-        
+
         <h2 class="text-3xl font-bold text-blu mb-6">
           La Tecnologia al Servizio <br> della tua Flotta.
         </h2>
-        
+
         <div class="text-grigio-scuro text-lg space-y-6">
           <p>
-            Siamo nati con un'idea semplice: rendere la gestione dei veicoli aziendali 
+            Siamo nati con un'idea semplice: rendere la gestione dei veicoli aziendali
             trasparente e priva di stress.
           </p>
           <p>
-            In FleetGo uniamo design e potenza di calcolo per offrirti uno strumento 
+            In FleetGo uniamo design e potenza di calcolo per offrirti uno strumento
             che non è solo un gestionale, ma un vero partner strategico per il tuo business. <br>
             Fidati di noi, conosciamo la strada.
           </p>
@@ -28,12 +28,8 @@
       </div>
 
       <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100">
-        
-        @for (img of images; track img; let i = $index) {
-          <img [src]="img" 
-               class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-               [ngClass]="{'opacity-100': i===indiceCorrente, 'opacity-0': i!== indiceCorrente}">
-        }
+
+        <img src="https://res.cloudinary.com/dc6dmi9jr/image/upload/v1767717207/Gemini_Generated_Image_nd4qnhnd4qnhnd4q_lvrfy4.png" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out" alt="">
 
         <div class="absolute inset-0 bg-blu/10 mix-blend-multiply"></div>
       </div>

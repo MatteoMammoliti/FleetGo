@@ -2,7 +2,7 @@
 
   <div class="hidden lg:flex w-1/2 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-azzurro/60 to-blu-notte/90 z-10"></div>
-    <img src="immagine_registrazione.avif" alt="Registrazione FleetGo" class="absolute inset-0 w-full h-full object-cover">
+    <img src="https://res.cloudinary.com/dc6dmi9jr/image/upload/v1767716142/immagine_registrazione_shm7ov.avif" alt="Registrazione FleetGo" class="absolute inset-0 w-full h-full object-cover">
 
     <div class="relative z-20 flex flex-col justify-center h-full px-16 text-white">
       <h1 class="text-5xl font-bold mb-6">Benvenuto!<br>Unisciti a FleetGo.</h1>
@@ -32,7 +32,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
           <app-input-checked
             titolo="Nome"
-            placeholder="Kristian"
+            placeholder="Mario"
             [(valore)]="nome"
             [haErrore]="mappaErrori.nome"
             messaggioErrore="Nome richiesto"
@@ -41,7 +41,7 @@
 
           <app-input-checked
             titolo="Cognome"
-            placeholder="Reale"
+            placeholder="Rossi"
             [(valore)]="cognome"
             [haErrore]="mappaErrori.cognome"
             messaggioErrore="Cognome richiesto"
@@ -117,7 +117,6 @@
             <a routerLink="/login" class="text-azzurro font-bold hover:underline hover:text-azzurro-scuro">Accedi</a>
           </p>
         </div>
-
       </div>
     </div>
   </div>
