@@ -16,25 +16,52 @@ public class FatturaDAO {
         this.connection = connection;
     }
 
-    public void inserisciFattura(FatturaDTO fattura){
-        String query = "INSERT INTO fattura(id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura, id_offerta_applicata) VALUES (?, ?, ?, ?, ?, ?)";
+    public void inserisciFattura(FatturaDTO fattura) throws SQLException {
 
-        try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, fattura.getIdAzienda());
-            ps.setBoolean(2, fattura.isFatturaPagata());
-            ps.setDouble(3, fattura.getCosto());
-            ps.setInt(4, fattura.getMeseFattura());
-            ps.setInt(5, fattura.getAnnoFattura());
+        try {
+            this.connection.setAutoCommit(false);
 
-            if (fattura.getIdOffertaApplicata() != null && fattura.getIdOffertaApplicata() != 0) {
-                ps.setInt(6, fattura.getIdOffertaApplicata());
-            } else {
-                ps.setNull(6, java.sql.Types.INTEGER);
+            String query = "INSERT INTO fattura(id_azienda, fattura_pagata, costo, mese_fattura, anno_fattura, id_offerta_applicata) VALUES (?, ?, ?, ?, ?, ?)";
+
+            try(PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, fattura.getIdAzienda());
+                ps.setBoolean(2, fattura.isFatturaPagata());
+                ps.setDouble(3, fattura.getCosto());
+                ps.setInt(4, fattura.getMeseFattura());
+                ps.setInt(5, fattura.getAnnoFattura());
+
+                if (fattura.getIdOffertaApplicata() != null && fattura.getIdOffertaApplicata() != 0) {
+                    ps.setInt(6, fattura.getIdOffertaApplicata());
+                } else {
+                    ps.setNull(6, java.sql.Types.INTEGER);
+                }
+
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
             }
 
-            ps.executeUpdate();
+            String inserimentoInFattura = "UPDATE richiesta_noleggio SET inserito_in_fattura = true WHERE id_azienda = ? AND EXTRACT(year FROM data_consegna) = ? AND EXTRACT(month FROM data_consegna) = ? AND accettata = true";
+
+            try(PreparedStatement ps = connection.prepareStatement(inserimentoInFattura)) {
+                ps.setInt(1, fattura.getIdAzienda());
+                ps.setInt(2, fattura.getAnnoFattura());
+                ps.setInt(3, fattura.getMeseFattura());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
+            }
+
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.setAutoCommit(true);
+            } catch (SQLException ignored) {}
         }
     }
 

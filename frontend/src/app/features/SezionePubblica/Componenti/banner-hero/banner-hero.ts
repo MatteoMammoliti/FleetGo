@@ -6,7 +6,7 @@ import {NgOptimizedImage} from '@angular/common';
 @Component({
   selector: 'app-banner-hero',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage],
+  imports: [RouterLink],
   templateUrl: './banner-hero.html',
   styleUrl: './banner-hero.css',
 })
