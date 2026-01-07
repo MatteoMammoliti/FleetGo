@@ -1,45 +1,47 @@
 <app-template-titolo-sottotitolo 
   [titolo]="'Dati Personali'">
+  
   <div class="p-6">
     
     <form (ngSubmit)="salva()" class="space-y-6">
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <div class="flex flex-col gap-2">
-          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nome</label>
-          <input type="text" 
-                 [(ngModel)]="datiForm.nome" 
-                 name="nome"
-                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700 font-medium focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder-slate-400">
+        <div class="w-full">
+          <app-input-checked
+            [titolo]="'NOME'"
+            [type]="'text'"
+            [(valore)]="datiForm.nome"
+            [haErrore]="erroreNome"
+            [messaggioErrore]="'Campo obbligatorio'">
+          </app-input-checked>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Cognome</label>
-          <input type="text" 
-                 [(ngModel)]="datiForm.cognome" 
-                 name="cognome"
-                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700 font-medium focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder-slate-400">
+        <div class="w-full">
+          <app-input-checked
+            [titolo]="'COGNOME'"
+            [type]="'text'"
+            [(valore)]="datiForm.cognome"
+            [haErrore]="erroreCognome"
+            [messaggioErrore]="'Campo obbligatorio'">
+          </app-input-checked>
         </div>
 
       </div>
 
-      <div class="flex flex-col gap-2">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <i class="bi-envelope text-slate-400"></i>
-          </div>
-          <input type="email" 
-                 [(ngModel)]="datiForm.email" 
-                 name="email"
-                 class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-slate-700 font-medium focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder-slate-400">
-        </div>
+      <div class="w-full">
+         <app-input-checked
+            [titolo]="'EMAIL'"
+            [type]="'email'"
+            [(valore)]="datiForm.email"
+            [haErrore]="erroreEmail"
+            [messaggioErrore]="'Email obbligatoria o non valida'">
+          </app-input-checked>
       </div>
 
       <div class="flex justify-end pt-2 border-t border-slate-50 mt-8">
         <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all active:scale-95 flex items-center gap-2">
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg shadow-blue-200">
           <i class="bi-check-lg text-lg"></i>
           Salva Modifiche
         </button>
@@ -48,6 +50,7 @@
     </form>
 
   </div>
+
   @if (erroreBanner) {
     <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
   }

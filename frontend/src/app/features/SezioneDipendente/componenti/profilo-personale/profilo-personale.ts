@@ -4,13 +4,15 @@ import {UtenteDTO} from '@core/models/utenteDTO.model';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-profilo-personale',
   imports: [
     FormsModule,
     TemplateTitoloSottotitolo,
-    BannerErrore
+    BannerErrore,
+    InputChecked
   ],
   templateUrl: './profilo-personale.html',
   styleUrl: './profilo-personale.css',
@@ -24,6 +26,10 @@ export class ProfiloPersonale implements OnChanges {
 
   erroreBanner : string = '';
   successoBanner : string = '';
+
+  erroreNome: boolean = false;
+  erroreCognome: boolean = false;
+  erroreEmail: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['utente'] && this.utente) {
@@ -42,26 +48,38 @@ export class ProfiloPersonale implements OnChanges {
   }
 
   salva() {
-    this.erroreBanner='';
-    this.successoBanner='';
+    this.erroreBanner = '';
+    this.successoBanner = '';
+    this.erroreNome = false;
+    this.erroreCognome = false;
+    this.erroreEmail = false;
+
+    let valid = true;
+
     if (!this.datiForm.nome || this.datiForm.nome.trim() === '') {
-      this.erroreBanner = "il campo nome è obbligatorio";
-      return;
+      this.erroreNome = true;
+      valid = false;
     }
 
     if (!this.datiForm.cognome || this.datiForm.cognome.trim() === '') {
-      this.erroreBanner = "il campo cognome è obbligatorio";
-      return;
+      this.erroreCognome = true;
+      valid = false;
     }
 
     if (!this.datiForm.email || this.datiForm.email.trim() === '') {
-      this.erroreBanner = "il campo email è obbligatorio";
-      return;
+      this.erroreEmail = true;
+      valid = false;
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(this.datiForm.email)) {
+        this.erroreEmail = true;
+        this.erroreBanner = "Inserisci un indirizzo email valido"; 
+        valid = false;
+      }
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.datiForm.email)) {
-      this.erroreBanner = "inserisci un indirizzo email validoe";
+    if (!valid) {
+      if (!this.erroreBanner) this.erroreBanner = "Compila correttamente i campi evidenziati";
       return;
     }
 
@@ -91,11 +109,11 @@ export class ProfiloPersonale implements OnChanges {
     }
 
     if (inviare) {
-      this.successoBanner="modifiche salvate con successo";
+      this.successoBanner = "Modifiche salvate con successo";
       setTimeout(() => this.successoBanner = '', 5000);
       this.clickSalva.emit(datiDaInviare);
     } else {
-      this.erroreBanner = "nessuna modifica rilevata";
+      this.erroreBanner = "Nessuna modifica rilevata";
     }
   }
 }
