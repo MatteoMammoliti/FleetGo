@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-chi-siamo',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule],
   templateUrl: './chi-siamo.html',
   styleUrl: './chi-siamo.css',
 })
