@@ -47,11 +47,8 @@
       <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
 
         @if (veicoli === null) {
-          <div class="flex flex-col items-center justify-center py-32">
-            <div class="relative">
-              <i class="bi bi-arrow-clockwise text-5xl text-azzurro animate-spin inline-block"></i>
-            </div>
-            <p class="text-slate-400 mt-4 font-bold animate-pulse tracking-widest text-xs uppercase">Sincronizzazione Criffix...</p>
+          <div class="flex items-center justify-center h-full">
+            <i class="caricamento bi bi-arrow-clockwise"></i>
           </div>
         } @else {
 

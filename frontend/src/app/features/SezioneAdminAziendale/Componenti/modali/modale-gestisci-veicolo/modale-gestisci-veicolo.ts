@@ -107,9 +107,6 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   }
 
 
-  caricaDettagliVeicolo(targa: string) {
-        this.richiediVeicolo.emit(targa);
-  }
 
 
   initMappa() {
@@ -174,8 +171,6 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
     this.map.setOptions({ gestureHandling: 'none' });
     this.infoWindow.close();
   }
-
-
 
 
 

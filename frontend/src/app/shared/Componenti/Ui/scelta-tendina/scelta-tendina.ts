@@ -12,7 +12,7 @@ import {FormsModule} from '@angular/forms';
 })
 export class SceltaTendina {
   @Input() lista:any[] = [];
-  @Input() valore:any;
+  @Input() valore:any=null;
   @Input() placeholder:string = "";
   @Input() chiaveVisuale:string="";
   @Input() chiaveUtilizzata:string="";

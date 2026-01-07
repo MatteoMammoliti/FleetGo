@@ -1,41 +1,37 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
-import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {AziendaDTO} from '@core/models/aziendaDTO';
-import {ActivatedRoute} from '@angular/router';
-import {GoogleMapsService} from '@core/services/google-maps-service';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 declare var google:any;
 
 @Component({
   selector: 'app-dettagli-veicolo',
   standalone: true,
-    imports: [
-        FormsModule,
-        CommonModule,
-        TemplateTitoloSottotitolo,
-        SceltaTendina,
-        BannerErrore
-    ],
+  imports: [
+    FormsModule,
+    CommonModule,
+    SceltaTendina,
+    TemplateFinestraModale
+  ],
   templateUrl: './dettagli-veicolo.html',
   styleUrl: './dettagli-veicolo.css',
 })
 
-export class DettagliVeicolo implements OnInit {
+export class DettagliVeicolo  {
 
-  constructor(private veicoloService: FlottaGlobaleService,
-              private route: ActivatedRoute,
-              private aziendeAssociateService:AziendeAffiliateService,
-              private googleMapsService:GoogleMapsService) {}
+  @Output() chiudi = new EventEmitter<void>();
 
-  veicolo: any = null;
-  aziende:AziendaDTO[] = [];
-  aziendaSelezionata:any=null;
+  @Output() dissocia = new EventEmitter<any>();
+  @Output() associa = new EventEmitter<any>();
+  @Output() dissociaAssocia=new EventEmitter<{veicolo: any, nuovaAzienda: any}>();
+
+  @Input() veicolo: any = null;
+  @Input() aziende: AziendaDTO[] = [];
+  aziendaSelezionata: any = null;
+
+  dissociaSelezionata = false;
 
   private map: any;
   private marker: any;
@@ -43,60 +39,7 @@ export class DettagliVeicolo implements OnInit {
   private coordsIniziali: { lat: number, lng: number } | null = null;
   private zoomIniziale: number = 15;
 
-  erroreBanner="";
-  successoBanner="";
-
-  ngOnInit(){
-    const targa:string | null = this.route.snapshot.paramMap.get('targa');
-    this.initVeicolo(targa);
-    this.caricaListaAziende();
-  }
-
-  caricaListaAziende() {
-    this.aziendeAssociateService.richiediAziendeAttive().subscribe({
-      next: data => {
-        if(data) {
-          this.aziende = data;
-        }
-      }, error: (err) => {
-        this.gestisciErrore(err.error);
-      }
-    });
-  }
-
-  initVeicolo(targa: string | null) {
-    this.veicoloService.richiediVeicolo(targa).subscribe({
-      next: (response) => {
-        if (response) {
-          this.veicolo = response;
-
-          const luogo = this.veicolo.luogoRitiroDeposito;
-          if (this.veicolo.nomeAziendaAffiliata && luogo && luogo.latitudine && luogo.longitudine) {
-            this.initMappa();
-          }
-        }
-      },
-      error: (err) => {
-        this.gestisciErrore(err.error);
-      }
-    });
-  }
-
-  initMappa() {
-    const luogo = this.veicolo.luogoRitiroDeposito;
-    if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
-    this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
-
-    this.googleMapsService.load().then(() => {
-      setTimeout(() => {
-        if(this.coordsIniziali) {
-            this.disegnaMappa(this.coordsIniziali);
-        }
-      }, 500);
-    });
-  }
-
-  disegnaMappa(coords: { lat: number; lng: number}) {
+  disegnaMappa(coords: { lat: number; lng: number }) {
     const mapElement = document.getElementById("google-map");
 
     if (!mapElement) return;
@@ -110,7 +53,7 @@ export class DettagliVeicolo implements OnInit {
       clickableIcons: false
     };
 
-    this.map=new google.maps.Map(mapElement, mapOptions);
+    this.map = new google.maps.Map(mapElement, mapOptions);
 
     this.marker = new google.maps.Marker({
       position: coords,
@@ -119,7 +62,7 @@ export class DettagliVeicolo implements OnInit {
     });
 
     this.infoWindow = new google.maps.InfoWindow({
-      content:`<div style="padding:5px; font-weight:bold; color:#0f172a">${this.veicolo.luogoRitiroDeposito.nomeLuogo}</div>`
+      content: `<div style="padding:5px; font-weight:bold; color:#0f172a">${this.veicolo.luogoRitiroDeposito.nomeLuogo}</div>`
     });
 
     this.marker.addListener("click", () => {
@@ -134,62 +77,44 @@ export class DettagliVeicolo implements OnInit {
   attivaMappa() {
     this.map.setZoom(17);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'cooperative' });
+    this.map.setOptions({gestureHandling: 'cooperative'});
     this.infoWindow.open(this.map, this.marker);
   }
 
   resetMappa() {
     this.map.setZoom(this.zoomIniziale);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'none' });
+    this.map.setOptions({gestureHandling: 'none'});
     this.infoWindow.close();
   }
 
   associaVeicoloAzienda() {
-
-    const veicolo: VeicoloDTO = {
-      idVeicolo: this.veicolo.idVeicolo,
-      idAziendaAffiliata: this.aziendaSelezionata.idAzienda
-    }
-
-    this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
-      next: (response) => {
-        this.ngOnInit();
-        this.gestisciSuccesso("Veicolo associato con successo");
-      }, error: (err) => {
-        this.gestisciErrore(err.error);
-      }
-    })
+    this.associa.emit(this.aziendaSelezionata);
   }
 
   dissociaVeicoloAzienda() {
+    this.dissocia.emit(this.veicolo);
+  }
 
-    const veicolo: VeicoloDTO = {
-      idVeicolo: this.veicolo.idVeicolo,
-      idAziendaAffiliata: this.veicolo.idAziendaAffiliata
+  salva() {
+    if(this.dissociaSelezionata&&this.aziendaSelezionata){
+        this.dissociaAssocia.emit({ veicolo: this.veicolo, nuovaAzienda: this.aziendaSelezionata });
     }
-
-    this.veicoloService.dissociaVeicoloAzienda(veicolo).subscribe({
-      next: (response) => {
-        this.ngOnInit();
-        this.gestisciSuccesso("Veicolo dissociato con successo");
-      }, error: (err) => {
-        this.gestisciErrore(err.error);
-      }
-    })
+    else if (this.dissociaSelezionata) {
+      this.dissociaVeicoloAzienda();
+    }
+    else if (this.aziendaSelezionata) {
+      this.associaVeicoloAzienda();
+    }
+    this.chiudiModale()
   }
 
-  tornaIndietro(){window.history.back();}
-
-  gestisciErrore(messaggio: string) {
-    this.successoBanner = '';
-    this.erroreBanner = messaggio;
-    setTimeout(() => this.erroreBanner = '', 5000);
+  chiudiModale(){
+    this.dissociaSelezionata = false;
+    this.aziendaSelezionata=null;
+    this.veicolo=null;
+    this.aziende=[];
+    this.chiudi.emit();
   }
 
-  gestisciSuccesso(messaggio: string) {
-    this.erroreBanner = '';
-    this.successoBanner = messaggio;
-    setTimeout(() => this.successoBanner = '', 3000);
-  }
 }

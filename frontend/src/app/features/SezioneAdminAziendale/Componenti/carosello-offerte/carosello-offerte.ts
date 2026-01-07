@@ -1,9 +1,12 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-carosello-offerte',
-  imports: [],
+  imports: [
+    MessaggioCardVuota
+  ],
   templateUrl: './carosello-offerte.html',
   styleUrl: './carosello-offerte.css',
 })

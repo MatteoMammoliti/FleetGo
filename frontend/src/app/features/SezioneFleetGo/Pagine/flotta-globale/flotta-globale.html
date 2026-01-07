@@ -156,6 +156,17 @@
     (onAnnulla)="gestisciVisibilitaModale()">
   </app-form-aggiungi-auto>
 }
+@if(modaleDettagliVeicolo){
+  <app-dettagli-veicolo
+  #dettaglioVeicolo
+  [veicolo]="veicolo",
+  [aziende]="aziendeInPiattaforma"
+  (chiudi)="modaleDettagliVeicolo = false;this.veicolo=null"
+  (associa)="associaVeicoloAzienda($event)"
+  (dissocia)="dissociaVeicoloAzienda($event)"
+  (dissociaAssocia)="dissociaEAssocia($event.veicolo, $event.nuovaAzienda)"
+  ></app-dettagli-veicolo>
+}
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
