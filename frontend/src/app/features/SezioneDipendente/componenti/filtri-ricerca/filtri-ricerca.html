@@ -1,5 +1,4 @@
 <div class="flex flex-col md:flex-row items-end gap-2 w-full">
-
   <div class="flex flex-col w-full md:w-auto relative group">
     <label class="text-[10px] font-bold ml-1 mb-0.5 uppercase tracking-wide text-slate-700 whitespace-nowrap group-focus-within:text-blue-600 transition-colors">
       Ritiro
@@ -10,6 +9,7 @@
         [(ngModel)]="dataRitiroCompleta"
         [min]="minDateRitiro"
         (change)="onCambioRitiro()"
+        (keydown)="bloccaScrittura($event)"
         class="appearance-none w-full border border-gray-200 bg-gray-50 font-medium px-3 rounded-xl transition-all cursor-pointer outline-none focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-gray-700 placeholder-gray-400 text-sm h-[42px]">
     </div>
   </div>
@@ -18,14 +18,17 @@
     <label class="text-[10px] font-bold ml-1 mb-0.5 uppercase tracking-wide text-slate-700 whitespace-nowrap group-focus-within:text-blue-600 transition-colors">
       Consegna
     </label>
+
     <div class="relative w-full md:w-[170px]">
       <input
         type="datetime-local"
         [(ngModel)]="dataConsegnaCompleta"
         [min]="minDateConsegna"
+        (keydown)="bloccaScrittura($event)"
         class="appearance-none w-full border border-gray-200 bg-gray-50 font-medium px-3 rounded-xl transition-all cursor-pointer outline-none focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-gray-700 placeholder-gray-400 text-sm h-[42px]">
     </div>
   </div>
+
 
   <div class="w-full md:w-auto mt-2 md:mt-0">
     <button (click)="cerca()"
@@ -35,4 +38,4 @@
     </button>
   </div>
 
-</div>
+</div> 
