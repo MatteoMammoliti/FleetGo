@@ -1,64 +1,54 @@
 <app-template-finestra-modale
-  [titolo]="'Contatta Amministrazione'"
-  [sottotitolo]="'Segnala un problema o richiedi assistenza'"
-  tastoBlu="Invia Messaggio"
-  tastoBianco="Annulla"
+  [titolo]="'Richiesta Assistenza'"
+  [sottotitolo]="'Apri un ticket per ricevere supporto'"
+  [larghezza]="'max-w-xl'"
+  [tastoBianco]="'Annulla'"
+  [tastoBlu]="'Invia Segnalazione'"
   (chiudi)="chiudiModale.emit()"
   (annulla)="chiudiModale.emit()"
-  (conferma)="invio()">
+  (conferma)="invio()"> <div class="flex flex-col gap-6">
 
-  <div class="flex flex-col gap-5 p-2">
-
-    <div class="flex flex-col gap-2">
-      <label class="text-sm font-bold text-blu ml-1">Motivo della richiesta</label>
-
+    <div class="w-full">
       <app-scelta-tendina
+        [titolo]="'CATEGORIA'"
         [lista]="categorieContatto"
+        [placeholder]="'Seleziona il tipo di problema'"
         [valore]="categoriaSelezionata"
-        placeholder="Seleziona motivo..."
-        (valoreChange)="cambioCategoria($event)"
-        [haErrore]="erroreTendina"
-        messaggioErrore="Seleziona un valore valido!">
-
-      </app-scelta-tendina>
+        [haErrore]="erroreCategoria"
+        [messaggioErrore]="'Seleziona una categoria'"
+        (valoreChange)="cambioCategoria($event)"> </app-scelta-tendina>
     </div>
 
-    @if (categoriaSelezionata && listaOggettiDinamicaVisibile) {
-      <div class="flex flex-col gap-2 animate-fade-in-down">
-        <label class="text-sm font-bold text-blu ml-1">Seleziona Prenotazione</label>
-
+    @if(listaOggettiDinamicaVisibile) {
+      <div class="w-full animate-fade-in">
         @if(caricamentoDati) {
-          <div class="text-sm text-gray-400 flex items-center gap-2">
-            <div class="w-4 h-4 border-2 border-azzurro border-t-transparent rounded-full animate-spin"></div>
-            Caricamento lista...
-          </div>
+          <div class="h-[42px] w-full bg-slate-100 rounded-xl animate-pulse"></div>
         } @else {
           <app-scelta-tendina
+            [titolo]="'RIFERIMENTO NOLEGGIO'"
             [lista]="listaOggettiDinamica"
+            [chiaveVisuale]="'labelVisuale'"
+            [chiaveUtilizzata]="'labelVisuale'"
+            [placeholder]="'Seleziona il noleggio interessato'"
             [valore]="oggettoSelezionato"
-            chiaveVisuale="labelVisuale"
-            placeholder="Seleziona riferimento..."
-            (valoreChange)="oggettoSelezionato = $event">
+            [haErrore]="erroreOggetto"
+            [messaggioErrore]="'Seleziona un riferimento'"
+            (valoreChange)="cambioOggetto($event)">
           </app-scelta-tendina>
         }
       </div>
     }
 
-    <div class="flex flex-col gap-2">
-      <label class="text-sm font-bold text-blu ml-1">Messaggio</label>
-      <textarea
-        [(ngModel)]="messaggio"
-        rows="4"
-        class="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-azzurro/20 focus:border-azzurro border-slate-200 resize-none text-sm"
-        placeholder="Descrivi il problema o la richiesta in dettaglio...">
-      </textarea>
+    <div class="w-full">
+      <app-input-checked
+        [titolo]="'MESSAGGIO'"
+        [type]="'text'"
+        [placeholder]="'Descrivi il problema riscontrato...'"
+        [(valore)]="messaggio"
+        [haErrore]="erroreMessaggio"
+        [messaggioErrore]="'Il messaggio è obbligatorio'">
+      </app-input-checked>
     </div>
-
-    @if (errore) {
-      <div class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-lg flex items-center gap-2">
-        <i class="bi bi-exclamation-circle-fill"></i> {{ errore }}
-      </div>
-    }
 
   </div>
 

@@ -2,13 +2,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {FormsModule} from '@angular/forms';
+import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
   selector: 'app-modale-richiesta-assistenza',
   imports: [
     TemplateFinestraModale,
     SceltaTendina,
-    FormsModule
+    FormsModule,
+    InputChecked
   ],
   templateUrl: './modale-richiesta-assistenza.html',
   styleUrl: './modale-richiesta-assistenza.css',
@@ -28,36 +30,53 @@ export class ModaleRichiestaAssistenza {
   oggettoSelezionato: any = null;
   categoriaSelezionata: any = null;
   messaggio = "";
-  errore = "";
-  erroreTendina= false;
+  erroreCategoria: boolean = false;
+  erroreMessaggio: boolean = false;
+  erroreOggetto: boolean = false;
 
   cambioCategoria(categoria: string) {
+    this.erroreCategoria=false;
     this.categoriaSelezionata = categoria;
     this.oggettoSelezionato = null;
+    this.erroreOggetto = false;
     this.segnalaCategoriaCambiata.emit(this.categoriaSelezionata);
   }
 
+  cambioOggetto(oggetto: any) {
+    this.erroreOggetto=false;
+    this.oggettoSelezionato=oggetto;
+  }
+
   invio() {
-    this.errore = "";
-    let datoDaInviare: string | null = null;
+    this.erroreCategoria = false;
+    this.erroreMessaggio = false;
+    this.erroreOggetto = false;
+    let valid = true;
 
-    if(!this.categoriaSelezionata || !this.messaggio) {
-      this.errore = "Compila tutti i campi obbligatori";
-      this.erroreTendina=true;
-      return;
+    if(!this.categoriaSelezionata) {
+      this.erroreCategoria = true;
+      valid = false;
     }
 
-    datoDaInviare = "Richiesta riguardo a " + this.categoriaSelezionata;
-
-    if(this.listaOggettiDinamicaVisibile && !this.oggettoSelezionato) {
-      this.errore = "Seleziona un riferimento di una prenotazione";
-      return;
+    if(!this.messaggio || this.messaggio.trim() === '') {
+      this.erroreMessaggio = true;
+      valid = false;
     }
 
-    if(this.oggettoSelezionato?.labelVisuale === 'Nessun noleggio trovato') {
-      this.errore = "Non è possibile inviare una richiesta senza un noleggio di riferimento";
-      return;
+    if(this.listaOggettiDinamicaVisibile) {
+      if (!this.oggettoSelezionato) {
+        this.erroreOggetto=true;
+        valid = false; 
+      }
+      else if (this.oggettoSelezionato.labelVisuale === 'Nessun noleggio trovato') {
+        valid = false;
+      }
     }
+
+    if (!valid) return;
+
+
+    let datoDaInviare = "Richiesta riguardo a " + this.categoriaSelezionata;
 
     if (this.oggettoSelezionato && this.oggettoSelezionato.labelVisuale) {
       datoDaInviare += " riguardo a " + this.oggettoSelezionato.labelVisuale;
@@ -65,9 +84,6 @@ export class ModaleRichiestaAssistenza {
 
     datoDaInviare += " con messaggio " + this.messaggio;
 
-    if(datoDaInviare) {
-      this.erroreTendina=false;
-      this.inviaSegnalazione.emit(datoDaInviare);
-    }
+    this.inviaSegnalazione.emit(datoDaInviare);
   }
 }
