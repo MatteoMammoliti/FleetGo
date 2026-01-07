@@ -95,6 +95,9 @@ export class ModaleRichiestaAssistenza {
     datoDaInviare += " con messaggio " + this.messaggio;
     this.successoBanner= "Segnalazione inviata con successo";
 
-    this.inviaSegnalazione.emit(datoDaInviare);
+    setTimeout(() => {
+      this.inviaSegnalazione.emit(datoDaInviare);
+      this.successoBanner = '';
+    }, 1500);
   }
 }

@@ -10,7 +10,6 @@
         [(ngModel)]="dataRitiroCompleta"
         [min]="minDateRitiro"
         (change)="onCambioRitiro()"
-        (keydown)="bloccaScrittura($event)"
         class="appearance-none w-full border border-gray-200 bg-gray-50 font-medium px-3 rounded-xl transition-all cursor-pointer outline-none focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-gray-700 placeholder-gray-400 text-sm h-[42px]">
     </div>
   </div>
@@ -24,7 +23,6 @@
         type="datetime-local"
         [(ngModel)]="dataConsegnaCompleta"
         [min]="minDateConsegna"
-        (keydown)="bloccaScrittura($event)"
         class="appearance-none w-full border border-gray-200 bg-gray-50 font-medium px-3 rounded-xl transition-all cursor-pointer outline-none focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-gray-700 placeholder-gray-400 text-sm h-[42px]">
     </div>
   </div>

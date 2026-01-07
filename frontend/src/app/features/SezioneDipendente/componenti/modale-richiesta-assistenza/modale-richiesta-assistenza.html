@@ -21,8 +21,17 @@
 
     @if(listaOggettiDinamicaVisibile) {
       <div class="w-full animate-fade-in">
+
         @if(caricamentoDati) {
-          <div class="h-[42px] w-full bg-slate-100 rounded-xl animate-pulse"></div>
+          <div class="w-full">
+            <div class="h-3 w-32 bg-slate-100 rounded mb-1.5 animate-pulse ml-1"></div>
+            
+            <div class="h-[46px] w-full bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-400 gap-2">
+               <i class="bi bi-arrow-repeat animate-spin text-xl text-blue-500"></i>
+               <span class="text-xs font-medium">Caricamento...</span>
+            </div>
+          </div>
+
         } @else {
           <app-scelta-tendina
             [titolo]="'RIFERIMENTO NOLEGGIO'"

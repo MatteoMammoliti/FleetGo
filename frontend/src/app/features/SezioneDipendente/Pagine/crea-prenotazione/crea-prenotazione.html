@@ -65,18 +65,13 @@
 </app-intestazione-ebackground>
 
 @if (mostraModale) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fade-in">
-      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" (click)="chiudiModale()"></div>
-      <div class="relative w-full max-w-xl max-h-[90vh] bg-white rounded-3xl shadow-2xl overflow-y-auto scrollbar-hide ring-1 ring-black/5">
-        <app-richiesta-noleggio-form
-          (confermaRegistrazione)="inviaPrenotazione($event)"
-          [dati]="mostraModale"
-          [costoStimato]="costoStimato"
-          (chiudi)="chiudiModale()">
-        </app-richiesta-noleggio-form>
-      </div>
-    </div>
-  }
+  <app-richiesta-noleggio-form
+    (confermaRegistrazione)="inviaPrenotazione($event)"
+    [dati]="mostraModale"
+    [costoStimato]="costoStimato"
+    (chiudi)="chiudiModale()">
+  </app-richiesta-noleggio-form>
+}
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
