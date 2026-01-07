@@ -3,6 +3,7 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {FormsModule} from '@angular/forms';
 import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked';
+import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-modale-richiesta-assistenza',
@@ -10,7 +11,8 @@ import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked'
     TemplateFinestraModale,
     SceltaTendina,
     FormsModule,
-    InputChecked
+    InputChecked,
+    BannerErrore
   ],
   templateUrl: './modale-richiesta-assistenza.html',
   styleUrl: './modale-richiesta-assistenza.css',
@@ -33,6 +35,8 @@ export class ModaleRichiestaAssistenza {
   erroreCategoria: boolean = false;
   erroreMessaggio: boolean = false;
   erroreOggetto: boolean = false;
+  erroreBanner: string = '';
+  successoBanner: string = '';
 
   cambioCategoria(categoria: string) {
     this.erroreCategoria=false;
@@ -48,6 +52,8 @@ export class ModaleRichiestaAssistenza {
   }
 
   invio() {
+    this.erroreBanner='';
+    this.successoBanner='';
     this.erroreCategoria = false;
     this.erroreMessaggio = false;
     this.erroreOggetto = false;
@@ -70,10 +76,14 @@ export class ModaleRichiestaAssistenza {
       }
       else if (this.oggettoSelezionato.labelVisuale === 'Nessun noleggio trovato') {
         valid = false;
+        this.erroreBanner="Impossibile procedere senza un noleggio valido";
       }
     }
 
-    if (!valid) return;
+    if (!valid) {
+      if (!this.erroreBanner) this.erroreBanner= "Compila tutti i campi obbligatori";
+      return;
+    }
 
 
     let datoDaInviare = "Richiesta riguardo a " + this.categoriaSelezionata;
@@ -83,6 +93,7 @@ export class ModaleRichiestaAssistenza {
     }
 
     datoDaInviare += " con messaggio " + this.messaggio;
+    this.successoBanner= "Segnalazione inviata con successo";
 
     this.inviaSegnalazione.emit(datoDaInviare);
   }
