@@ -1,4 +1,5 @@
 <app-intestazione-ebackground [titolo]="'Le mie Prenotazioni'">
+  
   <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-10 -mt-2">
     <div class="relative z-10 animate-slide-in-left">
       <p class="text-grigio-scuro font-medium text-lg max-w-2xl">
@@ -40,54 +41,64 @@
 
     </div>
   </div>
+
   <div class="pb-20 min-h-[400px]">
     
-    @if (prenotazioniFiltrate.length > 0) {
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta! + filtroAttivo) {
-          <div class="h-full animate-fade-in">
-            <app-prenotazione-card
-              class="h-full block"
-              (annullaRichiesta)="eliminaPrenotazione($event)"
-              [prenotazione]="prenotazione">
-            </app-prenotazione-card>
-          </div>
-        }
+    @if (caricamentoDati) {
+      <div class="flex items-center justify-center h-[400px] w-full">
+              <i class="caricamento bi bi-arrow-clockwise"></i>
       </div>
-
-    } @else {
-      <div class="bg-white rounded-3xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center animate-fade-in">
+    } 
+    @else {
+      
+      @if (prenotazioniFiltrate.length > 0) {
         
-        <app-messaggio-card-vuota
-          [icona]="'bi-journal-x'"
-          [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo)"
-          [testoSecondario]="'Non sono presenti richieste che corrispondono a questo filtro.'">
-        </app-messaggio-card-vuota>
-
-        <div class="mt-8">
-          @if(filtroAttivo === 'Tutte') {
-            <button (click)="clickNuovaPrenotazione()" 
-                    class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-200 hover:shadow-blue-300 hover:scale-[1.02] transition-all duration-300 flex items-center gap-2">
-              <i class="bi bi-plus-lg text-lg"></i>
-              Nuova Prenotazione
-            </button>
-          } @else {
-            <button (click)="impostaFiltro('Tutte')" 
-                    class="px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
-              Mostra Tutte
-            </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
+          @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta! + filtroAttivo) {
+            <div class="h-full">
+              <app-prenotazione-card
+                class="h-full block"
+                (annullaRichiesta)="eliminaPrenotazione($event)"
+                [prenotazione]="prenotazione">
+              </app-prenotazione-card>
+            </div>
           }
         </div>
-      </div>
-    }
 
-  </div>
+      } @else {
+        
+        <div class="bg-white rounded-3xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center animate-fade-in">
+          
+          <app-messaggio-card-vuota
+            [icona]="'bi-journal-x'"
+            [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo)"
+            [testoSecondario]="'Non sono presenti richieste che corrispondono a questo filtro.'">
+          </app-messaggio-card-vuota>
 
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
-  @if(successoBanner){
-    <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
-  }
+          <div class="mt-8">
+            @if(filtroAttivo === 'Tutte') {
+              <button (click)="clickNuovaPrenotazione()" 
+                      class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-200 hover:shadow-blue-300 hover:scale-[1.02] transition-all duration-300 flex items-center gap-2">
+                <i class="bi bi-plus-lg text-lg"></i>
+                Nuova Prenotazione
+              </button>
+            } @else {
+              <button (click)="impostaFiltro('Tutte')" 
+                      class="px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
+                Mostra Tutte
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+    } </div>
+  
 </app-intestazione-ebackground>
+
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if(successoBanner){
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

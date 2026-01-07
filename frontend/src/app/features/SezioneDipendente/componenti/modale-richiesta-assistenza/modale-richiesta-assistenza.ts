@@ -3,7 +3,6 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {FormsModule} from '@angular/forms';
 import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked';
-import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-modale-richiesta-assistenza',
@@ -12,7 +11,6 @@ import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore'
     SceltaTendina,
     FormsModule,
     InputChecked,
-    BannerErrore
   ],
   templateUrl: './modale-richiesta-assistenza.html',
   styleUrl: './modale-richiesta-assistenza.css',
@@ -35,7 +33,6 @@ export class ModaleRichiestaAssistenza {
   erroreCategoria: boolean = false;
   erroreMessaggio: boolean = false;
   erroreOggetto: boolean = false;
-  erroreBanner: string = '';
   successoBanner: string = '';
 
   cambioCategoria(categoria: string) {
@@ -51,13 +48,25 @@ export class ModaleRichiestaAssistenza {
     this.oggettoSelezionato=oggetto;
   }
 
-  invio() {
-    this.erroreBanner='';
+  chiudi() {
+    this.reset();
+    this.listaOggettiDinamicaVisibile=false;
+    this.oggettoSelezionato=null;
+    this.categoriaSelezionata=null;
+    this.listaOggettiDinamica=[];
+    this.chiudiModale.emit();
+  }
+
+  reset() {
     this.successoBanner='';
     this.erroreCategoria = false;
     this.erroreMessaggio = false;
     this.erroreOggetto = false;
+  }
+
+  invio() {
     let valid = true;
+    this.reset();
 
     if(!this.categoriaSelezionata) {
       this.erroreCategoria = true;
@@ -76,12 +85,10 @@ export class ModaleRichiestaAssistenza {
       }
       else if (this.oggettoSelezionato.labelVisuale === 'Nessun noleggio trovato') {
         valid = false;
-        this.erroreBanner="Impossibile procedere senza un noleggio valido";
       }
     }
 
     if (!valid) {
-      if (!this.erroreBanner) this.erroreBanner= "Compila tutti i campi obbligatori";
       return;
     }
 

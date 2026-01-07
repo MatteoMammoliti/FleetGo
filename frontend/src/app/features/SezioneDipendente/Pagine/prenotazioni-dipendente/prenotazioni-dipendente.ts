@@ -34,18 +34,22 @@ export class PrenotazioniDipendente implements OnInit {
   successoBanner: string = '';
   erroreBanner: string = '';
 
+  caricamentoDati: boolean = true;
+
   ngOnInit(){
     this.getRichiesteDipendente();
   }
 
   getRichiesteDipendente(){
+    this.caricamentoDati=true;
     this.service.richiediPrenotazioniDipendente().subscribe({
       next:(risposta:RichiestaNoleggioDTO[])=>{
         this.prenotazioni=risposta
         this.daVisualizzare=risposta
-        this.impostaFiltro(this.filtroAttivo);
+        this.caricamentoDati=false;
     },
-      error:(err)=>console.log("Errore nel caricare i noleggi dei dipendente")
+      error:(err)=>{this.gestisciErrore(err.error);
+      this.caricamentoDati=false;}
     });
   }
 
@@ -53,12 +57,10 @@ export class PrenotazioniDipendente implements OnInit {
     this.service.eliminaPrenotazione(idPrenotazione).subscribe({
       next:(risposta:any)=>{
         this.getRichiesteDipendente()
-        this.successoBanner= "Prenotazione annullata con successo!";
-        setTimeout(() => this.successoBanner = '', 5000); 
+        this.gestisciSuccesso("Prenotazione annullata con successo!");
       },
-      error:(err)=> {console.log("Errore durante l'eliminazione");
-      this.erroreBanner= err.error;}
-    });
+      error:(err)=> {this.gestisciErrore(err.error);}
+    })
   }
   
 
@@ -85,5 +87,26 @@ export class PrenotazioniDipendente implements OnInit {
     });
   }
 
-  impostaFiltro(categoria: string) { this.filtroAttivo = categoria; }
+  impostaFiltro(categoria: string) { 
+    if (this.filtroAttivo === categoria) return; 
+
+    this.caricamentoDati = true; 
+    this.filtroAttivo = categoria;
+
+    setTimeout(() => {
+      this.caricamentoDati = false;
+    }, 0);
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 }

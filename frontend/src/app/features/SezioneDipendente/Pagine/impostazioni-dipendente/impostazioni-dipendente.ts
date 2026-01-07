@@ -7,7 +7,7 @@ import { AffiliazioneAzienda } from '../../componenti/affiliazione-azienda/affil
 import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {AuthService} from '@core/auth/auth-service';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
@@ -17,7 +17,7 @@ import {Router, RouterLink} from '@angular/router';
     IntestazioneEBackground,
     ProfiloPersonale,
     PatenteDocumentiComponent,
-    AffiliazioneAzienda
+    AffiliazioneAzienda,
   ],
   templateUrl: './impostazioni-dipendente.html',
   styleUrl: './impostazioni-dipendente.css',
@@ -30,6 +30,9 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   utente: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   urlPatente : string = '';
 
+  erroreBanner="";
+  successoBanner="";
+
   constructor(private impostazioniService: ImpostazioniService,private authService:AuthService,private router:Router) {}
 
   ngOnInit() {
@@ -41,17 +44,16 @@ export class ImpostazioniDipendenteComponent implements OnInit {
       next: (datiServer) => {
         if(datiServer){
           this.utente = datiServer;
-          console.log(this.utente);
         }
       },
-      error: (err) => console.error("Errore caricamento dati:", err)
+      error: (err) => this.gestisciErrore(err.error),
     });
 
     this.impostazioniService.getUrlPatente().subscribe({
       next: (urlPatenteServer) => {
         this.urlPatente = urlPatenteServer;
-      }, error: err => console.error("Errore caricamento dati:", err)
-    })
+      }, error: err => this.gestisciErrore(err.error)
+    });
   }
 
   cambiaTab(tab: string) {
@@ -65,7 +67,7 @@ export class ImpostazioniDipendenteComponent implements OnInit {
         if(datiPatenteServer){
           this.caricaDatiUtente();
         }
-      }, error: err => console.error("Errore caricamento dati:", err)
+      }, error: err => this.gestisciErrore(err.error)
     })
   }
 
@@ -77,8 +79,7 @@ export class ImpostazioniDipendenteComponent implements OnInit {
 
       },
       error: (err) => {
-        console.error(err);
-        alert("Errore durante la disdetta.");
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -90,7 +91,19 @@ export class ImpostazioniDipendenteComponent implements OnInit {
         alert("Profilo aggiornato!");
         this.caricaDatiUtente();
       },
-      error: (err) => console.error(err)
+      error: (err) => this.gestisciErrore(err.error),
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

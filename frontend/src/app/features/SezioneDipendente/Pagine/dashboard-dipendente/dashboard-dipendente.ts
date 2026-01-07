@@ -12,6 +12,8 @@ import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/supporto-f
 import {DatePipe} from '@angular/common';
 import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/modale-richiesta-assistenza/modale-richiesta-assistenza';
 import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
+
 
 @Component({
   selector: 'app-dashboard-dipendente',
@@ -22,7 +24,8 @@ import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebac
     MappaHub,
     SupportoFleetgo,
     ModaleRichiestaAssistenza,
-    IntestazioneEBackground
+    IntestazioneEBackground,
+    BannerErrore
   ],
   providers: [DatePipe],
   templateUrl: './dashboard-dipendente.html',
@@ -45,6 +48,9 @@ export class DashboardDipendente implements OnInit {
   categorieContatto = ["Veicoli/Guasti", "Noleggi in corso", "Noleggi passati"]
   listaOggettiDinamicaVisibile = false;
 
+  erroreBanner="";
+  successoBanner="";
+
   ngOnInit(){
     this.richiediNomeDipendente();
     this.richiediProssimoViaggio();
@@ -57,27 +63,26 @@ export class DashboardDipendente implements OnInit {
       next:(risposta:string)=>{
         this.nomeDipendente=risposta;
       },
-      error:(err)=>console.error("Errore nel caricmento del nome dipendente")
-    })
+      error:(err)=>this.gestisciErrore(err.error),
+    });
   }
 
   richiediProssimoViaggio(){
     this.service.richiediProssimoViaggio().subscribe({
       next:(risposta:RichiestaNoleggioDTO)=>{
-        console.log(risposta);
         this.prossimoViaggio=risposta
       },
-        error:(err)=>{console.error("errore nel caricamento del prossimo viaggio")}
-    });
-  }
+        error:(err)=>{this.gestisciErrore(err.error);
+        }
+      })
+    }
 
   richiediStatisticheDipendente(){
     this.service.richiediStatisticheDipendente().subscribe({
       'next':(risposta:StatisticheDipendenteDTO)=>{
-        console.log(risposta)
         this.statisticheDipendente=risposta;
       },
-      'error':(err)=>{console.error("Errore nel caricamento delle statistiche dipendente")}
+      'error':(err)=>{this.gestisciErrore(err.error)}
     })
   }
 
@@ -86,7 +91,7 @@ export class DashboardDipendente implements OnInit {
       next:(risposta:LuogoDTO[])=>{
         this.luoghiAzienda=risposta;
       },
-      error:(err)=>console.log("Errore nel caricamento dei luoghi")
+      error:(err)=>this.gestisciErrore(err.error)
     })
   }
 
@@ -97,7 +102,11 @@ export class DashboardDipendente implements OnInit {
     this.router.navigate(['/dashboardDipendente/prenotazioni'])
   }
 
-  gestisciVisibilita() { this.modaleContattoVisibile = !this.modaleContattoVisibile; }
+  gestisciVisibilita() {
+    this.modaleContattoVisibile = !this.modaleContattoVisibile;
+    this.listaOggettiDinamica=[];
+    this.listaOggettiDinamicaVisibile=false;
+  }
 
   caricaDatiContesto(categoria: string) {
 
@@ -139,18 +148,29 @@ export class DashboardDipendente implements OnInit {
 
   inviaSegnalazione(messaggioRichiesta: string | null) {
 
-    console.log(messaggioRichiesta);
-
     this.service.inviaSegnalazione(messaggioRichiesta).subscribe({
       next: (inviaSegnalazione) => {
         if(inviaSegnalazione) {
-          console.log(inviaSegnalazione);
+          this.gestisciSuccesso("Segnalazione inviata con successo!");
           this.gestisciVisibilita();
         }
-      }, error: error => {
-        console.log(error);
+      }, error: err => {
+        this.gestisciErrore(err.error);
         this.gestisciVisibilita();
       }
     })
+  }
+
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }

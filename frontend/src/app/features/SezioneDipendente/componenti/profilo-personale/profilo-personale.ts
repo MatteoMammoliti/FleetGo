@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {UtenteDTO} from '@core/models/utenteDTO.model';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
-import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
 import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked';
 
 @Component({
@@ -11,7 +9,6 @@ import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked'
   imports: [
     FormsModule,
     TemplateTitoloSottotitolo,
-    BannerErrore,
     InputChecked
   ],
   templateUrl: './profilo-personale.html',
@@ -23,9 +20,6 @@ export class ProfiloPersonale implements OnChanges {
   @Output() clickSalva=new EventEmitter<ModificaDatiUtenteDTO>()
   @Input() utente!:ModificaDatiUtenteDTO;
   datiForm:ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO
-
-  erroreBanner : string = '';
-  successoBanner : string = '';
 
   erroreNome: boolean = false;
   erroreCognome: boolean = false;
@@ -48,8 +42,6 @@ export class ProfiloPersonale implements OnChanges {
   }
 
   salva() {
-    this.erroreBanner = '';
-    this.successoBanner = '';
     this.erroreNome = false;
     this.erroreCognome = false;
     this.erroreEmail = false;
@@ -73,13 +65,11 @@ export class ProfiloPersonale implements OnChanges {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(this.datiForm.email)) {
         this.erroreEmail = true;
-        this.erroreBanner = "Inserisci un indirizzo email valido"; 
         valid = false;
       }
     }
 
     if (!valid) {
-      if (!this.erroreBanner) this.erroreBanner = "Compila correttamente i campi evidenziati";
       return;
     }
 
@@ -106,14 +96,6 @@ export class ProfiloPersonale implements OnChanges {
     if (this.datiForm.email !== this.utente.email) {
       inviare = true;
       datiDaInviare.email = this.datiForm.email;
-    }
-
-    if (inviare) {
-      this.successoBanner = "Modifiche salvate con successo";
-      setTimeout(() => this.successoBanner = '', 5000);
-      this.clickSalva.emit(datiDaInviare);
-    } else {
-      this.erroreBanner = "Nessuna modifica rilevata";
     }
   }
 }

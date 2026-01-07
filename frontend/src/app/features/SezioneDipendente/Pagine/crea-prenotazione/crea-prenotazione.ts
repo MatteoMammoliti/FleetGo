@@ -14,6 +14,7 @@ import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-crea-prenotazione',
@@ -24,7 +25,8 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
     RichiestaNoleggioForm,
     IntestazioneEBackground,
     SceltaTendina,
-    BannerErrore
+    BannerErrore,
+    MessaggioCardVuota
   ],
   templateUrl: './crea-prenotazione.html',
   styleUrl: './crea-prenotazione.css',
@@ -48,6 +50,8 @@ export class CreaPrenotazione implements OnInit {
   erroreBanner: string = '';
   successoBanner: string = '';
 
+  caricamentoDati: boolean = true;
+
   constructor(private service:CreaPrenotazioneService){}
 
   ngOnInit(){
@@ -59,20 +63,35 @@ export class CreaPrenotazione implements OnInit {
     this.service.richiediLuoghi().subscribe({
       next:(risposta:LuogoDTO[])=>{
         this.listaLuoghi=risposta;
-        this.nomeLuogoSelezionato=this.listaLuoghi[0].nomeLuogo;
-        this.getRichiediVeicolo(this.dataInizio,this.dataFine,this.oraInizio,this.oraFine)
+        if(this.listaLuoghi.length > 0){
+           this.nomeLuogoSelezionato=this.listaLuoghi[0].nomeLuogo;
+           this.getRichiediVeicolo(this.dataInizio,this.dataFine,this.oraInizio,this.oraFine)
+        } else {
+           this.caricamentoDati = false; 
+        }
       },
       error:(err)=>{
-        console.error("Errore nel caricamento dei luoghi")}
+        this.gestisciErrore(err.error); 
+        this.caricamentoDati = false;
+      }
     })
   }
 
   getRichiediVeicolo(dataInizio:string,dataFine:string,oraInizio:string,oraFine:string){
+    this.caricamentoDati = true;    
     this.service.richiediVeicoli(this.nomeLuogoSelezionato,dataInizio,dataFine,oraInizio,oraFine).subscribe({
       next:(risposta:VeicoloPrenotazioneDTO[])=>{
-        this.listaVeicoli=risposta;
+        this.listaVeicoli = risposta;
+        
+        setTimeout(() => {
+          this.caricamentoDati = false;
+        }, 300);
       },
-      error:(err)=>console.error("Errore nel caricamento dei veicoli")
+      error:(err)=>{
+        this.gestisciErrore(err.error);
+        this.listaVeicoli = [];
+        this.caricamentoDati = false;
+      }
     })
   }
 
@@ -150,16 +169,12 @@ export class CreaPrenotazione implements OnInit {
     this.service.inviaRichiestaNoleggio(daInviare).subscribe({
       next:(risposta:string)=>{
         this.chiudiModale();
-        this.successoBanner="Prenotazione inviata con successo!";
-        setTimeout(() => this.successoBanner = '', 5000);
+        this.gestisciSuccesso("Richiesta inviata con successo!");
       },
-      error:(err)=>
-      {
-        this.erroreBanner=err.error;
+       error:(err)=>{
+        this.gestisciErrore(err.error);  
       }
-
     })
-
   }
 
   calcolaCostoTotale(): void {
@@ -175,16 +190,24 @@ export class CreaPrenotazione implements OnInit {
 
     if (minutiTotali < 0) {
       this.costoStimato=0;
-      this.erroreBanner="La data di consegna non può essere precedente al ritiro!";
-    } else {
-      if (this.erroreBanner.includes("data di consegna")) this.erroreBanner='';
     }
-
-    console.log(`Durata noleggio: ${minutiTotali} minuti`);
 
     this.costoStimato= minutiTotali * this.tariffaAlMinuto;
   }
 
-  protected readonly event = event;
+  
   protected readonly confirm = confirm;
+
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 }
