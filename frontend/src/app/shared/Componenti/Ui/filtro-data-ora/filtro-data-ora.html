@@ -1,0 +1,126 @@
+<div class="flex flex-col xl:flex-row items-end gap-4 w-full">
+
+  <div class="flex flex-col w-full xl:w-auto relative pb-4"> <label class="text-[10px] font-bold ml-1 mb-0.5 uppercase tracking-wide transition-colors"
+           [class.text-red-600]="erroreRitiro"
+           [class.text-slate-700]="!erroreRitiro">
+      Ritiro
+    </label>
+    
+    <div class="flex gap-2 w-full md:w-[245px]"> 
+      
+      <div class="relative w-[60%]">
+        <input
+          type="date"
+          [(ngModel)]="dataRitiro"
+          (ngModelChange)="resetErrori()"
+          [min]="minDateRitiro"
+          (keydown)="$event.preventDefault()" 
+          class="appearance-none w-full border font-medium px-3 rounded-xl transition-all cursor-pointer outline-none text-sm h-[42px]"
+          [class.border-red-500]="erroreRitiro"
+          [class.bg-red-50]="erroreRitiro"
+          [class.text-red-900]="erroreRitiro"
+          [class.focus:ring-red-200]="erroreRitiro"
+          [class.border-gray-200]="!erroreRitiro"
+          [class.bg-gray-50]="!erroreRitiro"
+          [class.text-gray-700]="!erroreRitiro"
+          [class.focus:bg-white]="!erroreRitiro"
+          [class.focus:border-blue-400]="!erroreRitiro"
+          [class.focus:ring-blue-100]="!erroreRitiro"
+          [class.focus:ring-2]="true"> </div>
+
+      <div class="relative w-[28%]">
+        <input
+          type="time"
+          [(ngModel)]="oraRitiro"
+          (ngModelChange)="resetErrori()"
+          class="appearance-none w-full border font-medium px-3 rounded-xl transition-all cursor-pointer outline-none text-sm h-[42px]"
+          [class.border-red-500]="erroreRitiro"
+          [class.bg-red-50]="erroreRitiro"
+          [class.text-red-900]="erroreRitiro"
+          [class.focus:ring-red-200]="erroreRitiro"
+          [class.border-gray-200]="!erroreRitiro"
+          [class.bg-gray-50]="!erroreRitiro"
+          [class.text-gray-700]="!erroreRitiro"
+          [class.focus:bg-white]="!erroreRitiro"
+          [class.focus:border-blue-400]="!erroreRitiro"
+          [class.focus:ring-blue-100]="!erroreRitiro"
+          [class.focus:ring-2]="true">
+      </div>
+
+    </div>
+
+    @if (erroreRitiro) {
+      <span class="absolute bottom-0 left-1 text-[10px] text-red-500 font-bold animate-fade-in">
+        {{ msgErroreRitiro }}
+      </span>
+    }
+  </div>
+
+  <div class="flex flex-col w-full xl:w-auto relative pb-4">
+    
+    <label class="text-[10px] font-bold ml-1 mb-0.5 uppercase tracking-wide transition-colors"
+           [class.text-red-600]="erroreConsegna"
+           [class.text-slate-700]="!erroreConsegna">
+      Consegna
+    </label>
+    
+    <div class="flex gap-2 w-full md:w-[245px]"> 
+      
+      <div class="relative w-[60%]">
+        <input
+          type="date"
+          [(ngModel)]="dataConsegna"
+          (ngModelChange)="resetErrori()"
+          [min]="minDateConsegna"
+          (keydown)="$event.preventDefault()"
+          class="appearance-none w-full border font-medium px-3 rounded-xl transition-all cursor-pointer outline-none text-sm h-[42px]"
+          [class.border-red-500]="erroreConsegna"
+          [class.bg-red-50]="erroreConsegna"
+          [class.text-red-900]="erroreConsegna"
+          [class.focus:ring-red-200]="erroreConsegna"
+          [class.border-gray-200]="!erroreConsegna"
+          [class.bg-gray-50]="!erroreConsegna"
+          [class.text-gray-700]="!erroreConsegna"
+          [class.focus:bg-white]="!erroreConsegna"
+          [class.focus:border-blue-400]="!erroreConsegna"
+          [class.focus:ring-blue-100]="!erroreConsegna"
+          [class.focus:ring-2]="true">
+      </div>
+
+      <div class="relative w-[28%]">
+        <input
+          type="time"
+          [(ngModel)]="oraConsegna"
+          (ngModelChange)="resetErrori()"
+          class="appearance-none w-full border font-medium px-3 rounded-xl transition-all cursor-pointer outline-none text-sm h-[42px]"
+          [class.border-red-500]="erroreConsegna"
+          [class.bg-red-50]="erroreConsegna"
+          [class.text-red-900]="erroreConsegna"
+          [class.focus:ring-red-200]="erroreConsegna"
+          [class.border-gray-200]="!erroreConsegna"
+          [class.bg-gray-50]="!erroreConsegna"
+          [class.text-gray-700]="!erroreConsegna"
+          [class.focus:bg-white]="!erroreConsegna"
+          [class.focus:border-blue-400]="!erroreConsegna"
+          [class.focus:ring-blue-100]="!erroreConsegna"
+          [class.focus:ring-2]="true">
+      </div>
+
+    </div>
+
+    @if (erroreConsegna) {
+      <span class="absolute bottom-0 left-1 text-[10px] text-red-500 font-bold animate-fade-in">
+        {{ msgErroreConsegna }}
+      </span>
+    }
+  </div>
+
+  <div class="w-full xl:w-auto mt-2 xl:mt-0 xl:mb-4">
+    <button (click)="cerca()"
+            class="w-full xl:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold rounded-xl px-8 shadow-md shadow-blue-100 transition-all flex items-center justify-center gap-2 border border-transparent whitespace-nowrap h-[42px]">
+      <i class="bi-search"></i>
+      <span>Cerca</span>
+    </button>
+  </div>
+
+</div>

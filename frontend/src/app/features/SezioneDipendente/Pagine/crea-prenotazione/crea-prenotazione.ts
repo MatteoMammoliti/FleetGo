@@ -4,29 +4,27 @@ import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {FormsModule} from '@angular/forms';
 import {CreaPrenotazioneService} from '@features/SezioneDipendente/ServiceSezioneDipendente/crea-prenotazione-service';
-import {FiltriRicerca} from '@features/SezioneDipendente/componenti/filtri-ricerca/filtri-ricerca';
 import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazione';
 import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFormNuovaRichiestaNoleggio';
-import {
-  RichiestaNoleggioForm
-} from '@features/SezioneDipendente/componenti/richiesta-noleggio-form/richiesta-noleggio-form';
+import {RichiestaNoleggioForm} from '@features/SezioneDipendente/componenti/richiesta-noleggio-form/richiesta-noleggio-form';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import { FiltroDataOra } from '@shared/Componenti/Ui/filtro-data-ora/filtro-data-ora';
 
 @Component({
   selector: 'app-crea-prenotazione',
   imports: [
     VeicoloCard,
     FormsModule,
-    FiltriRicerca,
     RichiestaNoleggioForm,
     IntestazioneEBackground,
     SceltaTendina,
     BannerErrore,
-    MessaggioCardVuota
+    MessaggioCardVuota,
+    FiltroDataOra
   ],
   templateUrl: './crea-prenotazione.html',
   styleUrl: './crea-prenotazione.css',
