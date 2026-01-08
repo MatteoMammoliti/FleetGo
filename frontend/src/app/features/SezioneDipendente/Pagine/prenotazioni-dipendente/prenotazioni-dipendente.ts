@@ -8,12 +8,13 @@ import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/m
 import { CommonModule } from '@angular/common';
 import { BottonePillola } from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
 import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-prenotazioni-dipendente',
   imports: [
     PrenotazioneCard,
-    IntestazioneEBackground,
+    TemplateTitoloSottotitolo,
     MessaggioCardVuota
     ,CommonModule,
     BottonePillola,

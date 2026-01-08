@@ -1,13 +1,9 @@
-<app-intestazione-ebackground [titolo]="'Le mie Prenotazioni'">
-  
-  <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-10 -mt-2">
-    <div class="relative z-10 animate-slide-in-left">
-      <p class="text-grigio-scuro font-medium text-lg max-w-2xl">
-        Gestisci e monitora lo stato dei tuoi noleggi aziendali!
-      </p>
-    </div>
+<app-template-titolo-sottotitolo
+  [titolo]="'Le mie Prenotazioni'"
+  [sottotitolo]="'Gestisci e monitora lo stato dei tuoi noleggi aziendali!'">
 
-    <div class="flex flex-wrap items-center gap-2 relative z-10 animate-slide-in-right">
+  <div class="px-3 mb-8 mt-6">
+    <div class="flex items-center justify-end gap-2 overflow-x-auto pb-4 scrollbar-hide">
       
       <app-bottone-pillola 
         [label]="'Tutte'" [attivo]="filtroAttivo === 'Tutte'" [variante]="'blu'" 
@@ -35,14 +31,14 @@
       </app-bottone-pillola>
 
       <app-bottone-pillola 
-        [label]="'Rifiutate'" [attivo]="filtroAttivo === 'Rifiutate'" [variante]="'grigio'" 
+        [label]="'Rifiutate'" [attivo]="filtroAttivo === 'Rifiutate'" [variante]="'rosso'" 
         (clickBtn)="impostaFiltro('Rifiutate')">
       </app-bottone-pillola>
 
     </div>
   </div>
 
-  <div class="pb-20 min-h-[400px]">
+  <div class="px-3 pb-20 min-h-[400px]">
     
     @if (caricamentoDati) {
       <div class="flex items-center justify-center h-[400px] w-full">
@@ -67,11 +63,11 @@
 
       } @else {
         
-        <div class="bg-white rounded-3xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center animate-fade-in">
+        <div class="bg-white rounded-[2rem] p-12 shadow-md border border-grigio/50 flex flex-col items-center justify-center text-center animate-fade-in min-h-[400px]">
           
           <app-messaggio-card-vuota
             [icona]="'bi-journal-x'"
-            [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo)"
+            [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo.toLowerCase())"
             [testoSecondario]="'Non sono presenti richieste che corrispondono a questo filtro.'">
           </app-messaggio-card-vuota>
 
@@ -84,7 +80,7 @@
               </button>
             } @else {
               <button (click)="impostaFiltro('Tutte')" 
-                      class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all">
+                      class="px-8 py-3 bg-white text-blue-600 font-bold rounded-xl border-2 border-blue-100 hover:bg-blue-50 transition-all">
                 Mostra Tutte
               </button>
             }
@@ -92,9 +88,10 @@
         </div>
       }
 
-    } </div>
+    } 
+  </div>
   
-</app-intestazione-ebackground>
+</app-template-titolo-sottotitolo>
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>

@@ -21,14 +21,14 @@
 
     @if(listaOggettiDinamicaVisibile) {
       <div class="w-full animate-fade-in">
-
         @if(caricamentoDati) {
           <div class="w-full">
             <div class="rounded mb-1.5 animate-pulse ml-1"></div>
-            
+
             <div class="flex items-center justify-center h-full">
               <i class="caricamento bi bi-arrow-clockwise"></i>
             </div>
+
           </div>
 
         } @else {
@@ -57,8 +57,6 @@
         [messaggioErrore]="'Il messaggio è obbligatorio'">
       </app-input-checked>
     </div>
-
   </div>
 
-</app-template-finestra-modale>
-
+</app-template-finestra-modale> 

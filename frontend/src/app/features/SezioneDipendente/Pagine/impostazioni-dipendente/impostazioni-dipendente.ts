@@ -8,13 +8,14 @@ import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {AuthService} from '@core/auth/auth-service';
 import {Router} from '@angular/router';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
   standalone: true,
   imports: [
     CommonModule,
-    IntestazioneEBackground,
+    TemplateTitoloSottotitolo,
     ProfiloPersonale,
     PatenteDocumentiComponent,
     AffiliazioneAzienda,

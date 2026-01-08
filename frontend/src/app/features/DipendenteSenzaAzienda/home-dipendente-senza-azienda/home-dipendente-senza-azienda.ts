@@ -5,10 +5,10 @@ import {HomeService} from '@features/DipendenteSenzaAzienda/ServiceDipendenteSen
 import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
 import {RichiestaAffiliazione} from '@features/DipendenteSenzaAzienda/Componenti/richiesta-affiliazione/richiesta-affiliazione';
 import { BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import { CommonModule } from '@angular/common';
-
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-home-dipendente-senza-azienda',
@@ -17,9 +17,10 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     RichiestaAffiliazione,
     BannerErrore,
-    IntestazioneEBackground,
     CommonModule,
-    MessaggioCardVuota
+    MessaggioCardVuota,
+    TemplateTitoloSottotitolo,
+    NgClass
   ],
   templateUrl: './home-dipendente-senza-azienda.html',
   styleUrl: './home-dipendente-senza-azienda.css',

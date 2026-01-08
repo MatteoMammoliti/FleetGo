@@ -1,70 +1,74 @@
-<app-intestazione-ebackground [titolo]="'Impostazioni Account'">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start py-8 pb-24">
-    
-    <div class="lg:col-span-3 flex flex-col gap-3 lg:sticky lg:top-6 z-10">
+<app-template-titolo-sottotitolo
+  [titolo]="'Impostazioni Account'"
+  [sottotitolo]="'Gestisci i tuoi dati personali, la patente e l\'affiliazione aziendale.'">
+
+  <div class="max-w-[1600px] mx-auto px-3 pb-24 mt-6 animate-fade-in-up">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
       
-      <button (click)="cambiaTab('Profilo')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
-              [ngClass]="tabSelezionata === 'Profilo'
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
-                : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
-             [ngClass]="tabSelezionata === 'Profilo' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
-          <i class="bi-person-fill text-lg"></i>
+      <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border-2 border-slate-100 relative group hover:shadow-xl hover:shadow-blue-100/50 hover:border-blue-200 transition-all duration-300 overflow-hidden isolate">
+          
+        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-50 relative z-10">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors">Profilo Personale</h3>
+          
+          </div>
         </div>
-        <span class="text-sm">Profilo Personale</span>
-      </button>
 
-      <button (click)="cambiaTab('Patente')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
-              [ngClass]="tabSelezionata === 'Patente'
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
-                : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
-             [ngClass]="tabSelezionata === 'Patente' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
-          <i class="bi-postcard-fill text-lg"></i>
+        <div class="relative z-0">
+          <app-profilo-personale
+              [utente]="utente"
+              (clickSalva)="inviaModifiche($event)">
+          </app-profilo-personale>
         </div>
-        <span class="text-sm">Patente</span>
-      </button>
+      </div>
 
-      <button (click)="cambiaTab('Azienda')"
-              class="group flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all duration-300 text-left border border-transparent w-full"
-              [ngClass]="tabSelezionata === 'Azienda'
-                ? 'bg-white text-blu shadow-md border-slate-100 ring-2 ring-blue-50'
-                : 'text-slate-500 hover:bg-white/60 hover:text-blu'">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0"
-             [ngClass]="tabSelezionata === 'Azienda' ? 'bg-blu text-white' : 'bg-white text-slate-400 group-hover:text-blu'">
-          <i class="bi-building-fill text-lg"></i>
+
+      <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border-2 border-slate-100 relative group hover:shadow-xl hover:shadow-blue-100/50 hover:border-blue-200 transition-all duration-300 overflow-hidden isolate">
+          
+        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-50 relative z-10">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+            <i class="bi bi-postcard-fill"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors">Il tuo Documento</h3>
+           
+          </div>
         </div>
-        <span class="text-sm">Azienda</span>
-      </button>
+
+        <div class="relative z-0">
+          <app-patente-documenti
+              [datiPatente]="urlPatente"
+              (salva)="aggiornaPatente($event)">
+          </app-patente-documenti>
+        </div>
+      </div>
+
+
+      <div class="lg:col-span-2 bg-white rounded-[2.5rem] p-8 shadow-sm border-2 border-slate-100 relative group hover:shadow-xl hover:shadow-blue-100/50 hover:border-blue-200 transition-all duration-300">
+          
+        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-50 relative">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+            <i class="bi bi-building-fill"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors">Affiliazione Aziendale</h3>
+           
+          </div>
+        </div>
+
+        <div class="relative">
+          <app-affiliazione-azienda
+            (inviaRichiestaDisdetta)="inviaDisdetta()"
+            [datiAzienda]="utente">
+          </app-affiliazione-azienda>
+        </div>
+      </div>
 
     </div>
-
-    <div class="lg:col-span-9 w-full">
-
-      @if (sezione === 'Profilo') {
-        <app-profilo-personale
-            [utente]="utente"
-            (clickSalva)="inviaModifiche($event)">
-        </app-profilo-personale>
-      }
-
-      @else if (sezione === 'Patente') {
-        <app-patente-documenti
-            [datiPatente]="urlPatente"
-            (salva)="aggiornaPatente($event)">
-        </app-patente-documenti>
-      }
-
-      @else if (sezione === 'Azienda'){
-        <app-affiliazione-azienda
-          (inviaRichiestaDisdetta)="inviaDisdetta()"
-          [datiAzienda]="utente">
-        </app-affiliazione-azienda>
-      }
-
-    </div>
-
   </div>
-</app-intestazione-ebackground>
+
+</app-template-titolo-sottotitolo>

@@ -13,7 +13,7 @@ import {DatePipe} from '@angular/common';
 import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/modale-richiesta-assistenza/modale-richiesta-assistenza';
 import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
-
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-dashboard-dipendente',
@@ -24,7 +24,7 @@ import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore'
     MappaHub,
     SupportoFleetgo,
     ModaleRichiestaAssistenza,
-    IntestazioneEBackground,
+    TemplateTitoloSottotitolo,
     BannerErrore
   ],
   providers: [DatePipe],
