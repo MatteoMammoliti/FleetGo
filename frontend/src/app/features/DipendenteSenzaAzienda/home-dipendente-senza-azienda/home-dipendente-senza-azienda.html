@@ -1,7 +1,7 @@
-<app-template-titolo-sottotitolo 
-  [titolo]="richiestaInAttesa ? 'Stato Richiesta' : 'Ricerca Azienda'"
-  [sottotitolo]="richiestaInAttesa 
-      ? 'Hai una richiesta di affiliazione in corso. Attendi l\'approvazione per accedere.' 
+<app-template-titolo-sottotitolo
+  [titolo]="richiestaInAttesa ? 'Stato Richiesta' : 'Benvenuto su FleetGo'"
+  [sottotitolo]="richiestaInAttesa
+      ? 'Hai una richiesta di affiliazione in corso. Attendi l\'approvazione per accedere.'
       : 'Cerca l\'azienda per cui lavori e invia una richiesta di affiliazione per iniziare.'">
 
   <div class="px-3 pb-24 mt-6 min-h-[500px]">
@@ -10,11 +10,11 @@
        <div class="flex items-center justify-center h-[400px] w-full">
               <i class="caricamento bi bi-arrow-clockwise"></i>
       </div>
-    } 
+    }
     @else {
 
       @if (richiestaInAttesa) {
-        
+
         <div class="flex justify-center animate-fade-in pt-10">
           <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-100/50 border border-blue-100 overflow-hidden max-w-lg w-full relative group">
             <div class="h-2 bg-blue-500 w-full"></div>
@@ -44,16 +44,16 @@
       } @else {
 
         <div class="max-w-4xl mx-auto space-y-6 animate-fade-in">
-          
+
           <div class="group bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-2 transition-all duration-300 focus-within:shadow-xl focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-50 sticky top-4 z-30">
             <div class="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0 ml-1 transition-all duration-300 group-focus-within:bg-blue-600 group-focus-within:text-white group-focus-within:scale-110">
               <i class="bi bi-search text-xl"></i>
             </div>
-            <input 
-              type="text" 
-              [(ngModel)]="testoFiltro" 
+            <input
+              type="text"
+              [(ngModel)]="testoFiltro"
               (input)="filtraAziende()"
-              placeholder="Cerca per nome azienda o indirizzo..." 
+              placeholder="Cerca per nome azienda o indirizzo..."
               class="w-full bg-transparent border-none outline-none focus:ring-0 focus:outline-none text-slate-700 placeholder-slate-400 font-medium text-lg h-12">
             @if (testoFiltro) {
               <button (click)="testoFiltro=''; filtraAziende()" class="mr-3 w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors">
@@ -64,7 +64,7 @@
 
           @if (aziendaSelezionata && aziendaSelezionata.idAzienda) {
             <div id="pannello-richiesta" class="animate-fade-in-down animate-duration-500 animate-ease-out z-20 scroll-mt-24 mb-6">
-              
+
               <div class="bg-gradient-to-br from-blue-50 to-white p-1 rounded-[2.5rem] shadow-xl shadow-blue-100/50 border border-blue-100">
                 <div class="bg-white rounded-[2.2rem] overflow-hidden relative">
 
@@ -93,7 +93,7 @@
             @for (azienda of aziendeFiltrate; track azienda.idAzienda) {
               <div class="animate-fade-in-up" [style.animation-delay]="($index * 50) + 'ms'">
                 <app-azienda-card
-                  class="block w-full transition-all duration-300" 
+                  class="block w-full transition-all duration-300"
                   [ngClass]="{'opacity-50 scale-[0.98]': aziendaSelezionata.idAzienda && aziendaSelezionata.idAzienda !== azienda.idAzienda}"
                   [datiAzienda]="azienda"
                   [selezionato]="aziendaSelezionata.idAzienda === azienda.idAzienda"
@@ -116,8 +116,8 @@
           </div>
 
         </div>
-      } 
-    } 
+      }
+    }
   </div>
 
 </app-template-titolo-sottotitolo>

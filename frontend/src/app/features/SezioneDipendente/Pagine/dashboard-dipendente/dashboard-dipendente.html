@@ -1,13 +1,13 @@
-<app-template-titolo-sottotitolo 
+<app-template-titolo-sottotitolo
   [titolo]="'Dashboard'"
-  [sottotitolo]="'Bentornato su FleetGo. Ecco il riepilogo della tua mobilità aziendale.'">
+  [sottotitolo]="'Ecco il riepilogo delle tue attività, tutto a portata di click.'">
 
   <div class="pb-20 mt-6 px-3">
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-      
+
       <div class="xl:col-span-3 animate-fade-in" style="animation-delay: 0.1s;">
-        <app-banner-home 
-          class="h-full block" 
+        <app-banner-home
+          class="h-full block"
           [nomeDipendente]="nomeDipendente"
           (clickPrenotaVeicolo)="apriPrenotazioni()"
           (clickMiePrenotazioni)="apriMieAttivita()">
@@ -15,7 +15,7 @@
       </div>
 
       <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.2s;">
-        <app-prossimo-viaggio 
+        <app-prossimo-viaggio
           class="h-full block"
           [viaggio]="prossimoViaggio">
         </app-prossimo-viaggio>
@@ -23,7 +23,7 @@
 
       <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.3s;">
         @if (statisticheDipendente) {
-          <app-statistiche-dipendente 
+          <app-statistiche-dipendente
             class="h-full block"
             [statistiche]="statisticheDipendente">
           </app-statistiche-dipendente>
