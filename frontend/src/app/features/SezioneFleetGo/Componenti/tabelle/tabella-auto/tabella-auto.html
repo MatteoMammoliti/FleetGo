@@ -61,7 +61,7 @@
               </td>
               <td class="p-4 text-center">
                 <app-icona-stato
-                  [testo]="auto.inManutenzione ? 'Manutenzione' : auto.statusContrattualeVeicolo"
+                  [testo]="auto.inManutenzione ? 'Manutenzione' : (auto.statusContrattualeVeicolo === 'Noleggiato' ? 'Assegnato' : auto.statusContrattualeVeicolo)"
                   [stato]="getBadgeStatus(auto)">
                 </app-icona-stato>
               </td>

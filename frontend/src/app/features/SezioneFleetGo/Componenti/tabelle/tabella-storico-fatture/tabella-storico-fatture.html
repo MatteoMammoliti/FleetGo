@@ -29,7 +29,7 @@
     <th  scope="col" class="pr-8 text-right text-center">Azioni</th>
   </tr>
   </thead>
-    <tbody [@animazioneTabella]="fatture?.length">
+    <tbody [@animazioneTabella]="fatture.length">
       @for (fattura of fatture; track fattura.numeroFattura) {
         <tr class="group tr-inferiore ">
           <td  class="td-sinistro" >
