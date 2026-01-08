@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="p-8 overflow-y-auto custom-scrollbar bg-white max-h-[500px] min-h-[500px]">
+      <div class="p-8 overflow-y-auto custom-scrollbar bg-white max-h-[90vh] min-h-[500px]">
 
         @if(tabAttiva === 'INFO') {
           <div class="animate-fade-in">
@@ -82,7 +82,7 @@
               </div>
 
               <div class="flex flex-col md:flex-row gap-4 items-center">
-                <div class="w-full md:w-1/2 h-40 bg-white rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm group cursor-pointer relative">
+                <div class="w-full md:w-4/5 h-72 bg-white rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm group cursor-pointer relative">
                   @if(!dipendente?.urlImmagine) {
                     <div class="text-center text-slate-400">
                       <i class="bi bi-image text-4xl mb-2 block"></i>
@@ -108,12 +108,15 @@
             </div>
 
             @if(storicoNoleggi?.length === 0) {
+              <div  class="pt-10">
               <app-messaggio-card-vuota
               testoPrimario="Nessun noleggio effettuato finora."
+              testoSecondario="Prova a passare tra qualche giorno"
               icona="bi-car-front"
               ></app-messaggio-card-vuota>
+              </div>
             } @else {
-              <div class="overflow-x-auto rounded-xl border border-slate-200 px-2 max-h-[310px]">
+              <div class="overflow-x-auto rounded-xl border border-slate-200 px-2">
                 <table class="table-base">
                   <thead class=" bg-white sticky top-0 z-20">
                   <tr class="tr-superiore">

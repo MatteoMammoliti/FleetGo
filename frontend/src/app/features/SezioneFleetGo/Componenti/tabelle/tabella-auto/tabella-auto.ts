@@ -4,6 +4,7 @@ import {AziendaDTO} from '@core/models/aziendaDTO';
 import {FormsModule} from '@angular/forms';
 import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
   selector: 'app-tabella-auto',
@@ -14,6 +15,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   ],
   templateUrl: './tabella-auto.html',
   styleUrl: './tabella-auto.css',
+  animations: [ANIMAZIONE_TABELLA]
 })
 export class TabellaAuto {
   @Input() listaVeicoli: VeicoloDTO[]|null = null;

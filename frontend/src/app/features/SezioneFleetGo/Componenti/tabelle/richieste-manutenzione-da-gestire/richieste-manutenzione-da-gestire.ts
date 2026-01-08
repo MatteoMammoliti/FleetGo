@@ -5,6 +5,7 @@ import {DatePipe, SlicePipe} from '@angular/common';
 import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
   selector: 'app-richieste-manutenzione-da-gestire',
@@ -17,6 +18,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   ],
   templateUrl: './richieste-manutenzione-da-gestire.html',
   styleUrl: './richieste-manutenzione-da-gestire.css',
+  animations: [ANIMAZIONE_TABELLA]
 })
 export class RichiesteManutenzioneDaGestire {
   @Input() richiesteManutenzioneDaGestire:RichiestaManutenzioneDTO[]|null = null;

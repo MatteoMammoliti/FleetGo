@@ -10,26 +10,26 @@
       </div>
   </div>
   @if(fatture==null){
-    <div class="flex flex-col items-center justify-center py-20 w-full">
+    <div class="flex flex-col items-center justify-center py-20 w-full min-h-[400px]">
       <div class="relative">
         <i class="bi bi-arrow-clockwise text-4xl text-slate-300 animate-spin inline-block"></i>
       </div>
     </div>
 
   } @else {
-    @if(fatture){
-  <div class="div-table max-h-[700px] min-h-[200px]">
+    @if(fatture.length>0){
+  <div class="div-table max-h-[700px] min-h-[400px]">
   <table class="table-base"> <thead>
   <tr class="text-left text-testo-s">
     <th  scope="col" class="pl-6 cursor-pointer" (click)="sortColonna('numeroFattura')">N. Fattura<i class="bi bi-arrow-down-up ml-1"></i></th>
-    <th  scope="col">Azienda</th>
-    <th  scope="col">Periodo</th>
-    <th  scope="col" (click)="sortColonna('costo')" class="cursor-pointer">Importo<i class="bi bi-arrow-down-up ml-1"></i></th>
-    <th  scope="col" (click)="sortColonna('fatturaPagata')"  class="cursor-pointer">Stato<i class="bi bi-arrow-down-up ml-1"></i></th>
-    <th  scope="col" class="pr-8 text-right">Azioni</th>
+    <th  scope="col" class="text-center">Azienda</th>
+    <th  scope="col" class="text-center">Periodo</th>
+    <th  scope="col" (click)="sortColonna('costo')" class="cursor-pointer text-center">Importo<i class="bi bi-arrow-down-up ml-1"></i></th>
+    <th  scope="col" (click)="sortColonna('fatturaPagata')"  class="cursor-pointer text-center">Stato<i class="bi bi-arrow-down-up ml-1"></i></th>
+    <th  scope="col" class="pr-8 text-right text-center">Azioni</th>
   </tr>
   </thead>
-    <tbody>
+    <tbody [@animazioneTabella]="fatture?.length">
       @for (fattura of fatture; track fattura.numeroFattura) {
         <tr class="group tr-inferiore ">
           <td  class="td-sinistro" >
@@ -39,7 +39,7 @@
             {{ fattura.azienda.nomeAzienda }}
           </td>
           <td class="td-base">
-            {{ fattura.meseFattura }}/{{ fattura.annoFattura }}
+            {{ nomiMesi[fattura.meseFattura] }}
           </td>
           <td class="td-base">€ {{ fattura.costo }}</td>
           <td class="td-base">
@@ -64,7 +64,7 @@
   </table>
   </div>
     } @else {
-      <div class="w-full flex justify-center items-center group">
+      <div class="w-full flex justify-center items-center group min-h-[300px]">
         <app-messaggio-card-vuota testoPrimario="Nessuna fattura trovata!" testoSecondario="Prova a cambiare i filtri" icona="bi-folder-x" tagliaIcona="xl"></app-messaggio-card-vuota>
       </div>
     }

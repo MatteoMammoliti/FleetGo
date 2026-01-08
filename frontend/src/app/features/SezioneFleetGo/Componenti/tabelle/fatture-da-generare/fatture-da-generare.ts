@@ -5,6 +5,7 @@ import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {CurrencyPipe} from '@angular/common';
+import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
   selector: 'app-fatture-da-generare',
@@ -17,6 +18,7 @@ import {CurrencyPipe} from '@angular/common';
   standalone:true,
   templateUrl: './fatture-da-generare.html',
   styleUrl: './fatture-da-generare.css',
+  animations: [ANIMAZIONE_TABELLA]
 })
 export class FattureDaGenerare {
   @Input() fatture:FatturaDaGenerareDTO[]|null = null;

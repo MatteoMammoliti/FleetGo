@@ -1,9 +1,9 @@
 <app-template-titolo-sottotitolo titolo="Fatture da Generare" sottotitolo="Cura la tua contabilità.">
   <div class="">
 
-    <div class="px-2 ">
+    <div class="px-2" [@animazioneTabella]="fatture?.length">
       @if(fatture==null){
-        <div class="flex items-center justify-center w-full min-h-[200px] mb-5">
+        <div class="flex items-center justify-center w-full min-h-[400px] mb-5">
           <i class="bi bi-arrow-clockwise caricamento "></i>
         </div>
       } @else {
@@ -20,7 +20,9 @@
           </div>
         }
         @if (fatture.length === 0) {
+          <div class="w-full min-h-[400px] flex flex-col justify-center items-center">
           <app-messaggio-card-vuota testoPrimario="La contabilità è in ordine!" testoSecondario="Tutte le fatture sono state emesse" icona="bi-calendar-check"></app-messaggio-card-vuota>
+          </div>
         }
 
       }

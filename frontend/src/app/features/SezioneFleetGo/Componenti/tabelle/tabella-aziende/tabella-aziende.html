@@ -1,6 +1,6 @@
 <div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm animate-fade-down animate-duration-1000">
 
-  <div class="overflow-x-auto max-h-[600px] overflow-y-auto group">
+  <div class="overflow-x-auto min-h-[600px] max-h-[800px] overflow-y-auto group">
     <table class="w-full text-left border-collapse">
 
       <thead class="sticky top-0 z-10 bg-slate-50">
@@ -13,7 +13,7 @@
         <th class="p-4 py-5 text-right">Azioni</th>
       </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100 ">
+      <tbody class="divide-y divide-slate-100" [@animazioneTabella]="listaAziende?.length">
       @if (!listaAziende) {
         <tr>
           <td colspan="5" class="h-[600px]">

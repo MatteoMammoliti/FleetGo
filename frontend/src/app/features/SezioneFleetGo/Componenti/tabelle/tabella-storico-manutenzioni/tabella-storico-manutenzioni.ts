@@ -4,6 +4,7 @@ import {DatePipe} from '@angular/common';
 import {FormControl,  ReactiveFormsModule} from '@angular/forms';
 import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
 import {TableSortService} from '@core/services/table-sort-service';
+import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
   selector: 'app-tabella-storico-manutenzioni',
@@ -14,6 +15,7 @@ import {TableSortService} from '@core/services/table-sort-service';
   ],
   templateUrl: './tabella-storico-manutenzioni.html',
   styleUrl: './tabella-storico-manutenzioni.css',
+  animations: [ANIMAZIONE_TABELLA]
 })
 export class TabellaStoricoManutenzioni {
   constructor(private sortTable: TableSortService) {}

@@ -22,7 +22,7 @@
         </tr>
       </thead>
 
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-slate-100" [@animazioneTabella]="listaVeicoli.length">
 
           @for (auto of listaVeicoli; track auto.targaVeicolo) {
             <tr class="group hover:bg-blue-50/50 transition-all ">

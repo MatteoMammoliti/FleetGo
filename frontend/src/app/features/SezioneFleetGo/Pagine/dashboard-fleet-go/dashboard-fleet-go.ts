@@ -60,10 +60,10 @@ export class DashboardFleetGo implements OnInit{
         this.statistiche = contenitore;
 
         if(this.statistiche.veicoliAssegnati==0){
-          this.descrizionePercentuale="Nessun Veicolo Noleggiato"
+          this.descrizionePercentuale="Nessun Veicolo Assegnato"
         }
         else {
-          this.descrizionePercentuale="Noleggiati "+this.statistiche.veicoliAssegnati+ " veicoli su "+ this.statistiche.totaleVeicoli;
+          this.descrizionePercentuale="Assegnati "+this.statistiche.veicoliAssegnati+ " veicoli su "+ this.statistiche.totaleVeicoli;
         }
         this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
       },

@@ -1,19 +1,20 @@
 <div class="flex flex-col h-full bg-white rounded-2xl border border-grigio shadow-sm overflow-hidden my-5">
-    <div class="px-6 py-3 border-b border-grigio flex  flex-col justify-between ">
-      <div class="flex justify-between items-center">
-        <div>
-          <h3 class="text-blu font-bold text-xl md:text-2xl ">Storico Interventi</h3>
-          <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Veicoli che hanno terminato la manutenzione</small>
-        </div>
-        <div class="group ricerca-testo">
-          <i class="bi bi-search text-gray-500 mr-2 group-focus-within:text-azzurro-scuro"></i>
-          <input type="text" class="w-full focus:outline-none" [formControl]="filtroTarga" placeholder="Cerca targa...">
-        </div>
-      </div>
 
+  <div class="px-6 py-3 border-b border-grigio flex  flex-col justify-between ">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-blu font-bold text-xl md:text-2xl ">Storico Interventi</h3>
+        <small class="text-testo-s uppercase text-[9.5px] tracking-wider font-bold ">Veicoli che hanno terminato la manutenzione</small>
+      </div>
+      <div class="group ricerca-testo">
+        <i class="bi bi-search text-gray-500 mr-2 group-focus-within:text-azzurro-scuro"></i>
+        <input type="text" class="w-full focus:outline-none" [formControl]="filtroTarga" placeholder="Cerca targa...">
+      </div>
     </div>
-  @if(listaStorico==null){
-    <div class="flex flex-col items-center justify-center py-20 w-full">
+  </div>
+
+  @if(listaStorico == null){
+    <div class="flex flex-col items-center justify-center py-20 w-full flex-grow">
       <div class="relative">
         <i class="bi bi-arrow-clockwise text-4xl text-slate-300 animate-spin inline-block"></i>
       </div>
@@ -21,49 +22,60 @@
 
   } @else {
 
-  @if(listaStorico.length > 0) {
-    <div class="div-table min-h-[200px] max-h-[378px] px-5">
-      <table class="table-base">
-        <thead>
-        <tr class="tr-superiore">
-          <th class="pl-6 cursor-pointer" (click)="sortColonna('veicolo.targaVeicolo')">Veicolo <i class="bi bi-arrow-down-up ml-1"></i></th>
-          <th>Data Richiesta</th>
-          <th>Tipo Intervento</th>
-          <th class="text-right pr-12 cursor-pointer" (click)="sortColonna('accettata')">Esito <i class="bi bi-arrow-down-up ml-1"></i></th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (richiesta of listaStoricoFiltrata; track richiesta.idManutenzione) {
-            <tr class="tr-inferiore group">
-              <td class="td-sinistro flex flex-col">
-                <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
-                <small class="uppercase text-xs text-gray-500"> {{ richiesta.veicolo?.nomeModello }}</small>
-              </td>
-              <td class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy'}}</td>
-              <td class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
-              <td class="td-destro text-right pr-6">
-                @if (richiesta.accettata) {
-                  <span class="badge-accetto">Completata</span>
-                } @else {
-                  <span class="badge-rifiuto mr-2">Rifiutata</span>
-                }
-              </td>
+    @if (listaStorico.length === 0) {
+      <div class="w-full h-full min-h-[300px] flex flex-col justify-center items-center flex-grow">
+        <app-messaggio-card-vuota
+          testoPrimario="Nessun veicolo nello storico!"
+          icona="bi-database-x">
+        </app-messaggio-card-vuota>
+      </div>
+    }
+
+    @else {
+
+      @if(listaStoricoFiltrata.length > 0) {
+        <div class="div-table min-h-[380px] max-h-[700px] px-5 overflow-auto">
+          <table class="table-base">
+            <thead>
+            <tr class="tr-superiore">
+              <th class="pl-6 cursor-pointer" (click)="sortColonna('veicolo.targaVeicolo')">Veicolo <i class="bi bi-arrow-down-up ml-1"></i></th>
+              <th>Data Richiesta</th>
+              <th>Tipo Intervento</th>
+              <th class="text-right pr-12 cursor-pointer" (click)="sortColonna('accettata')">Esito <i class="bi bi-arrow-down-up ml-1"></i></th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  }
-  @if (listaStorico.length === 0) {
-    <div class="min-h-[200px]">
-      <app-messaggio-card-vuota testoPrimario="Nessun veicolo nello storico!"  icona="bi-search"></app-messaggio-card-vuota>
-    </div>
-  }
-  @else if (listaStoricoFiltrata.length === 0) {
-    <div class="min-h-[200px]">
-      <app-messaggio-card-vuota testoPrimario="Nessun veicolo presente!" testoSecondario="Prova a cambiare filtro" icona="bi-search"></app-messaggio-card-vuota>
-    </div>
-  }
+            </thead>
+            <tbody [@animazioneTabella]="listaStoricoFiltrata.length">
+              @for (richiesta of listaStoricoFiltrata; track richiesta.idManutenzione) {
+                <tr class="tr-inferiore group">
+                  <td class="td-sinistro flex flex-col">
+                    <span>{{ richiesta.veicolo?.targaVeicolo }}</span>
+                    <small class="uppercase text-xs text-gray-500"> {{ richiesta.veicolo?.nomeModello }}</small>
+                  </td>
+                  <td class="td-base">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy'}}</td>
+                  <td class="td-base truncate max-w-[50px]">{{ richiesta.tipoManutenzione }}</td>
+                  <td class="td-destro text-right pr-6">
+                    @if (richiesta.accettata) {
+                      <span class="badge-accetto">Completata</span>
+                    } @else {
+                      <span class="badge-rifiuto mr-2">Rifiutata</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @else {
+        <div class="w-full min-h-[380px] flex flex-col justify-center items-center flex-grow">
+          <app-messaggio-card-vuota
+            testoPrimario="Nessun risultato trovato"
+            testoSecondario="Prova con un'altra targa"
+            icona="bi-search">
+          </app-messaggio-card-vuota>
+        </div>
+      }
+    }
   }
 </div>
-

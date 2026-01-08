@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {MappaGestioneLuoghi} from '@features/SezioneAdminAziendale/Componenti/mappa-gestione-luoghi/mappa-gestione-luoghi';
+import {MappaGestioneLuoghi} from '@features/SezioneAdminAziendale/Componenti/modali/mappa-gestione-luoghi/mappa-gestione-luoghi';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 
 @Component({

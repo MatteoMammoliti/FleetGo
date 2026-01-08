@@ -9,7 +9,9 @@
   } @else {
 
     @if (listaRichieste.length === 0) {
-      <app-messaggio-card-vuota testoPrimario="Tutti i veicoli sono in salute!" testoSecondario="Nessun veicolo in manutenzione" icona="bi-heart-pulse"></app-messaggio-card-vuota>
+      <div class="pt-10">
+        <app-messaggio-card-vuota testoPrimario="Tutti i veicoli sono in salute!" testoSecondario="Nessun veicolo in manutenzione" icona="bi-heart-pulse"></app-messaggio-card-vuota>
+      </div>
     } @else {
       <div class="div-table min-h-[200px] max-h-[308px] px-5">
         <table class="table-base">
@@ -22,7 +24,7 @@
             <th class="pr-9 text-right">Azioni</th>
           </tr>
           </thead>
-          <tbody>
+          <tbody [@animazioneTabella]="listaRichieste.length">
             @for (richiesta of listaRichieste; track richiesta.idManutenzione) {
               <tr class="tr-inferiore group">
                 <td class="td-sinistro">

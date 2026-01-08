@@ -3,7 +3,7 @@ import { GeneralLayoutFleetGo } from '../../layouts/general-layout-fleet-go/gene
 import { DashboardFleetGo } from '@features/SezioneFleetGo/Pagine/dashboard-fleet-go/dashboard-fleet-go';
 import { FlottaGlobale } from '@features/SezioneFleetGo/Pagine/flotta-globale/flotta-globale';
 import { AziendeAffiliate } from '@features/SezioneFleetGo/Pagine/aziende-affiliate/aziende-affiliate'
-import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
+import {DettagliVeicolo} from '@features/SezioneFleetGo/Componenti/modali/dettagli-veicolo/dettagli-veicolo';
 import {StoricoFatture} from '@features/SezioneFleetGo/Pagine/storico-fatture/storico-fatture';
 import {SezioneManutenzioni} from '@features/SezioneFleetGo/Pagine/sezione-manutenzioni/sezione-manutenzioni';
 import {OfferteAttive} from '@features/SezioneFleetGo/Pagine/offerte-attive/offerte-attive';

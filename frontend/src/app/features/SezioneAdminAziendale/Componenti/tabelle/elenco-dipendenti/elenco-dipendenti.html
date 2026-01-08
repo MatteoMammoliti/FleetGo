@@ -9,21 +9,23 @@
   </div>
 </div>
 
-  <div class="relative min-h-[300px]">
+  <div class="relative min-h-[480px]">
     @if(dipendentiFiltrati == null) {
-    <div class="flex flex-col items-center justify-center py-24">
+    <div class=" min-h-[400px]  flex flex-col items-center justify-center py-24">
       <i class="caricamento bi bi-arrow-clockwise"></i>
     </div>
   }
   @else if(dipendentiFiltrati.length == 0) {
+    <div class="min-h-[400px] pt-10">
     <app-messaggio-card-vuota
       testoPrimario="Nessun dipendente trovato"
       testoSecondario="Prova a cambiare i filtri o aggiungi un nuovo membro."
       icona="bi-people">
     </app-messaggio-card-vuota>
+    </div>
   }
   @else {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in-up">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in-up min-h-[400px]">
       @for (dipendente of dipendentiFiltrati; track dipendente.idUtente) {
         <app-card-dipendente
           [dipendente]="dipendente"

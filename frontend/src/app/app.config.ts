@@ -2,6 +2,7 @@ import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListen
 import {provideRouter, withInMemoryScrolling} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
 import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     })),
     importProvidersFrom(FormsModule),
     provideHttpClient(),
-    provideCharts(withDefaultRegisterables())
+    provideCharts(withDefaultRegisterables()),
+    provideAnimationsAsync()
   ]
 };

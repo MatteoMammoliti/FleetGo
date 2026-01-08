@@ -6,7 +6,7 @@ import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 import {
   MappaGestioneLuoghi
-} from '@features/SezioneAdminAziendale/Componenti/mappa-gestione-luoghi/mappa-gestione-luoghi';
+} from '@features/SezioneAdminAziendale/Componenti/modali/mappa-gestione-luoghi/mappa-gestione-luoghi';
 import {
   TabellaGestioneLuoghi
 } from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-gestione-luoghi/tabella-gestione-luoghi';

@@ -13,9 +13,11 @@ import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFl
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
+import {DettagliVeicolo} from '@features/SezioneFleetGo/Componenti/modali/dettagli-veicolo/dettagli-veicolo';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 import {concatMap} from 'rxjs';
+import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -32,7 +34,9 @@ import {concatMap} from 'rxjs';
     BannerErrore,
     IntestazioneEBackground,
     TemplateFinestraModale,
-    DettagliVeicolo
+    DettagliVeicolo,
+    InputChecked,
+    SceltaTendina
   ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
@@ -49,8 +53,14 @@ export class FlottaGlobale implements OnInit{
 
   testoRicerca: string = '';
   filtroAzienda: AziendaDTO | null = null;
-  filtroStatoVeicolo: string = '';
+  filtroStatoVeicolo: string|null = null;
   aziendeInPiattaforma: AziendaDTO[] = []
+
+  listaStati = [
+    { label: 'Disponibile', value: 'DISPONIBILE' },
+    { label: 'Noleggiato', value: 'NOLEGGIATO' },
+    { label: 'In Manutenzione', value: 'MANUTENZIONE' }
+  ];
 
   mostraModale: boolean = false;
   mostraModaleInserimentoModello = false;
@@ -269,7 +279,7 @@ export class FlottaGlobale implements OnInit{
 
   resettaFiltri() {
     this.filtroAzienda = null;
-    this.filtroStatoVeicolo = "";
+    this.filtroStatoVeicolo = null;
     this.testoRicerca = "";
   }
 

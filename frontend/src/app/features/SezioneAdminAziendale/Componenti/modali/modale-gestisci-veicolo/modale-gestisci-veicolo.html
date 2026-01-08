@@ -59,16 +59,17 @@
                   <p class="font-medium text-slate-700">{{veicolo.tipoDistribuzioneVeicolo}}</p>
                 </div>
                 <div>
-                  <p class="text-xs text-grigio-scuro font-bold uppercase">Km Percorsi</p>
-                  <p class="font-medium text-slate-700">{{veicolo.chilometraggio || 0}} km</p>
+                  <p class="text-xs text-grigio-scuro font-bold uppercase">Assegnato a</p>
+                  <p class="font-bold text-blue-600 flex items-center gap-2">
+                    {{ veicolo.nomeAziendaAffiliata || 'Nessuna azienda (FleetGo)' }}
+                  </p>
+
                 </div>
+
               </div>
 
               <div class="pt-3 border-t border-slate-100 mt-1">
-                <p class="text-xs text-grigio-scuro font-bold uppercase">Assegnato a</p>
-                <p class="font-bold text-blue-600 flex items-center gap-2">
-                  {{ veicolo.nomeAziendaAffiliata || 'Nessuna azienda (FleetGo)' }}
-                </p>
+
               </div>
             </div>
           </div>

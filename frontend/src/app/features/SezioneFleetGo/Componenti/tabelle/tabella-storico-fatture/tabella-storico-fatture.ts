@@ -6,7 +6,7 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
 import {TableSortService} from '@core/services/table-sort-service';
-
+import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 @Component({
   selector: 'app-tabella-storico-fatture',
   imports: [
@@ -18,8 +18,8 @@ import {TableSortService} from '@core/services/table-sort-service';
   ],
   templateUrl: './tabella-storico-fatture.html',
   styleUrl: './tabella-storico-fatture.css',
+  animations: [ANIMAZIONE_TABELLA]
 })
-
 export class TabellaStoricoFatture {
   constructor(private sortTable: TableSortService) {}
   @Input() fatture: FatturaDTO[] |null = null;
@@ -30,6 +30,10 @@ export class TabellaStoricoFatture {
   @Input()  anniFatture: number[] = [];
   @Input() listaAziende: AziendaDTO[] = [];
 
+  nomiMesi = [
+    'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+    'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+  ];
 
 
   sortColonna(chiave:string){

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dashboard-service';
-import {CaroselloOfferte} from '@features/SezioneAdminAziendale/Componenti/carosello-offerte/carosello-offerte';
+import {CaroselloOfferte} from '@features/SezioneAdminAziendale/Componenti/caroselli/carosello-offerte/carosello-offerte';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
-import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Componenti/carosello-richieste-miste/carosello-richieste-miste';
+import {CaroselloRichiesteMiste} from '@features/SezioneAdminAziendale/Componenti/caroselli/carosello-richieste-miste/carosello-richieste-miste';
 import {CardStatisticheDashboard} from '@features/SezioneAdminAziendale/Componenti/card/card-statistiche-dashboard/card-statistiche-dashboard';
 import {CurrencyPipe} from '@angular/common';
 import {ModaleRichiestaAppuntamento} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richiesta-appuntamento/modale-richiesta-appuntamento';

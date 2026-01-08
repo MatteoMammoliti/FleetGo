@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/elenco-dipendenti/elenco-dipendenti';
+import { ElencoDipendenti } from '@features/SezioneAdminAziendale/Componenti/tabelle/elenco-dipendenti/elenco-dipendenti';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {DipendentiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/dipendenti-service';
 import {ModaleDettagliDipendente} from '@features/SezioneAdminAziendale/Componenti/modali/modale-dettagli-dipendente/modale-dettagli-dipendente';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {BannerRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/banner-richieste-affiliazione/banner-richieste-affiliazione';
+import {BannerRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/banner/banner-richieste-affiliazione/banner-richieste-affiliazione';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
 import {ModaleRichiesteAffiliazione} from '@features/SezioneAdminAziendale/Componenti/modali/modale-richieste-affiliazione/modale-richieste-affiliazione';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';

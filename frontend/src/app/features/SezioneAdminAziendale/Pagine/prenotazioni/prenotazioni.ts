@@ -5,7 +5,7 @@ import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {PrenotazioniService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/prenotazioni-service';
 import {
   BannerNoleggiDaApprovare
-} from '@features/SezioneAdminAziendale/Componenti/banner-noleggi-da-approvare/banner-noleggi-da-approvare';
+} from '@features/SezioneAdminAziendale/Componenti/banner/banner-noleggi-da-approvare/banner-noleggi-da-approvare';
 import {FormsModule} from '@angular/forms';
 import {
   ModaleApprovazioneNoleggi
