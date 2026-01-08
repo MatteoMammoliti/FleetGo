@@ -3,15 +3,23 @@ import {AziendaCard} from '@features/DipendenteSenzaAzienda/Componenti/azienda-c
 import {FormsModule} from '@angular/forms';
 import {HomeService} from '@features/DipendenteSenzaAzienda/ServiceDipendenteSenzaAzienda/home-service';
 import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
-import {
-  RichiestaAffiliazione
-} from '@features/DipendenteSenzaAzienda/Componenti/richiesta-affiliazione/richiesta-affiliazione';
+import {RichiestaAffiliazione} from '@features/DipendenteSenzaAzienda/Componenti/richiesta-affiliazione/richiesta-affiliazione';
+import { BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import { CommonModule } from '@angular/common';
+
+
 @Component({
   selector: 'app-home-dipendente-senza-azienda',
   imports: [
     AziendaCard,
     FormsModule,
-    RichiestaAffiliazione
+    RichiestaAffiliazione,
+    BannerErrore,
+    IntestazioneEBackground,
+    CommonModule,
+    MessaggioCardVuota
   ],
   templateUrl: './home-dipendente-senza-azienda.html',
   styleUrl: './home-dipendente-senza-azienda.css',
@@ -24,6 +32,10 @@ export class HomeDipendenteSenzaAzienda {
   aziendeFiltrate:ContenitoreDatiAzienda[]=[]
   aziendaSelezionata: ContenitoreDatiAzienda={} as ContenitoreDatiAzienda;
   richiestaInAttesa: ContenitoreDatiAzienda | null=null;
+
+  caricamentoDati: boolean = true;
+  erroreBanner: string = '';
+  successoBanner: string = '';
 
   ngOnInit(){
     this.getRichiestaInAttesa()
@@ -40,54 +52,93 @@ export class HomeDipendenteSenzaAzienda {
     }
   }
 
-  getAziende(){
+  getAziende() {
+    this.caricamentoDati = true;
     this.service.getAziende().subscribe({
-      next:(risposta:ContenitoreDatiAzienda[])=>{
-        console.log("Sono qu")
-        this.aziende=risposta;
-        this.aziendeFiltrate=this.aziende;
+      next: (risposta: ContenitoreDatiAzienda[]) => {
+        this.aziende = risposta;
+        this.aziendeFiltrate = this.aziende;
+        this.caricamentoDati = false;
       },
-      error:(err)=>console.error("Errore nel caricare le aziende")
-    })
+      error: (err) => {
+        this.gestisciErrore("Impossibile caricare la lista aziende.");
+        this.caricamentoDati = false;
+      }
+    });
   }
 
-  getRichiestaInAttesa(){
+  getRichiestaInAttesa() {
+    this.caricamentoDati = true;
     this.service.getRichiestaAffiliazioneAttesa().subscribe({
-      next:(risposta:ContenitoreDatiAzienda | null)=>{
-        this.richiestaInAttesa=risposta
-        if(this.richiestaInAttesa===null){
+      next: (risposta: ContenitoreDatiAzienda | null) => {
+        this.richiestaInAttesa = risposta;
+        if (this.richiestaInAttesa === null) {
           this.getAziende();
+        } else {
+          this.caricamentoDati = false;
         }
       },
-      error:(err)=>console.error("Errore nel caricare richiesta in attesa")
+      error: (err) => {
+        this.gestisciErrore("Errore nel recupero dello stato affiliazione.");
+        this.caricamentoDati = false;
+      }
     });
   }
 
   selezionaAzienda(azienda: ContenitoreDatiAzienda) {
-    this.aziendaSelezionata=azienda;
+    this.aziendaSelezionata = azienda;
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        document.getElementById('sidebar-richiesta')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
   }
 
-  gestisciInvioRichiesta(azienda: number) {
-    if(azienda==null){
-      console.log("ss")
-      return
-    }
-    this.service.inviaRichiestaAffiliazione(azienda).subscribe({
-      next:(risposta:any)=>{
-        this.ngOnInit();
+  gestisciInvioRichiesta(idAzienda: number) {
+    if (!idAzienda) return;
+    
+    this.caricamentoDati = true;
+    this.service.inviaRichiestaAffiliazione(idAzienda).subscribe({
+      next: (risposta: any) => {
+        this.gestisciSuccesso("Richiesta inviata con successo!");
+        this.getRichiestaInAttesa(); 
       },
-      error:(err)=> console.error("Errore nell'invio")
-    })
-
+      error: (err) => {
+        this.gestisciErrore("Errore nell'invio della richiesta.");
+        this.caricamentoDati = false;
+      }
+    });
   }
 
   annullaRichiesta() {
+    if (!this.richiestaInAttesa) return;
+
+    this.caricamentoDati = true;
     // @ts-ignore
     this.service.annullaRichiestaInAttesa(this.richiestaInAttesa.idAzienda).subscribe({
-      next:(risposta:any)=>{
-        this.ngOnInit();
+      next: (risposta: any) => {
+        this.gestisciSuccesso("Richiesta annullata correttamente.");
+        this.richiestaInAttesa = null;
+        this.getAziende(); 
       },
-      error:(err)=>console.error("Errore annulla")
-    })
+      error: (err) => {
+        this.gestisciErrore("Impossibile annullare la richiesta.");
+        this.caricamentoDati = false;
+      }
+    });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }
+
+

@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazione';
 
 @Component({
-  selector: 'app-filtro-data-ora', 
+  selector: 'app-filtro-data-ora',
   imports: [
     FormsModule
   ],
@@ -12,17 +12,15 @@ import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazi
 })
 export class FiltroDataOra implements OnInit {
 
-  dataRitiro: string = '';
-  oraRitiro: string = '';
-  
-  dataConsegna: string = '';
-  oraConsegna: string = '';
+  dataRitiroCompleta: string = '';
+  dataConsegnaCompleta: string = '';
 
   minDateRitiro: string = '';
   minDateConsegna: string = '';
 
   erroreRitiro: boolean = false;
   msgErroreRitiro: string = '';
+
   erroreConsegna: boolean = false;
   msgErroreConsegna: string = '';
   
@@ -30,17 +28,15 @@ export class FiltroDataOra implements OnInit {
 
   ngOnInit() {
     const ora = new Date();
-    this.minDateRitiro = this.formattaData(ora);
-    this.minDateConsegna = this.formattaData(ora);
 
-    this.dataRitiro = this.formattaData(ora);
-    this.oraRitiro = this.formattaOra(ora);
+    this.minDateRitiro = this.trasformaDataInStringa(ora);
+    this.minDateConsegna = this.trasformaDataInStringa(ora);
+
+    this.dataRitiroCompleta = this.trasformaDataInStringa(ora);
 
     const domani = new Date();
     domani.setDate(domani.getDate() + 1);
-    this.dataConsegna = this.formattaData(domani);
-    this.oraConsegna = this.formattaOra(domani);
-
+    this.dataConsegnaCompleta = this.trasformaDataInStringa(domani);
     this.cerca();
   }
 
@@ -50,79 +46,77 @@ export class FiltroDataOra implements OnInit {
 
   resetErrori() {
     this.erroreRitiro = false;
-    this.msgErroreRitiro = '';
     this.erroreConsegna = false;
+    this.msgErroreRitiro = '';
     this.msgErroreConsegna = '';
-    
-    this.onCambioRitiro(); 
   }
 
-
   cerca() {
-    // Reset errori precedenti
-    this.erroreRitiro = false;
-    this.erroreConsegna = false;
+    this.resetErrori();
 
-    if (!this.dataRitiro || !this.oraRitiro) {
+    if (!this.dataRitiroCompleta) {
       this.erroreRitiro = true;
-      this.msgErroreRitiro = "Inserisci data e ora";
-      return; 
-    }
-
-    if (!this.dataConsegna || !this.oraConsegna) {
-      this.erroreConsegna = true;
-      this.msgErroreConsegna = "Inserisci data e ora";
-      return; 
-    }
-
-    const dataRitiroCompleta = new Date(`${this.dataRitiro}T${this.oraRitiro}`);
-    const dataConsegnaCompleta = new Date(`${this.dataConsegna}T${this.oraConsegna}`);
-    
-    const adesso = new Date();
-    adesso.setSeconds(0, 0);
-
-    if (dataRitiroCompleta < adesso) {
-      this.erroreRitiro = true;
-      this.msgErroreRitiro = "La data deve essere futura";
+      this.msgErroreRitiro = "Inserisci data ritiro";
       return;
     }
 
-    if (dataConsegnaCompleta <= dataRitiroCompleta) {
-       this.erroreConsegna = true;
-       this.msgErroreConsegna = "Deve essere successiva al ritiro";
+    if (!this.dataConsegnaCompleta) {
+      this.erroreConsegna = true;
+      this.msgErroreConsegna = "Inserisci data consegna";
+      return;
+    }
+
+    const dataRitiroObj = new Date(this.dataRitiroCompleta);
+    const dataConsegnaObj = new Date(this.dataConsegnaCompleta);
+    const adesso = new Date();
+    adesso.setSeconds(0, 0);
+
+    if (dataRitiroObj < adesso) {
+       this.erroreRitiro = true;
+       this.msgErroreRitiro = "Data nel passato";
+       
+       const now = new Date();
+       this.minDateRitiro = this.trasformaDataInStringa(now);
+       this.dataRitiroCompleta = this.minDateRitiro;
        return;
     }
 
+    if (dataConsegnaObj <= dataRitiroObj) {
+       this.erroreConsegna = true;
+       this.msgErroreConsegna = "Data non valida";
+       return;
+    }
+
+    const pezziRitiro = this.dataRitiroCompleta.split('T');
+    const pezziConsegna = this.dataConsegnaCompleta.split('T');
+
     const dati: DatiFiltriNuovaPrenotazione = {
-      dataInizio: this.dataRitiro,
-      oraInizio: this.oraRitiro,
-      dataFine: this.dataConsegna,
-      oraFine: this.oraConsegna
+      dataInizio: pezziRitiro[0],
+      oraInizio: pezziRitiro[1],
+      dataFine: pezziConsegna[0],
+      oraFine: pezziConsegna[1]
     };
 
     this.clickRicerca.emit(dati);
   }
 
   onCambioRitiro() {
-    if (this.dataRitiro) {
-      this.minDateConsegna = this.dataRitiro;
+    if (this.dataRitiroCompleta) {
+      this.minDateConsegna = this.dataRitiroCompleta;
 
-      if (this.dataConsegna && this.dataConsegna < this.dataRitiro) {
-        this.dataConsegna = this.dataRitiro;
+      if (this.dataConsegnaCompleta && this.dataConsegnaCompleta < this.dataRitiroCompleta) {
+        this.dataConsegnaCompleta = ''; 
       }
     }
   }
 
-  private formattaData(data: Date): string {
+  private trasformaDataInStringa(data: Date): string {
     const anno = data.getFullYear();
     const mese = ('0' + (data.getMonth() + 1)).slice(-2);
     const giorno = ('0' + data.getDate()).slice(-2);
-    return `${anno}-${mese}-${giorno}`;
-  }
-
-  private formattaOra(data: Date): string {
     const ore = ('0' + data.getHours()).slice(-2);
     const minuti = ('0' + data.getMinutes()).slice(-2);
-    return `${ore}:${minuti}`;
+
+    return `${anno}-${mese}-${giorno}T${ore}:${minuti}`;
   }
 }

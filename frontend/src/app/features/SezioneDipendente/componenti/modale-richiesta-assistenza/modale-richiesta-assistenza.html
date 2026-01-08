@@ -40,7 +40,7 @@
             [placeholder]="'Seleziona il noleggio interessato'"
             [valore]="oggettoSelezionato"
             [haErrore]="erroreOggetto"
-            [messaggioErrore]="'Seleziona un riferimento'"
+            [messaggioErrore]="messaggioErroreOggetto"
             (valoreChange)="cambioOggetto($event)">
           </app-scelta-tendina>
         }

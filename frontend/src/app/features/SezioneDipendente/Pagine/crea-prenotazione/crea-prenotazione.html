@@ -1,77 +1,90 @@
-<app-intestazione-ebackground [titolo]="'Nuova Prenotazione'">
+<app-template-titolo-sottotitolo
+  [titolo]="'Nuova Prenotazione'"
+  [sottotitolo]="'Cerca il veicolo perfetto per la tua prossima trasferta.'">
 
-  <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-10">
-
-    <div class="relative z-10 animate-slide-in-left pb-2">
-      <p class="text-slate-500 font-medium text-lg tracking-wide max-w-2xl leading-relaxed">
-        Cerca il veicolo perfetto per la tua prossima trasferta.
-      </p>
-    </div>
-
-    <div class="flex flex-col md:flex-row items-end gap-4 relative z-10 animate-slide-in-right w-full xl:w-auto">
-
-      <div class="w-full md:w-auto">
-        <app-scelta-tendina
-          [titolo]="'LUOGO DI RITIRO'"
-          [lista]="listaLuoghi"
-          [chiaveVisuale]="'nomeLuogo'"
-          [chiaveUtilizzata]="'nomeLuogo'"
-          [placeholder]="'Seleziona sede'"
-          [valore]="nomeLuogoSelezionato"
-          (valoreChange)="nomeLuogoSelezionato = $event; clickCambioLuogo()">
-        </app-scelta-tendina>
+  <div class="mb-8 px-3 mt-6">
+    <div class="bg-white rounded-[2rem] p-6 shadow-md border border-grigio/50 animate-fade-left animate-once animate-duration-1000">
+      
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-bold text-testo-p flex items-center gap-3">
+          <span class="w-1.5 h-6 bg-azzurro rounded-full"></span>
+          Filtri di Ricerca
+        </h3>
       </div>
 
-      <div class="w-full md:w-auto">
-        <app-filtro-data-ora
-          (clickRicerca)="clickApplicaFiltri($event)">
-        </app-filtro-data-ora>
-      </div>
+      <div class="flex flex-col xl:flex-row items-end xl:justify-end gap-6 w-full">
+        
+        <div class="w-full xl:w-auto min-w-[250px]">
+          <app-scelta-tendina
+            [titolo]="'LUOGO DI RITIRO'"
+            [lista]="listaLuoghi"
+            [chiaveVisuale]="'nomeLuogo'"
+            [chiaveUtilizzata]="'nomeLuogo'"
+            [placeholder]="'Seleziona sede'"
+            [valore]="nomeLuogoSelezionato"
+            (valoreChange)="nomeLuogoSelezionato = $event; clickCambioLuogo()">
+          </app-scelta-tendina>
+        </div>
 
+        <div class="w-full xl:w-auto pb-4">
+          <app-filtri-ricerca
+            (clickRicerca)="clickApplicaFiltri($event)">
+          </app-filtri-ricerca>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <div class="pb-20 min-h-[500px]">
+  <div class="px-3 mb-6 min-h-[500px]">
+    
+    <div class="flex flex-col h-full">
+      
+      <h3 class="text-lg font-bold text-testo-p mb-4 flex items-center gap-2">
+        <span class="w-1.5 h-6 bg-blu opacity-100 rounded-full"></span>
+        Veicoli Disponibili
+      </h3>
 
-    @if (caricamentoDati) {
-      <div class="flex items-center justify-center h-[400px] w-full">
+      @if (caricamentoDati) {
+        <div class="flex items-center justify-center h-[400px] w-full">
               <i class="caricamento bi bi-arrow-clockwise"></i>
       </div>
-    } 
-    @else {
-      
-      @if (listaVeicoli.length > 0) {
+      } 
+      @else {
         
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
-          @for (auto of listaVeicoli; track auto.idVeicolo) {
-            <div class="h-full">
-              <app-veicolo-card
-                class="h-full block"
-                [costoStimato]="costoStimato"
-                [veicolo]="auto"
-                (apriForm)="clickPrenotaOra($event)">
-              </app-veicolo-card>
-            </div>
-          }
-        </div>
+        @if (listaVeicoli.length > 0) {
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-up animate-once animate-duration-1000">
+            @for (auto of listaVeicoli; track auto.idVeicolo) {
+              <div class="h-full">
+                <app-veicolo-card
+                  class="h-full block"
+                  [costoStimato]="costoStimato"
+                  [veicolo]="auto"
+                  (apriForm)="clickPrenotaOra($event)">
+                </app-veicolo-card>
+              </div>
+            }
+          </div>
 
-      } @else {
-        
-        <div class="bg-white rounded-3xl p-12 shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center animate-fade-in mt-6">
-          <app-messaggio-card-vuota
-            [icona]="'bi-search'"
-            [tagliaIcona]="'3xl'"
-            [testoPrimario]="'Nessun veicolo disponibile'"
-            [testoSecondario]="'Non abbiamo trovato veicoli disponibili per i criteri selezionati. Prova a cambiare date o sede.'">
-          </app-messaggio-card-vuota>
-        </div>
+        } @else {
+          
+          <div class="bg-white rounded-[2rem] p-12 shadow-md border border-grigio/50 flex flex-col items-center justify-center text-center animate-fade-in mt-6 h-[400px]">
+            <app-messaggio-card-vuota
+              [icona]="'bi-search'"
+              [tagliaIcona]="'3xl'"
+              [testoPrimario]="'Nessun veicolo disponibile'"
+              [testoSecondario]="'Non abbiamo trovato veicoli disponibili per i criteri selezionati. Prova a cambiare date o sede.'">
+            </app-messaggio-card-vuota>
+          </div>
 
-      }
+        }
 
-    } 
+      } 
+    </div>
   </div>
 
-</app-intestazione-ebackground>
+</app-template-titolo-sottotitolo>
 
 @if (mostraModale) {
   <app-richiesta-noleggio-form

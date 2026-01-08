@@ -1,40 +1,66 @@
 <div
   (click)="selezionaAzienda.emit(datiAzienda)"
+  class="group relative flex items-center justify-between p-5 bg-white border rounded-2xl cursor-pointer transition-all duration-300 ease-out shadow-sm hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] overflow-hidden"
   [class.border-blue-500]="selezionato"
   [class.bg-blue-50]="selezionato"
-  [class.border-gray-200]="!selezionato"
-  class="group relative flex items-center justify-between p-5 bg-white border rounded-xl cursor-pointer hover:border-blue-400 hover:shadow-md transition-all duration-200"
->
-  <div class="flex items-center gap-4">
-    <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-      </svg>
+  [class.ring-1]="selezionato"
+  [class.ring-blue-500]="selezionato"
+  [class.border-slate-100]="!selezionato"
+  [class.hover:border-blue-300]="!selezionato">
+
+  <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+
+  <div class="flex items-center gap-5 w-full">
+    
+    <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm border border-slate-200 transition-colors duration-300"
+         [class.bg-blue-600]="selezionato"
+         [class.text-white]="selezionato"
+         [class.border-blue-600]="selezionato"
+         [class.bg-white]="!selezionato"
+         [class.text-blue-600]="!selezionato">
+      
+      <span class="text-xl font-black uppercase">
+        {{ datiAzienda.nomeAzienda.charAt(0) }}
+      </span>
     </div>
 
-    <div>
-      <h3 class="font-semibold text-gray-900">{{ datiAzienda.nomeAzienda }}</h3>
-      <p class="text-sm text-gray-500 flex items-center gap-1 mb-1">
-        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-        {{ datiAzienda.nomeSedeAzienda }}
+    <div class="flex-grow min-w-0">
+      
+      <div class="flex items-center justify-between mb-1">
+        <h3 class="font-bold text-slate-800 text-lg truncate pr-2 group-hover:text-blue-700 transition-colors">
+          {{ datiAzienda.nomeAzienda }}
+        </h3>
+        
+        @if (selezionato) {
+          <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md animate-scale-in">
+            <i class="bi-check-lg text-sm font-bold"></i>
+          </div>
+        }
+      </div>
+
+      <p class="text-xs text-slate-500 flex items-center gap-1.5 mb-3 truncate font-medium">
+        <i class="bi-geo-alt-fill text-blue-400"></i>
+        {{ datiAzienda.nomeSedeAzienda || 'Sede Principale' }}
       </p>
 
-      <div class="flex items-center gap-3 text-xs text-gray-500 font-medium">
-         <span class="flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded text-gray-600">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-           {{ datiAzienda.totaleVeicoliAzienda }} veicoli
-         </span>
-        <span class="flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded text-gray-600">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-          {{ datiAzienda.totaleDipendentiAzienda }} dipendenti
-         </span>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+          <i class="bi-car-front-fill text-blue-500"></i>
+          {{ datiAzienda.totaleVeicoliAzienda }} Veicoli
+        </span>
+        <span class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+          <i class="bi-people-fill text-blue-500"></i>
+          {{ datiAzienda.totaleDipendentiAzienda }} Dipendenti
+        </span>
       </div>
+
     </div>
   </div>
 
-  @if (selezionato) {
-    <div class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm animate-pulse">
-      Selezionata
+  @if (!selezionato) {
+    <div class="absolute right-4 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-[-10px] transition-all duration-300">
+      <i class="bi-chevron-right text-2xl"></i>
     </div>
   }
+
 </div>

@@ -12,7 +12,8 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
-import { FiltroDataOra } from '@shared/Componenti/Ui/filtro-data-ora/filtro-data-ora';
+import { FiltriRicerca } from '@features/SezioneDipendente/componenti/filtri-ricerca/filtri-ricerca';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-crea-prenotazione',
@@ -20,11 +21,11 @@ import { FiltroDataOra } from '@shared/Componenti/Ui/filtro-data-ora/filtro-data
     VeicoloCard,
     FormsModule,
     RichiestaNoleggioForm,
-    IntestazioneEBackground,
+    TemplateTitoloSottotitolo,
     SceltaTendina,
     BannerErrore,
     MessaggioCardVuota,
-    FiltroDataOra
+    FiltriRicerca
   ],
   templateUrl: './crea-prenotazione.html',
   styleUrl: './crea-prenotazione.css',

@@ -34,6 +34,7 @@ export class ModaleRichiestaAssistenza {
   erroreMessaggio: boolean = false;
   erroreOggetto: boolean = false;
   successoBanner: string = '';
+  messaggioErroreOggetto: string = 'Seleziona un riferimento';
 
   cambioCategoria(categoria: string) {
     this.erroreCategoria=false;
@@ -62,29 +63,38 @@ export class ModaleRichiestaAssistenza {
     this.erroreCategoria = false;
     this.erroreMessaggio = false;
     this.erroreOggetto = false;
+    this.messaggioErroreOggetto='Seleziona un riferimento';
   }
 
   invio() {
     let valid = true;
     this.reset();
 
-    if(!this.categoriaSelezionata) {
+    if (!this.categoriaSelezionata) {
       this.erroreCategoria = true;
       valid = false;
     }
 
-    if(!this.messaggio || this.messaggio.trim() === '') {
+    if (!this.messaggio || this.messaggio.trim() === '') {
       this.erroreMessaggio = true;
       valid = false;
     }
 
-    if(this.listaOggettiDinamicaVisibile) {
+    if (this.listaOggettiDinamicaVisibile) {
       if (!this.oggettoSelezionato) {
-        this.erroreOggetto=true;
-        valid = false; 
-      }
-      else if (this.oggettoSelezionato.labelVisuale === 'Nessun noleggio trovato') {
+        this.erroreOggetto = true;
+        this.messaggioErroreOggetto = 'Seleziona un riferimento';
         valid = false;
+      } else {
+        const valoreControllo = this.oggettoSelezionato.labelVisuale 
+                                ? this.oggettoSelezionato.labelVisuale 
+                                : this.oggettoSelezionato;
+
+        if (valoreControllo === 'Nessun noleggio trovato') {
+          this.erroreOggetto = true;
+          this.messaggioErroreOggetto = 'Impossibile inviare: nessun noleggio disponibile';
+          valid = false;
+        }
       }
     }
 
@@ -92,15 +102,17 @@ export class ModaleRichiestaAssistenza {
       return;
     }
 
-
     let datoDaInviare = "Richiesta riguardo a " + this.categoriaSelezionata;
 
-    if (this.oggettoSelezionato && this.oggettoSelezionato.labelVisuale) {
-      datoDaInviare += " riguardo a " + this.oggettoSelezionato.labelVisuale;
+    if (this.oggettoSelezionato) {
+      const label = this.oggettoSelezionato.labelVisuale 
+                    ? this.oggettoSelezionato.labelVisuale 
+                    : this.oggettoSelezionato;
+      datoDaInviare += " riguardo a " + label;
     }
 
     datoDaInviare += " con messaggio " + this.messaggio;
-    this.successoBanner= "Segnalazione inviata con successo";
+    this.successoBanner = "Segnalazione inviata con successo";
 
     setTimeout(() => {
       this.inviaSegnalazione.emit(datoDaInviare);
