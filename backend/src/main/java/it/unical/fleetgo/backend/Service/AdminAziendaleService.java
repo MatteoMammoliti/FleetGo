@@ -219,8 +219,8 @@ public class AdminAziendaleService {
 
     public Float getSpesaMensile(Integer idAzienda) throws SQLException {
         try(Connection connection = this.dataSource.getConnection()) {
-            GeneraFatturaDAO generaFatturaDAO = new GeneraFatturaDAO(connection);
-            Float totale = generaFatturaDAO.getSpesaMensileAzienda(idAzienda);
+            RichiestaNoleggioDAO richiestaNoleggioDAO = new RichiestaNoleggioDAO(connection);
+            Float totale = richiestaNoleggioDAO.getSpesaMensileAzienda(idAzienda);
             return (totale != null) ? totale : (float) 0.0;
         }
     }

@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-vantaggi',
   standalone:true,
-  imports: [
-    NgOptimizedImage
-  ],
+  imports: [],
   templateUrl: './vantaggi.html',
   styleUrl: './vantaggi.css',
 })

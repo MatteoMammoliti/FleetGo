@@ -21,8 +21,6 @@ export const ADMIN_FLEET_GO_ROUTES: Routes = [
 
       { path: 'aziende-affiliate', component: AziendeAffiliate },
 
-      { path: 'dettagli-veicolo/:targa', component: DettagliVeicolo },
-
       { path: 'storico-fatture', component: StoricoFatture },
 
       { path: 'sezione-manutenzione', component: SezioneManutenzioni},

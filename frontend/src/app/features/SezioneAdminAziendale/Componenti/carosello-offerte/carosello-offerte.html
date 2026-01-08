@@ -1,5 +1,7 @@
 @if (offerte.length > 0) {
-  <div class="relative w-full overflow-hidden rounded-[2rem] group h-[380px] shadow-xl animate-fade-right animate-duration-1000 animate-delay-800">
+  <div class="animate-fade-right animate-duration-1000 animate-delay-800">
+
+  <div class="relative w-full overflow-hidden rounded-[2rem] group h-[380px] shadow-xl ">
 
     @for (off of offerte; track off.idOfferta; let i = $index) {
       <div class="absolute inset-0 transition-all duration-700 ease-in-out transform"
@@ -65,9 +67,10 @@
     </div>
 
   </div>
+  </div>
 } @else {
-  <div class="w-full h-40 flex flex-col items-center justify-center bg-grigio rounded-3xl border-2 border-dashed border-testo-s/20">
-    <i class="bi bi-tag text-3xl text-testo-s/40 mb-2"></i>
-    <p class="text-testo-s font-medium italic">Nessuna offerta attiva al momento.</p>
+  <div class="w-full h-full flex flex-col items-center justify-center">
+    <app-messaggio-card-vuota testoPrimario="Nessuna offerta attiva" icona="bi-award" testoSecondario="Torna tra qualche giorno!"
+    ></app-messaggio-card-vuota>
   </div>
 }

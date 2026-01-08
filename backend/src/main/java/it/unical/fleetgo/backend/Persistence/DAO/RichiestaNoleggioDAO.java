@@ -350,4 +350,22 @@ public class RichiestaNoleggioDAO {
         }
         return null;
     }
+
+    public Float getSpesaMensileAzienda(Integer idAzienda) {
+        String query = "SELECT SUM(costo_noleggio) as spesa_totale FROM richiesta_noleggio " +
+                " WHERE accettata = true AND EXTRACT(year FROM data_consegna) = ?" +
+                " AND EXTRACT(month FROM data_consegna) = ? AND id_azienda = ? GROUP BY EXTRACT(year FROM data_consegna), EXTRACT(month FROM data_consegna)";
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, LocalDate.now().getYear());
+            ps.setInt(2, LocalDate.now().getMonthValue());
+            ps.setInt(3, idAzienda);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) return rs.getFloat("spesa_totale");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TabellaAuto} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-auto/tabella-auto';
 import {FormAggiungiAuto} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-auto/form-aggiungi-auto';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {ModelloDTO} from '@core/models/ModelloDTO';
@@ -14,6 +13,9 @@ import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFl
 import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
 import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {DettagliVeicolo} from '@features/SezioneFleetGo/Pagine/dettagli-veicolo/dettagli-veicolo';
+import {GoogleMapsService} from '@core/services/google-maps-service';
+import {concatMap} from 'rxjs';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -29,7 +31,8 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
     CardModello,
     BannerErrore,
     IntestazioneEBackground,
-    TemplateFinestraModale
+    TemplateFinestraModale,
+    DettagliVeicolo
   ],
   templateUrl: './flotta-globale.html',
   styleUrl: './flotta-globale.css',
@@ -38,8 +41,9 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 export class FlottaGlobale implements OnInit{
 
   constructor(private service: FlottaGlobaleService,
-              private route: Router,
-              private aziendeService: AziendeAffiliateService) {}
+              private aziendeService: AziendeAffiliateService, private veicoloService: FlottaGlobaleService, private googleMapsService:GoogleMapsService) {}
+
+  @ViewChild('dettaglioVeicolo') dettagliVeicoloModale!: DettagliVeicolo;
 
   veicoliOriginali: VeicoloDTO[] |null = null;
 
@@ -59,6 +63,12 @@ export class FlottaGlobale implements OnInit{
 
   modaleCheck=false;
   modelloInteressato:any;
+
+  modaleDettagliVeicolo=false;
+  veicolo:any=null;
+  aziende:AziendaDTO[] = [];
+
+  private coordsIniziali: { lat: number, lng: number } | null = null;
 
   ngOnInit(): void {
     this.resettaFiltri()
@@ -161,8 +171,101 @@ export class FlottaGlobale implements OnInit{
   }
 
   dettagliVeicolo(targaVeicolo: string) {
-    this.route.navigate(["/dashboardFleetGo", "dettagli-veicolo", targaVeicolo]);
+    this.initVeicolo(targaVeicolo);
+    this.modaleDettagliVeicolo=true;
   }
+
+
+  initVeicolo(targa: string | null) {
+    this.veicoloService.richiediVeicolo(targa).subscribe({
+      next: (response) => {
+        if (response) {
+          this.veicolo = response;
+
+          const luogo = this.veicolo.luogoRitiroDeposito;
+          if (this.veicolo.nomeAziendaAffiliata && luogo && luogo.latitudine && luogo.longitudine) {
+            this.initMappa();
+          }
+        }
+      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
+      }
+    });
+  }
+
+  initMappa() {
+    const luogo = this.veicolo.luogoRitiroDeposito;
+    if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
+    this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
+
+    this.googleMapsService.load().then(() => {
+      setTimeout(() => {
+        if(this.coordsIniziali) {
+          this.dettagliVeicoloModale.disegnaMappa(this.coordsIniziali);
+        }
+      }, 500);
+    });
+  }
+
+
+  associaVeicoloAzienda(aziendaSelezionata:any ) {
+
+    const veicolo: VeicoloDTO = {
+      idVeicolo: this.veicolo.idVeicolo,
+      idAziendaAffiliata: aziendaSelezionata.idAzienda
+    }
+
+    this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
+      next: (response) => {
+        this.ngOnInit();
+        this.gestisciSuccesso("Veicolo associato con successo");
+      }, error: (err) => {
+        this.gestisciErrore(err.error);
+      }
+    })
+  }
+
+  dissociaVeicoloAzienda(v:VeicoloDTO) {
+    const veicolo: VeicoloDTO = {
+      idVeicolo: v.idVeicolo,
+      idAziendaAffiliata: v.idAziendaAffiliata
+    }
+
+    this.veicoloService.dissociaVeicoloAzienda(veicolo).subscribe({
+      next: (response) => {
+        this.ngOnInit();
+        this.gestisciSuccesso("Veicolo dissociato con successo");
+      }, error: (err) => {
+        this.gestisciErrore(err.error);
+      }
+    })
+  }
+
+  dissociaEAssocia(veicoloCorrente: VeicoloDTO, nuovaAzienda: AziendaDTO) {
+    const datiDissociazione: VeicoloDTO = {
+      idVeicolo: veicoloCorrente.idVeicolo,
+      idAziendaAffiliata: veicoloCorrente.idAziendaAffiliata
+    };
+    const datiAssociazione: VeicoloDTO = {
+      idVeicolo: veicoloCorrente.idVeicolo,
+      idAziendaAffiliata: nuovaAzienda.idAzienda
+    };
+
+    this.veicoloService.dissociaVeicoloAzienda(datiDissociazione).pipe(
+      concatMap(() => this.veicoloService.associaVeicoloAzienda(datiAssociazione))
+    ).subscribe({
+      next: () => {
+        this.ngOnInit();
+        this.gestisciSuccesso("Trasferimento veicolo completato con successo");
+      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
+      }
+    });
+  }
+
+
 
   resettaFiltri() {
     this.filtroAzienda = null;
@@ -196,6 +299,7 @@ export class FlottaGlobale implements OnInit{
       }
     })
   }
+
   gestisciTendina(){
     this.tendina=!this.tendina
     if(this.tendina){
