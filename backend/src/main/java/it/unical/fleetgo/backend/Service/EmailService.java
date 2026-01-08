@@ -1,7 +1,6 @@
 package it.unical.fleetgo.backend.Service;
 
 import it.unical.fleetgo.backend.Models.DTO.Utente.AdminAziendaleDTO;
-import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

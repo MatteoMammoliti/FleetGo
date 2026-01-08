@@ -11,26 +11,26 @@
   <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
 
   <div class="flex items-center gap-5 w-full">
-    
+
     <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm border border-slate-200 transition-colors duration-300"
          [class.bg-blue-600]="selezionato"
          [class.text-white]="selezionato"
          [class.border-blue-600]="selezionato"
          [class.bg-white]="!selezionato"
          [class.text-blue-600]="!selezionato">
-      
+
       <span class="text-xl font-black uppercase">
         {{ datiAzienda.nomeAzienda.charAt(0) }}
       </span>
     </div>
 
     <div class="flex-grow min-w-0">
-      
+
       <div class="flex items-center justify-between mb-1">
         <h3 class="font-bold text-slate-800 text-lg truncate pr-2 group-hover:text-blue-700 transition-colors">
           {{ datiAzienda.nomeAzienda }}
         </h3>
-        
+
         @if (selezionato) {
           <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md animate-scale-in">
             <i class="bi-check-lg text-sm font-bold"></i>
@@ -40,7 +40,7 @@
 
       <p class="text-xs text-slate-500 flex items-center gap-1.5 mb-3 truncate font-medium">
         <i class="bi-geo-alt-fill text-blue-400"></i>
-        {{ datiAzienda.nomeSedeAzienda || 'Sede Principale' }}
+        {{ datiAzienda.nomeSedeAzienda || 'Sede non specificata' }}
       </p>
 
       <div class="flex flex-wrap items-center gap-2">

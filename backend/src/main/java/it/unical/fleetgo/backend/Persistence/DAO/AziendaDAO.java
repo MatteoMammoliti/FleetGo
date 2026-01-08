@@ -139,17 +139,17 @@ public class AziendaDAO {
 
     public List<ContenitoreDatiAzienda> getInformazioniAziendeInPiattaforme() throws SQLException{
         List<ContenitoreDatiAzienda> infoAziende = new ArrayList<>();
-        String query="SELECT a.*, " +
+        String query="SELECT a.*, l.nome_luogo, " +
                 " (SELECT COUNT(*) FROM gestione_veicolo_azienda gv WHERE gv.id_azienda=a.id_azienda) as totale_veicolo, " +
                 " (SELECT COUNT(*) FROM richiesta_affiliazione_azienda ra WHERE ra.id_azienda=a.id_azienda AND ra.accettata= true) as totale_dipendenti" +
-                " FROM azienda a WHERE a.attiva = true";
+                " FROM azienda a LEFT JOIN luogo_azienda l ON l.id_luogo = a.sede_azienda WHERE a.attiva = true";
         try(PreparedStatement st = connection.prepareStatement(query)){
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
                 ContenitoreDatiAzienda contenitore=new ContenitoreDatiAzienda();
                 contenitore.setIdAzienda(rs.getInt("id_azienda"));
                 contenitore.setNomeAzienda(rs.getString("nome_azienda"));
-                contenitore.setNomeSedeAzienda(rs.getString("sede_azienda"));
+                contenitore.setNomeSedeAzienda(rs.getString("nome_luogo"));
                 contenitore.setTotaleDipendentiAzienda(rs.getInt("totale_dipendenti"));
                 contenitore.setTotaleVeicoliAzienda(rs.getInt("totale_veicolo"));
                 infoAziende.add(contenitore);

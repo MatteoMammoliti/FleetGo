@@ -46,7 +46,7 @@
                   {{ veicolo.nomeAziendaAffiliata }}
                   <i class="bi-building text-blue-300"></i>
                 </div>
-              } @else if(veicolo.inManutenzione) {
+              } @else if(!veicolo.inManutenzione) {
                 <div class="fade-in">
                   <app-scelta-tendina
                     [lista]="aziende"
@@ -82,5 +82,3 @@
   }
 
 </app-template-finestra-modale>
-
-
