@@ -33,6 +33,8 @@ export class GeneralLayoutFleetGo {
     });
   }
 
+
+
   gestisciErrore(messaggio: string) {
     this.erroreBanner = messaggio;
     setTimeout(() => this.erroreBanner = '', 5000);

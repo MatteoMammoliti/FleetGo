@@ -1,20 +1,20 @@
 <div class="layout-container">
 
-  <app-sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
+  <app-sidebar #sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
 
     <div class="contenitore-navbar-items">
 
       <div class="contenitoreMenu">
         <ul>
-          <li><a routerLink="homepage" routerLinkActive="active">Homepage</a></li>
-          <li><a routerLink="prenotazioni" routerLinkActive="active">Le mie prenotazioni</a></li>
-          <li><a routerLink="nuovaPrenotazione" routerLinkActive="active">Nuova prenotazione</a></li>
-          <li><a routerLink="impostazioni" routerLinkActive="active">Impostazioni</a></li>
+          <li><a routerLink="homepage" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Homepage</a></li>
+          <li><a routerLink="prenotazioni" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Le mie prenotazioni</a></li>
+          <li><a routerLink="nuovaPrenotazione" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Nuova prenotazione</a></li>
+          <li><a routerLink="impostazioni" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Impostazioni</a></li>
         </ul>
       </div>
     </div>
     <div class="contenitore-logout">
-      <button class="logout" (click)="logout()">
+      <button class="logout" (click)="logout(); sidebar.closeSidebar()">
         <i class="bi bi-box-arrow-right"></i> Logout
       </button>
     </div>

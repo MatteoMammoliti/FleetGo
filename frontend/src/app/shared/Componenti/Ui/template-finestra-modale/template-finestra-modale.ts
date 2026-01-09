@@ -24,14 +24,17 @@ export class TemplateFinestraModale {
   @Input() visibile= '50';
   chiusuraInCorso = false;
 
+
   private eseguiChiusura(eventEmitter: EventEmitter<any>) {
     this.chiusuraInCorso = true;
     setTimeout(() => {
       eventEmitter.emit();
-    }, 250);
+      this.chiusuraInCorso = false;
+    }, 300);
   }
 
   chiudiModale() { this.eseguiChiusura(this.chiudi); }
   annullaModale() { this.eseguiChiusura(this.annulla); }
-  confermaModale() { this.eseguiChiusura(this.conferma); }
+  confermaModale() { this.conferma.emit();}
+
 }

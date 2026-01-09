@@ -1,22 +1,22 @@
 <div class="layout-container">
 
-  <app-sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
+  <app-sidebar #sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
 
     <div class="contenitore-navbar-items">
 
       <div class="contenitoreMenu">
         <ul>
-          <li><a routerLink="dashboard" routerLinkActive="active">Dashboard</a></li>
-          <li><a routerLink="storico-fatture" routerLinkActive="active">Storico Fatture</a></li>
-          <li><a routerLink="sezione-manutenzione" routerLinkActive="active">Manutenzioni</a></li>
-          <li><a routerLink="aziende-affiliate" routerLinkActive="active">Aziende</a></li>
-          <li><a routerLink="flotta-globale" routerLinkActive="active">Flotta</a></li>
-          <li><a routerLink="offerte-attive" routerLinkActive="active">Offerte attive</a></li>
+          <li><a routerLink="dashboard" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Dashboard</a></li>
+          <li><a routerLink="storico-fatture" routerLinkActive="active" (click)="sidebar.closeSidebar()">Storico Fatture</a></li>
+          <li><a routerLink="sezione-manutenzione" routerLinkActive="active" (click)="sidebar.closeSidebar()">Manutenzioni</a></li>
+          <li><a routerLink="aziende-affiliate" routerLinkActive="active" (click)="sidebar.closeSidebar()">Aziende</a></li>
+          <li><a routerLink="flotta-globale" routerLinkActive="active" (click)="sidebar.closeSidebar()">Flotta</a></li>
+          <li><a routerLink="offerte-attive" routerLinkActive="active" (click)="sidebar.closeSidebar()">Offerte attive</a></li>
         </ul>
       </div>
 
       <div class="contenitore-logout">
-        <button class="logout" (click)="logout()">
+        <button class="logout" (click)="logout(); sidebar.closeSidebar()">
           <i class="bi bi-box-arrow-right"></i> Logout
         </button>
       </div>

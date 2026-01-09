@@ -288,7 +288,6 @@ export class FlottaGlobale implements OnInit{
       next: (response) => {
         if(response) {
           this.caricaModelli();
-          this.gestisciVisibilitaModaleInserimentoModello();
         }
         this.gestisciSuccesso("Modello registrato con successo");
       }, error: (err) => {

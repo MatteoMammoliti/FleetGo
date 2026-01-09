@@ -1,4 +1,4 @@
-import {Component, inject, Output, EventEmitter, Input} from '@angular/core';
+import {Component, inject, Output, EventEmitter, Input, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
@@ -21,7 +21,7 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 
 export class FormAggiungiAuto {
   constructor(private validator: validazione) {}
-
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Input() modelli: ModelloDTO[] = [];
   @Output() onSalvataggio = new EventEmitter<VeicoloDTO>();
@@ -67,6 +67,7 @@ export class FormAggiungiAuto {
     }
 
     this.onSalvataggio.emit(veicolo);
+    this.finestraModale.chiudiModale()
     this.pulisciForm();
   }
 

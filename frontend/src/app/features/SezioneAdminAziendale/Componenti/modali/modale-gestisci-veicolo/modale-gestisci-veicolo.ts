@@ -29,6 +29,8 @@ declare var google: any;
 
 export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
 
+
+
   @Input() veicoloInput: any;
 
   @Input() listaLuoghi: LuogoDTO[] = [];

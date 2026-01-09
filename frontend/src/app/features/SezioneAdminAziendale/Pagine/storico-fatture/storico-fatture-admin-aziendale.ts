@@ -26,10 +26,12 @@ export class StoricoFattureAdminAziendale implements OnInit{
 
   fattureEmesse: FatturaDTO[]|null = null ;
   totaleDaPagare = 0;
-  anniDisponibili: number[] = [];
+  anniDisponibili: any[] = [];
 
-  filtroAnno: any=null;
+  filtroAnno: any = null;
   filtroStato: any = null;
+
+  placeholder='';
 
   erroreBanner="";
   successoBanner="";
@@ -79,6 +81,9 @@ export class StoricoFattureAdminAziendale implements OnInit{
     this.storicoFattureService.getAnniDisponibili().subscribe({
       next: data => {
         if(data) {
+          if(data.length==0) {
+            this.placeholder= new Date().getFullYear().toString();
+            return }
           this.anniDisponibili = data.sort((a, b) => b - a);
 
           this.filtroAnno = this.anniDisponibili[0];

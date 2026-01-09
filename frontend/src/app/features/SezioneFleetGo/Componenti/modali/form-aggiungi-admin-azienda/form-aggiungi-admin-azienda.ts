@@ -1,4 +1,4 @@
-import {Component, inject, Output, EventEmitter, OnInit} from '@angular/core';
+import {Component, inject, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
@@ -17,6 +17,8 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 
 export class FormAggiungiAdminAzienda implements OnInit {
+
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Output() aziendaAggiunta = new EventEmitter<any>();
   @Output() chiudi = new EventEmitter<any>();
@@ -91,7 +93,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
     }
 
     this.aziendaAggiunta.emit(mod);
-
+    this.finestraModale.chiudiModale();
   }
 
   reset() {

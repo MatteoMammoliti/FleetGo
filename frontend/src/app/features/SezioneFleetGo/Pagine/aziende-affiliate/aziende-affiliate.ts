@@ -77,7 +77,6 @@ export class AziendeAffiliate implements OnInit {
     this.aziendeService.registraAzienda(mod.adminAziendale, mod.azienda).subscribe({
       next: (res) => {
         this.richiediAziendeAttive();
-        this.gestisciVisibilitaModaleAggiuntaAziende();
         if(this.formAggiunta) this.formAggiunta.pulisciForm();
         this.gestisciSuccesso( "Azienda aggiunta con successo");
       },

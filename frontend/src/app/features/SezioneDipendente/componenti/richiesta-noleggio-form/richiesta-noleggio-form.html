@@ -1,14 +1,15 @@
 <app-template-finestra-modale
+  #modale
   [titolo]="'Conferma Prenotazione'"
   [sottotitolo]="'Riepilogo e conferma i dati della richiesta'"
-  [larghezza]="'max-w-xl'" 
+  [larghezza]="'max-w-xl'"
   [tastoBianco]="'Annulla'"
   [tastoBlu]="'Conferma e Prenota'"
   (chiudi)="onClose()"
   (annulla)="onClose()"
   (conferma)="onConfirm()">
 
-  <div class="space-y-6">
+  <div class="space-y-6 px-5 pt-7 pb-5">
 
     <div class="flex items-center gap-5 p-5 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm">
       <div class="w-20 h-14 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden shrink-0 border border-slate-200">

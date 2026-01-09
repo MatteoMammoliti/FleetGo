@@ -1,6 +1,6 @@
 @if(paginaVisibile) {
 
-  <app-template-finestra-modale titolo="Promozioni" sottotitolo="Crea una nuova offerta" tastoBlu="Crea" tastoBianco="Annulla" (conferma)="salvaOfferta()" (annulla)="chiudiFinestraModale()"  (chiudi)="chiudiFinestraModale()">
+  <app-template-finestra-modale #modale titolo="Promozioni" sottotitolo="Crea una nuova offerta" tastoBlu="Crea" tastoBianco="Annulla" (conferma)="salvaOfferta()" (annulla)="chiudiFinestraModale()"  (chiudi)="chiudiFinestraModale()">
     <div class=" px-6 py-3 flex flex-col gap-3">
 
       <div class="grid grid-cols-2 gap-4">

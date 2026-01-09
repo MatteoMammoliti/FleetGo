@@ -21,7 +21,10 @@ export class DashboardAziendaDisabilitata implements OnInit {
               private router: Router) {}
 
   ngOnInit() {
-    this.modaleRichiestaAppuntamentoVisibile = false;
+    const statoRichiesta = localStorage.getItem('appuntamento_inviato');
+    if (statoRichiesta === 'true') {
+      this.appuntamentoRichiesto = true;
+    }
   }
 
   gestisciVisibilitaModale() { this.modaleRichiestaAppuntamentoVisibile = !this.modaleRichiestaAppuntamentoVisibile; }
@@ -31,14 +34,15 @@ export class DashboardAziendaDisabilitata implements OnInit {
       next: data => {
         if(data) {
           this.appuntamentoRichiesto = true;
+          localStorage.setItem('appuntamento_inviato', 'true');
 
-          setInterval( () => {
+          setTimeout(() => {
             this.gestisciVisibilitaModale();
-            this.appuntamentoRichiesto = false;
-          }, 3000)
+          }, 3000);
         }
-      }, error: error => { console.log(error); }
-    })
+      },
+      error: error => { console.error(error); }
+    });
   }
 
   vaiAlleFatture() {

@@ -1,4 +1,6 @@
-<app-template-finestra-modale titolo="Aggiungi Veicolo" tastoBianco="Annulla" tastoBlu="Salva Veicolo"
+<app-template-finestra-modale
+  #modale
+  titolo="Aggiungi Veicolo" tastoBianco="Annulla" tastoBlu="Salva Veicolo"
                               (conferma)="salva()" (chiudi)="onAnnulla.emit()"
                               (annulla)="onAnnulla.emit()">
 

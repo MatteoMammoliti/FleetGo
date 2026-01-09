@@ -1,18 +1,18 @@
 <div class="layout-container">
 
-  <app-sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
+  <app-sidebar #sidebar class="navbar-top" (clickLogo)="vaiAllaDashboard()">
 
     <div class="contenitore-navbar-items">
 
       <div class="contenitoreMenu">
         <ul>
-          <li><a routerLink="dashboard" routerLinkActive="active">Dashboard</a></li>
-          <li><a routerLink="storico-fatture" routerLinkActive="active">Storico Fatture</a></li>
+          <li><a routerLink="dashboard" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Dashboard</a></li>
+          <li><a routerLink="storico-fatture" routerLinkActive="active" (click)="sidebar.closeSidebar()" >Storico Fatture</a></li>
         </ul>
       </div>
     </div>
     <div class="contenitore-logout">
-      <button class="logout" (click)="logout()">
+      <button class="logout" (click)="logout(); sidebar.closeSidebar() ">
         <i class="bi bi-box-arrow-right"></i> Logout
       </button>
     </div>

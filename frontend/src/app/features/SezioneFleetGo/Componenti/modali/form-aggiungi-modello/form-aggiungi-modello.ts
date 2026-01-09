@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {FormsModule} from '@angular/forms';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
@@ -17,6 +17,7 @@ import {ImmagineInputChecked} from '@shared/Componenti/Ui/immagine-input-checked
 })
 
 export class FormAggiungiModello {
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Output() confermaAggiunta = new EventEmitter<FormData>();
   @Output() onAnnulla = new EventEmitter<void>();
@@ -42,6 +43,7 @@ export class FormAggiungiModello {
         obj.append("immagine", this.fileImmagine)
       }
       this.confermaAggiunta.emit(obj);
+      this.finestraModale.chiudiModale();
       this.resetForm();
     }
   }

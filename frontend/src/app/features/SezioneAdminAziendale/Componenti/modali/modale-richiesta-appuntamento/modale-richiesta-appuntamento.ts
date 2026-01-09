@@ -35,5 +35,7 @@ export class ModaleRichiestaAppuntamento {
 
 
   chiudiModale() { this.eseguiChiusura(this.chiudiPagina); }
-  confermaModale() {this.caricamentoInCorso = true; this.eseguiChiusura(this.richiediAppuntamento); }
-}
+  confermaModale() {
+    this.caricamentoInCorso = true;
+    this.richiediAppuntamento.emit();
+  }}

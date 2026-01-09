@@ -1,4 +1,6 @@
-<app-template-finestra-modale larghezza="max-w-3xl" titolo="Nuova Azienda Affiliata"
+<app-template-finestra-modale
+  #modale
+  larghezza="max-w-3xl" titolo="Nuova Azienda Affiliata"
                               tastoBlu="Conferma e crea" tastoBianco="Annulla" (conferma)="salva()" (chiudi)="chiudi.emit()" (annulla)="chiudi.emit()">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 px-3 py-4">
     <div class="flex flex-col gap-4">

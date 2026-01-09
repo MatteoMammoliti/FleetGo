@@ -15,6 +15,11 @@ export class Sidebar {
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
+  closeSidebar() {
+    if (window.innerWidth < 1280) {
+      this.isSidebarOpen = false;
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {

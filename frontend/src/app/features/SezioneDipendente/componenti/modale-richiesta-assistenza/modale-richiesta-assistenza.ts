@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
 import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
 import {FormsModule} from '@angular/forms';
@@ -20,6 +20,7 @@ import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked'
 
 
 export class ModaleRichiestaAssistenza {
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Output() chiudiModale = new EventEmitter<void>();
   @Output() inviaSegnalazione = new EventEmitter<string | null>();
@@ -88,7 +89,9 @@ export class ModaleRichiestaAssistenza {
     if (!this.messaggio || this.messaggio.trim() === '') {
       this.erroreMessaggio = true;
       valid = false;
-
+    }
+    if (this.erroreMessaggio||this.erroreCategoria) {
+      return;
     }
 
     if (this.listaOggettiDinamicaVisibile) {
@@ -126,12 +129,9 @@ export class ModaleRichiestaAssistenza {
     datoDaInviare += " con messaggio " + this.messaggio;
     this.successoBanner = "Segnalazione inviata con successo";
 
-
-    setTimeout(() => {
       this.inviaSegnalazione.emit(datoDaInviare);
+      this.finestraModale.chiudiModale();
       this.successoBanner = '';
-    }, 1500);
-
   }
 
-} 
+}

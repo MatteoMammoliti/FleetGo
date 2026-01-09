@@ -18,4 +18,10 @@ export class NavbarNoLog {
   toggleSidebar(){
     this.sidebarVisibile = !this.sidebarVisibile;
   }
+
+  closeSidebar() {
+    if (window.innerWidth < 1280) {
+      this.sidebarVisibile = false;
+    }
+  }
 }

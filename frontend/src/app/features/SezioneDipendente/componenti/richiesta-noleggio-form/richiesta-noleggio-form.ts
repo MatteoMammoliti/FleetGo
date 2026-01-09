@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFormNuovaRichiestaNoleggio';
 import {FormsModule} from '@angular/forms';
 import {CurrencyPipe} from '@angular/common';
@@ -17,6 +17,9 @@ import { InputChecked } from '@shared/Componenti/Ui/input-checked/input-checked'
   styleUrl: './richiesta-noleggio-form.css',
 })
 export class RichiestaNoleggioForm {
+
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
+
   @Input() dati:ContenitoreFormNuovaRichiestaNoleggio={} as ContenitoreFormNuovaRichiestaNoleggio;
   @Input() costoStimato:number=0;
   @Output() chiudi=new EventEmitter()
@@ -35,12 +38,14 @@ export class RichiestaNoleggioForm {
   }
 
   onConfirm() {
-    if (!this.motivazione || this.motivazione.trim().length < 5) {
+    if (!this.motivazione || this.motivazione.trim().length <= 5) {
       this.erroreMotivazione = true;
-      return; 
+      return;
     }
 
     this.dati.motivazione = this.motivazione;
     this.confermaRegistrazione.emit(this.dati);
+    this.finestraModale.chiudiModale()
+
   }
 }

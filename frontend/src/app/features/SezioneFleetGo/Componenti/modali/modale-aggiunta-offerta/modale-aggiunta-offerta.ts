@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
 import {validazione} from '@core/utils/validazione';
@@ -18,6 +18,8 @@ import {ImmagineInputChecked} from '@shared/Componenti/Ui/immagine-input-checked
   styleUrl: './modale-aggiunta-offerta.css',
 })
 export class ModaleAggiuntaOfferta {
+
+  @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Input() paginaVisibile: boolean = false;
   @Output() chiudiPagina = new EventEmitter<void>();
@@ -81,6 +83,7 @@ export class ModaleAggiuntaOfferta {
     formData.append("immagine", this.immagineCopertina);
 
     this.salva.emit(formData);
+    this.finestraModale.chiudiModale();
     this.pulisciForm();
     this.resetErrori();
   }
