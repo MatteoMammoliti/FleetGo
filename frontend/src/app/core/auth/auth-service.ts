@@ -100,6 +100,7 @@ export class AuthService {
     localStorage.removeItem('primoAccesso');
     localStorage.removeItem('isAziendaAttiva');
     localStorage.removeItem('utente');
+    localStorage.removeItem('appuntamento_inviato');
 
     return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text', withCredentials: true });
   }
