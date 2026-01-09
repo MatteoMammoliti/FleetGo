@@ -2,12 +2,17 @@
 
   <div class="container mx-auto px-6 md:px-12 relative z-10">
 
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
-        Come FleetGo rivoluziona <br> il tuo lavoro.
+    <div class="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+      
+      <span class="text-azzurro font-bold tracking-widest uppercase text-sm mb-4 block">
+        Come funziona
+      </span>
+
+      <h2 class="text-4xl md:text-5xl font-bold text-blu mb-8 leading-tight">
+        Rivoluziona con noi <br> il tuo lavoro.
       </h2>
 
-      <div class="inline-flex bg-slate-100 p-1.5 rounded-full relative shadow-inner">
+      <div class="inline-flex bg-slate-50 p-1.5 rounded-full relative shadow-inner border border-slate-100">
 
         <div class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-white rounded-full shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
              [ngClass]="activeTab === 'DIPENDENTE' ? 'translate-x-full' : 'translate-x-0'">
@@ -28,23 +33,25 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 transition-opacity duration-500"
-         [class.opacity-100]="true"> @for (feature of featuresCorrenti; track feature.titolo) {
-      <div class="group bg-white p-10 rounded-[2rem] border border-slate-100 hover:border-azzurro/20 hover:shadow-2xl hover:shadow-azzurro/10 hover:-translate-y-2 transition-all duration-300 cursor-default">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in-up animate-delay-200"> 
+      
+      @for (feature of featuresCorrenti; track feature.titolo) {
+        <div class="group bg-white p-10 rounded-[2.5rem] border border-slate-100 hover:border-azzurro/30 hover:shadow-2xl hover:shadow-blue-100/50 hover:-translate-y-2 transition-all duration-300 cursor-default">
 
-        <div class="w-16 h-16 rounded-2xl bg-azzurro/10 text-azzurro flex items-center justify-center text-3xl mb-6 mx-auto group-hover:bg-azzurro group-hover:text-white transition-colors duration-300">
-          <i class="bi" [class]="feature.icon"></i>
+          <div class="w-16 h-16 rounded-2xl bg-azzurro/5 text-azzurro flex items-center justify-center text-3xl mb-6 mx-auto group-hover:bg-azzurro group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-lg group-hover:shadow-azzurro/40">
+            <i class="bi" [class]="feature.icon"></i>
+          </div>
+
+          <h3 class="text-xl font-bold text-blu mb-4 text-center">
+            {{ feature.titolo }}
+          </h3>
+
+          <p class="text-slate-500 leading-relaxed text-center font-medium">
+            {{ feature.descrizione }}
+          </p>
+
         </div>
-
-        <h3 class="text-xl font-bold text-slate-900 mb-4 text-center">
-          {{ feature.titolo }}
-        </h3>
-        <p class="text-slate-500 leading-relaxed text-center">
-          {{ feature.descrizione }}
-        </p>
-
-      </div>
-    }
+      }
 
     </div>
 

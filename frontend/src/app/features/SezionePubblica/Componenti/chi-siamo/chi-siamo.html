@@ -1,38 +1,43 @@
-<section class="py-24 bg-white">
+<section class="py-24 bg-white overflow-hidden">
   <div class="container mx-auto px-6 md:px-12">
 
     <div class="grid md:grid-cols-2 gap-16 items-center">
 
-      <div class="text-left">
+      <div class="text-left animate-fade-in-up">
 
-        <span class="text-azzurro-scuro font-bold text-5xl mb-6 block">
+        <span class="text-azzurro-scuro font-bold tracking-widest uppercase text-sm mb-4 block">
           Chi siamo
         </span>
 
-        <h2 class="text-3xl font-bold text-blu mb-6">
-          La Tecnologia al Servizio <br> della tua Flotta.
+        <h2 class="text-4xl md:text-5xl font-bold text-blu mb-8 leading-tight">
+          La Tecnologia al servizio <br> 
+          della tua Flotta.
         </h2>
 
-        <div class="text-grigio-scuro text-lg space-y-6">
+        <div class="text-slate-500 text-lg space-y-6 leading-relaxed">
           <p>
             Siamo nati con un'idea semplice: rendere la gestione dei veicoli aziendali
-            trasparente e priva di stress.
+            <strong class="text-slate-700 font-semibold">trasparente e priva di stress</strong>.
           </p>
           <p>
             In FleetGo uniamo design e potenza di calcolo per offrirti uno strumento
-            che non è solo un gestionale, ma un vero partner strategico per il tuo business. <br>
+            che non è solo un gestionale, ma un vero <strong class="text-slate-700 font-semibold">partner strategico</strong> per il tuo business. <br>
             Fidati di noi, conosciamo la strada.
           </p>
         </div>
 
       </div>
 
-      <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100">
+      <div class="relative w-full aspect-[4/3] rounded-[2.5rem] overflow-hidden bg-slate-100 shadow-2xl shadow-blue-100/50 group animate-fade-in-up animate-delay-200">
 
-        <img src="chi-siamo.png" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out" alt="">
+        <img src="chi-siamo.png" 
+             class="absolute inset-0 w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-110" 
+             alt="Chi siamo FleetGo">
 
-        <div class="absolute inset-0 bg-blu/10 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-blu/20 to-transparent mix-blend-multiply opacity-60"></div>
+        
       </div>
+
     </div>
   </div>
 </section>

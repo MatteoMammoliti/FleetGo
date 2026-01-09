@@ -1,59 +1,63 @@
-<section class="relative h-screen min-h-[600px] flex items-center overflow-hidden">
+<section class="relative h-screen min-h-[600px] flex items-center overflow-hidden group">
+  
   <img src="hero_banner.png"
-       class="absolute inset-0 w-full h-full object-cover object-center z-0" alt="hero-banner">
+       class="absolute inset-0 w-full h-full object-cover object-center z-0 animate-fade-in duration-1000 scale-105" 
+       alt="hero-banner">
 
-  <div class="absolute inset-0 bg-gradient-to-l from-blu/90 via-blu/50 to-transparent z-10"></div>
+  <div class="absolute inset-0 bg-gradient-to-l from-blu/95 via-blu/70 to-blu/20 z-10"></div>
 
   <div class="relative z-20 container mx-auto px-6 md:px-12 flex justify-end h-full items-center">
 
-    <div class="text-right">
+    <div class="text-right max-w-3xl">
 
-      <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-6 drop-shadow-lg">
+      <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-6 drop-shadow-xl animate-fade-in-down animate-duration-1000 animate-ease-out">
         Il futuro della tua <br>
-        <span class="text-azzurro">
+        <span class="text-azzurro drop-shadow-none filter brightness-110">
           mobilità aziendale.
         </span>
       </h1>
 
-      <p class="text-lg md:text-xl text-white mb-10 ml-auto max-w-lg leading-relaxed">
+      <p class="text-lg md:text-xl text-slate-200 font-medium mb-10 ml-auto max-w-lg leading-relaxed animate-fade-in-down animate-delay-300 animate-duration-1000">
         Ottimizza i costi, monitora i veicoli e semplifica la gestione delle trasferte dei tuoi dipendenti.
         FleetGo è il partner per la tua azienda che stavi cercando.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-4 justify-end mb-16">
+      <div class="flex flex-col sm:flex-row gap-4 justify-end mb-16 animate-fade-in-up animate-delay-500 animate-duration-1000">
+        
         <a routerLink="/" fragment="vantaggi"
-           class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-black hover:border-white transition-all text-center cursor-pointer">
+           class="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/30 text-white font-bold rounded-full hover:bg-white hover:text-blu transition-all duration-300 text-center cursor-pointer hover:scale-105 active:scale-95 shadow-lg">
           Scopri i Vantaggi
         </a>
 
         <a routerLink="/login"
-           class="px-8 py-4 bg-azzurro text-white font-bold rounded-full shadow-azzurro/40 hover:bg-azzurro-scuro text-center cursor-pointer">
-          Inizia Ora
+           class="px-8 py-4 bg-azzurro text-white font-bold rounded-full hover:bg-azzurro-scuro hover:shadow-azzurro/50 transition-all duration-300 text-center cursor-pointer hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+          Inizia Ora <i class="bi bi-arrow-right"></i>
         </a>
+
       </div>
 
-      <div class="flex justify-end items-center gap-8 border-t border-white/30 pt-6">
+      <div class="flex justify-end items-center gap-6 md:gap-10 border-t border-white/20 pt-8 animate-fade-in animate-delay-700 backdrop-blur-[2px] rounded-tl-3xl p-4 -mr-4">
 
-        <div class="text-right">
-          <span class="block text-3xl md:text-4xl font-bold text-white">{{veicoliGestiti}}</span>
-          <span class="text-slate-300 text-xs font-bold uppercase tracking-wider">Veicoli</span>
+        <div class="text-right group/stat cursor-default">
+          <span class="block text-3xl md:text-5xl font-black text-white mb-1 group-hover/stat:text-azzurro transition-colors duration-300">{{veicoliGestiti}}</span>
+          <span class="text-slate-400 text-xs font-bold uppercase tracking-widest">Veicoli Gestiti</span>
         </div>
 
-        <div class="text-right border-l border-white/30 pl-8">
-          <span class="block text-3xl md:text-4xl font-bold text-white">24/7</span>
-          <span class="text-slate-300 text-xs font-bold uppercase tracking-wider">Supporto</span>
+        <div class="text-right border-l border-white/20 pl-6 md:pl-10 group/stat cursor-default">
+          <span class="block text-3xl md:text-5xl font-black text-white mb-1 group-hover/stat:text-azzurro transition-colors duration-300">24/7</span>
+          <span class="text-slate-400 text-xs font-bold uppercase tracking-widest">Supporto</span>
         </div>
 
-        <div class="text-right border-l border-white/30 pl-8 flex flex-col items-end justify-center h-full">
-          <div class="flex gap-1 text-[#00b67a] text-lg mb-1 drop-shadow-sm">
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-half"></i>
+        <div class="text-right border-l border-white/20 pl-6 md:pl-10 flex flex-col items-end justify-center h-full">
+          <div class="flex gap-1 text-[#00b67a] text-lg mb-2 drop-shadow-sm transform hover:scale-110 transition-transform duration-300">
+            <i class="bi-star-fill"></i>
+            <i class="bi-star-fill"></i>
+            <i class="bi-star-fill"></i>
+            <i class="bi-star-fill"></i>
+            <i class="bi-star-half"></i>
           </div>
-          <div class="text-white text-sm font-medium leading-tight">
-            Voto 4.8 su <span class="font-bold">Trustpilot</span>
+          <div class="text-slate-200 text-sm font-medium leading-tight">
+            Voto 4.8 su <span class="font-bold text-white">Trustpilot</span>
           </div>
         </div>
 
