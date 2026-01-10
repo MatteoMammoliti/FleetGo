@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
-import { environment } from '@env/environment';
+import {environment} from '@env/environment';
 
-@Injectable ({
+@Injectable({
   providedIn: 'root'
 })
 export class GoogleMapsService {
   private apiKey = environment.googleMapsApiKey;
   private caricato = false;
 
-  load():Promise<void>{
-    return new Promise((resolve,reject)=>{
-      if(this.caricato || (window as any).google?.maps){
+  load(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.caricato || (window as any).google?.maps) {
         resolve();
         return;
       }
-      if(document.getElementById("google-maps-script")){
+      if (document.getElementById("google-maps-script")) {
         resolve();
         this.caricato = true;
         return;

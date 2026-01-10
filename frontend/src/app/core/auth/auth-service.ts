@@ -1,16 +1,17 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {Observable} from 'rxjs';
-import { Injectable, signal } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {ContenitoreDatiModificaPasswordDTO} from '@core/models/ContenitoreDatiModificaPasswordDTO';
 import {environment} from '@env/environment';
 
 export interface LoginResponse {
   redirectUrl: string;
   ruolo: string;
-  idAzienda?:number | null;
+  idAzienda?: number | null;
   primoAccesso: boolean;
   isAziendaAttiva: boolean | null;
+
   [key: string]: any;
 }
 
@@ -20,14 +21,14 @@ export interface LoginResponse {
 
 export class AuthService {
   ruoloUtenteCorrente = signal<string | null>(null);
-  idAzienda=signal<number | null>(null);
+  idAzienda = signal<number | null>(null);
   primoAccesso = signal<boolean | null>(null);
   aziendaAttiva = signal<boolean | null>(null);
 
-  constructor (private http: HttpClient) {
+  constructor(private http: HttpClient) {
 
-    const ruoloLocale= localStorage.getItem('ruoloUtenteCorrente');
-    if (ruoloLocale){
+    const ruoloLocale = localStorage.getItem('ruoloUtenteCorrente');
+    if (ruoloLocale) {
       this.ruoloUtenteCorrente.set(ruoloLocale);
     }
 
@@ -37,34 +38,34 @@ export class AuthService {
     }
 
     const primoAccessoLocale = localStorage.getItem('primoAccesso');
-    if(primoAccessoLocale){
+    if (primoAccessoLocale) {
       this.primoAccesso.set(primoAccessoLocale === 'true');
     }
 
     const isAziendaAttiva = localStorage.getItem('isAziendaAttiva');
-    if(isAziendaAttiva){
+    if (isAziendaAttiva) {
       this.aziendaAttiva.set(isAziendaAttiva === 'true');
     }
   }
 
-  apiUrl = environment.apiUrl+'/autenticazione';
+  apiUrl = environment.apiUrl + '/autenticazione';
 
-  registrazione(utente:DipendenteDTO,immaginePatente:File ):Observable<string> {
+  registrazione(utente: DipendenteDTO, immaginePatente: File): Observable<string> {
     const formData = new FormData();
-    formData.append("immagine",immaginePatente);
-    formData.append("utente", new Blob([JSON.stringify(utente)], { type: 'application/json' }));
-    return this.http.post(`${this.apiUrl}/registrazione`, formData, { responseType: 'text' });
+    formData.append("immagine", immaginePatente);
+    formData.append("utente", new Blob([JSON.stringify(utente)], {type: 'application/json'}));
+    return this.http.post(`${this.apiUrl}/registrazione`, formData, {responseType: 'text'});
   }
 
-  login(email:string, password:string) :Observable<LoginResponse>{
+  login(email: string, password: string): Observable<LoginResponse> {
 
     const body = new HttpParams()
       .set('email', email)
       .set('password', password);
 
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      withCredentials:true
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      withCredentials: true
     });
   }
 
@@ -88,7 +89,7 @@ export class AuthService {
     localStorage.setItem('utente', JSON.stringify(response));
   }
 
-  logout(){
+  logout() {
 
     this.primoAccesso.set(null);
     this.ruoloUtenteCorrente.set(null);
@@ -102,7 +103,7 @@ export class AuthService {
     localStorage.removeItem('utente');
     localStorage.removeItem('appuntamento_inviato');
 
-    return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text', withCredentials: true });
+    return this.http.post(`${this.apiUrl}/logout`, {}, {responseType: 'text', withCredentials: true});
   }
 
   invioOTP(email: string) {
@@ -110,7 +111,7 @@ export class AuthService {
     const formData = new FormData();
     formData.append("email", email);
 
-    return this.http.post(`${this.apiUrl}/richiediCodiceOTP`, formData, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/richiediCodiceOTP`, formData, {responseType: 'text'});
   }
 
   cambioPassword(email: string, otp: string, nuovaPassword: string): Observable<string> {
@@ -121,6 +122,6 @@ export class AuthService {
       codiceOTP: otp
     }
 
-    return this.http.post(`${this.apiUrl}/modificaPassword`, dati, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/modificaPassword`, dati, {responseType: 'text'});
   }
 }

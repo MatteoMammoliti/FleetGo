@@ -2,26 +2,31 @@
   <div class="">
 
     <div class="px-2" [@animazioneTabella]="fatture?.length">
-      @if(fatture==null){
+      @if (fatture == null) {
         <div class="flex items-center justify-center w-full min-h-[400px] mb-5">
           <i class="bi bi-arrow-clockwise caricamento "></i>
         </div>
       } @else {
         @for (fattura of fatture; track fattura.idAzienda + '-' + fattura.mese) {
 
-          <div class="flex justify-between items-center bg-grigio px-4 py-3 rounded-2xl group drop-shadow-sm duration-300 hover:bg-azzurro/10 transition-colors mt-2">
+          <div
+            class="flex justify-between items-center bg-grigio px-4 py-3 rounded-2xl group drop-shadow-sm duration-300 hover:bg-azzurro/10 transition-colors mt-2">
             <div class="flex flex-col ">
               <span class="text-m text-testo-p">{{ fattura.nomeAzienda }}</span>
-              <span class="text-xs text-testo-s">{{ fattura.mese }}/{{ fattura.anno}}</span>
+              <span class="text-xs text-testo-s">{{ fattura.mese }}/{{ fattura.anno }}</span>
             </div>
             <span class="text-xs text-testo-s">{{ fattura.numeroNoleggi }} noleggi effettuati</span>
-            <span class="text-azzurro text-m font-bold">{{ fattura.costoTotale | currency:'EUR':'symbol':'1.2-2' }}</span>
-            <app-bottone-chiaro (click)="generaFattura(fattura)"><span>Emetti</span> <i class="bi bi-file-earmark-check"></i></app-bottone-chiaro>
+            <span
+              class="text-azzurro text-m font-bold">{{ fattura.costoTotale | currency:'EUR':'symbol':'1.2-2' }}</span>
+            <app-bottone-chiaro (click)="generaFattura(fattura)"><span>Emetti</span> <i
+              class="bi bi-file-earmark-check"></i></app-bottone-chiaro>
           </div>
         }
         @if (fatture.length === 0) {
           <div class="w-full min-h-[400px] flex flex-col justify-center items-center">
-          <app-messaggio-card-vuota testoPrimario="La contabilità è in ordine!" testoSecondario="Tutte le fatture sono state emesse" icona="bi-calendar-check"></app-messaggio-card-vuota>
+            <app-messaggio-card-vuota testoPrimario="La contabilità è in ordine!"
+                                      testoSecondario="Tutte le fatture sono state emesse"
+                                      icona="bi-calendar-check"></app-messaggio-card-vuota>
           </div>
         }
 

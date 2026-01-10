@@ -4,10 +4,10 @@ import {FormsModule} from '@angular/forms';
 import {HomeService} from '@features/DipendenteSenzaAzienda/ServiceDipendenteSenzaAzienda/home-service';
 import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
 import {RichiestaAffiliazione} from '@features/DipendenteSenzaAzienda/Componenti/richiesta-affiliazione/richiesta-affiliazione';
-import { BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import { BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import { MessaggioCardVuota } from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import { CommonModule } from '@angular/common';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -90,8 +90,8 @@ export class HomeDipendenteSenzaAzienda {
     if (this.aziendaSelezionata && this.aziendaSelezionata.idAzienda === azienda.idAzienda) {
         this.aziendaSelezionata = {} as ContenitoreDatiAzienda;
     } else {
-        this.aziendaSelezionata = azienda; 
-        
+        this.aziendaSelezionata = azienda;
+
         if (window.innerWidth < 1024) {
           setTimeout(() => {
             document.getElementById('sidebar-richiesta')?.scrollIntoView({ behavior: 'smooth' });
@@ -102,12 +102,12 @@ export class HomeDipendenteSenzaAzienda {
 
   gestisciInvioRichiesta(idAzienda: number) {
     if (!idAzienda) return;
-    
+
     this.caricamentoDati = true;
     this.service.inviaRichiestaAffiliazione(idAzienda).subscribe({
       next: (risposta: any) => {
         this.gestisciSuccesso("Richiesta inviata con successo!");
-        this.getRichiestaInAttesa(); 
+        this.getRichiestaInAttesa();
       },
       error: (err) => {
         this.gestisciErrore("Errore nell'invio della richiesta.");
@@ -125,7 +125,7 @@ export class HomeDipendenteSenzaAzienda {
       next: (risposta: any) => {
         this.gestisciSuccesso("Richiesta annullata correttamente.");
         this.richiestaInAttesa = null;
-        this.getAziende(); 
+        this.getAziende();
       },
       error: (err) => {
         this.gestisciErrore("Impossibile annullare la richiesta.");

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {ContenitoreDatiRegistrazioneAzienda} from '@core/models/ContenitoreDatiRegistrazioneAzienda';
@@ -12,37 +12,41 @@ import {environment} from '@env/environment';
 
 export class AziendeAffiliateService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  private apiUrl = environment.apiUrl+'/dashboardFleetGo';
+  private apiUrl = environment.apiUrl + '/dashboardFleetGo';
 
-  registraAzienda(admin: AdminAziendaleDTO, azienda: AziendaDTO){
+  registraAzienda(admin: AdminAziendaleDTO, azienda: AziendaDTO) {
 
-    const contenitore:ContenitoreDatiRegistrazioneAzienda = {
+    const contenitore: ContenitoreDatiRegistrazioneAzienda = {
       adminAziendale: admin,
       azienda: azienda
     }
 
-    return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitore, { withCredentials: true,  responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitore, {
+      withCredentials: true,
+      responseType: 'text'
+    });
   }
 
-  richiediAziendeAttive(): Observable<AziendaDTO[]>{
+  richiediAziendeAttive(): Observable<AziendaDTO[]> {
     return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziendeAttive`, {
-      withCredentials:true
+      withCredentials: true
     });
   }
 
   richiediAziendeDisabilitate(): Observable<AziendaDTO[]> {
     return this.http.get<AziendaDTO[]>(`${this.apiUrl}/elencoAziendeDisabilitate`, {
-      withCredentials:true
+      withCredentials: true
     });
   }
 
   riabilitaAzienda(idAzienda: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/riabilitaAzienda`, idAzienda, { withCredentials: true,  responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/riabilitaAzienda`, idAzienda, {withCredentials: true, responseType: 'text'});
   }
 
   disabilitaAzienda(idAzienda: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/disabilitaAzienda`, idAzienda, { withCredentials: true,  responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/disabilitaAzienda`, idAzienda, {withCredentials: true, responseType: 'text'});
   }
 }

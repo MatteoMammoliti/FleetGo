@@ -1,10 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FatturaDTO} from '@core/models/FatturaDTO.models';
 import {CurrencyPipe} from '@angular/common';
-import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
-import {BottonePillola} from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
-import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
+import {BottoneChiaro} from '@shared/Componenti/Bottoni/bottone-chiaro/bottone-chiaro';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 
@@ -22,7 +21,7 @@ import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 })
 export class TabellaStoricoFatture {
 
-  @Input() fattureEmesse: FatturaDTO[]|null = null;
+  @Input() fattureEmesse: FatturaDTO[] | null = null;
   @Output() scaricaFattura = new EventEmitter<number>();
   @Output() pagaFattura = new EventEmitter<number>();
 

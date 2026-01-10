@@ -2,58 +2,57 @@
   [titolo]="'Le mie Prenotazioni'"
   [sottotitolo]="'Gestisci e monitora lo stato dei tuoi noleggi aziendali!'">
 
-  <div class="px-3 mb-8 mt-6">
-    <div class="flex items-center justify-end gap-2 overflow-x-auto pb-4 scrollbar-hide">
-      
-      <app-bottone-pillola 
-        [label]="'Tutte'" [attivo]="filtroAttivo === 'Tutte'" [variante]="'blu'" 
+  <div class="contenitore-filtri">
+    <div class="lista-filtri">
+
+      <app-bottone-pillola
+        [label]="'Tutte'" [attivo]="filtroAttivo === 'Tutte'" [variante]="'blu'"
         (clickBtn)="impostaFiltro('Tutte')">
       </app-bottone-pillola>
 
-      <app-bottone-pillola 
-        [label]="'In attesa'" [attivo]="filtroAttivo === 'In attesa'" [variante]="'giallo'" 
+      <app-bottone-pillola
+        [label]="'In attesa'" [attivo]="filtroAttivo === 'In attesa'" [variante]="'giallo'"
         (clickBtn)="impostaFiltro('In attesa')">
       </app-bottone-pillola>
 
-      <app-bottone-pillola 
-        [label]="'Da ritirare'" [attivo]="filtroAttivo === 'Da ritirare'" [variante]="'viola'" 
+      <app-bottone-pillola
+        [label]="'Da ritirare'" [attivo]="filtroAttivo === 'Da ritirare'" [variante]="'viola'"
         (clickBtn)="impostaFiltro('Da ritirare')">
       </app-bottone-pillola>
 
-      <app-bottone-pillola 
-        [label]="'In corso'" [attivo]="filtroAttivo === 'In corso'" [variante]="'verde'" 
+      <app-bottone-pillola
+        [label]="'In corso'" [attivo]="filtroAttivo === 'In corso'" [variante]="'verde'"
         (clickBtn)="impostaFiltro('In corso')">
       </app-bottone-pillola>
 
-      <app-bottone-pillola 
-        [label]="'Terminate'" [attivo]="filtroAttivo === 'Terminata'" [variante]="'grigio'" 
+      <app-bottone-pillola
+        [label]="'Terminate'" [attivo]="filtroAttivo === 'Terminata'" [variante]="'grigio'"
         (clickBtn)="impostaFiltro('Terminata')">
       </app-bottone-pillola>
 
-      <app-bottone-pillola 
-        [label]="'Rifiutate'" [attivo]="filtroAttivo === 'Rifiutate'" [variante]="'rosso'" 
+      <app-bottone-pillola
+        [label]="'Rifiutate'" [attivo]="filtroAttivo === 'Rifiutate'" [variante]="'rosso'"
         (clickBtn)="impostaFiltro('Rifiutate')">
       </app-bottone-pillola>
 
     </div>
   </div>
 
-  <div class="px-3 pb-20 min-h-[400px]">
-    
+  <div class="contenitore-prenotazioni">
+
     @if (caricamentoDati) {
-      <div class="flex items-center justify-center h-[400px] w-full">
-              <i class="caricamento bi bi-arrow-clockwise"></i>
+      <div class="contenitore-caricamento">
+        <i class="caricamento bi bi-arrow-clockwise"></i>
       </div>
-    } 
-    @else {
-      
+    } @else {
+
       @if (prenotazioniFiltrate.length > 0) {
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
+
+        <div class="griglia-prenotazioni animazione-fade">
           @for (prenotazione of prenotazioniFiltrate; track prenotazione.idRichiesta! + filtroAttivo) {
-            <div class="h-full">
+            <div class="wrapper-card">
               <app-prenotazione-card
-                class="h-full block"
+                class="card-blocco"
                 (annullaRichiesta)="eliminaPrenotazione($event)"
                 [prenotazione]="prenotazione">
               </app-prenotazione-card>
@@ -62,25 +61,23 @@
         </div>
 
       } @else {
-        
-        <div class="bg-white rounded-[2rem] p-12 shadow-md border border-grigio/50 flex flex-col items-center justify-center text-center animate-fade-in min-h-[400px]">
-          
+
+        <div class="card-vuota animazione-fade">
+
           <app-messaggio-card-vuota
             [icona]="'bi-journal-x'"
             [testoPrimario]="'Nessuna prenotazione ' + (filtroAttivo === 'Tutte' ? '' : filtroAttivo.toLowerCase())"
             [testoSecondario]="'Non sono presenti richieste che corrispondono a questo filtro.'">
           </app-messaggio-card-vuota>
 
-          <div class="mt-8">
-            @if(filtroAttivo === 'Tutte') {
-              <button (click)="clickNuovaPrenotazione()" 
-                      class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-200 hover:shadow-blue-300 hover:scale-[1.02] transition-all duration-300 flex items-center gap-2">
+          <div class="contenitore-azioni">
+            @if (filtroAttivo === 'Tutte') {
+              <button (click)="clickNuovaPrenotazione()" class="bottone-nuova-prenotazione">
                 <i class="bi bi-plus-lg text-lg"></i>
                 Nuova Prenotazione
               </button>
             } @else {
-              <button (click)="impostaFiltro('Tutte')" 
-                      class="px-8 py-3 bg-white text-blue-600 font-bold rounded-xl border-2 border-blue-100 hover:bg-blue-50 transition-all">
+              <button (click)="impostaFiltro('Tutte')" class="bottone-reset-filtro">
                 Mostra Tutte
               </button>
             }
@@ -88,14 +85,14 @@
         </div>
       }
 
-    } 
+    }
   </div>
-  
+
 </app-template-titolo-sottotitolo>
 
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if(successoBanner){
+@if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }

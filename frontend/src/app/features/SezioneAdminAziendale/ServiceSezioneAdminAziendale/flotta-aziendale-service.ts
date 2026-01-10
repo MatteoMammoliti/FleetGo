@@ -1,26 +1,26 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {environment} from '@env/environment';
-import { LuogoDTO } from '@core/models/luogoDTO.models';
-import { RichiestaManutenzioneDTO } from '@core/models/RichiestaManutenzioneDTO';
+import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class FlottaAdminAziendaleService {
-  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+  private apiUrl = environment.apiUrl + '/dashboardAdminAziendale';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public richiediVeicoliAziendali(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/flottaAziendale`, { withCredentials: true });
+    return this.http.get(`${this.apiUrl}/flottaAziendale`, {withCredentials: true});
   }
 
   public richiediLuoghi(): Observable<any[]> {
-    return this.http.get<LuogoDTO[]>(`${this.apiUrl}/luoghiAzienda`, { withCredentials: true });
+    return this.http.get<LuogoDTO[]>(`${this.apiUrl}/luoghiAzienda`, {withCredentials: true});
   }
 
   public inviaRichiestaManutenzione(richiesta: RichiestaManutenzioneDTO): Observable<string> {

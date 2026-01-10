@@ -1,16 +1,19 @@
-import {Component, EventEmitter, Input, Output, OnInit, OnDestroy, SimpleChanges, OnChanges} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TemplateFinestraModale } from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import { GoogleMapsService } from '@core/services/google-maps-service';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {GoogleMapsService} from '@core/services/google-maps-service';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import { DettagliVeicoloAziendaleService } from '../../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
-import { RichiestaManutenzioneDTO } from '@core/models/RichiestaManutenzioneDTO';
-import { FlottaAdminAziendaleService } from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
-import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
-import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
-import {BottonePillola} from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
-import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {
+  DettagliVeicoloAziendaleService
+} from '../../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
+import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
+import {
+  FlottaAdminAziendaleService
+} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/flotta-aziendale-service';
+import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
+
 declare var google: any;
 
 @Component({
@@ -29,30 +32,19 @@ declare var google: any;
 
 export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
 
-
-
-  @Input() veicoloInput: any;
-
-  @Input() listaLuoghi: LuogoDTO[] = [];
   @Output() chiudi = new EventEmitter<void>();
-
-
   @Output() richiediVeicolo = new EventEmitter<string>();
   @Output() inviaLuogo = new EventEmitter<LuogoDTO>();
   @Output() inviaRichiestaManutenzione = new EventEmitter<RichiestaManutenzioneDTO>();
 
-
-
-
-
-  veicolo: any = null;
-
   @Input() loading: any;
   @Input() mostraFormManutenzione: boolean = false;
+  @Input() veicoloInput: any;
+  @Input() listaLuoghi: LuogoDTO[] = [];
 
   tipoManutenzioneSelezionato: any = null;
   richiestaManutenzione: RichiestaManutenzioneDTO | null = null;
-
+  veicolo: any = null;
 
 
   opzioniManutenzione = [
@@ -63,21 +55,20 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
     'Controllo elettronico',
     'altro'
   ];
-
+  luogoSelezionatoId: number | null = null;
+  erroreSelezioneManutenzione: boolean = false;
   private map: any;
   private marker: any;
   private infoWindow: any;
   private coordsIniziali: { lat: number, lng: number } | null = null;
   private zoomIniziale: number = 15;
 
-  luogoSelezionatoId: number | null = null;
-  erroreSelezioneManutenzione: boolean=false;
-
   constructor(
     private googleMapsService: GoogleMapsService,
     private dettagliService: DettagliVeicoloAziendaleService,
     private flottaService: FlottaAdminAziendaleService
-  ) {}
+  ) {
+  }
 
 
   ngOnInit() {
@@ -100,7 +91,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   caricaManutenzione() {
     this.dettagliService.richiediManutenzioneVeicolo(this.veicoloInput.idVeicolo).subscribe({
       next: data => {
-        if(data) {
+        if (data) {
           console.log("ho ricevuto", data);
           this.richiestaManutenzione = data;
         }
@@ -109,24 +100,22 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   }
 
 
-
-
   initMappa() {
     const luogo = this.veicolo.luogoRitiroDeposito;
     if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
 
-    this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
+    this.coordsIniziali = {lat: luogo.latitudine, lng: luogo.longitudine};
 
     this.googleMapsService.load().then(() => {
       setTimeout(() => {
-        if(this.coordsIniziali) {
-           this.disegnaMappa(this.coordsIniziali);
+        if (this.coordsIniziali) {
+          this.disegnaMappa(this.coordsIniziali);
         }
       }, 300);
     });
   }
 
-  disegnaMappa(coords: { lat: number; lng: number}) {
+  disegnaMappa(coords: { lat: number; lng: number }) {
     const mapElement = document.getElementById("google-map-modale");
     if (!mapElement) return;
 
@@ -148,7 +137,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
     });
 
     this.infoWindow = new google.maps.InfoWindow({
-      content:`<div style="padding:5px; font-weight:bold; color:#0f172a">${this.veicolo.luogoRitiroDeposito.nomeLuogo}</div>`
+      content: `<div style="padding:5px; font-weight:bold; color:#0f172a">${this.veicolo.luogoRitiroDeposito.nomeLuogo}</div>`
     });
 
     this.marker.addListener("click", () => {
@@ -163,17 +152,16 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   attivaMappa() {
     this.map.setZoom(17);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'cooperative' });
+    this.map.setOptions({gestureHandling: 'cooperative'});
     this.infoWindow.open(this.map, this.marker);
   }
 
   resetMappa() {
     this.map.setZoom(this.zoomIniziale);
     this.map.setCenter(this.coordsIniziali);
-    this.map.setOptions({ gestureHandling: 'none' });
+    this.map.setOptions({gestureHandling: 'none'});
     this.infoWindow.close();
   }
-
 
 
   impostaLuogo() {
@@ -197,7 +185,7 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
       tipoManutenzione: this.tipoManutenzioneSelezionato,
     };
 
-    this.erroreSelezioneManutenzione=false;
+    this.erroreSelezioneManutenzione = false;
 
     this.flottaService.inviaRichiestaManutenzione(richiesta).subscribe({
       next: (res) => {
@@ -217,14 +205,13 @@ export class ModaleGestisciVeicolo implements OnChanges, OnDestroy {
   annullaRichiesta(richiesta: RichiestaManutenzioneDTO) {
     this.dettagliService.annullaRichiesta(richiesta).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.ngOnInit();
           this.initMappa();
         }
       }, error: (err) => console.error(err)
     })
   }
-
 
 
 }

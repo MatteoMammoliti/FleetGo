@@ -1,28 +1,29 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Footer} from "@shared/footer/footer";
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {Sidebar} from "@shared/sidebar/sidebar";
+import {Sidebar} from "@shared/Navigazione/sidebar/sidebar";
 import {AuthService} from '@core/auth/auth-service';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-general-layout-azienda-disabilitata',
-    imports: [
-        Footer,
-        RouterLink,
-        RouterLinkActive,
-        RouterOutlet,
-        Sidebar,
-        BannerErrore
-    ],
+  imports: [
+    Footer,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    Sidebar,
+    BannerErrore
+  ],
   templateUrl: './general-layout-azienda-disabilitata.html',
   styleUrl: './general-layout-azienda-disabilitata.css',
 })
 export class GeneralLayoutAziendaDisabilitata {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  erroreBanner='';
+  erroreBanner = '';
 
   logout() {
     this.authService.logout().subscribe({

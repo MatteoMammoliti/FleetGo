@@ -1,10 +1,11 @@
 <app-template-titolo-sottotitolo titolo="Flotta Aziendale" sottotitolo="GESTISCI LA TUA FLOTTA AZIENDALE">
 
-  <div class="h-[750px] flex flex-col overflow-hidden px-1">
+  <div class="min-h-[750px] flex flex-col overflow-hidden px-1">
 
     <div class="flex flex-col gap-6 h-full animate-fade-up animate-duration-1000">
 
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white px-5 py-4 rounded-2xl shadow-sm border border-slate-100 shrink-0">
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white px-5 py-4 rounded-2xl shadow-sm border border-slate-100 shrink-0">
         <div class="flex flex-col gap-2">
           <div class="flex flex-wrap gap-3 text-sm bg-azzurro-scuro text-gray-100 p-2.5 rounded-xl">
             <div class="flex items-center gap-2">
@@ -52,7 +53,7 @@
           </div>
         } @else {
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10 mt-3">
             @for (veicolo of veicoliFiltrati; track veicolo.targaVeicolo) {
               <app-card-auto-aziendale
                 [veicolo]="veicolo"
@@ -62,7 +63,8 @@
 
             @if (veicoliFiltrati?.length === 0) {
               <div class="col-span-full py-20 text-center animate-fade">
-                <app-messaggio-card-vuota icona="bi-search" testoPrimario="Nessun veicolo trovato" testoSecondario="Prova a cambiare i filtri di ricerca."></app-messaggio-card-vuota>
+                <app-messaggio-card-vuota icona="bi-search" testoPrimario="Nessun veicolo trovato"
+                                          testoSecondario="Prova a cambiare i filtri di ricerca."></app-messaggio-card-vuota>
               </div>
             }
           </div>
@@ -86,6 +88,6 @@
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if(successoBanner){
+@if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }

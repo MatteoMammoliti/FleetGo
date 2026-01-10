@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ContenitoreStatisticheNumericheManutezioni} from '@core/models/ContenitoreStatisticheNumericheManutezioni';
 import {SezioneManutenzioneService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/sezione-manutenzione-service';
 import {
@@ -8,93 +8,97 @@ import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {
   TabellaStoricoManutenzioni
 } from '@features/SezioneFleetGo/Componenti/tabelle/tabella-storico-manutenzioni/tabella-storico-manutenzioni';
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
 import {
   CardStatisticheDashboardFleet
-} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import {TemplateFinestraModale} from "@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale";
+} from '@shared/Componenti/Card/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import {TemplateFinestraModale} from "@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale";
 
 @Component({
   selector: '',
-    imports: [
+  imports: [
 
-        TabellaManutenzioniInCorso,
-        TabellaStoricoManutenzioni,
-        IntestazioneEBackground,
-        CardStatisticheDashboardFleet,
-        BannerErrore,
-        TemplateFinestraModale,
-    ],
+    TabellaManutenzioniInCorso,
+    TabellaStoricoManutenzioni,
+    IntestazioneEBackground,
+    CardStatisticheDashboardFleet,
+    BannerErrore,
+    TemplateFinestraModale,
+  ],
   templateUrl: './sezione-manutenzioni.html',
   styleUrl: './sezione-manutenzioni.css',
 })
 export class SezioneManutenzioni {
-constructor(private service:SezioneManutenzioneService) {}
-  datiManutenzione:ContenitoreStatisticheNumericheManutezioni={
-    interventiConclusi:0,
-    attualmenteInOfficina:0
+  constructor(private service: SezioneManutenzioneService) {
   }
 
-  listeManutezioniInCorso:RichiestaManutenzioneDTO[]|null=null;
-  listaManutenzioniStorico:RichiestaManutenzioneDTO[]|null=null;
-
-
-  erroreBanner='';
-  successoBanner='';
-  modaleCheck: boolean=false;
-
-  idRichiestaCorrente:any;
-
-  ngOnInit(){
-  this.prelevaDatiManutenzioni();
-  this.prelevaManutenzioniInCorso();
-  this.prelevaManutenzioniStorico();
+  datiManutenzione: ContenitoreStatisticheNumericheManutezioni = {
+    interventiConclusi: 0,
+    attualmenteInOfficina: 0
   }
 
-  prelevaDatiManutenzioni(){
+  listeManutezioniInCorso: RichiestaManutenzioneDTO[] | null = null;
+  listaManutenzioniStorico: RichiestaManutenzioneDTO[] | null = null;
+
+
+  erroreBanner = '';
+  successoBanner = '';
+  modaleCheck: boolean = false;
+
+  idRichiestaCorrente: any;
+
+  ngOnInit() {
+    this.prelevaDatiManutenzioni();
+    this.prelevaManutenzioniInCorso();
+    this.prelevaManutenzioniStorico();
+  }
+
+  prelevaDatiManutenzioni() {
     this.service.prelevaDatiManutenzione().subscribe({
-      next:(response:ContenitoreStatisticheNumericheManutezioni)=>{
-        this.datiManutenzione=response
-    },
-      error:(err) => {
+      next: (response: ContenitoreStatisticheNumericheManutezioni) => {
+        this.datiManutenzione = response
+      },
+      error: (err) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
-  prelevaManutenzioniInCorso(){
+  prelevaManutenzioniInCorso() {
     this.service.prelevaManutezioniInCorso().subscribe({
-      next:(response:RichiestaManutenzioneDTO[])=>{
+      next: (response: RichiestaManutenzioneDTO[]) => {
         console.log(response);
-        this.listeManutezioniInCorso=response;
+        this.listeManutezioniInCorso = response;
       },
-      error:(err)=>{
+      error: (err) => {
         this.gestisciErrore(err.error);
       }
     });
   }
-  prelevaManutenzioniStorico(){
-  this.service.prelevaManutenzioniStorico().subscribe({
-    next:(reponse:RichiestaManutenzioneDTO[])=>{
-      this.listaManutenzioniStorico=reponse
-      console.log(reponse)
-    },
-    error:(err)=>{
-      this.gestisciErrore(err.error);
-    }
-  });
+
+  prelevaManutenzioniStorico() {
+    this.service.prelevaManutenzioniStorico().subscribe({
+      next: (reponse: RichiestaManutenzioneDTO[]) => {
+        this.listaManutenzioniStorico = reponse
+        console.log(reponse)
+      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
+      }
+    });
   }
-  concludiRichiestaManutenzione(){
+
+  concludiRichiestaManutenzione() {
     this.service.chiudiRichiestaManutenzione(this.idRichiestaCorrente).subscribe({
-      next:(risposta:string)=>{
+      next: (risposta: string) => {
         this.prelevaManutenzioniStorico()
         this.prelevaManutenzioniInCorso()
 
         this.gestisciSuccesso('Manutenzione conclusa con successo');
-        this.idRichiestaCorrente=null;
+        this.idRichiestaCorrente = null;
       },
-      error:(err)=>{
+      error: (err) => {
         this.gestisciErrore(err.error);
       }
     })
@@ -113,20 +117,20 @@ constructor(private service:SezioneManutenzioneService) {}
     setTimeout(() => this.successoBanner = '', 3000);
   }
 
-  apriModaleCheck(idRichiesta:number){
+  apriModaleCheck(idRichiesta: number) {
     this.idRichiestaCorrente = idRichiesta;
-    this.modaleCheck=true;
+    this.modaleCheck = true;
   }
 
   confermaModale() {
-    if(this.idRichiestaCorrente!=null){
+    if (this.idRichiestaCorrente != null) {
       this.concludiRichiestaManutenzione();
     }
-    this.modaleCheck=false;
+    this.modaleCheck = false;
   }
 
   chiudiModale() {
-    this.modaleCheck=false;
+    this.modaleCheck = false;
   }
 
 }

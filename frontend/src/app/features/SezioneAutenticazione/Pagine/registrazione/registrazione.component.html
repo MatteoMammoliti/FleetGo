@@ -2,7 +2,8 @@
 
   <div class="hidden lg:flex w-1/2 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-azzurro/60 to-blu-notte/90 z-10"></div>
-    <img src="immagine_registrazione.avif" alt="Registrazione FleetGo" class="absolute inset-0 w-full h-full object-cover">
+    <img src="immagine_registrazione.avif" alt="Registrazione FleetGo"
+         class="absolute inset-0 w-full h-full object-cover">
 
     <div class="relative z-20 flex flex-col justify-center h-full px-16 text-white">
       <h1 class="text-5xl font-bold mb-6">Benvenuto!<br>Unisciti a FleetGo.</h1>
@@ -11,8 +12,10 @@
       </p>
     </div>
 
-    <a routerLink="/" class="absolute bottom-10 left-10 z-30 flex items-center gap-3 text-white/70 hover:text-white transition-all group cursor-pointer">
-      <div class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-grigio-scuro transition-all">
+    <a routerLink="/"
+       class="absolute bottom-10 left-10 z-30 flex items-center gap-3 text-white/70 hover:text-white transition-all group cursor-pointer">
+      <div
+        class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-grigio-scuro transition-all">
         <i class="bi-arrow-left text-lg"></i>
       </div>
       <span class="font-bold text-xs uppercase">Torna indietro</span>
@@ -100,7 +103,7 @@
           }
         </div>
 
-        @if (errore=="Password non valida") {
+        @if (errore == "Password non valida") {
           <div class="messaggioErrore">
             <i class="bi-exclamation-circle mr-100"></i> Usa almeno 8 caratteri, una maiuscola, un numero e un simbolo.
           </div>

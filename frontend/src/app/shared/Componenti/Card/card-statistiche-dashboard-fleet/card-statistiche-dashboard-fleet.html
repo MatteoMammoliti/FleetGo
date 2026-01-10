@@ -1,0 +1,24 @@
+<div
+  class="card-dashboard group cursor-pointer hover:shadow-md transition-all animate-fade-right animate-once animate-duration-1000">
+
+  <div class="justify-between flex text-blu">
+    <span>{{ titolo }}</span>
+    <div class="p-3 rounded-xl bg-azzurro/10 group-hover:bg-azzurro transition-colors">
+      <i [class]="'text-azzurro group-hover:text-white text-3xl bi ' + icona"></i>
+    </div>
+  </div>
+
+  <div class="text-azzurro text-3xl font-bold">
+    @if (percentuale) {
+      <span>{{ valore }}%</span>
+    } @else {
+      <h2 class="card-value">{{ valore }}</h2>
+    }
+  </div>
+
+  <div class="text-xs uppercase tracking-wider font-bold text-testo-s">
+    <small>{{ descrizione }}</small>
+  </div>
+
+</div>
+

@@ -1,6 +1,6 @@
 <app-template-titolo-sottotitolo titolo="Monitora la salute del tuo team" sottotitolo="Gestisci e monitora i dipendenti"
                                  [testoDestro]="richiesteAffiliazione.length > 0 ? 'Azione richiesta' : 'Tutto in ordine'"
-                             [iconaDestra]="richiesteAffiliazione.length > 0 ? 'bi-person-exclamation' : 'bi-check-circle'">
+                                 [iconaDestra]="richiesteAffiliazione.length > 0 ? 'bi-person-exclamation' : 'bi-check-circle'">
 
   <div class="px-3 py-5">
     <app-banner-richieste-affiliazione
@@ -37,7 +37,7 @@
 
 </app-template-titolo-sottotitolo>
 
-@if(OnRimuoviDipendente){
+@if (OnRimuoviDipendente) {
   <app-template-finestra-modale
     titolo="Attenzione"
     tastoBlu="Conferma"
@@ -47,24 +47,25 @@
     (conferma)="rimuoviDipendente()"
   >
     <span class="messaggioModaleConferma">Cliccando su conferma il dipendente verà eliminato.</span>
-  </app-template-finestra-modale>}
-  @if(onRifiutaRichiesta){
-    <app-template-finestra-modale
-      [visibile]="'60'"
-      titolo="Attenzione"
-      tastoBlu="Conferma"
-      tastoBianco="Annulla"
-      (chiudi)="chiudiModaleRifiuta()"
-      (annulla)="chiudiModaleRifiuta()"
-      (conferma)="rifiutaRichiestaAffiliazione()"
-    >
-      <span class="messaggioModaleConferma">Cliccando su conferma la richiesta di affiliazione verrà rifiutata.</span>
-    </app-template-finestra-modale>
-    }
+  </app-template-finestra-modale>
+}
+@if (onRifiutaRichiesta) {
+  <app-template-finestra-modale
+    [visibile]="'60'"
+    titolo="Attenzione"
+    tastoBlu="Conferma"
+    tastoBianco="Annulla"
+    (chiudi)="chiudiModaleRifiuta()"
+    (annulla)="chiudiModaleRifiuta()"
+    (conferma)="rifiutaRichiestaAffiliazione()"
+  >
+    <span class="messaggioModaleConferma">Cliccando su conferma la richiesta di affiliazione verrà rifiutata.</span>
+  </app-template-finestra-modale>
+}
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if(successoBanner){
+@if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }
 

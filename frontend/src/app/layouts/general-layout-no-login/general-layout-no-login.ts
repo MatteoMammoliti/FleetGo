@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Component} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 import {Footer} from '@shared/footer/footer';
-import { NavbarNoLog } from '@shared/Componenti/Ui/navbar-no-log/navbar-no-log';
+import {NavbarNoLog} from '@shared/Navigazione/navbar-no-log/navbar-no-log';
 
 
 @Component({
@@ -16,7 +16,9 @@ import { NavbarNoLog } from '@shared/Componenti/Ui/navbar-no-log/navbar-no-log';
   styleUrl: './general-layout-no-login.css',
 })
 export class GeneralLayoutNoLogin {
-  constructor(private router:Router){}
+  constructor(private router: Router) {
+  }
+
   vaiAllaDashboard() {
     this.router.navigate(['/dashboard']);
   }

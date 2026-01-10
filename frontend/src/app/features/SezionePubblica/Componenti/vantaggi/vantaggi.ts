@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-vantaggi',
-  standalone:true,
+  standalone: true,
   imports: [],
   templateUrl: './vantaggi.html',
   styleUrl: './vantaggi.css',

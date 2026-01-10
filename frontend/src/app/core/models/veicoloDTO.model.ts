@@ -8,8 +8,8 @@ export interface VeicoloDTO {
   nomeModello?: string;
   tipoDistribuzioneVeicolo?: string;
   statusContrattualeVeicolo?: string;
-  inManutenzione?:boolean;
-  nomeAziendaAffiliata?:string;
-  idAziendaAffiliata?:number;
-  luogoRitiroDeposito?:LuogoDTO;
+  inManutenzione?: boolean;
+  nomeAziendaAffiliata?: string;
+  idAziendaAffiliata?: number;
+  luogoRitiroDeposito?: LuogoDTO;
 }

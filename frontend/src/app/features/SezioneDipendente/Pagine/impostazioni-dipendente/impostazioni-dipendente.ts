@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import { ProfiloPersonale } from '../../componenti/profilo-personale/profilo-personale';
-import { PatenteDocumentiComponent } from '../../componenti/patente-documenti/patente-documenti';
-import { AffiliazioneAzienda } from '../../componenti/affiliazione-azienda/affiliazione-azienda';
-import { ImpostazioniService } from '../../ServiceSezioneDipendente/impostazioni-service';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ProfiloPersonale} from '@features/SezioneDipendente/componenti/Form/profilo-personale/profilo-personale';
+import {PatenteDocumentiComponent} from '@features/SezioneDipendente/componenti/Banner/patente-documenti/patente-documenti';
+import {AffiliazioneAzienda} from '@features/SezioneDipendente/componenti/Banner/affiliazione-azienda/affiliazione-azienda';
+import {ImpostazioniService} from '../../ServiceSezioneDipendente/impostazioni-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {AuthService} from '@core/auth/auth-service';
 import {Router} from '@angular/router';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
@@ -29,12 +28,13 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   tabSelezionata: string = 'Profilo';
   sezione: string = 'Profilo';
   utente: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
-  urlPatente : string = '';
+  urlPatente: string = '';
 
-  erroreBanner="";
-  successoBanner="";
+  erroreBanner = "";
+  successoBanner = "";
 
-  constructor(private impostazioniService: ImpostazioniService,private authService:AuthService,private router:Router) {}
+  constructor(private impostazioniService: ImpostazioniService, private authService: AuthService, private router: Router) {
+  }
 
   ngOnInit() {
     this.caricaDatiUtente();
@@ -43,7 +43,7 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   caricaDatiUtente() {
     this.impostazioniService.getDipendente().subscribe({
       next: (datiServer) => {
-        if(datiServer){
+        if (datiServer) {
           this.utente = datiServer;
         }
       },
@@ -65,14 +65,14 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   aggiornaPatente(datiPatente: File) {
     this.impostazioniService.aggiornaPatente(datiPatente).subscribe({
       next: (datiPatenteServer) => {
-        if(datiPatenteServer){
+        if (datiPatenteServer) {
           this.caricaDatiUtente();
         }
       }, error: err => this.gestisciErrore(err.error)
     })
   }
 
-  inviaDisdetta(){
+  inviaDisdetta() {
     this.impostazioniService.abbandonaAzienda().subscribe({
       next: () => {
         this.authService.logout();
@@ -102,9 +102,4 @@ export class ImpostazioniDipendenteComponent implements OnInit {
     setTimeout(() => this.erroreBanner = '', 5000);
   }
 
-  gestisciSuccesso(messaggio: string) {
-    this.erroreBanner = '';
-    this.successoBanner = messaggio;
-    setTimeout(() => this.successoBanner = '', 3000);
-  }
 }

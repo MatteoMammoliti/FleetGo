@@ -1,13 +1,15 @@
-import {Component, EventEmitter, Input, model, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {CommonModule, DatePipe} from '@angular/common';
+import {TemplateCardConRiga} from '@shared/Componenti/Card/template-card-con-riga/template-card-con-riga';
 
 @Component({
   selector: 'app-card-offerta',
   standalone: true,
   imports: [
     DatePipe,
-    CommonModule
+    CommonModule,
+    TemplateCardConRiga
   ],
   templateUrl: './card-offerta.html',
   styleUrl: './card-offerta.css',

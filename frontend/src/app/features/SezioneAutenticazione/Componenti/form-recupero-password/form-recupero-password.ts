@@ -1,7 +1,7 @@
-import {Component, inject, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {validazione} from '@core/utils/validazione';
 import {RouterLink} from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -16,7 +16,7 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './form-recupero-password.css',
 })
 export class FormRecuperoPassword {
-  private validatore = inject(validazione);
+  constructor(private validatore:validazione){}
 
   email = '';
   otp = '';
@@ -27,7 +27,7 @@ export class FormRecuperoPassword {
   @Output() cambiaPass = new EventEmitter<any>();
 
   @Input() step: number = 1;
-  @Input() errorePadre:string='';
+  @Input() errorePadre: string = '';
   @Input() messaggio: string = '';
   loading: boolean = false;
   errore: string = '';
@@ -45,7 +45,7 @@ export class FormRecuperoPassword {
 
   inviaRichiestaOtp() {
 
-    if(!this.email) {
+    if (!this.email) {
       this.errore = "campi vuoti non permessi";
       return;
     }
@@ -64,7 +64,7 @@ export class FormRecuperoPassword {
       return;
     }
 
-    if(!this.otp) {
+    if (!this.otp) {
       this.errore = "campi vuoti non permessi";
       return;
     }
@@ -74,10 +74,10 @@ export class FormRecuperoPassword {
       return;
     }
 
-    const dati={
-      email:this.email,
-      otp:this.otp,
-      password:this.nuovaPassword
+    const dati = {
+      email: this.email,
+      otp: this.otp,
+      password: this.nuovaPassword
     }
 
     this.cambiaPass.emit(dati);

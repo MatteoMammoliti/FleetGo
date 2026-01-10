@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import {FormModificaDatiAdminAziendale} from '@features/SezioneAdminAziendale/Componenti/form-modifica-dati-admin-aziendale/form-modifica-dati-admin-aziendale';
+import {FormsModule} from '@angular/forms';
+import {
+  FormModificaDatiAdminAziendale
+} from '@features/SezioneAdminAziendale/Componenti/form-modifica-dati-admin-aziendale/form-modifica-dati-admin-aziendale';
 import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
@@ -11,7 +13,7 @@ import {
   TabellaGestioneLuoghi
 } from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-gestione-luoghi/tabella-gestione-luoghi';
 import {NgClass} from '@angular/common';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-modifica-dati',
@@ -29,19 +31,20 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 })
 
 
-export class ModificaDatiComponent implements OnInit{
+export class ModificaDatiComponent implements OnInit {
 
-  constructor(private service: ModificaDatiService) {}
+  constructor(private service: ModificaDatiService) {
+  }
 
-  errore:string="";
+  errore: string = "";
   utenteDaModificare: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   luoghiEsistenti: LuogoDTO[] = [];
   modalitaAggiunta = false;
 
-  erroreBanner="";
-  successoBanner="";
+  erroreBanner = "";
+  successoBanner = "";
 
-  ngOnInit(){
+  ngOnInit() {
     this.caricaDatiAdmin();
     this.caricaLuoghiEsistenti();
   }
@@ -65,10 +68,10 @@ export class ModificaDatiComponent implements OnInit{
     })
   }
 
-  modificaDatiUtente(datiAggiornati:ModificaDatiUtenteDTO){
+  modificaDatiUtente(datiAggiornati: ModificaDatiUtenteDTO) {
     this.service.modificaDati(datiAggiornati).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.caricaDatiAdmin();
         }
         this.gestisciSuccesso('Dati modificati con successo!');
@@ -84,8 +87,8 @@ export class ModificaDatiComponent implements OnInit{
     this.service.getDati().subscribe({
       next: (datiRicevuti) => {
 
-        if(datiRicevuti) {
-          this.utenteDaModificare=datiRicevuti;
+        if (datiRicevuti) {
+          this.utenteDaModificare = datiRicevuti;
         }
       },
       error: (err) => {
@@ -108,7 +111,7 @@ export class ModificaDatiComponent implements OnInit{
   impostaSede(idLuogo: number) {
     this.service.impostaSedeAzienda(idLuogo).subscribe({
       next: value => {
-        if(value) {
+        if (value) {
           this.caricaDatiAdmin();
           this.caricaLuoghiEsistenti();
           this.gestisciSuccesso('Sede impostata con successo!');
@@ -122,7 +125,7 @@ export class ModificaDatiComponent implements OnInit{
   eliminaLuogo(idLuogo: number) {
     this.service.eliminaLuogo(idLuogo).subscribe({
       next: value => {
-        if(value) {
+        if (value) {
           this.caricaDatiAdmin();
           this.caricaLuoghiEsistenti();
           this.gestisciSuccesso('Luogo eliminato con successo!');

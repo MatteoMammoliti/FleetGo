@@ -1,41 +1,44 @@
 @if (modaleAperto) {
-  <app-template-finestra-modale visibile="40" titolo="Approva richieste noleggio" tastoBianco="Chiudi" (chiudi)="chiudiModale.emit()" (annulla)="chiudiModale.emit()">
-          <div class="overflow-y-auto flex flex-col min-h-[300px] max-h-[300px] space-y-4">
-            @for (req of richiesteNoleggioDaApprovare; track req.idRichiesta) {
-              <div class="border w-full border-slate-200 rounded-lg p-4 flex justify-between items-start gap-2 bg-slate-50 hover:bg-slate-100 transition max-h-32">
+  <app-template-finestra-modale visibile="40" titolo="Approva richieste noleggio" tastoBianco="Chiudi"
+                                (chiudi)="chiudiModale.emit()" (annulla)="chiudiModale.emit()">
+    <div class="overflow-y-auto flex flex-col min-h-[300px] max-h-[300px] space-y-4">
+      @for (req of richiesteNoleggioDaApprovare; track req.idRichiesta) {
+        <div
+          class="border w-full border-slate-200 rounded-lg p-4 flex justify-between items-start gap-2 bg-slate-50 hover:bg-slate-100 transition max-h-32">
 
-                <div>
-                  <p class="font-bold text-slate-800">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}</p>
-                  <p class="text-sm text-slate-600 mt-1">
-                    Richiede: <strong>{{ req.veicolo?.nomeModello }}</strong> <span class="text-xs bg-white border px-1 rounded">{{ req.veicolo?.targaVeicolo }}</span>
-                  </p>
-                  <p class="text-xs text-slate-500 mt-1">
-                    Dal
-                    <span class="font-medium">{{ req.dataRitiro | date:'dd/MM/yyyy' }}</span>
-                    alle
-                    <span class="font-medium">{{ req.oraInizio }}</span> al
-                    <span class="font-medium">{{ req.dataConsegna | date:'dd/MM/yyyy' }}</span>
-                    alle
-                    <span class="font-medium">{{ req.oraFine }}</span>
-                  </p>
-                  <p class="text-xs text-indigo-600 mt-1 font-medium">Motivazione: "{{ req.motivazione }}"</p>
-                </div>
-
-                <div class="flex gap-2 shrink-0">
-                  <button
-                    (click)="rifiutaRichiesta.emit(req.idRichiesta)"
-                    class="text-gray-600 bg-grigio hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded-md mr-2 border border-gray-200 hover:border-red-50">
-                    Rifiuta
-                  </button>
-                  <button
-                    (click)="tentaAccettazione(req)"
-                    class="text-white hover:bg-azzurro-scuro bg-azzurro px-3 py-1 rounded-md border border-blue-200 mr-2 ">
-                    Accetta
-                  </button>
-                </div>
-              </div>
-            }
+          <div>
+            <p class="font-bold text-slate-800">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}</p>
+            <p class="text-sm text-slate-600 mt-1">
+              Richiede: <strong>{{ req.veicolo?.nomeModello }}</strong> <span
+              class="text-xs bg-white border px-1 rounded">{{ req.veicolo?.targaVeicolo }}</span>
+            </p>
+            <p class="text-xs text-slate-500 mt-1">
+              Dal
+              <span class="font-medium">{{ req.dataRitiro | date:'dd/MM/yyyy' }}</span>
+              alle
+              <span class="font-medium">{{ req.oraInizio }}</span> al
+              <span class="font-medium">{{ req.dataConsegna | date:'dd/MM/yyyy' }}</span>
+              alle
+              <span class="font-medium">{{ req.oraFine }}</span>
+            </p>
+            <p class="text-xs text-indigo-600 mt-1 font-medium">Motivazione: "{{ req.motivazione }}"</p>
           </div>
+
+          <div class="flex gap-2 shrink-0">
+            <button
+              (click)="rifiutaRichiesta.emit(req.idRichiesta)"
+              class="text-gray-600 bg-grigio hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded-md mr-2 border border-gray-200 hover:border-red-50">
+              Rifiuta
+            </button>
+            <button
+              (click)="tentaAccettazione(req)"
+              class="text-white hover:bg-azzurro-scuro bg-azzurro px-3 py-1 rounded-md border border-blue-200 mr-2 ">
+              Accetta
+            </button>
+          </div>
+        </div>
+      }
+    </div>
   </app-template-finestra-modale>
 
 }

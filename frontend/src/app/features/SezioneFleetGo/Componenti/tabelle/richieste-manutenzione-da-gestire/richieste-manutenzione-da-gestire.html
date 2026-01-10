@@ -1,65 +1,70 @@
-
 <app-template-titolo-sottotitolo titolo="Gestione Manutenzioni" sottotitolo="Gestisci la salute della tua flotta.">
   <div>
-    @if(richiesteManutenzioneDaGestire==null){
+    @if (richiesteManutenzioneDaGestire == null) {
       <div class="flex items-center justify-center w-full min-h-[400px] mb-5">
         <i class="bi bi-arrow-clockwise caricamento "></i>
       </div>
     } @else {
 
-    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
-      <div class="w-full min-h-[400px] flex flex-col justify-center items-center">
-      <app-messaggio-card-vuota testoPrimario="La tua flotta è in salute!" testoSecondario="Nessuna richiesta di manutenzione" icona="bi-check" tagliaIcona="3xl"></app-messaggio-card-vuota>
-      </div>
-    }
+      @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length === 0) {
+        <div class="w-full min-h-[400px] flex flex-col justify-center items-center">
+          <app-messaggio-card-vuota testoPrimario="La tua flotta è in salute!"
+                                    testoSecondario="Nessuna richiesta di manutenzione" icona="bi-check"
+                                    tagliaIcona="3xl"></app-messaggio-card-vuota>
+        </div>
+      }
 
 
-    @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length > 0) {
-      <div class="table-auto flex flex-col  justify-between max-h-[400px] overflow-y-auto px-2">
-        <table class="w-full border-separate border-spacing-y-3">
-          <thead class="sticky top-0 z-10 bg-white">
-          <tr class="text-left text-testo-s">
-            <th class="pl-6">Veicolo</th>
-            <th >Data Richiesta</th>
-            <th >Tipologia Intervento</th>
-            <th>Stato Attuale</th>
-            <th class="pr-6">Azioni</th>
-          </tr>
-          </thead>
+      @if (richiesteManutenzioneDaGestire && richiesteManutenzioneDaGestire.length > 0) {
+        <div class="table-auto flex flex-col  justify-between max-h-[400px] overflow-y-auto px-2">
+          <table class="w-full border-separate border-spacing-y-3">
+            <thead class="sticky top-0 z-10 bg-white">
+            <tr class="text-left text-testo-s">
+              <th class="pl-6">Veicolo</th>
+              <th>Data Richiesta</th>
+              <th>Tipologia Intervento</th>
+              <th>Stato Attuale</th>
+              <th class="pr-6">Azioni</th>
+            </tr>
+            </thead>
 
-          <tbody [@animazioneTabella]="richiesteManutenzioneDaGestire.length">
-            @for (richiesta of richiesteManutenzioneDaGestire; track richiesta.idManutenzione) {
+            <tbody [@animazioneTabella]="richiesteManutenzioneDaGestire.length">
+              @for (richiesta of richiesteManutenzioneDaGestire; track richiesta.idManutenzione) {
 
-              <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p items-center">
-                <td  class="py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors">
-                  <div>
-                    <span>{{ richiesta.idVeicolo }}</span>
-                  </div>
-                </td>
-                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}</td>
-                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">
-                  <span [title]="richiesta.tipoManutenzione" >
+                <tr class="group drop-shadow-sm transition-all duration-300 text-testo-p items-center">
+                  <td class="py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors">
+                    <div>
+                      <span>{{ richiesta.idVeicolo }}</span>
+                    </div>
+                  </td>
+                  <td
+                    class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">{{ richiesta.dataRichiesta | date:'dd/MM/yyyy' }}
+                  </td>
+                  <td class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors">
+                  <span [title]="richiesta.tipoManutenzione">
                     {{ richiesta.tipoManutenzione | slice:0:18 }}
-                    {{ richiesta.tipoManutenzione.length > 18 ? '...' : ''}}
+                    {{ richiesta.tipoManutenzione.length > 18 ? '...' : '' }}
                   </span>
-                </td>
-                <td  class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors font-bold text-s text-azzurro hover:text-azzurro-scuro">
-                  <span>In Attesa</span>
-                </td>
-                <td  class="py-3 pr-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors">
+                  </td>
+                  <td
+                    class="py-3 bg-grigio group-hover:bg-azzurro/10 transition-colors font-bold text-s text-azzurro hover:text-azzurro-scuro">
+                    <span>In Attesa</span>
+                  </td>
+                  <td class="py-3 pr-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors">
 
-                  <app-bottone-chiaro (click)="gestisciRichiesta(richiesta.idManutenzione)">
-                    <span>Gestisci</span>
-                    <i class="bi bi-gear text-base transition-transform duration-300 group-hover:rotate-90"></i>
-                  </app-bottone-chiaro>
-                </td>
-              </tr>
-            }
-          </tbody>
+                    <app-bottone-chiaro (click)="gestisciRichiesta(richiesta.idManutenzione)">
+                      <span>Gestisci</span>
+                      <i class="bi bi-gear text-base transition-transform duration-300 group-hover:rotate-90"></i>
+                    </app-bottone-chiaro>
+                  </td>
+                </tr>
+              }
+            </tbody>
 
-        </table>
-      </div>
-    }}
+          </table>
+        </div>
+      }
+    }
   </div>
 
 </app-template-titolo-sottotitolo>

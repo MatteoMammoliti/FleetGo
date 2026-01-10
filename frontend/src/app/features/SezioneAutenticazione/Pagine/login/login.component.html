@@ -11,13 +11,15 @@
       </p>
     </div>
 
-    <a routerLink="/" class="absolute bottom-10 left-10 z-30 flex items-center gap-3 text-white/70 hover:text-white transition-all group cursor-pointer">
-      <div class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-grigio-scuro transition-all">
-         <i class="bi-arrow-left text-lg"></i>
+    <a routerLink="/"
+       class="absolute bottom-10 left-10 z-30 flex items-center gap-3 text-white/70 hover:text-white transition-all group cursor-pointer">
+      <div
+        class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-grigio-scuro transition-all">
+        <i class="bi-arrow-left text-lg"></i>
       </div>
       <span class="font-bold text-xs">TORNA INDIETRO</span>
     </a>
-    </div>
+  </div>
 
   <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
 
@@ -32,14 +34,14 @@
 
         <div class="flex flex-col gap-5">
           <app-input-checked
-          titolo="Email Aziendale"
-          type="email"
-          placeholder="nome@azienda.it"
-          [(valore)]="email"
-          [haErrore]="mappaErrori.email"
-          messaggioErrore="Inserisci una Email valida!"
-          (suInput)="mappaErrori.email = false">
-        </app-input-checked>
+            titolo="Email Aziendale"
+            type="email"
+            placeholder="nome@azienda.it"
+            [(valore)]="email"
+            [haErrore]="mappaErrori.email"
+            messaggioErrore="Inserisci una Email valida!"
+            (suInput)="mappaErrori.email = false">
+          </app-input-checked>
 
           <app-input-checked
             titolo="Password"
@@ -62,7 +64,8 @@
             }
           </div>
 
-          <button (click)="recuperoPassword()" class="text-sm font-semibold hover:underline text-azzurro hover:text-azzurro-scuro">
+          <button (click)="recuperoPassword()"
+                  class="text-sm font-semibold hover:underline text-azzurro hover:text-azzurro-scuro">
             Password dimenticata?
           </button>
         </div>
@@ -75,7 +78,8 @@
         <div class="text-center pt-6 border-t border-gray-100 mt-6">
           <p class="text-testo-s text-sm">
             Non hai un Account?
-            <a routerLink="/registrazione" class="text-azzurro font-bold hover:underline hover:text-azzurro-scuro cursor-pointer">
+            <a routerLink="/registrazione"
+               class="text-azzurro font-bold hover:underline hover:text-azzurro-scuro cursor-pointer">
               Crea un Account
             </a>
           </p>

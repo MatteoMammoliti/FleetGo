@@ -1,4 +1,5 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,13 +16,13 @@
     scroll-padding-top: 100px;
   }
 
-  .caricamento{
+  .caricamento {
     @apply text-3xl text-slate-300 animate-spin
   }
 
 
-  .ricerca-testo{
-    @apply  flex bg-white px-2 py-1 rounded-xl border border-gray-50 h-8 focus-within:border-azzurro-scuro hover:border-azzurro-scuro
+  .ricerca-testo {
+    @apply flex bg-white px-2 py-1 rounded-xl border border-gray-50 h-8 focus-within:border-azzurro-scuro hover:border-azzurro-scuro
   }
 
   .div-table {
@@ -29,15 +30,15 @@
   }
 
 
-  .table-base{
+  .table-base {
     @apply w-full text-sm text-left text-gray-500 border-separate border-spacing-y-2 ;
   }
 
-  .tr-inferiore{
+  .tr-inferiore {
     @apply drop-shadow-sm transition-all duration-300 text-testo-p ;
   }
 
-  .tr-superiore{
+  .tr-superiore {
     @apply text-center text-testo-s sticky top-0 bg-white z-20;
   }
 
@@ -45,11 +46,11 @@
     @apply py-3 bg-grigio align-middle text-center transition-colors group-hover:bg-azzurro/10;
   }
 
-  .td-destro{
+  .td-destro {
     @apply py-3 pl-6 bg-grigio rounded-r-2xl group-hover:bg-azzurro/10 transition-colors align-middle
   }
 
-  .td-sinistro{
+  .td-sinistro {
     @apply py-3 pl-6 bg-grigio rounded-l-2xl group-hover:bg-azzurro/10 transition-colors align-middle
   }
 
@@ -58,21 +59,20 @@
     @apply text-[10px] text-red-500 font-bold uppercase
   }
 
-  .erroreInput{
+  .erroreInput {
     @apply text-[10px] text-red-500 ml-1 italic absolute bottom-0 left-0 leading-none animate-in fade-in slide-in-from-left-1
   }
 
 
-
-
-  .badge-rifiuto{
+  .badge-rifiuto {
     @apply text-xs bg-red-100 text-red-600 px-2 py-[4px] rounded-md
   }
-  .badge-accetto{
+
+  .badge-accetto {
     @apply text-xs bg-green-100  text-green-600 px-2 py-[4px] rounded-md
   }
 
-  .messaggioModaleConferma{
+  .messaggioModaleConferma {
     @apply text-gray-600 px-6 flex mt-3 mb-3;
   }
 

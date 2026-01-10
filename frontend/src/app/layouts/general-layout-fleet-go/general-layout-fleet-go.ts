@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
-import { Sidebar } from '@shared/sidebar/sidebar';
-import { inject } from '@angular/core';
-import { AuthService } from '@core/auth/auth-service';
+import {Component} from '@angular/core';
+import {Sidebar} from '@shared/Navigazione/sidebar/sidebar';
+import {AuthService} from '@core/auth/auth-service';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Footer} from '@shared/footer/footer';
-import {validazione} from '@core/utils/validazione';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 
 @Component({
@@ -17,9 +15,10 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 })
 export class GeneralLayoutFleetGo {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  erroreBanner='';
+  erroreBanner = '';
 
   logout() {
     this.authService.logout().subscribe({
@@ -34,11 +33,11 @@ export class GeneralLayoutFleetGo {
   }
 
 
-
   gestisciErrore(messaggio: string) {
     this.erroreBanner = messaggio;
     setTimeout(() => this.erroreBanner = '', 5000);
   }
+
   vaiAllaDashboard() {
     this.router.navigate(['/dashboardFleetGo/dashboard']);
   }

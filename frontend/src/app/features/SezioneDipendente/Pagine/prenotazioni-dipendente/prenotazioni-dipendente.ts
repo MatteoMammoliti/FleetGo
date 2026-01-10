@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {PrenotazioneCard} from '@features/SezioneDipendente/componenti/prenotazione-card/prenotazione-card';
+import {PrenotazioneCard} from '@features/SezioneDipendente/componenti/Card/prenotazione-card/prenotazione-card';
 import {PrenotazioniService} from '@features/SezioneDipendente/ServiceSezioneDipendente/prenotazioni-service';
 import {Router} from '@angular/router';
-import { IntestazioneEBackground } from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import { MessaggioCardVuota } from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
-import { CommonModule } from '@angular/common';
-import { BottonePillola } from '@shared/Componenti/Ui/bottone-pillola/bottone-pillola';
-import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
+import {CommonModule} from '@angular/common';
+import {BottonePillola} from '@shared/Componenti/Bottoni/bottone-pillola/bottone-pillola';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-prenotazioni-dipendente',
@@ -16,7 +15,7 @@ import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo
     PrenotazioneCard,
     TemplateTitoloSottotitolo,
     MessaggioCardVuota
-    ,CommonModule,
+    , CommonModule,
     BottonePillola,
     BannerErrore
   ],
@@ -25,52 +24,57 @@ import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo
 })
 
 export class PrenotazioniDipendente implements OnInit {
-  constructor(private service:PrenotazioniService,
-              private router:Router) {}
+  constructor(private service: PrenotazioniService,
+              private router: Router) {
+  }
 
-  prenotazioni:RichiestaNoleggioDTO[]=[];
-  daVisualizzare:RichiestaNoleggioDTO[]=[]
-  filtroAttivo:string="Tutte"
+  prenotazioni: RichiestaNoleggioDTO[] = [];
+  daVisualizzare: RichiestaNoleggioDTO[] = []
+  filtroAttivo: string = "Tutte"
 
   successoBanner: string = '';
   erroreBanner: string = '';
 
   caricamentoDati: boolean = true;
 
-  ngOnInit(){
+  ngOnInit() {
     this.getRichiesteDipendente();
   }
 
-  getRichiesteDipendente(){
-    this.caricamentoDati=true;
+  getRichiesteDipendente() {
+    this.caricamentoDati = true;
     this.service.richiediPrenotazioniDipendente().subscribe({
-      next:(risposta:RichiestaNoleggioDTO[])=>{
-        this.prenotazioni=risposta
-        this.daVisualizzare=risposta
-        this.caricamentoDati=false;
-    },
-      error:(err)=>{this.gestisciErrore(err.error);
-      this.caricamentoDati=false;}
+      next: (risposta: RichiestaNoleggioDTO[]) => {
+        this.prenotazioni = risposta
+        this.daVisualizzare = risposta
+        this.caricamentoDati = false;
+      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
+        this.caricamentoDati = false;
+      }
     });
   }
 
-  eliminaPrenotazione(idPrenotazione:number){
+  eliminaPrenotazione(idPrenotazione: number) {
     this.service.eliminaPrenotazione(idPrenotazione).subscribe({
-      next:(risposta:any)=>{
+      next: (risposta: any) => {
         this.getRichiesteDipendente()
         this.gestisciSuccesso("Prenotazione annullata con successo!");
       },
-      error:(err)=> {this.gestisciErrore(err.error);}
+      error: (err) => {
+        this.gestisciErrore(err.error);
+      }
     })
   }
-  
 
-  clickNuovaPrenotazione(){
+
+  clickNuovaPrenotazione() {
     this.router.navigate(['/dashboardDipendente/nuovaPrenotazione'])
   }
 
   get prenotazioniFiltrate() {
-    if(this.filtroAttivo === 'Tutte'){
+    if (this.filtroAttivo === 'Tutte') {
       return this.prenotazioni;
     }
 
@@ -78,7 +82,7 @@ export class PrenotazioniDipendente implements OnInit {
 
       let stato: boolean | undefined = false;
 
-      if(this.filtroAttivo === 'Rifiutate'){
+      if (this.filtroAttivo === 'Rifiutate') {
         stato = prenotazione.richiestaAnnullata;
       } else {
         stato = prenotazione.statoRichiesta == this.filtroAttivo && !prenotazione.richiestaAnnullata;
@@ -88,10 +92,10 @@ export class PrenotazioniDipendente implements OnInit {
     });
   }
 
-  impostaFiltro(categoria: string) { 
-    if (this.filtroAttivo === categoria) return; 
+  impostaFiltro(categoria: string) {
+    if (this.filtroAttivo === categoria) return;
 
-    this.caricamentoDati = true; 
+    this.caricamentoDati = true;
     this.filtroAttivo = categoria;
 
     setTimeout(() => {

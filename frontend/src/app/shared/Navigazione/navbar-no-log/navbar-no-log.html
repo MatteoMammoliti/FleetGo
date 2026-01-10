@@ -1,0 +1,86 @@
+<header class="bg-blu w-full h-[80px] flex items-center justify-between px-6 lg:px-12 shadow-md relative z-50">
+
+  <div class="select-none flex items-center cursor-pointer">
+    <app-logo (clickLogo)="clickLogo.emit()"></app-logo>
+  </div>
+
+  <nav class="hidden lg:block">
+    <ul class="flex gap-8 list-none m-0 p-0">
+
+      @for (item of [
+        {link: '/', frag: 'chi-siamo', label: 'Chi Siamo'},
+        {link: '/', frag: 'come-funziona', label: 'Come funziona'},
+        {link: '/', frag: 'vantaggi', label: 'Vantaggi'},
+        {link: '/', frag: 'contatti', label: 'Contatti'}
+      ]; track item.label) {
+
+        <li>
+          <a [routerLink]="item.link" [fragment]="item.frag"
+             class="text-white font-medium text-[0.95rem] px-3 py-2 rounded-lg transition-all duration-300
+                    hover:text-blue-500 no-underline cursor-pointer whitespace-nowrap">
+            {{ item.label }}
+          </a>
+        </li>
+
+      }
+
+    </ul>
+  </nav>
+
+  <div class="flex items-center gap-4">
+
+    <div class="hidden lg:flex items-center gap-4">
+      <a routerLink="/login" class="text-white font-semibold text-[0.95rem] hover:opacity-80 no-underline">Accedi</a>
+      <a routerLink="/registrazione"
+         class="bg-azzurro text-white px-6 py-3 rounded-full font-bold text-[0.95rem] shadow-lg hover:bg-azzurro-scuro no-underline">Registrati</a>
+    </div>
+
+    <button (click)="toggleSidebar()" class="lg:hidden text-white p-2 focus:outline-none">
+      <i class="bi-list text-4xl"></i>
+    </button>
+
+  </div>
+
+  @if (sidebarVisibile) {
+    <div>
+      <div (click)="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40"></div>
+
+      <div
+        class="fixed top-0 right-0 h-full w-[280px] bg-blu shadow-2xl z-50 p-6 flex flex-col gap-6 overflow-y-auto border-l border-white/10">
+
+        <div class="flex justify-end">
+          <button (click)="toggleSidebar()" class="text-white p-2">
+            <i class="bi-x-lg text-3xl"></i>
+          </button>
+        </div>
+
+        <ul class="flex flex-col gap-4 list-none p-0 m-0">
+          @for (item of [
+            {link: '/', frag: 'chi-siamo', label: 'Chi Siamo'},
+            {link: '/', frag: 'come-funziona', label: 'Come funziona'},
+            {link: '/', frag: 'vantaggi', label: 'Vantaggi'},
+            {link: '/', frag: 'contatti', label: 'Contatti'}
+          ]; track item.label) {
+
+            <li>
+              <a [routerLink]="item.link" [fragment]="item.frag" (click)="toggleSidebar()"
+                 class="text-white text-sm block py-2 hover:text-azzurro">
+                {{ item.label }}
+              </a>
+            </li>
+
+          }
+        </ul>
+
+        <div class="flex flex-col gap-4 mt-4">
+          <a routerLink="/login" (click)="toggleSidebar()"
+             class="text-white cursor-pointer text-center font-semibold text-lg border border-white/20 py-3 rounded-lg no-underline">Accedi</a>
+          <a routerLink="/registrazione" (click)="toggleSidebar()"
+             class="bg-azzurro cursor-pointer text-white text-center font-bold text-lg py-3 rounded-lg shadow-lg no-underline">Registrati</a>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</header>

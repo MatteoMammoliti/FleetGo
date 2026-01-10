@@ -1,9 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModelloDTO} from '@core/models/ModelloDTO';
+import {TemplateCardConRiga} from '@shared/Componenti/Card/template-card-con-riga/template-card-con-riga';
 
 @Component({
   selector: 'app-card-modello',
-  imports: [],
+  imports: [
+    TemplateCardConRiga
+  ],
   templateUrl: './card-modello.html',
   styleUrl: './card-modello.css',
 })

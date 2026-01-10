@@ -13,14 +13,14 @@ import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazi
 
 export class FiltriRicerca implements OnInit {
 
-  dataConsegnaCompleta:string='';
-  dataRitiroCompleta:string='';
+  dataConsegnaCompleta: string = '';
+  dataRitiroCompleta: string = '';
 
-  minDateRitiro : string = '';
-  minDateConsegna : string = '';
-  @Output() clickRicerca=new EventEmitter<DatiFiltriNuovaPrenotazione>()
+  minDateRitiro: string = '';
+  minDateConsegna: string = '';
+  @Output() clickRicerca = new EventEmitter<DatiFiltriNuovaPrenotazione>()
 
-  ngOnInit(){
+  ngOnInit() {
     const ora = new Date();
     this.minDateRitiro = this.trasformaDataInStringa(ora);
     this.minDateConsegna = this.trasformaDataInStringa(ora);
@@ -47,9 +47,9 @@ export class FiltriRicerca implements OnInit {
     const dataRitiroCompleta = new Date(this.dataRitiroCompleta);
     const dataConsegnaCompleta = new Date(this.dataConsegnaCompleta);
     const adesso = new Date();
-    adesso.setSeconds(0,0);
+    adesso.setSeconds(0, 0);
 
-    if(dataRitiroCompleta < adesso || dataConsegnaCompleta < adesso){
+    if (dataRitiroCompleta < adesso || dataConsegnaCompleta < adesso) {
       const adesso = new Date();
       this.minDateRitiro = this.trasformaDataInStringa(adesso);
       this.dataRitiroCompleta = this.minDateRitiro;
@@ -63,17 +63,17 @@ export class FiltriRicerca implements OnInit {
     const dataConsegna = pezziConsegna[0];
     const oraConsegna = pezziConsegna[1];
 
-    const dati:DatiFiltriNuovaPrenotazione={
-      dataInizio:dataRitiro,
-      oraInizio:oraRitiro,
-      dataFine:dataConsegna,
-      oraFine:oraConsegna
+    const dati: DatiFiltriNuovaPrenotazione = {
+      dataInizio: dataRitiro,
+      oraInizio: oraRitiro,
+      dataFine: dataConsegna,
+      oraFine: oraConsegna
     }
 
     this.clickRicerca.emit(dati);
-    }
+  }
 
-    onCambioRitiro() {
+  onCambioRitiro() {
     if (this.dataRitiroCompleta) {
       this.minDateConsegna = this.dataRitiroCompleta;
 

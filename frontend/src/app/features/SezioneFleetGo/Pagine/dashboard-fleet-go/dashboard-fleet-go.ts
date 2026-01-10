@@ -1,26 +1,35 @@
 import {Component, OnInit} from '@angular/core';
-import {CardStatisticheDashboardFleet} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {
+  CardStatisticheDashboardFleet
+} from '@shared/Componenti/Card/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 import {Router} from '@angular/router';
 import {DashboardFleetGoService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/dashboardFleetGo-service';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {FattureDaGenerare} from '@features/SezioneFleetGo/Componenti/tabelle/fatture-da-generare/fatture-da-generare';
-import {RichiesteManutenzioneDaGestire} from '@features/SezioneFleetGo/Componenti/tabelle/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
+import {
+  RichiesteManutenzioneDaGestire
+} from '@features/SezioneFleetGo/Componenti/tabelle/richieste-manutenzione-da-gestire/richieste-manutenzione-da-gestire';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {GestisciRichiestaManutenzione} from '@features/SezioneFleetGo/Componenti/modali/gestisci-richiesta-manutenzione/gestisci-richiesta-manutenzione';
-import {ModaleGenerazioneFattura} from '@features/SezioneFleetGo/Componenti/modali/modale-generazione-fattura/modale-generazione-fattura';
+import {
+  GestisciRichiestaManutenzione
+} from '@features/SezioneFleetGo/Componenti/modali/gestisci-richiesta-manutenzione/gestisci-richiesta-manutenzione';
+import {
+  ModaleGenerazioneFattura
+} from '@features/SezioneFleetGo/Componenti/modali/modale-generazione-fattura/modale-generazione-fattura';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-dashboard-fleet-go',
-    imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground, BannerErrore],
+  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground, BannerErrore],
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })
-export class DashboardFleetGo implements OnInit{
-  constructor(private dashboardService:DashboardFleetGoService,private router: Router) {}
+export class DashboardFleetGo implements OnInit {
+  constructor(private dashboardService: DashboardFleetGoService, private router: Router) {
+  }
 
   statistiche: ContenitoreStatisticheNumeriche = {
     totaleVeicoli: 0,
@@ -29,24 +38,24 @@ export class DashboardFleetGo implements OnInit{
     totaleAziende: 0,
     veicoliDisponibili: 0,
     veicoliNoleggiati: 0,
-    fattureDaGenerare:0,
-    guadagnoMensile:0
+    fattureDaGenerare: 0,
+    guadagnoMensile: 0
   };
 
-  erroreBanner='';
+  erroreBanner = '';
 
-  percentualeNoleggiati=0;
-  descrizionePercentuale:string=""
+  percentualeNoleggiati = 0;
+  descrizionePercentuale: string = ""
 
-  richiesteManutenzione:RichiestaManutenzioneDTO[]|null=null;
-  richiestaSelezionata:RichiestaManutenzioneDTO | null = null;
+  richiesteManutenzione: RichiestaManutenzioneDTO[] | null = null;
+  richiestaSelezionata: RichiestaManutenzioneDTO | null = null;
 
   apriPaginaGenerazioneOfferte = false;
 
-  fatture:FatturaDaGenerareDTO[]|null=null;
+  fatture: FatturaDaGenerareDTO[] | null = null;
   offerteAttive: OffertaDTO[] = [];
   fatturaDaGenerare: FatturaDaGenerareDTO = {} as FatturaDaGenerareDTO;
-  successoBanner="";
+  successoBanner = "";
 
   ngOnInit(): void {
     this.richiediStatistiche();
@@ -59,13 +68,12 @@ export class DashboardFleetGo implements OnInit{
       next: (contenitore) => {
         this.statistiche = contenitore;
 
-        if(this.statistiche.veicoliAssegnati==0){
-          this.descrizionePercentuale="Nessun Veicolo Assegnato"
+        if (this.statistiche.veicoliAssegnati == 0) {
+          this.descrizionePercentuale = "Nessun Veicolo Assegnato"
+        } else {
+          this.descrizionePercentuale = "Assegnati " + this.statistiche.veicoliAssegnati + " veicoli su " + this.statistiche.totaleVeicoli;
         }
-        else {
-          this.descrizionePercentuale="Assegnati "+this.statistiche.veicoliAssegnati+ " veicoli su "+ this.statistiche.totaleVeicoli;
-        }
-        this.percentualeNoleggiati=Math.trunc((this.statistiche.veicoliAssegnati/this.statistiche.totaleVeicoli)*100);
+        this.percentualeNoleggiati = Math.trunc((this.statistiche.veicoliAssegnati / this.statistiche.totaleVeicoli) * 100);
       },
       error: (err) => {
         this.gestisciErrore(err.error);
@@ -73,68 +81,68 @@ export class DashboardFleetGo implements OnInit{
     });
   }
 
-  richiediFattureDaGenerare(){
+  richiediFattureDaGenerare() {
     this.dashboardService.richiediFattureDaGenerare().subscribe({
-      next:(fattura)=>{
-        this.fatture=fattura
+      next: (fattura) => {
+        this.fatture = fattura
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
-  richiediManutenzioniDaGestire(){
+  richiediManutenzioniDaGestire() {
     this.dashboardService.richiediManutenzioneDaGestire().subscribe({
-      next:(richiesta:RichiestaManutenzioneDTO[])=>{
-        this.richiesteManutenzione=richiesta
+      next: (richiesta: RichiestaManutenzioneDTO[]) => {
+        this.richiesteManutenzione = richiesta
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
 
-  caricaRichiestaManutenzione(idManutenzione:number){
+  caricaRichiestaManutenzione(idManutenzione: number) {
     this.dashboardService.richiediInformazioniSuManutenzioneDaGestire(idManutenzione).subscribe({
-      next:(risultato:RichiestaManutenzioneDTO)=>{
-        this.richiestaSelezionata=risultato;
+      next: (risultato: RichiestaManutenzioneDTO) => {
+        this.richiestaSelezionata = risultato;
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
-  accettaRichiestaManutenzione(idManutenzione:number){
+  accettaRichiestaManutenzione(idManutenzione: number) {
     this.dashboardService.accettaRichiestaManutenzione(idManutenzione).subscribe({
-      next:(risultato:string)=>{
+      next: (risultato: string) => {
         this.richiediManutenzioniDaGestire();
-        this.richiestaSelezionata=null;
+        this.richiestaSelezionata = null;
         this.gestisciSuccesso("Manutenzione accettata con successo");
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
-  rifiutaRichiesta(idManutenzione:number){
+  rifiutaRichiesta(idManutenzione: number) {
     this.dashboardService.rifiutaRichiestaManutezione(idManutenzione).subscribe({
-      next:(risultato:string)=>{
+      next: (risultato: string) => {
         this.richiediManutenzioniDaGestire();
-        this.richiestaSelezionata=null;
+        this.richiestaSelezionata = null;
         this.gestisciSuccesso("Manutenzione rifiutata con successo");
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     });
   }
 
-  chiudiFinestraModale(){
-    this.richiestaSelezionata=null;
+  chiudiFinestraModale() {
+    this.richiestaSelezionata = null;
     this.richiediManutenzioniDaGestire();
   }
 
@@ -143,14 +151,14 @@ export class DashboardFleetGo implements OnInit{
     this.onClickGeneraFattura();
   }
 
-  generaFattura(fattura:FatturaDaGenerareDTO){
+  generaFattura(fattura: FatturaDaGenerareDTO) {
     this.dashboardService.generaFattura(fattura).subscribe({
-      next:()=>{
+      next: () => {
         this.richiediFattureDaGenerare();
         this.chiudiFinestraModaleGenerazioneFattura();
         this.gestisciSuccesso("Fattura emessa con successo");
       },
-      error:(err:any)=>{
+      error: (err: any) => {
         this.gestisciErrore(err.error);
       }
     })
@@ -158,7 +166,9 @@ export class DashboardFleetGo implements OnInit{
 
   caricaOfferte() {
     this.dashboardService.getOfferteAttive().subscribe({
-      next: value => {this.offerteAttive = value;},
+      next: value => {
+        this.offerteAttive = value;
+      },
       error: err => {
         this.gestisciErrore(err.error);
       }
@@ -170,12 +180,14 @@ export class DashboardFleetGo implements OnInit{
     this.caricaOfferte();
   }
 
-  chiudiFinestraModaleGenerazioneFattura() { this.apriPaginaGenerazioneOfferte = false; }
+  chiudiFinestraModaleGenerazioneFattura() {
+    this.apriPaginaGenerazioneOfferte = false;
+  }
 
-  sezioneManutenzione(){
+  sezioneManutenzione() {
     const tabellaManutenzione = document.getElementById('sezioneManutezione');
     if (tabellaManutenzione) {
-      tabellaManutenzione.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      tabellaManutenzione.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
   }
 
@@ -186,7 +198,7 @@ export class DashboardFleetGo implements OnInit{
     }
   }
 
-  sezioneFlotta(){
+  sezioneFlotta() {
     this.router.navigate(['/dashboardFleetGo/flotta-globale']);
   }
 

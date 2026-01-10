@@ -1,0 +1,34 @@
+<div class="fixed bottom-6 right-6 z-[9999] animate-bounce-in">
+  <div class="bg-white border-l-4 border-azzurro shadow-2xl rounded-lg p-4 flex items-start gap-4 max-w-lg">
+    @if (errore) {
+      <div class="bg-azzurro text-azzurro-scuro w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+        <i class="bi {{iconaErrore}} text-white pb-1 text-xl"></i>
+      </div>
+
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-800 text-sm">{{ titoloErrore }}</h4>
+        <p class="text-sm text-gray-600 mt-1 leading-snug">
+          {{ errore }}
+        </p>
+      </div>
+    }
+    @if (successo) {
+      <div class="bg-azzurro text-azzurro-scuro w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+        <i class="bi {{iconaSuccesso}} text-white text-xl"></i>
+      </div>
+
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-800 text-sm">{{ titoloSuccesso }}</h4>
+        <p class="text-sm text-gray-600 mt-1 leading-snug">
+          {{ successo }}
+        </p>
+      </div>
+    }
+
+
+    <button (click)="chiudi.emit()"
+            class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center transition-colors">
+      <i class="bi bi-x-lg text-xs"></i>
+    </button>
+  </div>
+</div>

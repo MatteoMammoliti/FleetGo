@@ -1,7 +1,7 @@
-import { Routes } from '@angular/router';
-import { LoginComponent } from '@features/SezioneAutenticazione/Pagine/login/login.component';
-import { RegistrazioneComponent } from '@features/SezioneAutenticazione/Pagine/registrazione/registrazione.component';
-import { GeneralLayoutNoLogin } from './layouts/general-layout-no-login/general-layout-no-login';
+import {Routes} from '@angular/router';
+import {LoginComponent} from '@features/SezioneAutenticazione/Pagine/login/login.component';
+import {RegistrazioneComponent} from '@features/SezioneAutenticazione/Pagine/registrazione/registrazione.component';
+import {GeneralLayoutNoLogin} from './layouts/general-layout-no-login/general-layout-no-login';
 import {RecuperoPassword} from '@features/SezioneAutenticazione/Pagine/recupero-password/recupero-password';
 import {authGuard} from '@core/auth/auth.guard';
 import {LandingPage} from '@features/SezionePubblica/landing-page/landing-page';
@@ -10,14 +10,14 @@ import {PrimoAccessoGuard} from '@core/auth/primo-accesso.guard';
 import {AziendaDisabilitataGuard} from '@core/auth/azienda-disabilitata.guard';
 
 export const routes: Routes = [
- {
+  {
     path: '',
     component: GeneralLayoutNoLogin,
     children: [
-      { path: '', component: LandingPage },
-      { path: 'login', component: LoginComponent },
-      { path: 'registrazione', component: RegistrazioneComponent },
-      { path: 'recuperoPassword', component: RecuperoPassword}
+      {path: '', component: LandingPage},
+      {path: 'login', component: LoginComponent},
+      {path: 'registrazione', component: RegistrazioneComponent},
+      {path: 'recuperoPassword', component: RecuperoPassword}
     ]
   },
 
@@ -26,7 +26,7 @@ export const routes: Routes = [
     loadChildren: () => import('@features/DipendenteSenzaAzienda/dipendente-senza-azienda.routes')
       .then(m => m.DIPENDENTE_SENZA_AZIENDA),
     canActivate: [authGuard],
-    data: { ruolo: 'Dipendente'}
+    data: {ruolo: 'Dipendente'}
   },
 
   {
@@ -34,7 +34,7 @@ export const routes: Routes = [
     loadChildren: () => import('@features/SezioneAdminAziendaDisabilitata/azienda-disabilitata.routes')
       .then(m => m.AZIENDA_DISABILITATA_ROUTES),
     canActivate: [authGuard, PrimoAccessoGuard],
-    data: { ruolo: 'AdminAziendale'}
+    data: {ruolo: 'AdminAziendale'}
   },
 
   {
@@ -42,7 +42,7 @@ export const routes: Routes = [
     loadChildren: () => import('@features/SezioneFleetGo/admin-fleet-go.routes')
       .then(m => m.ADMIN_FLEET_GO_ROUTES),
     canActivate: [authGuard],
-    data: { ruolo: 'FleetGo'}
+    data: {ruolo: 'FleetGo'}
   },
 
   {
@@ -50,7 +50,7 @@ export const routes: Routes = [
     loadChildren: () => import('@features/SezioneAdminAziendale/admin-aziendale.routes')
       .then(m => m.AZIENDA_ROUTES),
     canActivate: [authGuard, PrimoAccessoGuard, AziendaDisabilitataGuard],
-    data: { ruolo: 'AdminAziendale' }
+    data: {ruolo: 'AdminAziendale'}
   },
 
   {
@@ -58,8 +58,8 @@ export const routes: Routes = [
     loadChildren: () => import('@features/SezioneDipendente/dipendente.routes')
       .then(m => m.DIPENDENTE_ROUTES),
     canActivate: [authGuard, CheckAziendaGuard],
-    data: { ruolo: 'Dipendente' }
+    data: {ruolo: 'Dipendente'}
   },
 
-  { path: '**', redirectTo: '' }
+  {path: '**', redirectTo: ''}
 ];

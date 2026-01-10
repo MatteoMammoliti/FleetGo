@@ -1,11 +1,11 @@
-import {Component, inject, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
 import {AziendaDTO} from '@core/models/aziendaDTO';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-aggiungi-admin-azienda',
@@ -17,13 +17,15 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 
 export class FormAggiungiAdminAzienda implements OnInit {
+  constructor(private validatore: validazione) {
+  }
 
   @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Output() aziendaAggiunta = new EventEmitter<any>();
   @Output() chiudi = new EventEmitter<any>();
 
-  constructor(private validatore: validazione) {}
+
 
   nome = '';
   cognome = '';
@@ -61,9 +63,9 @@ export class FormAggiungiAdminAzienda implements OnInit {
       return;
     }
 
-    if(!this.validatore.checkDataNascita(this.dataNascita)){
-      this.errore='Data di nascita non valida';
-      this.mappaErrori.dataNascita=true;
+    if (!this.validatore.checkDataNascita(this.dataNascita)) {
+      this.errore = 'Data di nascita non valida';
+      this.mappaErrori.dataNascita = true;
       return;
     }
 
@@ -87,9 +89,9 @@ export class FormAggiungiAdminAzienda implements OnInit {
       pIva: this.partitaIva
     }
 
-    const mod : any ={
-      adminAziendale:adminAziendale,
-      azienda:azienda
+    const mod: any = {
+      adminAziendale: adminAziendale,
+      azienda: azienda
     }
 
     this.aziendaAggiunta.emit(mod);

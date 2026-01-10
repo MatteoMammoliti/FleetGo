@@ -1,90 +1,94 @@
 @if (paginaVisibile && prenotazione) {
-  <app-template-finestra-modale tastoBianco="Chiudi" (annulla)="chiudiPagina.emit()" (chiudi)="chiudiPagina.emit()" titolo="Dettaglio Prenotazione #{{ prenotazione.idRichiesta }}">
-        <div class="px-4 py-6 sm:px-6">
+  <app-template-finestra-modale tastoBianco="Chiudi" (annulla)="chiudiPagina.emit()" (chiudi)="chiudiPagina.emit()"
+                                titolo="Dettaglio Prenotazione #{{ prenotazione.idRichiesta }}">
+    <div class="px-4 py-6 sm:px-6">
 
-          <div class="flex justify-between items-center mb-6 pb-6 border-b border-gray-100">
+      <div class="flex justify-between items-center mb-6 pb-6 border-b border-gray-100">
+        <div>
+          <p class="text-sm text-gray-500">Stato Richiesta</p>
+          @if (prenotazione.statoRichiesta == 'In corso') {
+            <app-icona-stato stato="giallo" testo="In corso"></app-icona-stato>
+          } @else if (prenotazione.statoRichiesta == 'Terminata') {
+            <app-icona-stato testo="Conclusa"></app-icona-stato>
+          } @else {
+            <app-icona-stato stato="rosso" testo="Da ritirare"></app-icona-stato>
+          }
+        </div>
+        <div class="text-right">
+          <p class="text-sm text-gray-500">Costo Totale Noleggio</p>
+          <p class="text-2xl font-bold text-azzurro">€ {{ prenotazione.costoNoleggio | number:'1.2-2' }}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+            <i class="bi bi-person"></i>
+            Dati Dipendente
+          </h4>
+          <dl class="space-y-2 text-sm">
             <div>
-              <p class="text-sm text-gray-500">Stato Richiesta</p>
-              @if( prenotazione.statoRichiesta==  'In corso' ){
-                 <app-icona-stato stato="giallo" testo="In corso" ></app-icona-stato>
-              } @else if (prenotazione.statoRichiesta==  'Terminata'){
-                <app-icona-stato  testo="Conclusa" ></app-icona-stato>
-              }
-              @else{
-                <app-icona-stato stato="rosso" testo="Da ritirare" ></app-icona-stato>
-              }
+              <dt class="text-gray-500">Nominativo</dt>
+              <dd
+                class="font-medium text-gray-900">{{ prenotazione.utente?.nomeUtente }} {{ prenotazione.utente?.cognomeUtente }}
+              </dd>
             </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-500">Costo Totale Noleggio</p>
-              <p class="text-2xl font-bold text-azzurro">€ {{ prenotazione.costoNoleggio | number:'1.2-2' }}</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-
             <div>
-              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-                <i class="bi bi-person"></i>
-                Dati Dipendente
-              </h4>
-              <dl class="space-y-2 text-sm">
-                <div>
-                  <dt class="text-gray-500">Nominativo</dt>
-                  <dd class="font-medium text-gray-900">{{ prenotazione.utente?.nomeUtente }} {{ prenotazione.utente?.cognomeUtente }}</dd>
-                </div>
-                <div>
-                  <dt class="text-gray-500">Email</dt>
-                  <dd class="font-medium text-gray-900">{{ prenotazione.utente?.email }}</dd>
-                </div>
-                <div>
-                  <dt class="text-gray-500">ID Dipendente</dt>
-                  <dd class="font-medium text-gray-900">#{{ prenotazione.utente?.idUtente }}</dd>
-                </div>
-              </dl>
+              <dt class="text-gray-500">Email</dt>
+              <dd class="font-medium text-gray-900">{{ prenotazione.utente?.email }}</dd>
             </div>
-
             <div>
-              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-                <i class="bi bi-car-front-fill"></i>
-                Veicolo Prenotato
-              </h4>
-              <dl class="space-y-2 text-sm">
-                <div>
-                  <dt class="text-gray-500">Modello</dt>
-                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.nomeModello }}</dd>
-                </div>
-                <div>
-                  <dt class="text-gray-500">Targa</dt>
-                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.targaVeicolo }}</dd>
-                </div>
-                <div>
-                  <dt class="text-gray-500">Alimentazione</dt>
-                  <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.tipoDistribuzioneVeicolo }}</dd>
-                </div>
-              </dl>
+              <dt class="text-gray-500">ID Dipendente</dt>
+              <dd class="font-medium text-gray-900">#{{ prenotazione.utente?.idUtente }}</dd>
             </div>
+          </dl>
+        </div>
 
-            <div class="col-span-1 sm:col-span-2 mt-2 pt-4 border-t border-gray-100">
-              <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-                <i class="bi-geo-alt"></i>
-                Dettagli Viaggio
-              </h4>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="bg-gray-50 p-3 rounded-lg">
-                  <p class="text-xs text-gray-500 uppercase">Ritiro</p>
-                  <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataRitiro | date:'dd/MM/yyyy HH:mm' }}</p>
-                  <p class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-lg">
-                  <p class="text-xs text-gray-500 uppercase">Consegna</p>
-                  <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataConsegna | date:'dd/MM/yyyy HH:mm' }}</p>
-                  <p class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
-                </div>
-              </div>
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+            <i class="bi bi-car-front-fill"></i>
+            Veicolo Prenotato
+          </h4>
+          <dl class="space-y-2 text-sm">
+            <div>
+              <dt class="text-gray-500">Modello</dt>
+              <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.nomeModello }}</dd>
             </div>
+            <div>
+              <dt class="text-gray-500">Targa</dt>
+              <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.targaVeicolo }}</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500">Alimentazione</dt>
+              <dd class="font-medium text-gray-900">{{ prenotazione.veicolo?.tipoDistribuzioneVeicolo }}</dd>
+            </div>
+          </dl>
+        </div>
 
+        <div class="col-span-1 sm:col-span-2 mt-2 pt-4 border-t border-gray-100">
+          <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+            <i class="bi-geo-alt"></i>
+            Dettagli Viaggio
+          </h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <p class="text-xs text-gray-500 uppercase">Ritiro</p>
+              <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataRitiro | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p
+                class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <p class="text-xs text-gray-500 uppercase">Consegna</p>
+              <p class="text-sm font-medium text-gray-900">{{ prenotazione.dataConsegna | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p
+                class="text-xs text-gray-600 mt-1">{{ prenotazione.veicolo?.luogoRitiroDeposito?.nomeLuogo || 'Sede Principale' }}</p>
+            </div>
           </div>
         </div>
+
+      </div>
+    </div>
 
 
   </app-template-finestra-modale>

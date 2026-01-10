@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +31,6 @@ export class TableSortService {
       return 0;
     });
 
-    return  sortedArray;
+    return sortedArray;
   }
 }

@@ -1,4 +1,4 @@
-export interface StatisticheDipendenteDTO{
-  viaggiMensili:number;
-  oreTotaliDiGuida:number;
+export interface StatisticheDipendenteDTO {
+  viaggiMensili: number;
+  oreTotaliDiGuida: number;
 }

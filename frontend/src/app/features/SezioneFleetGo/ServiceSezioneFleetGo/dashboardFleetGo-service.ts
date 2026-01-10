@@ -9,43 +9,52 @@ import {OffertaDTO} from '@core/models/offertaDTO.models';
 
 
 @Injectable({
-  providedIn : 'root'
+  providedIn: 'root'
 })
 
-export class DashboardFleetGoService{
-  constructor(private http:HttpClient) {}
-  private apiUrl = environment.apiUrl+'/dashboardFleetGo';
+export class DashboardFleetGoService {
+  constructor(private http: HttpClient) {
+  }
 
-  richiediStatistiche():Observable<ContenitoreStatisticheNumeriche>{
+  private apiUrl = environment.apiUrl + '/dashboardFleetGo';
+
+  richiediStatistiche(): Observable<ContenitoreStatisticheNumeriche> {
     return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/statistiche`, {
-      withCredentials:true
-  });
-  }
-
-  richiediFattureDaGenerare():Observable<FatturaDaGenerareDTO[]>{
-    return this.http.get<FatturaDaGenerareDTO[]>(`${this.apiUrl}/fattureDaGenerare`,{
-      withCredentials:true
-    });
-  }
-  richiediManutenzioneDaGestire():Observable<RichiestaManutenzioneDTO[]>{
-    return this.http.get<RichiestaManutenzioneDTO[]>(`${this.apiUrl}/richiesteManutezioneDaAccettare`,{
-      withCredentials:true
+      withCredentials: true
     });
   }
 
-  richiediInformazioniSuManutenzioneDaGestire(idManutenzione:number):Observable<RichiestaManutenzioneDTO>{
-    return this.http.get<RichiestaManutenzioneDTO>(`${this.apiUrl}/dettagliRichiestaManutenzone/${idManutenzione}`,{withCredentials:true});
+  richiediFattureDaGenerare(): Observable<FatturaDaGenerareDTO[]> {
+    return this.http.get<FatturaDaGenerareDTO[]>(`${this.apiUrl}/fattureDaGenerare`, {
+      withCredentials: true
+    });
   }
 
-  accettaRichiestaManutenzione(idManutenzione:number):Observable<string>{
-    return this.http.post(`${this.apiUrl}/accettaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
+  richiediManutenzioneDaGestire(): Observable<RichiestaManutenzioneDTO[]> {
+    return this.http.get<RichiestaManutenzioneDTO[]>(`${this.apiUrl}/richiesteManutezioneDaAccettare`, {
+      withCredentials: true
+    });
   }
 
-  rifiutaRichiestaManutezione(idManutenzione:number):Observable<string>{
-    return this.http.post(`${this.apiUrl}/rifiutaRichiestaManutenzione/${idManutenzione}`,{},{withCredentials:true,responseType:"text"});
+  richiediInformazioniSuManutenzioneDaGestire(idManutenzione: number): Observable<RichiestaManutenzioneDTO> {
+    return this.http.get<RichiestaManutenzioneDTO>(`${this.apiUrl}/dettagliRichiestaManutenzone/${idManutenzione}`, {withCredentials: true});
   }
 
-  generaFattura(fattura:FatturaDaGenerareDTO): Observable<string> {
+  accettaRichiestaManutenzione(idManutenzione: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/accettaRichiestaManutenzione/${idManutenzione}`, {}, {
+      withCredentials: true,
+      responseType: "text"
+    });
+  }
+
+  rifiutaRichiestaManutezione(idManutenzione: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/rifiutaRichiestaManutenzione/${idManutenzione}`, {}, {
+      withCredentials: true,
+      responseType: "text"
+    });
+  }
+
+  generaFattura(fattura: FatturaDaGenerareDTO): Observable<string> {
     return this.http.post(`${this.apiUrl}/generaFattura`, fattura, {
       responseType: 'text',
       withCredentials: true
@@ -53,6 +62,6 @@ export class DashboardFleetGoService{
   }
 
   getOfferteAttive(): Observable<OffertaDTO[]> {
-    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, { withCredentials: true})
+    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, {withCredentials: true})
   }
 }

@@ -1,18 +1,17 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CardAutoAziendale} from '@shared/Componenti/Ui/card-auto-aziendale/card-auto-aziendale';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import { FlottaAdminAziendaleService } from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
-import { ModaleGestisciVeicolo } from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
-import { DettagliVeicoloAziendaleService } from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
+import {CardAutoAziendale} from '@shared/Componenti/Card/card-auto-aziendale/card-auto-aziendale';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {FlottaAdminAziendaleService} from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
+import {ModaleGestisciVeicolo} from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
+import {DettagliVeicoloAziendaleService} from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-flotta-admin-aziendale',
@@ -34,27 +33,27 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
 })
 
 
-
 export class FlottaAdminAziendale implements OnInit {
+
+  constructor(private flottaService: FlottaAdminAziendaleService,
+              private dettagliService: DettagliVeicoloAziendaleService,
+              private route: ActivatedRoute) {}
 
   @ViewChild('mioModale') modale!: ModaleGestisciVeicolo;
 
 
-  veicoli: any[]|null =null;
+  veicoli: any[] | null = null;
 
   testoRicerca: string = '';
   filtroStato: any = null;
-  mostraModale= false;
-  veicoloSelezionato:any=null;
-  listaLuoghi:any[]=[];
-  constructor(private flottaService: FlottaAdminAziendaleService, private dettagliService: DettagliVeicoloAziendaleService, private route: ActivatedRoute, private router:Router) {}
+  mostraModale = false;
+  veicoloSelezionato: any = null;
+  listaLuoghi: any[] = [];
 
+  loading: boolean = false;
 
-  loading:boolean = false;
-
-  erroreBanner="";
-  successoBanner="";
-
+  erroreBanner = "";
+  successoBanner = "";
 
 
   ngOnInit(): void {
@@ -80,7 +79,7 @@ export class FlottaAdminAziendale implements OnInit {
   }
 
 
-  caricaVeicoli(){
+  caricaVeicoli() {
     this.flottaService.richiediVeicoliAziendali().subscribe({
       next: (data) => {
         if (data) {
@@ -94,7 +93,7 @@ export class FlottaAdminAziendale implements OnInit {
   }
 
   get veicoliFiltrati() {
-    if(this.veicoli==null){
+    if (this.veicoli == null) {
       return
     }
     return this.veicoli.filter(v => {
@@ -149,17 +148,6 @@ export class FlottaAdminAziendale implements OnInit {
     }).length;
   }
 
-  resetFiltri() {
-    this.testoRicerca = '';
-    this.filtroStato = null;
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { stato: null },
-      queryParamsHandling: 'merge'
-    });
-  }
-
   apriModaleDettagli(veicoloDallaLista: any) {
     const targa = veicoloDallaLista.targaVeicolo;
 
@@ -187,9 +175,6 @@ export class FlottaAdminAziendale implements OnInit {
   }
 
 
-
-
-
   caricaDettagliVeicolo(targa: string) {
     this.loading = true;
     this.dettagliService.richiediVeicolo(targa).subscribe({
@@ -210,8 +195,6 @@ export class FlottaAdminAziendale implements OnInit {
   }
 
 
-
-
   impostaLuogo(luogoScelto: LuogoDTO) {
 
     if (luogoScelto && this.veicoloSelezionato) {
@@ -224,7 +207,7 @@ export class FlottaAdminAziendale implements OnInit {
       this.dettagliService.aggiornaPosizioneVeicolo(veicoloAggiornato).subscribe({
         next: (res) => {
           this.veicoloSelezionato = veicoloAggiornato;
-          if(this.veicoli==null) return;
+          if (this.veicoli == null) return;
 
           const index = this.veicoli.findIndex(v => v.targaVeicolo === veicoloAggiornato.targaVeicolo);
 

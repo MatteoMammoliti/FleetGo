@@ -2,13 +2,15 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Router} from '@angular/router';
 import {NgClass} from '@angular/common';
 
-interface ItemCarosello{
+interface ItemCarosello {
+
   tipo: "NOLEGGIO" | "AFFILIAZIONE" | "VUOTO" | "FATTURE";
   titolo: string;
   contatore: number;
   colore: string;
   icona: string;
   rotta: string;
+
 }
 
 @Component({
@@ -20,9 +22,10 @@ interface ItemCarosello{
   styleUrl: './carosello-richieste-miste.css',
 })
 
-export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
+export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   @Input() contatoreRichiesteNoleggioInAttesa = 0;
   @Input() contatoreRichiesteAffiliazioneInAttesa = 0;
@@ -32,15 +35,21 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
   indiceCorrente = 0;
   intervalloRotazione: any;
 
-  ngOnInit() { this.startRotation(); }
+  ngOnInit() {
+    this.startRotation();
+  }
 
-  ngOnChanges(changes: SimpleChanges) { this.caricaSlide(); }
+  ngOnChanges(changes: SimpleChanges) {
+    this.caricaSlide();
+  }
 
-  ngOnDestroy() { if(this.intervalloRotazione) clearInterval(this.intervalloRotazione) }
+  ngOnDestroy() {
+    if (this.intervalloRotazione) clearInterval(this.intervalloRotazione)
+  }
 
   startRotation() {
     this.intervalloRotazione = setInterval(() => {
-      if(this.slides.length > 1) {
+      if (this.slides.length > 1) {
         this.avanzaCarosello();
       }
     }, 3000)
@@ -48,7 +57,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
 
 
   avanzaCarosello() {
-    if(this.slides.length > 0) {
+    if (this.slides.length > 0) {
       this.indiceCorrente = (this.indiceCorrente + 1) % this.slides.length;
     }
   }
@@ -56,7 +65,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
   caricaSlide() {
     this.slides = [];
 
-    if(this.contatoreRichiesteAffiliazioneInAttesa > 0) {
+    if (this.contatoreRichiesteAffiliazioneInAttesa > 0) {
       const item: ItemCarosello = {
         tipo: "AFFILIAZIONE",
         titolo: "Richieste di affiliazione in attesa",
@@ -69,7 +78,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
       this.slides.push(item);
     }
 
-    if(this.contatoreRichiesteNoleggioInAttesa > 0) {
+    if (this.contatoreRichiesteNoleggioInAttesa > 0) {
       const item: ItemCarosello = {
         tipo: "NOLEGGIO",
         titolo: "Richieste di noleggio in attesa",
@@ -82,7 +91,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
       this.slides.push(item);
     }
 
-    if(this.contatoreFattureDaPagare > 0) {
+    if (this.contatoreFattureDaPagare > 0) {
       const item: ItemCarosello = {
         tipo: "FATTURE",
         titolo: "Numero di fatture da pagare",
@@ -95,7 +104,7 @@ export class CaroselloRichiesteMiste implements OnInit, OnChanges, OnDestroy{
       this.slides.push(item);
     }
 
-    if(this.slides.length == 0) {
+    if (this.slides.length == 0) {
       const item: ItemCarosello = {
         tipo: "VUOTO",
         titolo: "Stai andando alla grande, la tua azienda è gestita",

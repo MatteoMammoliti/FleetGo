@@ -7,7 +7,7 @@
   </div>
 
   <div class="overflow-y-auto flex-1 p-0">
-    @if(luoghi.length === 0) {
+    @if (luoghi.length === 0) {
       <div class="flex flex-col items-center justify-center h-64 text-slate-400 p-6 text-center">
         <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4 text-2xl">
           <i class="bi bi-geo-alt"></i>
@@ -25,15 +25,16 @@
         </tr>
         </thead>
         <tbody class="divide-y divide-slate-100" [@animazioneTabella]="luoghi.length">
-          @for(luogo of luoghi; track luogo.idLuogo) {
+          @for (luogo of luoghi; track luogo.idLuogo) {
             <tr class="hover:bg-blue-50/30 transition-colors">
               <td class="px-6 py-4 font-medium text-slate-700">
                 {{ luogo.nomeLuogo }}
               </td>
 
               <td class="px-6 py-4 text-center">
-                @if(nomeSedeAttuale === luogo.nomeLuogo) {
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                @if (nomeSedeAttuale === luogo.nomeLuogo) {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
                     <i class="bi bi-check-circle-fill"></i> Sede Legale
                   </span>
                 } @else {
@@ -44,14 +45,15 @@
                 }
               </td>
 
-              <td class="px-6 py-4 text-right"> @if(nomeSedeAttuale != luogo.nomeLuogo) {
-                <button (click)="eliminaLuogo.emit(luogo.idLuogo)"
-                        type="button"
-                        class="relative z-30 w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all ml-auto cursor-pointer"
-                        title="Elimina luogo">
-                  <i class="bi bi-trash3 pointer-events-none"></i>
-                </button>
-              }
+              <td class="px-6 py-4 text-right">
+                @if (nomeSedeAttuale != luogo.nomeLuogo) {
+                  <button (click)="eliminaLuogo.emit(luogo.idLuogo)"
+                          type="button"
+                          class="relative z-30 w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all ml-auto cursor-pointer"
+                          title="Elimina luogo">
+                    <i class="bi bi-trash3 pointer-events-none"></i>
+                  </button>
+                }
               </td>
             </tr>
           }

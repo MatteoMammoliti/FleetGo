@@ -1,4 +1,5 @@
-<div class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm animate-fade-down animate-duration-1000">
+<div
+  class="w-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm animate-fade-down animate-duration-1000">
 
   <div class="overflow-x-auto min-h-[600px] max-h-[800px] overflow-y-auto group">
     <table class="w-full text-left border-collapse">
@@ -14,113 +15,120 @@
       </tr>
       </thead>
       <tbody class="divide-y divide-slate-100" [@animazioneTabella]="listaAziende?.length">
-      @if (!listaAziende) {
-        <tr>
-          <td colspan="5" class="h-[600px]">
-            <div class="flex items-center justify-center h-full">
-              <i class="caricamento bi bi-arrow-clockwise"></i>
-            </div>
-          </td>
-        </tr>
-
-      } @else {
-
-        @for (azienda of listaAziende; track azienda.idAzienda) {
-          <tr class="group hover:bg-slate-50 transition-all duration-200">
-
-            <td class="p-4">
-              <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-sm shrink-0 transition-colors"
-                     [class.bg-blue-600]="!modalitaArchivio"
-                     [class.text-white]="!modalitaArchivio"
-                     [class.bg-slate-200]="modalitaArchivio"
-                     [class.text-slate-500]="modalitaArchivio">
-                  <i class="bi-building"></i>
-                </div>
-                <div class="flex flex-col">
-                  <span class="font-semibold text-slate-700 text-[0.95rem]" [class.line-through]="modalitaArchivio" [class.text-slate-400]="modalitaArchivio">
-                    {{ azienda.nomeAzienda || 'Nome non disponibile' }}
-                  </span>
-                </div>
+        @if (!listaAziende) {
+          <tr>
+            <td colspan="5" class="h-[600px]">
+              <div class="flex items-center justify-center h-full">
+                <i class="caricamento bi bi-arrow-clockwise"></i>
               </div>
             </td>
+          </tr>
 
-            <td class="p-4">
+        } @else {
+
+          @for (azienda of listaAziende; track azienda.idAzienda) {
+            <tr class="group hover:bg-slate-50 transition-all duration-200">
+
+              <td class="p-4">
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-sm shrink-0 transition-colors"
+                    [class.bg-blue-600]="!modalitaArchivio"
+                    [class.text-white]="!modalitaArchivio"
+                    [class.bg-slate-200]="modalitaArchivio"
+                    [class.text-slate-500]="modalitaArchivio">
+                    <i class="bi-building"></i>
+                  </div>
+                  <div class="flex flex-col">
+                  <span class="font-semibold text-slate-700 text-[0.95rem]" [class.line-through]="modalitaArchivio"
+                        [class.text-slate-400]="modalitaArchivio">
+                    {{ azienda.nomeAzienda || 'Nome non disponibile' }}
+                  </span>
+                  </div>
+                </div>
+              </td>
+
+              <td class="p-4">
               <span class="font-mono text-slate-500 text-sm bg-slate-100 px-2 py-1 rounded">
                 {{ azienda.pIva || 'N/D' }}
               </span>
-            </td>
+              </td>
 
-            <td class="p-4 text-slate-600">
-              <div class="flex items-center gap-2 text-sm">
-                {{ azienda.sedeAzienda || 'Non specificata' }}
-              </div>
-            </td>
+              <td class="p-4 text-slate-600">
+                <div class="flex items-center gap-2 text-sm">
+                  {{ azienda.sedeAzienda || 'Non specificata' }}
+                </div>
+              </td>
 
-            <td class="p-4 text-center">
-              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">
+              <td class="p-4 text-center">
+              <span
+                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">
                 #{{ azienda.idAdminAzienda }}
               </span>
-            </td>
+              </td>
 
-            <td class="p-4 text-center">
-              @if (!modalitaArchivio) {
-                <app-icona-stato testo="Attiva"></app-icona-stato>
-              } @else {
-                <app-icona-stato testo="Disabilitata" stato="rosso"></app-icona-stato>
-              }
-            </td>
+              <td class="p-4 text-center">
+                @if (!modalitaArchivio) {
+                  <app-icona-stato testo="Attiva"></app-icona-stato>
+                } @else {
+                  <app-icona-stato testo="Disabilitata" stato="rosso"></app-icona-stato>
+                }
+              </td>
 
-            <td class="p-4 text-right">
+              <td class="p-4 text-right">
 
-              @if (!modalitaArchivio) {
-                <button (click)="apriModaleDisabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
-                        class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
-                        title="Disabilita Azienda">
-                  <span class="text-xs font-semibold text-transparent group-hover/btn:text-red-600">Disabilita</span>
-                  <i class="bi-power text-lg"></i>
-                </button>
-              } @else {
-                <button (click)="apriModaleRiabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
-                        class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-green-600 hover:bg-green-50 px-3 py-1.5 rounded-lg transition-all"
-                        title="Riabilita Azienda">
-                  <span class="text-xs font-semibold text-transparent group-hover/btn:text-green-600">Riabilita</span>
-                  <i class="bi-arrow-counterclockwise text-lg"></i>
-                </button>
-              }
+                @if (!modalitaArchivio) {
+                  <button (click)="apriModaleDisabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
+                          class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
+                          title="Disabilita Azienda">
+                    <span class="text-xs font-semibold text-transparent group-hover/btn:text-red-600">Disabilita</span>
+                    <i class="bi-power text-lg"></i>
+                  </button>
+                } @else {
+                  <button (click)="apriModaleRiabilitaAzienda(azienda.idAzienda, azienda.nomeAzienda)"
+                          class="group/btn flex items-center gap-2 ml-auto text-slate-400 hover:text-green-600 hover:bg-green-50 px-3 py-1.5 rounded-lg transition-all"
+                          title="Riabilita Azienda">
+                    <span class="text-xs font-semibold text-transparent group-hover/btn:text-green-600">Riabilita</span>
+                    <i class="bi-arrow-counterclockwise text-lg"></i>
+                  </button>
+                }
 
-            </td>
+              </td>
 
-          </tr>
-        }
+            </tr>
+          }
 
-        @if (listaAziende.length === 0) {
-          <tr>
-            <td colspan="6" class="p-12 text-center">
-              <div class="p-20 flex justify-center items-center">
-                <app-messaggio-card-vuota
-                  testoPrimario="Non sono presenti aziende!"
-                  icona="bi-building-fill-x"
+          @if (listaAziende.length === 0) {
+            <tr>
+              <td colspan="6" class="p-12 text-center">
+                <div class="p-20 flex justify-center items-center">
+                  <app-messaggio-card-vuota
+                    testoPrimario="Non sono presenti aziende!"
+                    icona="bi-building-fill-x"
                   >
-                </app-messaggio-card-vuota>
-              </div>
-            </td>
-          </tr>
-        }}
+                  </app-messaggio-card-vuota>
+                </div>
+              </td>
+            </tr>
+          }
+        }
       </tbody>
     </table>
   </div>
 </div>
 
-@if(modaleDisabilitaAzienda){
+@if (modaleDisabilitaAzienda) {
   <app-template-finestra-modale tastoBlu="Disabilita" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
-                                (conferma)="confermaModaleDisabilitaAzienda()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
-    <span class="text-gray-600 px-6 flex mt-4">Cliccando su disabilita l'azienda {{nomeAziendaInteressataModale}} verrà disabilitata.</span>
+                                (conferma)="confermaModaleDisabilitaAzienda()" (annulla)="chiudiModale()"
+                                (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su disabilita l'azienda {{ nomeAziendaInteressataModale }}
+      verrà disabilitata.</span>
   </app-template-finestra-modale>
 }
-@if(modaleRiabilitaAzienda){
+@if (modaleRiabilitaAzienda) {
   <app-template-finestra-modale tastoBlu="Riabilita" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
-                                (conferma)="confermaModaleRiabilitaAzienda()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
-    <span class="text-gray-600 px-6 flex mt-4">Cliccando su riabilita l'azienda {{nomeAziendaInteressataModale}} verrà riabilitata.</span>
+                                (conferma)="confermaModaleRiabilitaAzienda()" (annulla)="chiudiModale()"
+                                (chiudi)="chiudiModale()">
+    <span class="text-gray-600 px-6 flex mt-4">Cliccando su riabilita l'azienda {{ nomeAziendaInteressataModale }} verrà riabilitata.</span>
   </app-template-finestra-modale>
 }

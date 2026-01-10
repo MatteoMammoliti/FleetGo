@@ -14,7 +14,8 @@ declare var google: any;
 
 export class MappaGestioneLuoghi implements OnInit, OnChanges {
 
-  constructor(private googleMapsService: GoogleMapsService) {}
+  constructor(private googleMapsService: GoogleMapsService) {
+  }
 
   @Input() luoghiSalvati: LuogoDTO[] = [];
   @Input() modalitaAggiuntaLuogo = false;
@@ -40,10 +41,10 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
     if (changes['modalitaAggiuntaLuogo'] && !this.modalitaAggiuntaLuogo) {
       this.luogoDaAggiungere = null;
 
-      if(this.markerNuovoLuogo) this.markerNuovoLuogo.setMap(null);
+      if (this.markerNuovoLuogo) this.markerNuovoLuogo.setMap(null);
 
       const input = document.getElementById("search-box") as HTMLInputElement;
-      if(input) input.value = "";
+      if (input) input.value = "";
     }
   }
 
@@ -63,9 +64,9 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
     this.barraRicerca.addListener("place_changed", () => {
       const luogo = this.barraRicerca.getPlace();
 
-      if(!luogo.geometry) return;
+      if (!luogo.geometry) return;
 
-      if(luogo.geometry.viewport) {
+      if (luogo.geometry.viewport) {
         this.map.fitBounds(luogo.geometry.viewport);
       } else {
         this.map.setCenter(luogo.geometry.location);
@@ -80,7 +81,7 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
         idAzienda: 0
       };
 
-      if(this.markerNuovoLuogo) this.markerNuovoLuogo.setMap(null);
+      if (this.markerNuovoLuogo) this.markerNuovoLuogo.setMap(null);
 
       this.markerNuovoLuogo = new google.maps.Marker({
         position: luogo.geometry.location,
@@ -94,17 +95,17 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
   }
 
   confermaLuogoSelezionato() {
-    if(this.luogoDaAggiungere) {
+    if (this.luogoDaAggiungere) {
       this.luogoSelezionato.emit(this.luogoDaAggiungere);
       this.luogoDaAggiungere = null;
     }
   }
 
-  private aggiornaMarkers(){
+  private aggiornaMarkers() {
     this.markersLuoghiEsistenti.forEach(m => m.setMap(null));
     this.markersLuoghiEsistenti = [];
 
-    if(this.luoghiSalvati) {
+    if (this.luoghiSalvati) {
       this.luoghiSalvati.forEach(luogo => {
         const nuovoMarker = new google.maps.Marker({
           position: {lat: luogo.latitudine, lng: luogo.longitudine},

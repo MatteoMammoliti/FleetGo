@@ -1,12 +1,14 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CommonModule } from '@angular/common';
-import { TabellaAziendeComponent } from '@features/SezioneFleetGo/Componenti/tabelle/tabella-aziende/tabella-aziende';
-import { FormAggiungiAdminAzienda } from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
-import { AziendeAffiliateService } from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
-import { AziendaDTO } from '@core/models/aziendaDTO';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CommonModule} from '@angular/common';
+import {TabellaAziendeComponent} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-aziende/tabella-aziende';
+import {
+  FormAggiungiAdminAzienda
+} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
+import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
+import {AziendaDTO} from '@core/models/aziendaDTO';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
 
 @Component({
   selector: 'app-aziende-affiliate',
@@ -26,37 +28,44 @@ import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackg
 
 export class AziendeAffiliate implements OnInit {
 
+  constructor(private aziendeService: AziendeAffiliateService) {
+  }
+
   @ViewChild('tabellaAziende') tabella!: TabellaAziendeComponent;
   @ViewChild('formAggiungiAdminAzienda') formAggiunta!: FormAggiungiAdminAzienda;
 
   testoRicerca: string = '';
-  listaAziendeAttive: AziendaDTO[]|null = null;
-  listaAziendeDisabilitate: AziendaDTO[]|null = null;
+  listaAziendeAttive: AziendaDTO[] | null = null;
+  listaAziendeDisabilitate: AziendaDTO[] | null = null;
 
   mostraModale = false;
   mostraAziendeArchiviate = false
 
   erroreBanner = "";
-  successoBanner="";
+  successoBanner = "";
 
-  constructor(private aziendeService: AziendeAffiliateService) {}
 
-  ngOnInit() { this.richiediAziendeAttive(); }
 
-  gestisciVisibilitaModaleAggiuntaAziende() { this.mostraModale = !this.mostraModale; }
+  ngOnInit() {
+    this.richiediAziendeAttive();
+  }
+
+  gestisciVisibilitaModaleAggiuntaAziende() {
+    this.mostraModale = !this.mostraModale;
+  }
 
   impostaVista(stato: boolean) {
 
     this.mostraAziendeArchiviate = stato
 
-    if(this.mostraAziendeArchiviate) {
+    if (this.mostraAziendeArchiviate) {
       this.richiediAziendeDisabilitate();
     }
   }
 
   get filtraAziende() {
     const listaTarget = !this.mostraAziendeArchiviate ? this.listaAziendeAttive : this.listaAziendeDisabilitate
-    if(!listaTarget){
+    if (!listaTarget) {
       return null;
     }
     if (!this.testoRicerca || this.testoRicerca.trim() === '') {
@@ -77,8 +86,8 @@ export class AziendeAffiliate implements OnInit {
     this.aziendeService.registraAzienda(mod.adminAziendale, mod.azienda).subscribe({
       next: (res) => {
         this.richiediAziendeAttive();
-        if(this.formAggiunta) this.formAggiunta.pulisciForm();
-        this.gestisciSuccesso( "Azienda aggiunta con successo");
+        if (this.formAggiunta) this.formAggiunta.pulisciForm();
+        this.gestisciSuccesso("Azienda aggiunta con successo");
       },
       error: (err) => {
         this.gestisciErrore(err.error);
@@ -90,7 +99,9 @@ export class AziendeAffiliate implements OnInit {
   richiediAziendeAttive() {
     this.aziendeService.richiediAziendeAttive().subscribe({
       next: (data) => {
-        if (data) { this.listaAziendeAttive = data; }
+        if (data) {
+          this.listaAziendeAttive = data;
+        }
       }, error: (err) => {
         this.gestisciErrore(err.error);
 
@@ -101,7 +112,7 @@ export class AziendeAffiliate implements OnInit {
   richiediAziendeDisabilitate() {
     this.aziendeService.richiediAziendeDisabilitate().subscribe({
       next: (data) => {
-        if(data) this.listaAziendeDisabilitate = data;
+        if (data) this.listaAziendeDisabilitate = data;
       }, error: (err) => {
         this.gestisciErrore(err.error);
 
@@ -112,10 +123,10 @@ export class AziendeAffiliate implements OnInit {
   disabilitaAzienda(idAzienda: number) {
     this.aziendeService.disabilitaAzienda(idAzienda).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.richiediAziendeAttive();
         }
-        this.gestisciSuccesso( "Azienda disabilitata con successo");
+        this.gestisciSuccesso("Azienda disabilitata con successo");
       }, error: (err) => {
         this.gestisciErrore(err.error);
 
@@ -126,11 +137,11 @@ export class AziendeAffiliate implements OnInit {
   riabilitaAzienda(idAzienda: number) {
     this.aziendeService.riabilitaAzienda(idAzienda).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.richiediAziendeAttive();
           this.richiediAziendeDisabilitate();
         }
-        this.gestisciSuccesso( "Azienda riabilitata con successo");
+        this.gestisciSuccesso("Azienda riabilitata con successo");
       }, error: (err) => {
         this.gestisciErrore(err.error);
       }

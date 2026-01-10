@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-chi-siamo',
@@ -9,4 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './chi-siamo.css',
 })
 
-export class ChiSiamo {}
+export class ChiSiamo {
+}

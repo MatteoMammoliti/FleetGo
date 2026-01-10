@@ -10,8 +10,10 @@ import {HttpClient} from '@angular/common/http';
 
 export class StoricoFattureService {
 
-  constructor(private http: HttpClient) {}
-  apiUrl = environment.apiUrl+'/dashboardFleetGo';
+  constructor(private http: HttpClient) {
+  }
+
+  apiUrl = environment.apiUrl + '/dashboardFleetGo';
 
   public getFatturePerAnno(anno: number): Observable<FatturaDTO[]> {
     return this.http.get<FatturaDTO[]>(`${this.apiUrl}/getFatture/${anno}`, {
@@ -26,7 +28,7 @@ export class StoricoFattureService {
     });
   }
 
-  public getAnniFatture(): Observable<number[]>{
+  public getAnniFatture(): Observable<number[]> {
     return this.http.get<number[]>(`${this.apiUrl}/getAnni`, {
       withCredentials: true
     });

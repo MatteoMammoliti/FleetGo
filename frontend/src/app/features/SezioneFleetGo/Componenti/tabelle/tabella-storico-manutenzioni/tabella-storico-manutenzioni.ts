@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe} from '@angular/common';
-import {FormControl,  ReactiveFormsModule} from '@angular/forms';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import {TableSortService} from '@core/services/table-sort-service';
 import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
@@ -18,11 +18,13 @@ import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
   animations: [ANIMAZIONE_TABELLA]
 })
 export class TabellaStoricoManutenzioni {
-  constructor(private sortTable: TableSortService) {}
-  @Input() listaStorico:RichiestaManutenzioneDTO[]|null=null;
-  filtroTarga=new FormControl('', { nonNullable: true });
+  constructor(private sortTable: TableSortService) {
+  }
 
-  get listaStoricoFiltrata():RichiestaManutenzioneDTO[]{
+  @Input() listaStorico: RichiestaManutenzioneDTO[] | null = null;
+  filtroTarga = new FormControl('', {nonNullable: true});
+
+  get listaStoricoFiltrata(): RichiestaManutenzioneDTO[] {
     if (!this.listaStorico) {
       return [];
     }
@@ -30,15 +32,16 @@ export class TabellaStoricoManutenzioni {
     if (!testoRicerca) {
       return this.listaStorico;
     }
-    return this.listaStorico.filter(richiesta=>{
+    return this.listaStorico.filter(richiesta => {
       const targa = richiesta.veicolo?.targaVeicolo?.toUpperCase() || '';
       return targa.includes(testoRicerca);
     })
   }
 
-  sortColonna( chiave : string) {
+  sortColonna(chiave: string) {
     if (this.listaStorico) {
       this.listaStorico = this.sortTable.sortArray([...this.listaStorico], chiave);
-    }   }
+    }
+  }
 
 }

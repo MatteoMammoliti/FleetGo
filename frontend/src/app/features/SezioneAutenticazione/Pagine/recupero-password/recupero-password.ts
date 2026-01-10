@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import {FormRecuperoPassword} from '@features/SezioneAutenticazione/Componenti/form-recupero-password/form-recupero-password';
+import {Component} from '@angular/core';
+import {
+  FormRecuperoPassword
+} from '@features/SezioneAutenticazione/Componenti/form-recupero-password/form-recupero-password';
 import {AuthService} from '@core/auth/auth-service';
-import {validazione} from '@core/utils/validazione';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-recupero-password',
@@ -14,11 +14,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class RecuperoPassword {
 
-  constructor(private service: AuthService ) {}
+  constructor(private service: AuthService) {
+  }
 
-  stepCorrente= 1;
-  errore='';
-  messaggio='';
+  stepCorrente = 1;
+  errore = '';
+  messaggio = '';
 
   inviaRichiestaOtp(email: string) {
     this.service.invioOTP(email).subscribe({
@@ -32,7 +33,7 @@ export class RecuperoPassword {
     });
   }
 
-  cambiaPassword(dati:any) {
+  cambiaPassword(dati: any) {
     this.service.cambioPassword(dati.email, dati.otp, dati.password).subscribe({
       next: (res) => {
         this.stepCorrente = 3;

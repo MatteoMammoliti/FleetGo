@@ -1,10 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 import {DatePipe} from '@angular/common';
-import {TemplateTitoloSottotitolo} from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
-import {BottoneChiaro} from '@shared/Componenti/Ui/bottone-chiaro/bottone-chiaro';
-import {TableSortService} from '@core/services/table-sort-service';
+import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
+import {BottoneChiaro} from '@shared/Componenti/Bottoni/bottone-chiaro/bottone-chiaro';
 import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
@@ -21,10 +20,10 @@ import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 })
 export class TabellaManutenzioniInCorso {
 
-  @Input() listaRichieste:RichiestaManutenzioneDTO[]|null=null
-  @Output() chiudiRichiesta=new EventEmitter<number>()
+  @Input() listaRichieste: RichiestaManutenzioneDTO[] | null = null
+  @Output() chiudiRichiesta = new EventEmitter<number>()
 
-  onConcludi(idRichiesta:number){
+  onConcludi(idRichiesta: number) {
     this.chiudiRichiesta.emit(idRichiesta)
   }
 

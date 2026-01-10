@@ -8,28 +8,31 @@ import {Observable} from 'rxjs';
   providedIn: 'root',
 })
 
-export class HomeService{
-  private apiUrl = environment.apiUrl+'/homeNoAzienda';
+export class HomeService {
+  private apiUrl = environment.apiUrl + '/homeNoAzienda';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getAziende(): Observable<ContenitoreDatiAzienda[]> {
-    return this.http.get<ContenitoreDatiAzienda[]>(`${this.apiUrl}/getAziende`, { withCredentials:true })
+    return this.http.get<ContenitoreDatiAzienda[]>(`${this.apiUrl}/getAziende`, {withCredentials: true})
   }
 
-  getRichiestaAffiliazioneAttesa():Observable<ContenitoreDatiAzienda | null> {
-    return this.http.get<ContenitoreDatiAzienda | null>(`${this.apiUrl}/getRichiestaAttesa`, { withCredentials:true })
+  getRichiestaAffiliazioneAttesa(): Observable<ContenitoreDatiAzienda | null> {
+    return this.http.get<ContenitoreDatiAzienda | null>(`${this.apiUrl}/getRichiestaAttesa`, {withCredentials: true})
   }
 
-  annullaRichiestaInAttesa(azienda:number):Observable<any>{
-    return this.http.post(`${this.apiUrl}/annullaRichiestaAttesa${azienda}`,{}, {
+  annullaRichiestaInAttesa(azienda: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/annullaRichiestaAttesa${azienda}`, {}, {
       responseType: 'text',
-      withCredentials:true })
+      withCredentials: true
+    })
   }
 
-  inviaRichiestaAffiliazione(azienda:number):Observable<any>{
-    return this.http.post(`${this.apiUrl}/inviaRichiestaAffiliazione${azienda}`,{}, {
+  inviaRichiestaAffiliazione(azienda: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/inviaRichiestaAffiliazione${azienda}`, {}, {
       responseType: 'text',
-      withCredentials:true })
+      withCredentials: true
+    })
   }
 }

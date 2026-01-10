@@ -1,0 +1,15 @@
+<app-template-titolo-sottotitolo [titolo]="'Patente di Guida'"
+                                 [sottotitolo]="'Il tuo documento di guida, cliccaci sopra per cambiarlo!'">
+
+  <div class="flex flex-col items-center justify-center gap-6 py-8">
+
+    <div class="w-full max-w-[360px] shadow-2xl rounded-2xl overflow-hidden border">
+      <app-immagine-input-checked
+        [anteprimaUrl]="datiPatente"
+        (fileSelezionato)="onImmagineSelezionata($event)">
+      </app-immagine-input-checked>
+    </div>
+
+  </div>
+
+</app-template-titolo-sottotitolo>

@@ -1,0 +1,18 @@
+<div class="animate-fade-right animate-once animate-duration-1000 pt-3">
+
+  <div class="group bg-white rounded-2xl p-3 border border-slate-100 shadow-sm
+              hover:shadow-xl hover:-translate-y-1 transition-all duration-300
+              transform-gpu relative overflow-hidden will-change-transform">
+
+    @if(rosso){
+      <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-500 to-red-900
+                opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    }
+    @else{
+    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-azzurro to-blue-900
+                opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    }
+    <ng-content></ng-content>
+  </div>
+</div>
+

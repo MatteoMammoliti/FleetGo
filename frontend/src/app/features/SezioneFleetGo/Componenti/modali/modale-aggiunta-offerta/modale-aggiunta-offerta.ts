@@ -1,10 +1,9 @@
-import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
-import {validazione} from '@core/utils/validazione';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
-import {ImmagineInputChecked} from '@shared/Componenti/Ui/immagine-input-checked/immagine-input-checked';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {ImmagineInputChecked} from '@shared/Componenti/Input/immagine-input-checked/immagine-input-checked';
 
 @Component({
   selector: 'app-modale-aggiunta-offerta',
@@ -79,7 +78,7 @@ export class ModaleAggiuntaOfferta {
       scadenza: this.dataScadenza
     }
 
-    formData.append("offerta", new Blob([JSON.stringify(this.nuovaOfferta)], { type: 'application/json' }));
+    formData.append("offerta", new Blob([JSON.stringify(this.nuovaOfferta)], {type: 'application/json'}));
     formData.append("immagine", this.immagineCopertina);
 
     this.salva.emit(formData);
@@ -88,7 +87,7 @@ export class ModaleAggiuntaOfferta {
     this.resetErrori();
   }
 
-  onFileSelected(file:File) {
+  onFileSelected(file: File) {
     if (file) {
       this.immagineCopertina = file;
       this.mappaErrori.immagineCopertina = false;

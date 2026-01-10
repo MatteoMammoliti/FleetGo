@@ -1,4 +1,6 @@
-<app-template-finestra-modale #modale titolo="Cre un nuovo Modello" sottotitolo="Potrai usare questo modello per creare nuovi veicoli" tastoBlu="Crea Modello" tastoBianco="Annulla"
+<app-template-finestra-modale #modale titolo="Cre un nuovo Modello"
+                              sottotitolo="Potrai usare questo modello per creare nuovi veicoli" tastoBlu="Crea Modello"
+                              tastoBianco="Annulla"
                               (chiudi)="onAnnulla.emit()" (annulla)="onAnnulla.emit()" (conferma)="onConferma()">
   <div class="px-4 py-6 flex flex-col gap-3 overflow-y-auto">
     <app-input-checked

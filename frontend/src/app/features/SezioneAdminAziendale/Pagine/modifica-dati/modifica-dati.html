@@ -36,20 +36,19 @@
 
           </div>
 
+        </div>
+        <div>
+          <app-tabella-gestione-luoghi
+            [luoghi]="luoghiEsistenti"
+            [nomeSedeAttuale]="utenteDaModificare.sedeAzienda"
+            (impostaSede)="impostaSede($event)"
+            (eliminaLuogo)="eliminaLuogo($event)">
+          </app-tabella-gestione-luoghi>
+        </div>
       </div>
-      <div>
-        <app-tabella-gestione-luoghi
-          [luoghi]="luoghiEsistenti"
-          [nomeSedeAttuale]="utenteDaModificare.sedeAzienda"
-          (impostaSede)="impostaSede($event)"
-          (eliminaLuogo)="eliminaLuogo($event)">
-        </app-tabella-gestione-luoghi>
-      </div>
+
+
     </div>
-
-
-  </div>
-
 
 
   </div>
@@ -58,7 +57,7 @@
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if(successoBanner){
+@if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }
 

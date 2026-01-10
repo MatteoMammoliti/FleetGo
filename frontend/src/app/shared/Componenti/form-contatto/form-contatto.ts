@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
-import { UtenteDTO } from '@core/models/utenteDTO.model';
-import { InputChecked } from '../Ui/input-checked/input-checked';
+import { InputChecked } from '../Input/input-checked/input-checked';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -24,13 +23,13 @@ export class FormContatto implements OnInit {
   @Input() titolo: string = "";
   @Input() sottotitolo: string = "";
   @Input() modalita: string = "PUBLIC";
-  
+
   @Input() invioInCorso = false;
   @Input() messaggioInviato: boolean = false;
   @Input() erroreInvio: boolean = false;
 
   @Output() inviaForm = new EventEmitter<FormData>();
-  @Output() resetStato = new EventEmitter<void>(); 
+  @Output() resetStato = new EventEmitter<void>();
 
   form!: FormGroup;
 
@@ -79,7 +78,7 @@ export class FormContatto implements OnInit {
 
       formData.append("messaggio", valoriForm.corpoMessaggio);
       formData.append("oggetto", valoriForm.oggettoMessaggio);
-      
+
       if(valoriForm.nomeMittente) formData.append("NomeCognome", valoriForm.nomeMittente + " " + valoriForm.cognomeMittente);
       if(valoriForm.emailMittente) formData.append("emailMittente", valoriForm.emailMittente);
 
@@ -88,7 +87,7 @@ export class FormContatto implements OnInit {
       this.form.markAllAsTouched();
     }
   }
-  
+
   protected resetForm() {
       this.messaggioInviato = false;
       this.erroreInvio = false;

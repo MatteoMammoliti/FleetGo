@@ -2,43 +2,43 @@
   [titolo]="'Dashboard'"
   [sottotitolo]="'Ecco il riepilogo delle tue attività, tutto a portata di click.'">
 
-  <div class="pb-20 mt-6 px-3">
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+  <div class="contenitore-dashboard">
+    <div class="griglia-dashboard">
 
-      <div class="xl:col-span-3 animate-fade-in" style="animation-delay: 0.1s;">
+      <div class="cella-piena animazione-fade ritardo-1">
         <app-banner-home
-          class="h-full block"
+          class="componente-blocco"
           [nomeDipendente]="nomeDipendente"
           (clickPrenotaVeicolo)="apriPrenotazioni()"
           (clickMiePrenotazioni)="apriMieAttivita()">
         </app-banner-home>
       </div>
 
-      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.2s;">
+      <div class="cella-doppia animazione-fade ritardo-4">
         <app-prossimo-viaggio
-          class="h-full block"
+          class="componente-blocco"
           [viaggio]="prossimoViaggio">
         </app-prossimo-viaggio>
       </div>
 
-      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.3s;">
+      <div class="cella-singola animazione-fade ritardo-3">
         @if (statisticheDipendente) {
           <app-statistiche-dipendente
-            class="h-full block"
+            class="componente-blocco"
             [statistiche]="statisticheDipendente">
           </app-statistiche-dipendente>
         }
       </div>
 
-      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.4s;">
-        <div class="bg-white rounded-[2.5rem] p-3 shadow-sm border border-slate-200 h-full min-h-[400px] relative hover:shadow-lg transition-all duration-300 group">
-           <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
+      <div class="cella-doppia animazione-fade ritardo-4">
+        <div class="card-mappa">
+          <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
         </div>
       </div>
 
-      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.5s;">
+      <div class="cella-singola animazione-fade ritardo-5">
         <app-supporto-fleetgo
-          class="h-full block"
+          class="componente-blocco"
           (apriModale)="gestisciVisibilita()">
         </app-supporto-fleetgo>
       </div>
@@ -48,7 +48,7 @@
 
 </app-template-titolo-sottotitolo>
 
-@if(modaleContattoVisibile) {
+@if (modaleContattoVisibile) {
   <app-modale-richiesta-assistenza
     (chiudiModale)="gestisciVisibilita()"
     (inviaSegnalazione)="inviaSegnalazione($event)"

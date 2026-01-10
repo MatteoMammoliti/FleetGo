@@ -1,6 +1,7 @@
 <app-intestazione-ebackground titolo="Fatturazione FleetGo">
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-3 mb-5">
-      <app-card-statistiche-dashboard-fleet
+
+  <div class="griglia-statistiche">
+    <app-card-statistiche-dashboard-fleet
       titolo="Fatture Emesse ({{annoSelezionato}})"
       [valore]="totaleFattureAnnoSelezionato"
       icona="bi-archive"
@@ -23,17 +24,16 @@
       coloreSfondo="card-green"
       descrizione="Fatturato questo anno stimato">
     </app-card-statistiche-dashboard-fleet>
-
   </div>
-  <div class="mb-6">
+
+  <div class="contenitore-tabella">
     <app-tabella-storico-fatture
       [fatture]="FattureFiltrate"
       [anniFatture]="anniFatture"
       [listaAziende]="listaAziende"
       (aggiornaTabella)="aggiorna($event)"
-      (richiestaDownload)="gestisciDownload($event)" >
+      (richiestaDownload)="gestisciDownload($event)">
     </app-tabella-storico-fatture>
-
   </div>
 
 </app-intestazione-ebackground>
@@ -41,4 +41,3 @@
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-

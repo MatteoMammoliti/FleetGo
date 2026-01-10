@@ -10,32 +10,33 @@ import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiN
 })
 
 export class PrenotazioniService {
-  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+  private apiUrl = environment.apiUrl + '/dashboardAdminAziendale';
 
-  constructor(private http: HttpClient) {}
-
-  public getPrenotazioni():Observable<RichiestaNoleggioDTO[]> {
-    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getPrenotazioni`, { withCredentials: true })
+  constructor(private http: HttpClient) {
   }
 
-  public getPrenotazioniDaAccettare():Observable<RichiestaNoleggioDTO[]> {
-    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getPrenotazioniDaAccettare`, { withCredentials: true })
+  public getPrenotazioni(): Observable<RichiestaNoleggioDTO[]> {
+    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getPrenotazioni`, {withCredentials: true})
+  }
+
+  public getPrenotazioniDaAccettare(): Observable<RichiestaNoleggioDTO[]> {
+    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getPrenotazioniDaAccettare`, {withCredentials: true})
   }
 
   public getPrenotazioneDettagliata(idRichiesta: number): Observable<RichiestaNoleggioDTO> {
-    return this.http.get<RichiestaNoleggioDTO>(`${this.apiUrl}/getPrenotazioni/${idRichiesta}`, { withCredentials: true })
+    return this.http.get<RichiestaNoleggioDTO>(`${this.apiUrl}/getPrenotazioni/${idRichiesta}`, {withCredentials: true})
   }
 
   public getNumeroNoleggiDaApprovare(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggiDaApprovare`, { withCredentials: true })
+    return this.http.get<number>(`${this.apiUrl}/getNumeroNoleggiDaApprovare`, {withCredentials: true})
   }
 
   public approvaRichiesta(idRichiesta: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/approvaRichiesta`, idRichiesta, { responseType: 'text', withCredentials: true })
+    return this.http.post(`${this.apiUrl}/approvaRichiesta`, idRichiesta, {responseType: 'text', withCredentials: true})
   }
 
   public rifiutaRichiesta(idRichiesta: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/rifiutaRichiesta`, idRichiesta, { responseType: 'text', withCredentials: true })
+    return this.http.post(`${this.apiUrl}/rifiutaRichiesta`, idRichiesta, {responseType: 'text', withCredentials: true})
   }
 
   public rifiutoAutomaticoRichieste(dto: RisoluzioneConfilittiNoleggio) {

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
 import {DatePipe} from '@angular/common';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-richieste-affiliazione',
@@ -19,4 +19,5 @@ export class ModaleRichiesteAffiliazione {
   @Output() chiudiModale = new EventEmitter<void>();
   @Output() accettaAffiliazione = new EventEmitter<number>();
   @Output() rifiutaAffiliazione = new EventEmitter<number>();
+
 }

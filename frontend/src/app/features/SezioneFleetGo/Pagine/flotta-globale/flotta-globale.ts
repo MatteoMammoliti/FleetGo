@@ -4,20 +4,22 @@ import {TabellaAuto} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-a
 import {FormAggiungiAuto} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-auto/form-aggiungi-auto';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {ModelloDTO} from '@core/models/ModelloDTO';
-import {FormAggiungiModello} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-modello/form-aggiungi-modello';
+import {
+  FormAggiungiModello
+} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-modello/form-aggiungi-modello';
 import {CardModello} from '@features/SezioneFleetGo/Componenti/card/card-modello/card-modello';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
+import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {DettagliVeicolo} from '@features/SezioneFleetGo/Componenti/modali/dettagli-veicolo/dettagli-veicolo';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 import {concatMap} from 'rxjs';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
-import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-flotta-globale',
@@ -39,44 +41,45 @@ import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina
     SceltaTendina
   ],
   templateUrl: './flotta-globale.html',
-  styleUrl: './flotta-globale.css',
+  styleUrl: './flotta-globale.css'
 })
 
-export class FlottaGlobale implements OnInit{
+export class FlottaGlobale implements OnInit {
 
   constructor(private service: FlottaGlobaleService,
-              private aziendeService: AziendeAffiliateService, private veicoloService: FlottaGlobaleService, private googleMapsService:GoogleMapsService) {}
+              private aziendeService: AziendeAffiliateService,  private googleMapsService: GoogleMapsService) {
+  }
 
   @ViewChild('dettaglioVeicolo') dettagliVeicoloModale!: DettagliVeicolo;
 
-  veicoliOriginali: VeicoloDTO[] |null = null;
+  veicoliOriginali: VeicoloDTO[] | null = null;
 
   testoRicerca: string = '';
   filtroAzienda: AziendaDTO | null = null;
-  filtroStatoVeicolo: string|null = null;
+  filtroStatoVeicolo: string | null = null;
   aziendeInPiattaforma: AziendaDTO[] = []
 
   listaStati = [
-    { label: 'Disponibile', value: 'DISPONIBILE' },
-    { label: 'Noleggiato', value: 'NOLEGGIATO' },
-    { label: 'In Manutenzione', value: 'MANUTENZIONE' }
+    {label: 'Disponibile', value: 'DISPONIBILE'},
+    {label: 'Noleggiato', value: 'NOLEGGIATO'},
+    {label: 'In Manutenzione', value: 'MANUTENZIONE'}
   ];
 
   mostraModale: boolean = false;
   mostraModaleInserimentoModello = false;
 
   listaModelli: ModelloDTO[] = [];
-  erroreBanner="";
-  successoBanner="";
-  tendina: boolean=false;
-  icona='bi-arrow-down-short';
+  erroreBanner = "";
+  successoBanner = "";
+  tendina: boolean = false;
+  icona = 'bi-arrow-down-short';
 
-  modaleCheck=false;
-  modelloInteressato:any;
+  modaleCheck = false;
+  modelloInteressato: any;
 
-  modaleDettagliVeicolo=false;
-  veicolo:any=null;
-  aziende:AziendaDTO[] = [];
+  modaleDettagliVeicolo = false;
+  veicolo: any = null;
+  aziende: AziendaDTO[] = [];
 
   private coordsIniziali: { lat: number, lng: number } | null = null;
 
@@ -101,7 +104,7 @@ export class FlottaGlobale implements OnInit{
   caricaModelli() {
     this.service.richiediModelli().subscribe({
       next: (datiDalServer) => {
-        if(datiDalServer) {
+        if (datiDalServer) {
           this.listaModelli = datiDalServer;
         }
       }, error: (err) => {
@@ -113,15 +116,15 @@ export class FlottaGlobale implements OnInit{
   caricaAziende() {
     this.aziendeService.richiediAziendeAttive().subscribe({
       next: (datiDalServer) => {
-        if(datiDalServer) this.aziendeInPiattaforma = datiDalServer;
+        if (datiDalServer) this.aziendeInPiattaforma = datiDalServer;
       }, error: (err) => {
         this.gestisciErrore(err.error);
       }
     })
   }
 
-  get veicoliFiltrati():VeicoloDTO[]|null {
-    if(this.veicoliOriginali==null) {
+  get veicoliFiltrati(): VeicoloDTO[] | null {
+    if (this.veicoliOriginali == null) {
       return null;
     }
 
@@ -129,7 +132,7 @@ export class FlottaGlobale implements OnInit{
 
       let matchAzienda = true;
 
-      if(this.filtroAzienda && this.filtroAzienda.idAzienda) {
+      if (this.filtroAzienda && this.filtroAzienda.idAzienda) {
         matchAzienda = veicolo.idAziendaAffiliata == this.filtroAzienda.idAzienda;
       }
 
@@ -143,15 +146,20 @@ export class FlottaGlobale implements OnInit{
       }
 
       const matchRicerca =
-          (veicolo.targaVeicolo?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false) ||
+        (veicolo.targaVeicolo?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false) ||
         (veicolo.nomeModello?.toLowerCase().includes(this.testoRicerca.toLowerCase()) ?? false);
 
       return matchAzienda && matchStato && matchRicerca;
     });
   }
 
-  gestisciVisibilitaModale() { this.mostraModale = !this.mostraModale; }
-  gestisciVisibilitaModaleInserimentoModello() { this.mostraModaleInserimentoModello = !this.mostraModaleInserimentoModello;}
+  gestisciVisibilitaModale() {
+    this.mostraModale = !this.mostraModale;
+  }
+
+  gestisciVisibilitaModaleInserimentoModello() {
+    this.mostraModaleInserimentoModello = !this.mostraModaleInserimentoModello;
+  }
 
   gestisciSalvataggio(veicolo: VeicoloDTO) {
     this.service.registraVeicolo(veicolo).subscribe({
@@ -182,12 +190,12 @@ export class FlottaGlobale implements OnInit{
 
   dettagliVeicolo(targaVeicolo: string) {
     this.initVeicolo(targaVeicolo);
-    this.modaleDettagliVeicolo=true;
+    this.modaleDettagliVeicolo = true;
   }
 
 
   initVeicolo(targa: string | null) {
-    this.veicoloService.richiediVeicolo(targa).subscribe({
+    this.service.richiediVeicolo(targa).subscribe({
       next: (response) => {
         if (response) {
           this.veicolo = response;
@@ -207,11 +215,11 @@ export class FlottaGlobale implements OnInit{
   initMappa() {
     const luogo = this.veicolo.luogoRitiroDeposito;
     if (!luogo || !luogo.latitudine || !luogo.longitudine) return;
-    this.coordsIniziali = { lat: luogo.latitudine, lng: luogo.longitudine };
+    this.coordsIniziali = {lat: luogo.latitudine, lng: luogo.longitudine};
 
     this.googleMapsService.load().then(() => {
       setTimeout(() => {
-        if(this.coordsIniziali) {
+        if (this.coordsIniziali) {
           this.dettagliVeicoloModale.disegnaMappa(this.coordsIniziali);
         }
       }, 500);
@@ -219,14 +227,14 @@ export class FlottaGlobale implements OnInit{
   }
 
 
-  associaVeicoloAzienda(aziendaSelezionata:any ) {
+  associaVeicoloAzienda(aziendaSelezionata: any) {
 
     const veicolo: VeicoloDTO = {
       idVeicolo: this.veicolo.idVeicolo,
       idAziendaAffiliata: aziendaSelezionata.idAzienda
     }
 
-    this.veicoloService.associaVeicoloAzienda(veicolo).subscribe({
+    this.service.associaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
         this.ngOnInit();
         this.gestisciSuccesso("Veicolo associato con successo");
@@ -236,13 +244,13 @@ export class FlottaGlobale implements OnInit{
     })
   }
 
-  dissociaVeicoloAzienda(v:VeicoloDTO) {
+  dissociaVeicoloAzienda(v: VeicoloDTO) {
     const veicolo: VeicoloDTO = {
       idVeicolo: v.idVeicolo,
       idAziendaAffiliata: v.idAziendaAffiliata
     }
 
-    this.veicoloService.dissociaVeicoloAzienda(veicolo).subscribe({
+    this.service.dissociaVeicoloAzienda(veicolo).subscribe({
       next: (response) => {
         this.ngOnInit();
         this.gestisciSuccesso("Veicolo dissociato con successo");
@@ -262,8 +270,8 @@ export class FlottaGlobale implements OnInit{
       idAziendaAffiliata: nuovaAzienda.idAzienda
     };
 
-    this.veicoloService.dissociaVeicoloAzienda(datiDissociazione).pipe(
-      concatMap(() => this.veicoloService.associaVeicoloAzienda(datiAssociazione))
+    this.service.dissociaVeicoloAzienda(datiDissociazione).pipe(
+      concatMap(() => this.service.associaVeicoloAzienda(datiAssociazione))
     ).subscribe({
       next: () => {
         this.ngOnInit();
@@ -276,7 +284,6 @@ export class FlottaGlobale implements OnInit{
   }
 
 
-
   resettaFiltri() {
     this.filtroAzienda = null;
     this.filtroStatoVeicolo = null;
@@ -286,7 +293,7 @@ export class FlottaGlobale implements OnInit{
   aggiungiModello(formData: FormData) {
     this.service.registraModello(formData).subscribe({
       next: (response) => {
-        if(response) {
+        if (response) {
           this.caricaModelli();
         }
         this.gestisciSuccesso("Modello registrato con successo");
@@ -299,7 +306,7 @@ export class FlottaGlobale implements OnInit{
   eliminaModello(idModello: number) {
     this.service.eliminaModello(idModello).subscribe({
       next: (response) => {
-        if(response) {
+        if (response) {
           this.caricaModelli();
         }
         this.gestisciSuccesso("Modello eliminato con successo");
@@ -309,13 +316,12 @@ export class FlottaGlobale implements OnInit{
     })
   }
 
-  gestisciTendina(){
-    this.tendina=!this.tendina
-    if(this.tendina){
-      this.icona='bi-arrow-up-short';
-    }
-    else {
-      this.icona='bi-arrow-down-short';
+  gestisciTendina() {
+    this.tendina = !this.tendina
+    if (this.tendina) {
+      this.icona = 'bi-arrow-up-short';
+    } else {
+      this.icona = 'bi-arrow-down-short';
     }
   }
 
@@ -331,21 +337,21 @@ export class FlottaGlobale implements OnInit{
     setTimeout(() => this.successoBanner = '', 3000);
   }
 
-  apriModaleCheck(idModelloInteressato:number){
-    this.modelloInteressato=idModelloInteressato;
-    this.modaleCheck=true;
+  apriModaleCheck(idModelloInteressato: number) {
+    this.modelloInteressato = idModelloInteressato;
+    this.modaleCheck = true;
   }
 
   confermaModale() {
-    this.modaleCheck=false;
-    if(this.modelloInteressato!=null){
+    this.modaleCheck = false;
+    if (this.modelloInteressato != null) {
       this.eliminaModello(this.modelloInteressato)
     }
-    this.modelloInteressato=null;
+    this.modelloInteressato = null;
   }
 
   chiudiModale() {
-    this.modaleCheck=false;
-    this.modelloInteressato=null;
+    this.modaleCheck = false;
+    this.modelloInteressato = null;
   }
 }

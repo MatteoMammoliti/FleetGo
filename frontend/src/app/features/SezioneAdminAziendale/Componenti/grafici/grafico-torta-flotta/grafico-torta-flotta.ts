@@ -12,6 +12,7 @@ import {BaseChartDirective} from 'ng2-charts';
   styleUrl: './grafico-torta-flotta.css',
 })
 export class GraficoTortaFlotta {
+
   inUso = input.required<number>();
   disponibili = input.required<number>();
   inManutenzione = input.required<number>();

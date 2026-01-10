@@ -15,4 +15,5 @@ export class TabellaGestioneLuoghi {
   @Input() nomeSedeAttuale: string | null | undefined;
   @Output() impostaSede = new EventEmitter<number>;
   @Output() eliminaLuogo = new EventEmitter<number>();
+
 }

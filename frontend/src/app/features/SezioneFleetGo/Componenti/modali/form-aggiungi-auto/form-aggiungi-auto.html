@@ -1,8 +1,8 @@
 <app-template-finestra-modale
   #modale
   titolo="Aggiungi Veicolo" tastoBianco="Annulla" tastoBlu="Salva Veicolo"
-                              (conferma)="salva()" (chiudi)="onAnnulla.emit()"
-                              (annulla)="onAnnulla.emit()">
+  (conferma)="salva()" (chiudi)="onAnnulla.emit()"
+  (annulla)="onAnnulla.emit()">
 
   <div class="p-6 flex flex-col gap-2 overflow-y-auto">
 
@@ -32,15 +32,16 @@
 
     </div>
 
-    <div class="z-20"> <app-scelta-tendina
-      titolo="Alimentazione"
-      [lista]="opzioniAlimentazione"
-      [placeholder]="'Seleziona alimentazione...'"
-      [(valore)]="tipoDistribuzioneVeicolo"
-      [haErrore]="mappaErrori.tipoDistribuzioneVeicolo"
-      messaggioErrore="Seleziona l'alimentazione"
-      (valoreChange)="mappaErrori.tipoDistribuzioneVeicolo = false">
-    </app-scelta-tendina>
+    <div class="z-20">
+      <app-scelta-tendina
+        titolo="Alimentazione"
+        [lista]="opzioniAlimentazione"
+        [placeholder]="'Seleziona alimentazione...'"
+        [(valore)]="tipoDistribuzioneVeicolo"
+        [haErrore]="mappaErrori.tipoDistribuzioneVeicolo"
+        messaggioErrore="Seleziona l'alimentazione"
+        (valoreChange)="mappaErrori.tipoDistribuzioneVeicolo = false">
+      </app-scelta-tendina>
     </div>
 
     <div class="h-2 flex items-center">

@@ -8,12 +8,11 @@ import {Observable} from 'rxjs';
 })
 
 export class SezionePubblicaService {
-
   constructor(private http: HttpClient) {}
 
-  private apiUrl = environment.apiUrl+'/sezionePubblica';
+  private apiUrl = environment.apiUrl + '/sezionePubblica';
 
   inviaForm(form: FormData): Observable<string> {
-    return this.http.post(`${this.apiUrl}/formContatto`, form, { withCredentials: true,  responseType: 'text' })
+    return this.http.post(`${this.apiUrl}/formContatto`, form, {withCredentials: true, responseType: 'text'})
   }
 }

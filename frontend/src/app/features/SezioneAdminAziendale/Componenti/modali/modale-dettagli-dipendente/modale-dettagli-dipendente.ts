@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, LOCALE_ID, NgModule, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {DatePipe, DecimalPipe, NgClass, registerLocaleData} from '@angular/common';
-import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {DatePipe, DecimalPipe, NgClass} from '@angular/common';
+import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-modale-dettagli-dipendente',
@@ -18,15 +18,15 @@ import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/mes
   styleUrl: './modale-dettagli-dipendente.css',
 })
 
-export class ModaleDettagliDipendente implements OnInit{
+export class ModaleDettagliDipendente implements OnInit {
 
   @Input() paginaVisibile = false;
   @Input() dipendente: DipendenteDTO | null = null;
-  @Input() storicoNoleggi: RichiestaNoleggioDTO[] | null= null;
+  @Input() storicoNoleggi: RichiestaNoleggioDTO[] | null = null;
   @Output() chiudiPagina = new EventEmitter<void>();
 
   tabAttiva = "INFO";
-  chiusuraInCorso: boolean=false;
+  chiusuraInCorso: boolean = false;
 
   ngOnInit() {
     this.tabAttiva = "INFO";
@@ -44,7 +44,6 @@ export class ModaleDettagliDipendente implements OnInit{
   }
 
 
-
   private eseguiChiusura(eventEmitter: EventEmitter<any>) {
     this.tabAttiva = "INFO";
     this.chiusuraInCorso = true;
@@ -54,5 +53,7 @@ export class ModaleDettagliDipendente implements OnInit{
     }, 250);
   }
 
-  chiudiModale() { this.eseguiChiusura(this.chiudiPagina); }
+  chiudiModale() {
+    this.eseguiChiusura(this.chiudiPagina);
+  }
 }

@@ -1,58 +1,60 @@
 <div class="px-5 bg-gray-50 animate-fade-down durati animate-duration-1000 overflow-auto">
   <div class="min-h-[780px]">
-  <div class="flex justify-between mb-8 border-b py-3 ">
-    <h1 class="text-blu font-bold text-3xl ">Gestione Offerte Attive</h1>
+    <div class="flex justify-between mb-8 border-b py-3 ">
+      <h1 class="text-blu font-bold text-3xl ">Gestione Offerte Attive</h1>
 
-    <div class="flex max-h-10">
-      <button (click)="apriPaginaInserimentoOfferta()"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
-        <i class="bi-plus-lg text-lg"></i>
-        <span>Nuova Offerta</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-5 mb-10">
-
-    <div (click)="apriPaginaInserimentoOfferta()"
-         class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[280px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300">
-      <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors">
-        <i class="bi-plus-lg text-3xl"></i>
-      </div>
-      <div class="text-center">
-        <h3 class="font-bold text-grigio-scuro group-hover:text-blue-700 transition-colors">Crea Nuova Offerta</h3>
-        <p class="text-sm text-grigio-scuro mt-1">Clicca per aggiungere</p>
+      <div class="flex max-h-10">
+        <button (click)="apriPaginaInserimentoOfferta()"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all active:scale-95 flex items-center gap-2">
+          <i class="bi-plus-lg text-lg"></i>
+          <span>Nuova Offerta</span>
+        </button>
       </div>
     </div>
 
-    @for(offerta of offerteAttive; track offerta.idOfferta) {
-      <div class="fade-in-up">
-        <app-card-offerta
-          [offerta]="offerta"
-          (eliminaOfferta)="offertaDaEliminare=$event;checkElimina=true">
-        </app-card-offerta>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-5 mb-10">
+
+      <div (click)="apriPaginaInserimentoOfferta()"
+           class="group cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 min-h-[280px] hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300">
+        <div
+          class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 flex items-center justify-center transition-colors">
+          <i class="bi-plus-lg text-3xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-grigio-scuro group-hover:text-blue-700 transition-colors">Crea Nuova Offerta</h3>
+          <p class="text-sm text-grigio-scuro mt-1">Clicca per aggiungere</p>
+        </div>
       </div>
-    }
+
+      @for (offerta of offerteAttive; track offerta.idOfferta) {
+        <div class="fade-in-up">
+          <app-card-offerta
+            [offerta]="offerta"
+            (eliminaOfferta)="offertaDaEliminare=$event;checkElimina=true">
+          </app-card-offerta>
+        </div>
+      }
 
 
-
-  </div>
+    </div>
   </div>
 </div>
 
-  @if (erroreBanner) {
-    <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
-  }
-  @if(successoBanner){
-    <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
-  }
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if (successoBanner) {
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
 
-  @if(checkElimina){
-    <app-template-finestra-modale titolo="Elimina Offerta" tastoBlu="Conferma" larghezza="max-w-md"  tastoBianco="Annulla" (chiudi)="checkElimina=false" (annulla)="checkElimina=false; offertaDaEliminare=null" (conferma)="onRimuoviOfferta(); checkElimina=false" >
-      <div class="px-3 py-3">
-        <span>Sei sicuro di voler eliminare questa offerta?</span>
-      </div>
-    </app-template-finestra-modale>
+@if (checkElimina) {
+  <app-template-finestra-modale titolo="Elimina Offerta" tastoBlu="Conferma" larghezza="max-w-md" tastoBianco="Annulla"
+                                (chiudi)="checkElimina=false" (annulla)="checkElimina=false; offertaDaEliminare=null"
+                                (conferma)="onRimuoviOfferta(); checkElimina=false">
+    <div class="px-3 py-3">
+      <span>Sei sicuro di voler eliminare questa offerta?</span>
+    </div>
+  </app-template-finestra-modale>
 
 }
 

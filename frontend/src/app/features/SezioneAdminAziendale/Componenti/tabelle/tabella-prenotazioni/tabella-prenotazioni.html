@@ -1,4 +1,5 @@
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8 animate-fade-down animate-duration-1000 animate-delay-150">
+<div
+  class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8 animate-fade-down animate-duration-1000 animate-delay-150">
   <div class="overflow-auto px-2 max-h-[600px]">
     <table class="table-base">
       <thead>
@@ -13,67 +14,67 @@
       </tr>
       </thead>
       <tbody class="text-sm text-slate-700 divide-y divide-slate-100" [@animazioneTabella]="richiesteNoleggio?.length">
-      @if (richiesteNoleggio === null) {
-        <tr class="tr-inferiore">
-          <td colspan="7" class="h-[600px]">
-            <div class="flex items-center justify-center h-full">
-              <i class="bi  bi-arrow-clockwise text-4xl text-slate-300 animate-spin"></i>
-            </div>
-          </td>
-        </tr>
-
-      } @else {
-
-        @for (p of richiesteNoleggio; track p.idRichiesta) {
-          <tr class="tr-inferiore group" (click)="apriDettaglio.emit(p.idRichiesta)">
-            <td class="td-sinistro">#{{ p.idDipendente }}</td>
-
-            <td class="td-base">#{{ p.idVeicolo }}</td>
-
-            <td class="td-base">{{ p.dataRitiro | date:'dd/MM/yyyy' }}</td>
-            <td class="td-base">{{ p.dataConsegna | date:'dd/MM/yyyy' }}</td>
-
-            <td class="td-base">
-              {{ p.oraInizio }} - {{ p.oraFine }}
-            </td>
-
-            <td class="td-base ">
-              @if(p.statoRichiesta=="Terminata"){
-                <app-icona-stato
-                  testo="Conclusa"
-                ></app-icona-stato>
-              } @else if (p.statoRichiesta=="In corso"){
-                <app-icona-stato
-                  stato="giallo"
-                  testo="In Corso"
-                ></app-icona-stato>
-              }
-              @else{
-                <app-icona-stato
-                  stato="rosso"
-                  testo="Da ritirare"
-                ></app-icona-stato>
-              }
-            </td>
-
-            <td class="td-destro text-right pr-7 text-azzurro hover:text-azzurro-scuro">
-              <div class="hover:-translate-y-1">
-                <i class="bi bi-info-circle "></i>
+        @if (richiesteNoleggio === null) {
+          <tr class="tr-inferiore">
+            <td colspan="7" class="h-[600px]">
+              <div class="flex items-center justify-center h-full">
+                <i class="bi  bi-arrow-clockwise text-4xl text-slate-300 animate-spin"></i>
               </div>
+            </td>
+          </tr>
 
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="7" class="px-6 py-12 text-slate-400 h-[400px]">
-              <app-messaggio-card-vuota
-              testoPrimario="Nessuna prenotazioone trovata!"
-              testoSecondario="Prova a cambiare i filtri"
-              icona="bi-calendar-x"
-              ></app-messaggio-card-vuota>
-            </td>
-          </tr>
-        }}
+        } @else {
+
+          @for (p of richiesteNoleggio; track p.idRichiesta) {
+            <tr class="tr-inferiore group" (click)="apriDettaglio.emit(p.idRichiesta)">
+              <td class="td-sinistro">#{{ p.idDipendente }}</td>
+
+              <td class="td-base">#{{ p.idVeicolo }}</td>
+
+              <td class="td-base">{{ p.dataRitiro | date:'dd/MM/yyyy' }}</td>
+              <td class="td-base">{{ p.dataConsegna | date:'dd/MM/yyyy' }}</td>
+
+              <td class="td-base">
+                {{ p.oraInizio }} - {{ p.oraFine }}
+              </td>
+
+              <td class="td-base ">
+                @if (p.statoRichiesta == "Terminata") {
+                  <app-icona-stato
+                    testo="Conclusa"
+                  ></app-icona-stato>
+                } @else if (p.statoRichiesta == "In corso") {
+                  <app-icona-stato
+                    stato="giallo"
+                    testo="In Corso"
+                  ></app-icona-stato>
+                } @else {
+                  <app-icona-stato
+                    stato="rosso"
+                    testo="Da ritirare"
+                  ></app-icona-stato>
+                }
+              </td>
+
+              <td class="td-destro text-right pr-7 text-azzurro hover:text-azzurro-scuro">
+                <div class="hover:-translate-y-1">
+                  <i class="bi bi-info-circle "></i>
+                </div>
+
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="px-6 py-12 text-slate-400 h-[400px]">
+                <app-messaggio-card-vuota
+                  testoPrimario="Nessuna prenotazioone trovata!"
+                  testoSecondario="Prova a cambiare i filtri"
+                  icona="bi-calendar-x"
+                ></app-messaggio-card-vuota>
+              </td>
+            </tr>
+          }
+        }
       </tbody>
     </table>
   </div>

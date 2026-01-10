@@ -3,8 +3,8 @@ import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 
 @Component({
   selector: 'app-modale-generazione-fattura',
@@ -27,13 +27,16 @@ export class ModaleGenerazioneFattura {
   offertaSelezionata: any = null;
   prezzoScontato = 0;
   scontoDaSottrarre = 0;
-  ngOnChanges(changes: SimpleChanges){
+
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['fattura'] && this.fattura) {
-          this.calcolaSconto();
+      this.calcolaSconto();
     }
   }
 
-  chiudiModale() { this.chiudiPagina.emit(); }
+  chiudiModale() {
+    this.chiudiPagina.emit();
+  }
 
   confermaGenerazioneFattura() {
     const fattura = {

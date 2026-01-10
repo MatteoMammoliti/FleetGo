@@ -1,11 +1,11 @@
-import {Component, inject, Output, EventEmitter, Input, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {ModelloDTO} from '@core/models/ModelloDTO';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-aggiungi-auto',
@@ -20,7 +20,9 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 
 export class FormAggiungiAuto {
-  constructor(private validator: validazione) {}
+  constructor(private validator: validazione) {
+  }
+
   @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
   @Input() modelli: ModelloDTO[] = [];
@@ -37,8 +39,8 @@ export class FormAggiungiAuto {
 
   targaVeicolo = '';
   idModello: number | null = null;
-  tipoDistribuzioneVeicolo:any= null;
-  errore='';
+  tipoDistribuzioneVeicolo: any = null;
+  errore = '';
 
 
   salva() {
@@ -53,7 +55,7 @@ export class FormAggiungiAuto {
       return;
     }
 
-    if(!this.validator.checkTarga(this.targaVeicolo)) {
+    if (!this.validator.checkTarga(this.targaVeicolo)) {
       this.errore = "Targa non valida";
       this.mappaErrori.targaVeicolo = true;
       return;
@@ -63,7 +65,7 @@ export class FormAggiungiAuto {
       targaVeicolo: this.targaVeicolo,
       idModello: this.idModello,
       tipoDistribuzioneVeicolo: this.tipoDistribuzioneVeicolo,
-      inManutenzione:false
+      inManutenzione: false
     }
 
     this.onSalvataggio.emit(veicolo);
@@ -72,7 +74,7 @@ export class FormAggiungiAuto {
   }
 
   reset() {
-    this.errore='';
+    this.errore = '';
     this.mappaErrori = {
       targaVeicolo: false,
       tipoDistribuzioneVeicolo: false,

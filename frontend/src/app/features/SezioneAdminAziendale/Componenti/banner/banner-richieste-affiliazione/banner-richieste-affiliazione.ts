@@ -14,4 +14,5 @@ export class BannerRichiesteAffiliazione {
   @Output() accettaAffiliazione = new EventEmitter<number>();
   @Output() rifiutaAffiliazione = new EventEmitter<number>();
   @Output() apriModaleRichieste = new EventEmitter<void>();
+
 }

@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
-import {GraficoTortaFlottaDTO} from '@core/models/graficoTortaFlottaDTO';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 
 @Injectable({
@@ -11,24 +10,25 @@ import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatistic
 })
 
 export class DashboardService {
-  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+  private apiUrl = environment.apiUrl + '/dashboardAdminAziendale';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getOfferteAttive(): Observable<OffertaDTO[]> {
-    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, { withCredentials:true })
+    return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, {withCredentials: true})
   }
 
   getContatoreRichiesteAffiliazione(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteAffiliazione`, { withCredentials:true })
+    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteAffiliazione`, {withCredentials: true})
   }
 
   getContatoreRichiesteNoleggio(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteNoleggio`, { withCredentials:true })
+    return this.http.get<number>(`${this.apiUrl}/getContatoreRichiesteNoleggio`, {withCredentials: true})
   }
 
   getSpesaMensile(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getSpesaMensile`, { withCredentials:true })
+    return this.http.get<number>(`${this.apiUrl}/getSpesaMensile`, {withCredentials: true})
   }
 
   getNomeAziendaGestita(): Observable<string> {
@@ -45,23 +45,23 @@ export class DashboardService {
     });
   }
 
-  inoltraRichiestaDiAppuntamento():Observable<string> {
-    return this.http.post(`${this.apiUrl}/richiediAppuntamento`, {}, { withCredentials:true, responseType: "text" })
+  inoltraRichiestaDiAppuntamento(): Observable<string> {
+    return this.http.post(`${this.apiUrl}/richiediAppuntamento`, {}, {withCredentials: true, responseType: "text"})
   }
 
-  getNumFattureDaPagare(): Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}/getNumFattureDaPagare`, { withCredentials:true })
+  getNumFattureDaPagare(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getNumFattureDaPagare`, {withCredentials: true})
   }
 
   isSedeImpostata() {
-    return this.http.get<boolean>(`${this.apiUrl}/isSedeImpostata`, { withCredentials:true })
+    return this.http.get<boolean>(`${this.apiUrl}/isSedeImpostata`, {withCredentials: true})
   }
 
-  getDatiGraficoTorta() : Observable<ContenitoreStatisticheNumeriche> {
-    return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/getDatiGraficoTorta`, { withCredentials: true });
+  getDatiGraficoTorta(): Observable<ContenitoreStatisticheNumeriche> {
+    return this.http.get<ContenitoreStatisticheNumeriche>(`${this.apiUrl}/getDatiGraficoTorta`, {withCredentials: true});
   }
 
   getNumeroAutoSenzaLuogo() {
-    return this.http.get<number>(`${this.apiUrl}/getNumeroAutoSenzaLuogo`, { withCredentials: true });
+    return this.http.get<number>(`${this.apiUrl}/getNumeroAutoSenzaLuogo`, {withCredentials: true});
   }
 }

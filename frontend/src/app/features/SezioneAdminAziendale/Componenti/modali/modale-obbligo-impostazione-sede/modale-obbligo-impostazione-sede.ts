@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {MappaGestioneLuoghi} from '@features/SezioneAdminAziendale/Componenti/modali/mappa-gestione-luoghi/mappa-gestione-luoghi';
+import {
+  MappaGestioneLuoghi
+} from '@features/SezioneAdminAziendale/Componenti/modali/mappa-gestione-luoghi/mappa-gestione-luoghi';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
 
 @Component({
@@ -13,5 +15,6 @@ import {LuogoDTO} from '@core/models/luogoDTO.models';
 export class ModaleObbligoImpostazioneSede {
 
   caricamento = false;
-  @Output() impostaSede  = new EventEmitter<LuogoDTO>();
+  @Output() impostaSede = new EventEmitter<LuogoDTO>();
+
 }

@@ -1,4 +1,4 @@
-export interface ContenitoreStatisticheNumericheManutezioni{
-  attualmenteInOfficina:number;
-  interventiConclusi:number;
+export interface ContenitoreStatisticheNumericheManutezioni {
+  attualmenteInOfficina: number;
+  interventiConclusi: number;
 }

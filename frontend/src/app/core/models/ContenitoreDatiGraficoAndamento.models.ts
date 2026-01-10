@@ -1,4 +1,4 @@
-export interface ContenitoreDatiGraficoAndamento{
-  listaGiorni:string[],
-  listaSpese:number[]
+export interface ContenitoreDatiGraficoAndamento {
+  listaGiorni: string[],
+  listaSpese: number[]
 }

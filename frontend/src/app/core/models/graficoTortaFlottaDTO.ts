@@ -1,4 +1,3 @@
-
 export interface GraficoTortaFlottaDTO {
   inUso: number;
   disponibili: number;

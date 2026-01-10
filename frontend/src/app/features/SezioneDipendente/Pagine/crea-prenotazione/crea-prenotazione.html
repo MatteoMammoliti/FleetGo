@@ -3,8 +3,9 @@
   [sottotitolo]="'Cerca il veicolo perfetto per la tua prossima trasferta.'">
 
   <div class="mb-8 px-3 mt-6">
-    <div class="bg-white rounded-[2rem] p-6 shadow-md border border-grigio/50 animate-fade-left animate-once animate-duration-1000">
-      
+    <div
+      class="bg-white rounded-[2rem] p-6 shadow-md border border-grigio/50 animate-fade-left animate-once animate-duration-1000">
+
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-bold text-testo-p flex items-center gap-3">
           <span class="w-1.5 h-6 bg-azzurro rounded-full"></span>
@@ -13,7 +14,7 @@
       </div>
 
       <div class="flex flex-col xl:flex-row items-end xl:justify-end gap-6 w-full">
-        
+
         <div class="w-full xl:w-auto min-w-[250px]">
           <app-scelta-tendina
             [titolo]="'LUOGO DI RITIRO'"
@@ -37,9 +38,9 @@
   </div>
 
   <div class="px-3 mb-6 min-h-[500px]">
-    
+
     <div class="flex flex-col h-full">
-      
+
       <h3 class="text-lg font-bold text-testo-p mb-4 flex items-center gap-2">
         <span class="w-1.5 h-6 bg-blu opacity-100 rounded-full"></span>
         Veicoli Disponibili
@@ -47,14 +48,14 @@
 
       @if (caricamentoDati) {
         <div class="flex items-center justify-center h-[400px] w-full">
-              <i class="caricamento bi bi-arrow-clockwise"></i>
-      </div>
-      } 
-      @else {
-        
+          <i class="caricamento bi bi-arrow-clockwise"></i>
+        </div>
+      } @else {
+
         @if (listaVeicoli.length > 0) {
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-up animate-once animate-duration-1000">
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-up animate-once animate-duration-1000">
             @for (auto of listaVeicoli; track auto.idVeicolo) {
               <div class="h-full">
                 <app-veicolo-card
@@ -68,8 +69,9 @@
           </div>
 
         } @else {
-          
-          <div class="bg-white rounded-[2rem] p-12 shadow-md border border-grigio/50 flex flex-col items-center justify-center text-center animate-fade-in mt-6 h-[400px]">
+
+          <div
+            class="bg-white rounded-[2rem] p-12 shadow-md border border-grigio/50 flex flex-col items-center justify-center text-center animate-fade-in mt-6 h-[400px]">
             <app-messaggio-card-vuota
               [icona]="'bi-search'"
               [tagliaIcona]="'3xl'"
@@ -80,7 +82,7 @@
 
         }
 
-      } 
+      }
     </div>
   </div>
 
@@ -98,6 +100,6 @@
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if(successoBanner){
+@if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }

@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {BannerHome} from '@features/SezioneDipendente/componenti/banner-home/banner-home';
-import {ProssimoViaggio} from '@features/SezioneDipendente/componenti/prossimo-viaggio/prossimo-viaggio';
+import {BannerHome} from '@features/SezioneDipendente/componenti/Banner/banner-home/banner-home';
+import {ProssimoViaggio} from '@features/SezioneDipendente/componenti/Banner/prossimo-viaggio/prossimo-viaggio';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {HomeService} from '@features/SezioneDipendente/ServiceSezioneDipendente/home-service';
 import {StatisticheDipendenteDTO} from '@core/models/StatisticheDipendenteDTO';
-import {StatisticheDipendente} from '@features/SezioneDipendente/componenti/statistiche-dipendente/statistiche-dipendente';
+import {StatisticheDipendente} from '@features/SezioneDipendente/componenti/Banner/statistiche-dipendente/statistiche-dipendente';
 import {Router} from '@angular/router';
-import {MappaHub} from '@features/SezioneDipendente/componenti/mappa-hub/mappa-hub';
+import {MappaHub} from '@features/SezioneDipendente/componenti/Banner/mappa-hub/mappa-hub';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/supporto-fleetgo/supporto-fleetgo';
+import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/Banner/supporto-fleetgo/supporto-fleetgo';
 import {DatePipe} from '@angular/common';
-import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/modale-richiesta-assistenza/modale-richiesta-assistenza';
-import { BannerErrore } from '@shared/Componenti/Ui/banner-errore/banner-errore';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/Modali/modale-richiesta-assistenza/modale-richiesta-assistenza';
+import { BannerErrore } from '@shared/Componenti/Banner/banner-errore/banner-errore';
+import { TemplateTitoloSottotitolo } from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
 
 @Component({
   selector: 'app-dashboard-dipendente',

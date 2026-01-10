@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
-import { Sidebar } from '@shared/sidebar/sidebar';
+import {Component} from '@angular/core';
+import {Sidebar} from '@shared/Navigazione/sidebar/sidebar';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Footer} from '@shared/footer/footer';
 import {AuthService} from '@core/auth/auth-service';
-import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-general-layout-dipendente',
@@ -15,9 +15,10 @@ import {BannerErrore} from '@shared/Componenti/Ui/banner-errore/banner-errore';
 
 export class GeneralLayoutDipendente {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  erroreBanner='';
+  erroreBanner = '';
 
   logout() {
     this.authService.logout().subscribe({

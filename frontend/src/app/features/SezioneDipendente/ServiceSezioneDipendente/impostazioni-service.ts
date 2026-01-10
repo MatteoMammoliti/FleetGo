@@ -2,30 +2,30 @@ import {Injectable} from '@angular/core';
 import {environment} from '@env/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root'
 })
 
-export class ImpostazioniService{
-  private apiUrl = environment.apiUrl+'/dashboardDipendente';
+export class ImpostazioniService {
+  private apiUrl = environment.apiUrl + '/dashboardDipendente';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  public getDipendente():Observable<any>{
+  public getDipendente(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/dettagliUtente`, {
-      withCredentials:true
+      withCredentials: true
     })
   }
 
   public getUrlPatente(): Observable<string> {
-    return this.http.get(`${this.apiUrl}/getUrlPatente`, {withCredentials:true, responseType: 'text'})
+    return this.http.get(`${this.apiUrl}/getUrlPatente`, {withCredentials: true, responseType: 'text'})
   }
 
-  public inviaModifiche(dati:any):Observable<any>{
-    return this.http.post(`${this.apiUrl}/applicaModifiche`, dati,{
-      withCredentials:true
+  public inviaModifiche(dati: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/applicaModifiche`, dati, {
+      withCredentials: true
     })
   }
 
@@ -39,7 +39,8 @@ export class ImpostazioniService{
       responseType: "text"
     });
   }
-  public abbandonaAzienda(): Observable<any>{
+
+  public abbandonaAzienda(): Observable<any> {
     return this.http.post(`${this.apiUrl}/lasciaAzienda`, {}, {
       withCredentials: true,
       responseType: 'text'

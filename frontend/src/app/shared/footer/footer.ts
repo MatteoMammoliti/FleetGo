@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import {RouterLink} from '@angular/router';
-import {Logo} from '@shared/Componenti/Ui/logo/logo';
+import {Component} from '@angular/core';
+import {Logo} from '@shared/Navigazione/logo/logo';
 
 @Component({
   selector: 'app-footer',

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {DatePipe, NgClass} from '@angular/common';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {DatePipe} from '@angular/common';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-gestisci-richiesta-manutenzione',
@@ -9,22 +9,24 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
     DatePipe,
     TemplateFinestraModale
   ],
-  standalone:true,
+  standalone: true,
   templateUrl: './gestisci-richiesta-manutenzione.html',
   styleUrl: './gestisci-richiesta-manutenzione.css',
 })
 export class GestisciRichiestaManutenzione {
-  @Input({required:true}) datiRichiesta!:RichiestaManutenzioneDTO;
+  @Input({required: true}) datiRichiesta!: RichiestaManutenzioneDTO;
   @Output() close = new EventEmitter<void>();
-  @Output() accettaRichiesta= new EventEmitter<number>();
-  @Output() rifiutaRichiesta=new EventEmitter<number>();
+  @Output() accettaRichiesta = new EventEmitter<number>();
+  @Output() rifiutaRichiesta = new EventEmitter<number>();
 
-  clickRifiuta(){
+  clickRifiuta() {
     this.rifiutaRichiesta.emit(this.datiRichiesta.idManutenzione);
   }
-  clickAccetta(){
+
+  clickAccetta() {
     this.accettaRichiesta.emit(this.datiRichiesta.idManutenzione);
   }
+
   onClose() {
     this.close.emit();
   }

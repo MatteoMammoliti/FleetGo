@@ -1,0 +1,38 @@
+.griglia-statistiche {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .griglia-statistiche {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .griglia-statistiche {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.griglia-contenuti {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .griglia-contenuti {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.colonna-sinistra,
+.colonna-destra {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,33 +1,36 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {StoricoFattureService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/storico-fatture-service';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
 import {FatturaDTO} from '@core/models/FatturaDTO.models';
 import {AziendaDTO} from '@core/models/aziendaDTO';
-import {CardStatisticheDashboardFleet} from '@shared/Componenti/Ui/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
+import {
+  CardStatisticheDashboardFleet
+} from '@shared/Componenti/Card/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   TabellaStoricoFatture
 } from '@features/SezioneFleetGo/Componenti/tabelle/tabella-storico-fatture/tabella-storico-fatture';
-import {IntestazioneEBackground} from '@shared/Componenti/Ui/intestazione-ebackground/intestazione-ebackground';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-storico-fatture',
-    imports: [
-        CardStatisticheDashboardFleet,
-        ReactiveFormsModule,
-        FormsModule,
-        TabellaStoricoFatture,
-        IntestazioneEBackground,
-        BannerErrore
-    ],
+  imports: [
+    CardStatisticheDashboardFleet,
+    ReactiveFormsModule,
+    FormsModule,
+    TabellaStoricoFatture,
+    IntestazioneEBackground,
+    BannerErrore
+  ],
   templateUrl: './storico-fatture.html',
   styleUrl: './storico-fatture.css',
 })
 export class StoricoFatture {
 
-  constructor(private storicoFattureService:StoricoFattureService,
-              private aziendeAffiliateService: AziendeAffiliateService) {}
+  constructor(private storicoFattureService: StoricoFattureService,
+              private aziendeAffiliateService: AziendeAffiliateService) {
+  }
 
   fatturePerAnno: FatturaDTO[] | null = null;
   listaAziende: AziendaDTO[] = [];
@@ -39,8 +42,8 @@ export class StoricoFatture {
   totaleFattureAnnoSelezionato = 0;
   totaleRicaviAnno = 0;
   totaleRicaviAnnoStimato = 0;
-  erroreBanner="";
-  successoBanner="";
+  erroreBanner = "";
+  successoBanner = "";
 
   ngOnInit() {
     this.prelevaAnni();
@@ -49,12 +52,12 @@ export class StoricoFatture {
   }
 
 
-  private prelevaAnni(){
+  private prelevaAnni() {
     this.storicoFattureService.getAnniFatture().subscribe({
       next: (anni) => {
         this.anniFatture = anni;
 
-        if(anni.length > 0 && !anni.includes(this.annoSelezionato)) {
+        if (anni.length > 0 && !anni.includes(this.annoSelezionato)) {
           this.annoSelezionato = anni[anni.length - 1];
           this.aggiornaFatture();
         }
@@ -66,7 +69,8 @@ export class StoricoFatture {
     })
 
   }
-  private prelevaAziende(){
+
+  private prelevaAziende() {
     this.aziendeAffiliateService.richiediAziendeAttive().subscribe({
       next: (aziende) => {
         this.listaAziende = aziende;
@@ -79,15 +83,15 @@ export class StoricoFatture {
   }
 
 
-  protected aggiorna(dati:any){
-    this.annoSelezionato=dati.annoSelezionato;
-    this.aziendaSelezionata=dati.aziendaSelezionata;
+  protected aggiorna(dati: any) {
+    this.annoSelezionato = dati.annoSelezionato;
+    this.aziendaSelezionata = dati.aziendaSelezionata;
     this.aggiornaFatture();
   }
 
   protected aggiornaFatture() {
 
-    if(!this.annoSelezionato) return;
+    if (!this.annoSelezionato) return;
 
     this.storicoFattureService.getFatturePerAnno(this.annoSelezionato).subscribe({
       next: (fatturePerAnno: FatturaDTO[]) => {
@@ -101,25 +105,25 @@ export class StoricoFatture {
   }
 
   private calcolaDati() {
-    if(!this.fatturePerAnno) return;
+    if (!this.fatturePerAnno) return;
 
     this.totaleFattureAnnoSelezionato = this.fatturePerAnno.length;
 
     this.totaleRicaviAnno = 0;
     this.totaleRicaviAnnoStimato = 0;
-    for(const fattura of this.fatturePerAnno) {
-      if(fattura.fatturaPagata) this.totaleRicaviAnno += fattura.costo;
+    for (const fattura of this.fatturePerAnno) {
+      if (fattura.fatturaPagata) this.totaleRicaviAnno += fattura.costo;
     }
 
     this.totaleRicaviAnnoStimato = this.totaleRicaviAnno;
-    for(const fattura of this.fatturePerAnno) {
-      if(!fattura.fatturaPagata) this.totaleRicaviAnnoStimato += fattura.costo;
+    for (const fattura of this.fatturePerAnno) {
+      if (!fattura.fatturaPagata) this.totaleRicaviAnnoStimato += fattura.costo;
     }
   }
 
-  get FattureFiltrate(): FatturaDTO[]|null {
-    if(!this.fatturePerAnno) return null;
-    if(!this.aziendaSelezionata) return this.fatturePerAnno;
+  get FattureFiltrate(): FatturaDTO[] | null {
+    if (!this.fatturePerAnno) return null;
+    if (!this.aziendaSelezionata) return this.fatturePerAnno;
 
     return this.fatturePerAnno.filter(
       f => f.azienda.nomeAzienda === this.aziendaSelezionata
@@ -136,6 +140,7 @@ export class StoricoFatture {
       window.URL.revokeObjectURL(url);
     });
   }
+
   gestisciErrore(messaggio: string) {
     this.successoBanner = '';
     this.erroreBanner = messaggio;

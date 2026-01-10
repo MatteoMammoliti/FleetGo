@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
 import {DatePipe} from '@angular/common';
 import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiNoleggio';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-modale-approvazione-noleggi',
@@ -30,7 +30,7 @@ export class ModaleApprovazioneNoleggi {
   tentaAccettazione(richiesta: RichiestaNoleggioDTO) {
     this.conflittiTrovati = this.trovaConflitti(richiesta);
 
-    if(this.conflittiTrovati.length > 0){
+    if (this.conflittiTrovati.length > 0) {
       this.richiestaInAnalisi = richiesta;
       this.mostraAlertConfiltti = true;
       this.confermaApprovazione();
@@ -39,10 +39,10 @@ export class ModaleApprovazioneNoleggi {
     this.approvaRichiesta.emit(richiesta.idRichiesta);
   }
 
-  confermaApprovazione(){
+  confermaApprovazione() {
 
     let idRichiesteDaRifiutare: number[] = [];
-    for(const richieta of this.conflittiTrovati){
+    for (const richieta of this.conflittiTrovati) {
       if (richieta.idRichiesta != null) {
         idRichiesteDaRifiutare.push(richieta.idRichiesta);
       }
@@ -53,7 +53,7 @@ export class ModaleApprovazioneNoleggi {
       idRichiesteDaRifiutare: idRichiesteDaRifiutare
     }
 
-    if(dto.idRichiestaDaApprovare) this.accettazioneConRifiuto.emit(dto);
+    if (dto.idRichiestaDaApprovare) this.accettazioneConRifiuto.emit(dto);
     this.annullaApprovazione();
   }
 

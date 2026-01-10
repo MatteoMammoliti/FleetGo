@@ -1,10 +1,8 @@
-import {Component, inject} from '@angular/core';
-import {ReactiveFormsModule, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '@core/auth/auth-service';
-import {validazione} from '@core/utils/validazione';
-import { FormsModule } from '@angular/forms';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +15,8 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 export class LoginComponent {
 
   constructor(private authService: AuthService,
-              private router: Router,) {}
+              private router: Router,) {
+  }
 
   email = '';
   password = '';
@@ -27,10 +26,10 @@ export class LoginComponent {
     password: false,
   };
 
-  errore='';
+  errore = '';
 
   onSubmit() {
-    this.errore="";
+    this.errore = "";
     this.mappaErrori = {
       email: false,
       password: false,
@@ -59,7 +58,7 @@ export class LoginComponent {
 
       error: (error) => {
 
-        if(error.status==401) {
+        if (error.status == 401) {
           this.errore = "Credenziali non valide";
           return;
         }
@@ -68,7 +67,7 @@ export class LoginComponent {
     });
   }
 
-  recuperoPassword():any {
+  recuperoPassword(): any {
     this.router.navigate(['/recuperoPassword']);
   }
 }

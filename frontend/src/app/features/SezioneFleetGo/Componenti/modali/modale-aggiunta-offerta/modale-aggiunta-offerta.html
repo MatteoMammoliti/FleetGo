@@ -1,6 +1,8 @@
-@if(paginaVisibile) {
+@if (paginaVisibile) {
 
-  <app-template-finestra-modale #modale titolo="Promozioni" sottotitolo="Crea una nuova offerta" tastoBlu="Crea" tastoBianco="Annulla" (conferma)="salvaOfferta()" (annulla)="chiudiFinestraModale()"  (chiudi)="chiudiFinestraModale()">
+  <app-template-finestra-modale #modale titolo="Promozioni" sottotitolo="Crea una nuova offerta" tastoBlu="Crea"
+                                tastoBianco="Annulla" (conferma)="salvaOfferta()" (annulla)="chiudiFinestraModale()"
+                                (chiudi)="chiudiFinestraModale()">
     <div class=" px-6 py-3 flex flex-col gap-3">
 
       <div class="grid grid-cols-2 gap-4">
@@ -25,13 +27,13 @@
         </app-input-checked>
       </div>
       <app-input-checked
-          titolo="Scadenza"
-          type="date"
-          [(valore)]="dataScadenza"
-          [haErrore]="mappaErrori.dataScadenza"
-          messaggioErrore="La data di scadenza deve essere futura"
-          (suInput)="mappaErrori.dataScadenza = false">
-        </app-input-checked>
+        titolo="Scadenza"
+        type="date"
+        [(valore)]="dataScadenza"
+        [haErrore]="mappaErrori.dataScadenza"
+        messaggioErrore="La data di scadenza deve essere futura"
+        (suInput)="mappaErrori.dataScadenza = false">
+      </app-input-checked>
 
 
       <app-input-checked
@@ -41,7 +43,7 @@
         [haErrore]="mappaErrori.descrizioneOfferta"
         messaggioErrore="Inserisci una descrizione valida"
         (suInput)="mappaErrori.descrizioneOfferta=false"
-        ></app-input-checked>
+      ></app-input-checked>
 
 
       <app-immagine-input-checked

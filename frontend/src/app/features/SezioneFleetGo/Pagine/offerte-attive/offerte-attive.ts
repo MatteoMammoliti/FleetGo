@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {CardOfferta} from '@features/SezioneFleetGo/Componenti/card/card-offerta/card-offerta';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
 import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/offerte-attive-service';
-import {ModaleAggiuntaOfferta} from '@features/SezioneFleetGo/Componenti/modali/modale-aggiunta-offerta/modale-aggiunta-offerta';
-import { TemplateTitoloSottotitolo } from '@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
+import {
+  ModaleAggiuntaOfferta
+} from '@features/SezioneFleetGo/Componenti/modali/modale-aggiunta-offerta/modale-aggiunta-offerta';
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-offerte-attive',
@@ -21,24 +22,32 @@ import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-mo
 
 export class OfferteAttive implements OnInit {
 
-  constructor(private offerteService: OfferteAttiveService ) {}
+  constructor(private offerteService: OfferteAttiveService) {
+  }
 
   offerteAttive: OffertaDTO[] = [];
   apriModale = false;
-  erroreBanner="";
-  successoBanner="";
+  erroreBanner = "";
+  successoBanner = "";
 
-  checkElimina=false;
-  offertaDaEliminare:any=null;
+  checkElimina = false;
+  offertaDaEliminare: any = null;
 
-  ngOnInit() { this.getOfferteAttive() }
+  ngOnInit() {
+    this.getOfferteAttive()
+  }
 
-  apriPaginaInserimentoOfferta() { this.apriModale = true; }
-  chiudiPaginaInserimentoOfferta() { this.apriModale = false; }
+  apriPaginaInserimentoOfferta() {
+    this.apriModale = true;
+  }
+
+  chiudiPaginaInserimentoOfferta() {
+    this.apriModale = false;
+  }
 
   salvaOfferta(formData: FormData) {
     this.offerteService.inserisciNuovaOfferta(formData).subscribe({
-      next: value =>{
+      next: value => {
         this.chiudiPaginaInserimentoOfferta();
         this.getOfferteAttive();
         this.gestisciSuccesso("Offerta salvata con successo");
@@ -62,7 +71,7 @@ export class OfferteAttive implements OnInit {
   getOfferteAttive() {
     this.offerteService.getOfferteAttive().subscribe({
       next: offerte => {
-        if(offerte)
+        if (offerte)
           this.offerteAttive = offerte;
       }, error: err => {
         this.gestisciErrore(err.error);

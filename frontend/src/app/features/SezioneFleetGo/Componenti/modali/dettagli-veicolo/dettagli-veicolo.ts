@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AziendaDTO} from '@core/models/aziendaDTO';
-import { SceltaTendina } from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-declare var google:any;
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+
+declare var google: any;
 
 @Component({
   selector: 'app-dettagli-veicolo',
@@ -19,13 +20,13 @@ declare var google:any;
   styleUrl: './dettagli-veicolo.css',
 })
 
-export class DettagliVeicolo  {
+export class DettagliVeicolo {
 
   @Output() chiudi = new EventEmitter<void>();
 
   @Output() dissocia = new EventEmitter<any>();
   @Output() associa = new EventEmitter<any>();
-  @Output() dissociaAssocia=new EventEmitter<{veicolo: any, nuovaAzienda: any}>();
+  @Output() dissociaAssocia = new EventEmitter<{ veicolo: any, nuovaAzienda: any }>();
 
   @Input() veicolo: any = null;
   @Input() aziende: AziendaDTO[] = [];
@@ -97,23 +98,21 @@ export class DettagliVeicolo  {
   }
 
   salva() {
-    if(this.dissociaSelezionata&&this.aziendaSelezionata){
-        this.dissociaAssocia.emit({ veicolo: this.veicolo, nuovaAzienda: this.aziendaSelezionata });
-    }
-    else if (this.dissociaSelezionata) {
+    if (this.dissociaSelezionata && this.aziendaSelezionata) {
+      this.dissociaAssocia.emit({veicolo: this.veicolo, nuovaAzienda: this.aziendaSelezionata});
+    } else if (this.dissociaSelezionata) {
       this.dissociaVeicoloAzienda();
-    }
-    else if (this.aziendaSelezionata) {
+    } else if (this.aziendaSelezionata) {
       this.associaVeicoloAzienda();
     }
     this.chiudiModale()
   }
 
-  chiudiModale(){
+  chiudiModale() {
     this.dissociaSelezionata = false;
-    this.aziendaSelezionata=null;
-    this.veicolo=null;
-    this.aziende=[];
+    this.aziendaSelezionata = null;
+    this.veicolo = null;
+    this.aziende = [];
     this.chiudi.emit();
   }
 

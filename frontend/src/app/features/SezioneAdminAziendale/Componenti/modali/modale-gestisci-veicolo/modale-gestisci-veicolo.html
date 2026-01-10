@@ -1,195 +1,192 @@
- <app-template-finestra-modale
-      tastoBlu="Chiudi"
-      (conferma)="chiudi.emit()"
-      [titolo]="mostraFormManutenzione ? 'Nuova Richiesta Manutenzione' : 'Dettagli Veicolo'"
-      (chiudi)="chiudi.emit()">
+<app-template-finestra-modale
+  tastoBlu="Chiudi"
+  (conferma)="chiudi.emit()"
+  [titolo]="mostraFormManutenzione ? 'Nuova Richiesta Manutenzione' : 'Dettagli Veicolo'"
+  (chiudi)="chiudi.emit()">
 
-      <div class="flex flex-col px-2 py-3 gap-6 h-full overflow-y-auto">
+  <div class="flex flex-col px-2 py-3 gap-6 h-full overflow-y-auto">
 
-        @if (loading) {
-          <div class="flex flex-col items-center justify-center py-20 text-slate-400">
-            <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
-            <p>Caricamento dati...</p>
-          </div>
-        }
-
-        @else if (veicolo && !mostraFormManutenzione) {
-          <div class="flex flex-col md:flex-row gap-6">
-            <div class="w-full md:w-5/12 h-48 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center p-2 relative">
-              @if (veicolo.urlImmagine){
-                <img [src]="veicolo.urlImmagine" class="max-w-full max-h-full object-contain mix-blend-multiply">
-              } @else {
-                <i class="bi bi-car-front text-6xl text-slate-300"></i>
-              }
-              <div class="absolute top-1 right-1 px-2 py-1 rounded text-[10px] font-bold uppercase text-left w-full pl-4">
-                @if (veicolo.inManutenzione){
-                      <app-icona-stato
-                        testo="IN MANUTENZIONE"
-                        stato="rosso"
-                      >
-                      </app-icona-stato>
-                } @else if ((veicolo.inManutenzione === false) && veicolo.luogoRitiroDeposito?.nomeLuogo != null){
-                  <app-icona-stato
-                    testo="DISPONIBILE"
-                  >
-                  </app-icona-stato>
-                }
-                @else{
-                  <app-icona-stato
-                    testo="{{veicolo.statusContrattualeVeicolo}}"
-                    stato="giallo"
-                  >
-                  </app-icona-stato>
-                }
-              </div>
-            </div>
-
-            <div class="w-full md:w-7/12 flex flex-col justify-center gap-3 text-sm">
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <p class="text-xs text-grigio-scuro font-bold uppercase">Targa</p>
-                  <p class="font-bold text-slate-800 text-lg">{{veicolo.targaVeicolo}}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-grigio-scuro font-bold uppercase">Modello</p>
-                  <p class="font-bold text-slate-800 text-lg">{{veicolo.nomeModello}}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-grigio-scuro font-bold uppercase">Alimentazione</p>
-                  <p class="font-medium text-slate-700">{{veicolo.tipoDistribuzioneVeicolo}}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-grigio-scuro font-bold uppercase">Assegnato a</p>
-                  <p class="font-bold text-blue-600 flex items-center gap-2">
-                    {{ veicolo.nomeAziendaAffiliata || 'Nessuna azienda (FleetGo)' }}
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div class="pt-3 border-t border-slate-100 mt-1">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <h4 class="text-sm font-bold text-black flex items-center gap-2">
-              <i class="bi bi-geo-alt-fill text-black"></i> Posizione
-            </h4>
-            <div class="w-full h-56 bg-slate-100 rounded-xl border border-slate-200 overflow-hidden relative">
-              @if (veicolo.luogoRitiroDeposito && veicolo.luogoRitiroDeposito.latitudine && veicolo.luogoRitiroDeposito.longitudine) {
-                <div id="google-map-modale" class="w-full h-full"></div>
-                <div class="absolute bottom-2 left-2 bg-white/90 px-3 py-1 rounded-md text-xs font-bold shadow-sm border">
-                   {{ veicolo.luogoRitiroDeposito.nomeLuogo }}
-                </div>
-              } @else {
-                <div class="w-full h-full flex flex-col items-center justify-center gap-3">
-                   <p class="text-slate-400 text-sm">Posizione non disponibile</p>
-                   <div class="flex gap-2">
-                      <select [(ngModel)]="luogoSelezionatoId" class="flex-grow px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-100 outline-none">
-                        <option [ngValue]="null" disabled selected>Seleziona Sede</option>
-                        @for(luogo of listaLuoghi; track $index) {
-                          <option [value]="luogo.idLuogo">
-                            {{ luogo.nomeLuogo || 'Sede senza nome (' + $index + ')' }}
-                          </option>
-                        }
-                      </select>
-                      <button (click)="impostaLuogo()" [disabled]="!luogoSelezionatoId"
-                              class="px-4 py-2 font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all">
-                        Salva
-                      </button>
-                   </div>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2 gap-4">
-
-            @if (veicolo.inManutenzione || richiestaManutenzione?.idManutenzione) {
-              <div class="flex-grow flex items-center gap-3 bg-blue-50 px-4 py-2.5 rounded-lg border border-blue-200">
-                <div class="text-azzurro-scuro text-xl">
-                  <i class="bi bi-exclamation-circle-fill"></i>
-                </div>
-                <div class="flex-grow leading-tight">
-                  <p class="text-[10px] font-bold text-blu-800 uppercase tracking-wide">
-                    Stato Attuale
-                  </p>
-                  <p class="text-sm font-semibold text-slate-800">
-                    {{ richiestaManutenzione?.tipoManutenzione || 'Veicolo in Manutenzione' }}
-                  </p>
-                  <p class="text-xs text-slate-500">
-                    Richiesta del: {{ (richiestaManutenzione?.dataRichiesta | date:'dd/MM/yyyy') || 'N/D' }}
-                  </p>
-                </div>
-
-                @if (richiestaManutenzione && !richiestaManutenzione.accettata) {
-                  <button (click)="annullaRichiesta(richiestaManutenzione)"
-                          class="px-3 py-1.5 text-xs font-bold text-azzurro hover:text-red-600 bg-white rounded hover:bg-red-50 transition-colors shadow-sm whitespace-nowrap">
-                    Annulla Richiesta
-                  </button>
-                } @else {
-                  <span class="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-700 rounded uppercase border border-green-200">
-                    In Lavorazione
-                  </span>
-                }
-              </div>
-            }
-
-            @else {
-              <button (click)="mostraFormManutenzione = true"
-                      class="px-5 py-2 rounded-lg bg-azzurro text-gray-50 font-bold hover:bg-azzurro-scuro transition-colors flex items-center gap-2 text-sm">
-                <i class="bi-wrench-adjustable"></i>
-                Richiedi Manutenzione
-              </button>
+    @if (loading) {
+      <div class="flex flex-col items-center justify-center py-20 text-slate-400">
+        <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p>Caricamento dati...</p>
+      </div>
+    } @else if (veicolo && !mostraFormManutenzione) {
+      <div class="flex flex-col md:flex-row gap-6">
+        <div
+          class="w-full md:w-5/12 h-48 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center p-2 relative">
+          @if (veicolo.urlImmagine) {
+            <img [src]="veicolo.urlImmagine" class="max-w-full max-h-full object-contain mix-blend-multiply">
+          } @else {
+            <i class="bi bi-car-front text-6xl text-slate-300"></i>
+          }
+          <div class="absolute top-1 right-1 px-2 py-1 rounded text-[10px] font-bold uppercase text-left w-full pl-4">
+            @if (veicolo.inManutenzione) {
+              <app-icona-stato
+                testo="IN MANUTENZIONE"
+                stato="rosso"
+              >
+              </app-icona-stato>
+            } @else if ((veicolo.inManutenzione === false) && veicolo.luogoRitiroDeposito?.nomeLuogo != null) {
+              <app-icona-stato
+                testo="DISPONIBILE"
+              >
+              </app-icona-stato>
+            } @else {
+              <app-icona-stato
+                testo="{{veicolo.statusContrattualeVeicolo}}"
+                stato="giallo"
+              >
+              </app-icona-stato>
             }
           </div>
-        }
+        </div>
 
-        @else if (veicolo && mostraFormManutenzione) {
-          <div class="flex flex-col items-center justify-center gap-6 py-4 animate-fade-in h-full">
+        <div class="w-full md:w-7/12 flex flex-col justify-center gap-3 text-sm">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-grigio-scuro font-bold uppercase">Targa</p>
+              <p class="font-bold text-slate-800 text-lg">{{ veicolo.targaVeicolo }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-grigio-scuro font-bold uppercase">Modello</p>
+              <p class="font-bold text-slate-800 text-lg">{{ veicolo.nomeModello }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-grigio-scuro font-bold uppercase">Alimentazione</p>
+              <p class="font-medium text-slate-700">{{ veicolo.tipoDistribuzioneVeicolo }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-grigio-scuro font-bold uppercase">Assegnato a</p>
+              <p class="font-bold text-blue-600 flex items-center gap-2">
+                {{ veicolo.nomeAziendaAffiliata || 'Nessuna azienda (FleetGo)' }}
+              </p>
 
-            <div class="text-center space-y-2">
-              <div class="w-16 h-16 flex items-center justify-center mx-auto text-azzurro text-3xl mb-4">
-                <i class="bi-exclamation-triangle-fill"></i>
+            </div>
+
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 mt-1">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <h4 class="text-sm font-bold text-black flex items-center gap-2">
+          <i class="bi bi-geo-alt-fill text-black"></i> Posizione
+        </h4>
+        <div class="w-full h-56 bg-slate-100 rounded-xl border border-slate-200 overflow-hidden relative">
+          @if (veicolo.luogoRitiroDeposito && veicolo.luogoRitiroDeposito.latitudine && veicolo.luogoRitiroDeposito.longitudine) {
+            <div id="google-map-modale" class="w-full h-full"></div>
+            <div class="absolute bottom-2 left-2 bg-white/90 px-3 py-1 rounded-md text-xs font-bold shadow-sm border">
+              {{ veicolo.luogoRitiroDeposito.nomeLuogo }}
+            </div>
+          } @else {
+            <div class="w-full h-full flex flex-col items-center justify-center gap-3">
+              <p class="text-slate-400 text-sm">Posizione non disponibile</p>
+              <div class="flex gap-2">
+                <select [(ngModel)]="luogoSelezionatoId"
+                        class="flex-grow px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-100 outline-none">
+                  <option [ngValue]="null" disabled selected>Seleziona Sede</option>
+                  @for (luogo of listaLuoghi; track $index) {
+                    <option [value]="luogo.idLuogo">
+                      {{ luogo.nomeLuogo || 'Sede senza nome (' + $index + ')' }}
+                    </option>
+                  }
+                </select>
+                <button (click)="impostaLuogo()" [disabled]="!luogoSelezionatoId"
+                        class="px-4 py-2 font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all">
+                  Salva
+                </button>
               </div>
-              <h3 class="text-xl font-bold text-black">Segnala un problema</h3>
-              <p class="text-slate-500 text-sm max-w-md mx-auto">
-                Richiesta di manutenzione per il veicolo: <span class="font-mono font-bold text-black">{{ veicolo.targaVeicolo }}</span>.
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2 gap-4">
+
+        @if (veicolo.inManutenzione || richiestaManutenzione?.idManutenzione) {
+          <div class="flex-grow flex items-center gap-3 bg-blue-50 px-4 py-2.5 rounded-lg border border-blue-200">
+            <div class="text-azzurro-scuro text-xl">
+              <i class="bi bi-exclamation-circle-fill"></i>
+            </div>
+            <div class="flex-grow leading-tight">
+              <p class="text-[10px] font-bold text-blu-800 uppercase tracking-wide">
+                Stato Attuale
+              </p>
+              <p class="text-sm font-semibold text-slate-800">
+                {{ richiestaManutenzione?.tipoManutenzione || 'Veicolo in Manutenzione' }}
+              </p>
+              <p class="text-xs text-slate-500">
+                Richiesta del: {{ (richiestaManutenzione?.dataRichiesta | date:'dd/MM/yyyy') || 'N/D' }}
               </p>
             </div>
 
-            <div class="w-full max-w-md space-y-4">
-              <div class="flex flex-col gap-2 text-left">
-                <app-scelta-tendina
-                  [titolo]="'Tipologia Guasto'"
-                  [placeholder]="'Seleziona il tipo di problema'"
-                  [lista]="opzioniManutenzione"
-                  [(valore)]="tipoManutenzioneSelezionato"
-                  (valoreChange)="tipoManutenzioneSelezionato = $event"
-                  [haErrore]="erroreSelezioneManutenzione"
-                  messaggioErrore="Seleziona un valore valido"
-                  >
-                </app-scelta-tendina>
-              </div>
-            </div>
-
-            <div class="flex gap-4 w-full mt-auto px-10 text-center justify-center">
-              <button (click)="mostraFormManutenzione = false; initMappa(); erroreSelezioneManutenzione=false"
-                      class="px-10 py-3 rounded-lg bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
-                Annulla
+            @if (richiestaManutenzione && !richiestaManutenzione.accettata) {
+              <button (click)="annullaRichiesta(richiestaManutenzione)"
+                      class="px-3 py-1.5 text-xs font-bold text-azzurro hover:text-red-600 bg-white rounded hover:bg-red-50 transition-colors shadow-sm whitespace-nowrap">
+                Annulla Richiesta
               </button>
-
-              <button (click)="inviaManutenzione()"
-                      class=" px-8 py-3 rounded-lg bg-azzurro text-gray-50 font-bold hover:bg-azzurro-scuro transition-colors flex items-center gap-2 text-sm">
-                Invia Segnalazione
-              </button>
-            </div>
+            } @else {
+              <span
+                class="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-700 rounded uppercase border border-green-200">
+                    In Lavorazione
+                  </span>
+            }
           </div>
+        } @else {
+          <button (click)="mostraFormManutenzione = true"
+                  class="px-5 py-2 rounded-lg bg-azzurro text-gray-50 font-bold hover:bg-azzurro-scuro transition-colors flex items-center gap-2 text-sm">
+            <i class="bi-wrench-adjustable"></i>
+            Richiedi Manutenzione
+          </button>
         }
-
       </div>
-    </app-template-finestra-modale>
+    } @else if (veicolo && mostraFormManutenzione) {
+      <div class="flex flex-col items-center justify-center gap-6 py-4 animate-fade-in h-full">
+
+        <div class="text-center space-y-2">
+          <div class="w-16 h-16 flex items-center justify-center mx-auto text-azzurro text-3xl mb-4">
+            <i class="bi-exclamation-triangle-fill"></i>
+          </div>
+          <h3 class="text-xl font-bold text-black">Segnala un problema</h3>
+          <p class="text-slate-500 text-sm max-w-md mx-auto">
+            Richiesta di manutenzione per il veicolo: <span
+            class="font-mono font-bold text-black">{{ veicolo.targaVeicolo }}</span>.
+          </p>
+        </div>
+
+        <div class="w-full max-w-md space-y-4">
+          <div class="flex flex-col gap-2 text-left">
+            <app-scelta-tendina
+              [titolo]="'Tipologia Guasto'"
+              [placeholder]="'Seleziona il tipo di problema'"
+              [lista]="opzioniManutenzione"
+              [(valore)]="tipoManutenzioneSelezionato"
+              (valoreChange)="tipoManutenzioneSelezionato = $event"
+              [haErrore]="erroreSelezioneManutenzione"
+              messaggioErrore="Seleziona un valore valido"
+            >
+            </app-scelta-tendina>
+          </div>
+        </div>
+
+        <div class="flex gap-4 w-full mt-auto px-10 text-center justify-center">
+          <button (click)="mostraFormManutenzione = false; initMappa(); erroreSelezioneManutenzione=false"
+                  class="px-10 py-3 rounded-lg bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
+            Annulla
+          </button>
+
+          <button (click)="inviaManutenzione()"
+                  class=" px-8 py-3 rounded-lg bg-azzurro text-gray-50 font-bold hover:bg-azzurro-scuro transition-colors flex items-center gap-2 text-sm">
+            Invia Segnalazione
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</app-template-finestra-modale>
 

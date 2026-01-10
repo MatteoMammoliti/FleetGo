@@ -10,4 +10,5 @@ export class BannerNoleggiDaApprovare {
 
   @Input() noleggiDaApprovare: number = 0;
   @Output() apriModale = new EventEmitter<void>();
+
 }

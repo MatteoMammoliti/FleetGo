@@ -8,16 +8,18 @@
   [class.border-slate-100]="!selezionato"
   [class.hover:border-blue-300]="!selezionato">
 
-  <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+  <div
+    class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
 
   <div class="flex items-center gap-5 w-full">
 
-    <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm border border-slate-200 transition-colors duration-300"
-         [class.bg-blue-600]="selezionato"
-         [class.text-white]="selezionato"
-         [class.border-blue-600]="selezionato"
-         [class.bg-white]="!selezionato"
-         [class.text-blue-600]="!selezionato">
+    <div
+      class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm border border-slate-200 transition-colors duration-300"
+      [class.bg-blue-600]="selezionato"
+      [class.text-white]="selezionato"
+      [class.border-blue-600]="selezionato"
+      [class.bg-white]="!selezionato"
+      [class.text-blue-600]="!selezionato">
 
       <span class="text-xl font-black uppercase">
         {{ datiAzienda.nomeAzienda.charAt(0) }}
@@ -32,7 +34,8 @@
         </h3>
 
         @if (selezionato) {
-          <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md animate-scale-in">
+          <div
+            class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md animate-scale-in">
             <i class="bi-check-lg text-sm font-bold"></i>
           </div>
         }
@@ -44,11 +47,13 @@
       </p>
 
       <div class="flex flex-wrap items-center gap-2">
-        <span class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+        <span
+          class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
           <i class="bi-car-front-fill text-blue-500"></i>
           {{ datiAzienda.totaleVeicoliAzienda }} Veicoli
         </span>
-        <span class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+        <span
+          class="inline-flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-600 uppercase tracking-wide border border-slate-200/50 group-hover:bg-white group-hover:border-blue-100 transition-colors">
           <i class="bi-people-fill text-blue-500"></i>
           {{ datiAzienda.totaleDipendentiAzienda }} Dipendenti
         </span>
@@ -58,7 +63,8 @@
   </div>
 
   @if (!selezionato) {
-    <div class="absolute right-4 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-[-10px] transition-all duration-300">
+    <div
+      class="absolute right-4 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-[-10px] transition-all duration-300">
       <i class="bi-chevron-right text-2xl"></i>
     </div>
   }

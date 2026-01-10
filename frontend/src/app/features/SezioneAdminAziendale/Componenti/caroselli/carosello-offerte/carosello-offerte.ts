@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {OffertaDTO} from '@core/models/offertaDTO.models';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 
 @Component({
   selector: 'app-carosello-offerte',
@@ -18,9 +18,13 @@ export class CaroselloOfferte implements OnInit, OnDestroy {
   indiceCorrente = 0;
   intervalloDiCambioCarosello: any;
 
-  ngOnInit() { this.startRotation(); }
+  ngOnInit() {
+    this.startRotation();
+  }
 
-  ngOnDestroy() { this.stopRotation(); }
+  ngOnDestroy() {
+    this.stopRotation();
+  }
 
   startRotation() {
     this.intervalloDiCambioCarosello = setInterval(() => {
@@ -33,13 +37,13 @@ export class CaroselloOfferte implements OnInit, OnDestroy {
   }
 
   avanzaCarosello() {
-    if(this.offerte.length > 0) {
+    if (this.offerte.length > 0) {
       this.indiceCorrente = (this.indiceCorrente + 1) % this.offerte.length;
     }
   }
 
   arretraCarosello() {
-    if(this.offerte.length > 0) {
+    if (this.offerte.length > 0) {
       this.indiceCorrente = (this.indiceCorrente - 1 + this.offerte.length) % this.offerte.length;
     }
   }
@@ -50,7 +54,7 @@ export class CaroselloOfferte implements OnInit, OnDestroy {
     this.startRotation();
   }
 
-  richiediDettagli(offertaSelezionata: OffertaDTO){
+  richiediDettagli(offertaSelezionata: OffertaDTO) {
     this.offertaSelezionata.emit(offertaSelezionata);
   }
 }

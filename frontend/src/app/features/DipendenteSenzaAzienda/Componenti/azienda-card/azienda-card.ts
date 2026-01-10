@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {HomeService} from '@features/DipendenteSenzaAzienda/ServiceDipendenteSenzaAzienda/home-service';
 import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
 
 @Component({
@@ -10,8 +9,8 @@ import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
 })
 export class AziendaCard {
 
-  @Input() datiAzienda:ContenitoreDatiAzienda={} as ContenitoreDatiAzienda;
-  @Input() selezionato:boolean=false;
+  @Input() datiAzienda: ContenitoreDatiAzienda = {} as ContenitoreDatiAzienda;
+  @Input() selezionato: boolean = false;
   @Output() selezionaAzienda = new EventEmitter<ContenitoreDatiAzienda>();
 
 }

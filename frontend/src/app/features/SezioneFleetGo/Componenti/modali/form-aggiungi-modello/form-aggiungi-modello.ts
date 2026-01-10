@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {FormsModule} from '@angular/forms';
-import {TemplateFinestraModale} from '@shared/Componenti/Ui/template-finestra-modale/template-finestra-modale';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
-import {ImmagineInputChecked} from '@shared/Componenti/Ui/immagine-input-checked/immagine-input-checked';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {ImmagineInputChecked} from '@shared/Componenti/Input/immagine-input-checked/immagine-input-checked';
 
 @Component({
   selector: 'app-form-aggiungi-modello',
@@ -32,13 +32,13 @@ export class FormAggiungiModello {
     this.erroreNome = !this.nomeModello;
     this.erroreImmagine = !this.fileImmagine;
 
-    if(!this.erroreNome && !this.erroreImmagine) {
+    if (!this.erroreNome && !this.erroreImmagine) {
       const modello: ModelloDTO = {
         nomeModello: this.nomeModello
       }
 
       const obj = new FormData();
-      obj.append('modello', new Blob([JSON.stringify(modello)], { type: 'application/json' }));
+      obj.append('modello', new Blob([JSON.stringify(modello)], {type: 'application/json'}));
       if (this.fileImmagine) {
         obj.append("immagine", this.fileImmagine)
       }
@@ -48,9 +48,9 @@ export class FormAggiungiModello {
     }
   }
 
-  onFileSelected(file:File) {
-      this.fileImmagine = file;
-      this.erroreImmagine = false;
+  onFileSelected(file: File) {
+    this.fileImmagine = file;
+    this.erroreImmagine = false;
   }
 
   private resetForm() {

@@ -3,7 +3,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {LuogoDTO} from '@core/models/luogoDTO.models';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-form-modifica-dati-admin-aziendale',
@@ -16,15 +16,16 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
   styleUrl: './form-modifica-dati-admin-aziendale.css',
 })
 
-export class FormModificaDatiAdminAziendale implements OnChanges{
+export class FormModificaDatiAdminAziendale implements OnChanges {
 
-  constructor(private validator:validazione) {}
+  constructor(private validator: validazione) {
+  }
 
   @Input() datiCorrenti: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO;
   @Input() luoghi: LuogoDTO[] = [];
   @Input() luoghiCorrenti: LuogoDTO[] = [];
 
-  @Output() richiestaModifica= new EventEmitter<ModificaDatiUtenteDTO>();
+  @Output() richiestaModifica = new EventEmitter<ModificaDatiUtenteDTO>();
 
   nome: string | null = '';
   cognome: string | null = '';
@@ -36,11 +37,11 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
 
   errore = '';
 
-  mappaErrori= {
+  mappaErrori = {
     nome: false,
     cognome: false,
     data: false,
-    email :false,
+    email: false,
     nomeAzienda: false,
     partitaIva: false
   };
@@ -50,7 +51,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
   }
 
   caricaDatiEsistenti() {
-    if(this.datiCorrenti) {
+    if (this.datiCorrenti) {
       this.nome = this.datiCorrenti.nome;
       this.cognome = this.datiCorrenti.cognome;
       this.data = this.datiCorrenti.data;
@@ -67,7 +68,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
       nome: false,
       cognome: false,
       data: false,
-      email : false,
+      email: false,
       nomeAzienda: false,
       partitaIva: false
     };
@@ -76,42 +77,42 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
   onSalvaModifiche() {
     this.reset();
 
-    if (!this.nome || !this.cognome || !this.data || !this.email ||!this.nomeAzienda || !this.sedeAzienda || !this.partitaIva) {
+    if (!this.nome || !this.cognome || !this.data || !this.email || !this.nomeAzienda || !this.sedeAzienda || !this.partitaIva) {
       this.errore = "campi vuoti non permessi";
       if (!this.nome) this.mappaErrori.nome = true;
       if (!this.cognome) this.mappaErrori.cognome = true;
-      if(!this.data) this.mappaErrori.data = true;
+      if (!this.data) this.mappaErrori.data = true;
       if (!this.email) this.mappaErrori.email = true;
       if (!this.nomeAzienda) this.mappaErrori.nomeAzienda = true;
       if (!this.partitaIva) this.mappaErrori.partitaIva = true;
       return;
     }
 
-    if(!this.validator.checkNome(this.nome)){
+    if (!this.validator.checkNome(this.nome)) {
       this.errore = "Nome non valido";
       this.mappaErrori.nome = true;
       return;
     }
 
-    if(!this.validator.checkCognome(this.cognome)) {
+    if (!this.validator.checkCognome(this.cognome)) {
       this.errore = "Cognome non valido";
       this.mappaErrori.cognome = true;
       return;
     }
 
-    if(!this.validator.checkDataNascita(this.data)) {
+    if (!this.validator.checkDataNascita(this.data)) {
       this.errore = "Data di nascita non valida";
       this.mappaErrori.data = true;
       return;
     }
 
-    if(!this.validator.checkEmail(this.email)){
+    if (!this.validator.checkEmail(this.email)) {
       this.errore = "Email non valida";
       this.mappaErrori.email = true;
       return;
     }
 
-    if(!this.validator.checkPartitaIva(this.partitaIva)) {
+    if (!this.validator.checkPartitaIva(this.partitaIva)) {
       this.errore = "Partita Iva non valida";
       this.mappaErrori.partitaIva = true;
       return;
@@ -129,7 +130,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges{
 
     const ciSonoModifiche = Object.values(datiAggiornati).some(val => val !== null);
 
-    if(ciSonoModifiche) {
+    if (ciSonoModifiche) {
       this.richiestaModifica.emit(datiAggiornati);
     }
   }

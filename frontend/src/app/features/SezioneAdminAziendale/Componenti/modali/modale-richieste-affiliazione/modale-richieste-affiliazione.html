@@ -1,49 +1,53 @@
 @if (modaleVisibile) {
- <app-template-finestra-modale (chiudi)="chiudiModale.emit()" (annulla)="chiudiModale.emit()" [visibile]="'40'" larghezza="max-w-3xl" tastoBianco="Chiudi" titolo="Gestione nuovi dipendenti" sottotitolo="Qui trovi tutte le nuove richieste di affiliazione" >
-          @if (richiesteAffiliazione.length === 0) {
-            <p class="text-center text-gray-500 py-4 min-h-[270px]">Nessuna richiesta in attesa.</p>
-          } @else {
-            <div class="min-h-[270px] ">
-            <table class="table-base">
-              <thead class="bg-white sticky top-0 z-20 text-left">
-              <tr>
-                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Utente</th>
-                <th scope="col" class="py-4 font-bold tracking-wider text-center">Email</th>
-                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Data di nascita</th>
-                <th scope="col" class=" py-4 font-bold tracking-wider text-center">Azioni</th>
-              </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100">
-                @for (req of richiesteAffiliazione; track req.idUtente) {
-                  <tr class="tr-inferiore group">
-                    <td class="td-sinistro">
-                      <div class="text-sm font-medium text-gray-600">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}</div>
-                    </td>
-                    <td class="td-base text-center">
-                      <div class="text-sm text-gray-500">{{ req.utente?.email }}</div>
-                    </td>
-                    <td class="td-base text-center">
-                      <div class="text-sm text-gray-500">{{ req.utente?.dataNascitaUtente | date:'dd/MM/yyyy' }}</div>
-                    </td>
-                    <td class="td-destro text-center">
-                      <button
-                        (click)="rifiutaAffiliazione.emit(req.idUtente)"
-                        class="text-gray-600 bg-grigio hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded-md mr-2 border border-gray-200 hover:border-red-50">
-                        Rifiuta
-                      </button>
-                      <button
-                        (click)="accettaAffiliazione.emit(req.idUtente)"
-                        class="text-white hover:bg-azzurro-scuro bg-azzurro px-3 py-1 rounded-md border border-blue-200 mr-2 ">
-                        Accetta
-                      </button>
+  <app-template-finestra-modale (chiudi)="chiudiModale.emit()" (annulla)="chiudiModale.emit()" [visibile]="'40'"
+                                larghezza="max-w-3xl" tastoBianco="Chiudi" titolo="Gestione nuovi dipendenti"
+                                sottotitolo="Qui trovi tutte le nuove richieste di affiliazione">
+    @if (richiesteAffiliazione.length === 0) {
+      <p class="text-center text-gray-500 py-4 min-h-[270px]">Nessuna richiesta in attesa.</p>
+    } @else {
+      <div class="min-h-[270px] ">
+        <table class="table-base">
+          <thead class="bg-white sticky top-0 z-20 text-left">
+          <tr>
+            <th scope="col" class=" py-4 font-bold tracking-wider text-center">Utente</th>
+            <th scope="col" class="py-4 font-bold tracking-wider text-center">Email</th>
+            <th scope="col" class=" py-4 font-bold tracking-wider text-center">Data di nascita</th>
+            <th scope="col" class=" py-4 font-bold tracking-wider text-center">Azioni</th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (req of richiesteAffiliazione; track req.idUtente) {
+              <tr class="tr-inferiore group">
+                <td class="td-sinistro">
+                  <div
+                    class="text-sm font-medium text-gray-600">{{ req.utente?.nomeUtente }} {{ req.utente?.cognomeUtente }}
+                  </div>
+                </td>
+                <td class="td-base text-center">
+                  <div class="text-sm text-gray-500">{{ req.utente?.email }}</div>
+                </td>
+                <td class="td-base text-center">
+                  <div class="text-sm text-gray-500">{{ req.utente?.dataNascitaUtente | date:'dd/MM/yyyy' }}</div>
+                </td>
+                <td class="td-destro text-center">
+                  <button
+                    (click)="rifiutaAffiliazione.emit(req.idUtente)"
+                    class="text-gray-600 bg-grigio hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded-md mr-2 border border-gray-200 hover:border-red-50">
+                    Rifiuta
+                  </button>
+                  <button
+                    (click)="accettaAffiliazione.emit(req.idUtente)"
+                    class="text-white hover:bg-azzurro-scuro bg-azzurro px-3 py-1 rounded-md border border-blue-200 mr-2 ">
+                    Accetta
+                  </button>
 
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-              </div>
-          }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
 
   </app-template-finestra-modale>
 }

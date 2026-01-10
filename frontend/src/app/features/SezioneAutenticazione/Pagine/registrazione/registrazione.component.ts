@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AuthService } from '@core/auth/auth-service';
-import { DipendenteDTO } from '@core/models/dipendenteDTO.models';
-import {Router,RouterLink} from '@angular/router';
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {AuthService} from '@core/auth/auth-service';
+import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {Router, RouterLink} from '@angular/router';
 import {validazione} from '@core/utils/validazione';
-import { inject } from '@angular/core';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +15,9 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 
 export class RegistrazioneComponent {
-  validator = inject(validazione);
+  constructor(private authService: AuthService, private router: Router, private validator:validazione) {
+  }
+
   nome = '';
   cognome = '';
   email = '';
@@ -25,7 +26,7 @@ export class RegistrazioneComponent {
   datanascita = '';
   patente: any = null;
 
-  errore="";
+  errore = "";
 
   mappaErrori = {
     nome: false,
@@ -38,14 +39,14 @@ export class RegistrazioneComponent {
   };
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+
 
   onFileSelected(event: any) {
     this.patente = event.target.files[0];
   }
 
   onRegistrazione() {
-    this.errore="";
+    this.errore = "";
     this.mappaErrori = {
       nome: false,
       cognome: false,

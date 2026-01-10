@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
 import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card/card-dipendente/card-dipendente';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
-import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
+import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({
   selector: 'app-elenco-dipendenti',
@@ -14,12 +14,14 @@ import {InputChecked} from '@shared/Componenti/Ui/input-checked/input-checked';
 })
 export class ElencoDipendenti {
   cercaDipendente: string = '';
-  @Input() listaDipendenti: DipendenteDTO[]|null=null;
-  @Output() richiestaRimozioneDipendente= new EventEmitter<number>();
+  @Input() listaDipendenti: DipendenteDTO[] | null = null;
+  @Output() richiestaRimozioneDipendente = new EventEmitter<number>();
   @Output() apriDettagliDipendente = new EventEmitter<DipendenteDTO>();
 
-  get dipendentiFiltrati(): DipendenteDTO[]|null {
-    if(!this.listaDipendenti) {return null;}
+  get dipendentiFiltrati(): DipendenteDTO[] | null {
+    if (!this.listaDipendenti) {
+      return null;
+    }
 
     if (!this.cercaDipendente) {
       return this.listaDipendenti;
@@ -30,7 +32,7 @@ export class ElencoDipendenti {
     );
   }
 
-  rimuoviDipendente(idDipendente:number | undefined) {
+  rimuoviDipendente(idDipendente: number | undefined) {
     this.richiestaRimozioneDipendente.emit(idDipendente);
   }
 

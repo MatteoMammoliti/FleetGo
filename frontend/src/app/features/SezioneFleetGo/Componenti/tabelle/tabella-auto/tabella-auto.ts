@@ -1,9 +1,9 @@
-import {Component, Input,Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {VeicoloDTO} from '@core/models/veicoloDTO.model';
 import {AziendaDTO} from '@core/models/aziendaDTO';
 import {FormsModule} from '@angular/forms';
-import {IconaStato} from '@shared/Componenti/Ui/icona-stato/icona-stato';
-import {MessaggioCardVuota} from '@shared/Componenti/Ui/messaggio-card-vuota/messaggio-card-vuota';
+import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
+import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({
@@ -18,13 +18,13 @@ import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
   animations: [ANIMAZIONE_TABELLA]
 })
 export class TabellaAuto {
-  @Input() listaVeicoli: VeicoloDTO[]|null = null;
+  @Input() listaVeicoli: VeicoloDTO[] | null = null;
   @Input() listaAziende: AziendaDTO[] = [];
   @Output() richiestaEliminazione = new EventEmitter<string>();
-  @Output() apriInfoVeicolo=new EventEmitter<string>();
+  @Output() apriInfoVeicolo = new EventEmitter<string>();
 
   eliminaVeicolo(targaVeicolo: string | undefined) {
-    if(targaVeicolo) this.richiestaEliminazione.emit(targaVeicolo);
+    if (targaVeicolo) this.richiestaEliminazione.emit(targaVeicolo);
   }
 
   getBadgeStatus(auto: any) {

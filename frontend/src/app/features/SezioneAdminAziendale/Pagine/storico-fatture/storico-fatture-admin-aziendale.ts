@@ -1,44 +1,49 @@
 import {Component, OnInit} from '@angular/core';
-import {TabellaStoricoFatture} from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-storico-fatture/tabella-storico-fatture';
+import {
+  TabellaStoricoFatture
+} from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-storico-fatture/tabella-storico-fatture';
 import {FatturaDTO} from '@core/models/FatturaDTO.models';
-import {StoricoFattureServiceAdminAziendale} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/storico-fatture-service-admin-aziendale';
+import {
+  StoricoFattureServiceAdminAziendale
+} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/storico-fatture-service-admin-aziendale';
 import {CurrencyPipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {TemplateTitoloSottotitolo} from "@shared/Componenti/Ui/template-titolo-sottotitolo/template-titolo-sottotitolo";
-import {SceltaTendina} from '@shared/Componenti/Ui/scelta-tendina/scelta-tendina';
-import {BannerErrore} from "@shared/Componenti/Ui/banner-errore/banner-errore";
+import {TemplateTitoloSottotitolo} from "@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo";
+import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
+import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
 
 @Component({
   selector: 'app-storico-fatture-admin-aziendale',
-    imports: [
-        TabellaStoricoFatture,
-        CurrencyPipe,
-        FormsModule,
-        TemplateTitoloSottotitolo,
-        SceltaTendina,
-        BannerErrore
-    ],
+  imports: [
+    TabellaStoricoFatture,
+    CurrencyPipe,
+    FormsModule,
+    TemplateTitoloSottotitolo,
+    SceltaTendina,
+    BannerErrore
+  ],
   templateUrl: './storico-fatture-admin-aziendale.html',
   styleUrl: './storico-fatture-admin-aziendale.css',
 })
-export class StoricoFattureAdminAziendale implements OnInit{
+export class StoricoFattureAdminAziendale implements OnInit {
 
-  fattureEmesse: FatturaDTO[]|null = null ;
+  fattureEmesse: FatturaDTO[] | null = null;
   totaleDaPagare = 0;
   anniDisponibili: any[] = [];
 
   filtroAnno: any = null;
   filtroStato: any = null;
 
-  placeholder='';
+  placeholder = '';
 
-  erroreBanner="";
-  successoBanner="";
+  erroreBanner = "";
+  successoBanner = "";
 
   constructor(private storicoFattureService: StoricoFattureServiceAdminAziendale,
               private route: ActivatedRoute,
-              private router: Router,) {}
+              private router: Router,) {
+  }
 
   ngOnInit() {
     this.getFattureEmesse();
@@ -49,29 +54,31 @@ export class StoricoFattureAdminAziendale implements OnInit{
   getFattureEmesse() {
     this.storicoFattureService.getFattureEmesse().subscribe({
       next: data => {
-        if(data) {
+        if (data) {
           this.fattureEmesse = data;
 
           this.totaleDaPagare = 0;
 
-          for(const fattura of this.fattureEmesse) {
-            if(!fattura.fatturaPagata) this.totaleDaPagare += fattura.costo;
+          for (const fattura of this.fattureEmesse) {
+            if (!fattura.fatturaPagata) this.totaleDaPagare += fattura.costo;
           }
 
         }
-      }, error: err => { this.gestisciErrore(err.error); }
+      }, error: err => {
+        this.gestisciErrore(err.error);
+      }
     })
   }
 
   get fattureFiltrate() {
-    if(!this.fattureEmesse) return null;
+    if (!this.fattureEmesse) return null;
     return this.fattureEmesse.filter(fattura => {
 
       const matchAnno = fattura.annoFattura.toString() === this.filtroAnno.toString();
 
       let matchStato = true;
-      if(this.filtroStato === "Da pagare") matchStato = !fattura.fatturaPagata;
-      if(this.filtroStato === "Pagate") matchStato = fattura.fatturaPagata;
+      if (this.filtroStato === "Da pagare") matchStato = !fattura.fatturaPagata;
+      if (this.filtroStato === "Pagate") matchStato = fattura.fatturaPagata;
 
       return matchAnno && matchStato;
     });
@@ -80,15 +87,18 @@ export class StoricoFattureAdminAziendale implements OnInit{
   getAnniDisponibili() {
     this.storicoFattureService.getAnniDisponibili().subscribe({
       next: data => {
-        if(data) {
-          if(data.length==0) {
-            this.placeholder= new Date().getFullYear().toString();
-            return }
+        if (data) {
+          if (data.length == 0) {
+            this.placeholder = new Date().getFullYear().toString();
+            return
+          }
           this.anniDisponibili = data.sort((a, b) => b - a);
 
           this.filtroAnno = this.anniDisponibili[0];
         }
-      }, error: err => { this.gestisciErrore(err.error); }
+      }, error: err => {
+        this.gestisciErrore(err.error);
+      }
     })
   }
 
@@ -96,7 +106,9 @@ export class StoricoFattureAdminAziendale implements OnInit{
     this.storicoFattureService.pagaFattura(numeroFattura).subscribe({
       next: data => {
         window.location.href = data;
-      }, error: err => { this.gestisciErrore(err.error); }
+      }, error: err => {
+        this.gestisciErrore(err.error);
+      }
     })
   }
 
@@ -114,7 +126,7 @@ export class StoricoFattureAdminAziendale implements OnInit{
   verificaEsitoPagamento() {
     this.route.queryParams.subscribe(params => {
 
-      if(params["success"] === 'true') {
+      if (params["success"] === 'true') {
         const numeroFattura = params["fattura"];
         this.segnalaFatturaPagata(numeroFattura);
         this.getFattureEmesse();

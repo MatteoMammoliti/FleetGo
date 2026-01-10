@@ -11,8 +11,8 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './richiesta-affiliazione.css',
 })
 export class RichiestaAffiliazione {
-  @Input() aziendaSelezionata:ContenitoreDatiAzienda={} as ContenitoreDatiAzienda;
-  @Output() inviaRichiesta=new EventEmitter();
+  @Input() aziendaSelezionata: ContenitoreDatiAzienda = {} as ContenitoreDatiAzienda;
+  @Output() inviaRichiesta = new EventEmitter();
 
 
   confermaRichiesta() {

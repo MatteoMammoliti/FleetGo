@@ -11,27 +11,31 @@ import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazion
 })
 
 export class DipendentiService {
-  private apiUrl = environment.apiUrl+'/dashboardAdminAziendale';
+  private apiUrl = environment.apiUrl + '/dashboardAdminAziendale';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public getDipendenti(): Observable<DipendenteDTO[]> {
-    return this.http.get<DipendenteDTO[]>(`${this.apiUrl}/getDipendenti`, { withCredentials: true });
+    return this.http.get<DipendenteDTO[]>(`${this.apiUrl}/getDipendenti`, {withCredentials: true});
   }
 
   public rimuoviDipendente(idUtente: number | undefined): Observable<any> {
-    return this.http.post(`${this.apiUrl}/rimuoviDipendente`, idUtente, { responseType: 'text', withCredentials: true});
+    return this.http.post(`${this.apiUrl}/rimuoviDipendente`, idUtente, {responseType: 'text', withCredentials: true});
   }
 
   public getRichiesteNoleggio(idDipendente: number | undefined): Observable<RichiestaNoleggioDTO[]> {
-    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getRichiesteNoleggio/${idDipendente}`, { withCredentials: true });
+    return this.http.get<RichiestaNoleggioDTO[]>(`${this.apiUrl}/getRichiesteNoleggio/${idDipendente}`, {withCredentials: true});
   }
 
   public getRichiesteAffiliazione(): Observable<RichiestaAffiliazioneAziendaDTO[]> {
-    return this.http.get<RichiestaAffiliazioneAziendaDTO[]>(`${this.apiUrl}/getRichiesteAffiliazione`, { withCredentials: true });
+    return this.http.get<RichiestaAffiliazioneAziendaDTO[]>(`${this.apiUrl}/getRichiesteAffiliazione`, {withCredentials: true});
   }
 
   public rispondiRichiesta(idDipendente: number, risposta: boolean): Observable<string> {
-    return this.http.post(`${this.apiUrl}/rispondiAffiliazione/${idDipendente}`, risposta, { responseType: 'text', withCredentials: true});
+    return this.http.post(`${this.apiUrl}/rispondiAffiliazione/${idDipendente}`, risposta, {
+      responseType: 'text',
+      withCredentials: true
+    });
   }
 }
