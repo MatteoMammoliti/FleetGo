@@ -6,9 +6,23 @@
 
 <app-vantaggi id="vantaggi"></app-vantaggi>
 
-<app-form-contatto id="contatti"
+<app-form-contatto
   [titolo]="'Contattaci'"
-  [sottotitolo]="'Prenota un appuntamento con noi ed inizia a semplificare le trasferte dei tuoi dipendenti'"
-  [modalita]="'PUBLIC'" [invioInCorso]="invioInCorso"
-  (inviaForm)="invia($event)">
+  [sottotitolo]="'Siamo qui per rispondere a tutte le tue domande.'"
+  [modalita]="'PUBLIC'"
+  
+  [invioInCorso]="invioInCorso"
+  [messaggioInviato]="messaggioInviato"
+  [erroreInvio]="erroreInvio"
+  
+  (inviaForm)="gestisciInvioMessaggio($event)" 
+  (resetStato)="resetStatoForm()">
 </app-form-contatto>
+
+
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if (successoBanner) {
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}

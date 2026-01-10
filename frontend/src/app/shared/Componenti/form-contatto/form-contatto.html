@@ -1,7 +1,11 @@
 <section class="py-24 bg-slate-50 overflow-hidden relative">
+  
   <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-blue-50 to-transparent pointer-events-none"></div>
+
   <div class="container mx-auto px-6 md:px-12 relative z-10">
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
       <div class="text-center lg:text-left animate-fade-in-right">
         
         <span class="text-azzurro font-bold tracking-widest uppercase text-sm mb-4 block">
@@ -25,65 +29,96 @@
             <div class="text-center py-10 animate-fade-in">
 
               <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm animate-jump-in">
-                <i class="bi-check-lg"></i>
+                <i class="bi bi-check-lg"></i>
               </div>
 
-              @if(modalita === 'FLEETGO') {
-                <h3 class="text-2xl font-bold text-blu mb-2">Messaggio Inviato!</h3>
-                <p class="text-slate-500 mb-8 font-medium">Riceverai presto un'email di riepilogo. Ti risponderemo il prima possibile.</p>
-                <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:text-azzurro-scuro transition-colors hover:underline">
-                  Invia un altro messaggio
-                </button>
-              } @else {
-                <h3 class="text-2xl font-bold text-blu mb-2">Messaggio Inviato!</h3>
-                <p class="text-slate-500 mb-8 font-medium">Ti risponderemo il prima possibile.</p>
-                <button (click)="messaggioInviato = false" class="text-azzurro font-bold hover:text-azzurro-scuro transition-colors hover:underline">
-                  Invia un altro messaggio
-                </button>
-              }
+              <h3 class="text-2xl font-bold text-blu mb-2">Messaggio Inviato!</h3>
+              
+              <p class="text-slate-500 mb-8 font-medium">
+                @if(modalita === 'FLEETGO') {
+                   Riceverai presto un'email di riepilogo. Ti risponderemo il prima possibile.
+                } @else {
+                   Ti risponderemo il prima possibile.
+                }
+              </p>
+              
+              <button (click)="resetForm()" class="text-azzurro font-bold hover:text-azzurro-scuro transition-colors hover:underline">
+                Invia un altro messaggio
+              </button>
             </div>
 
           } @else {
 
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
 
               @if (modalita === 'PUBLIC') {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div class="space-y-2">
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Nome</label>
-                    <input formControlName="nomeMittente" type="text"
-                           class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-azzurro focus:ring-0 transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                           placeholder="Mario">
+                  
+                  <div>
+                    <app-input-checked 
+                        titolo="Nome"
+                        formControlName="nomeMittente"
+                        [haErrore]="isCampoInvalido('nomeMittente')"
+                        [messaggioErrore]="getMessaggioErrore('nomeMittente')"
+                        placeholder="Mario"
+                        ngDefaultControl>
+                    </app-input-checked>
                   </div>
 
-                  <div class="space-y-2">
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Cognome</label>
-                    <input formControlName="cognomeMittente" type="text"
-                           class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-azzurro focus:ring-0 transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                           placeholder="Rossi">
+                  <div>
+                    <app-input-checked 
+                        titolo="Cognome"
+                        formControlName="cognomeMittente"
+                        [haErrore]="isCampoInvalido('cognomeMittente')"
+                        [messaggioErrore]="getMessaggioErrore('cognomeMittente')"
+                        placeholder="Rossi"
+                        ngDefaultControl>
+                    </app-input-checked>
                   </div>
 
-                  <div class="space-y-2 md:col-span-2">
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
-                    <input formControlName="emailMittente" type="email"
-                           class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-azzurro focus:ring-0 transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                           placeholder="email@esempio.com">
+                  <div class="md:col-span-2">
+                    <app-input-checked 
+                        titolo="Email"
+                        type="email"
+                        formControlName="emailMittente"
+                        [haErrore]="isCampoInvalido('emailMittente')"
+                        [messaggioErrore]="getMessaggioErrore('emailMittente')"
+                        placeholder="email@esempio.com"
+                        ngDefaultControl>
+                    </app-input-checked>
                   </div>
                 </div>
               }
 
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Oggetto</label>
-                <input formControlName="oggettoMessaggio" type="text"
-                       class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-azzurro focus:ring-0 transition-all outline-none font-medium text-slate-700 placeholder-slate-400"
-                       placeholder="Es. Richiesta informazioni">
+              <div>
+                <app-input-checked 
+                    titolo="Oggetto"
+                    formControlName="oggettoMessaggio"
+                    [haErrore]="isCampoInvalido('oggettoMessaggio')"
+                    [messaggioErrore]="getMessaggioErrore('oggettoMessaggio')"
+                    placeholder="Es. Richiesta informazioni"
+                    ngDefaultControl>
+                </app-input-checked>
               </div>
 
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Messaggio</label>
+              <div class="space-y-1">
+                <label class="text-[11px] font-bold ml-1 mb-0.5 uppercase tracking-wide transition-colors"
+                       [ngClass]="isCampoInvalido('corpoMessaggio') ? 'text-red-600' : 'text-slate-700'">
+                  Messaggio
+                </label>
+                
                 <textarea formControlName="corpoMessaggio" rows="5"
-                          class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-azzurro focus:ring-0 transition-all outline-none font-medium text-slate-700 placeholder-slate-400 resize-none"
+                          class="w-full px-4 py-3 rounded-xl border outline-none transition-all resize-none"
+                          [ngClass]="isCampoInvalido('corpoMessaggio') 
+                            ? 'border-red-500 bg-red-50 focus:ring-4 focus:ring-red-200' 
+                            : 'border-gray-200 bg-gray-50 focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20'"
                           placeholder="Scrivi qui la tua richiesta..."></textarea>
+                
+                @if (isCampoInvalido('corpoMessaggio')) {
+                  <span class="text-red-500 text-xs font-bold ml-1 animate-fade-in">
+                    {{ getMessaggioErrore('corpoMessaggio') }}
+                  </span>
+                }
               </div>
 
               @if (erroreInvio) {
@@ -94,14 +129,14 @@
               }
 
               <button type="submit"
-                      [disabled]="form.invalid || invioInCorso"
-                      class="w-full py-4 bg-azzurro text-white font-bold rounded-2xl hover:bg-azzurro-scuro transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-3 shadow-lg shadow-azzurro/30 hover:shadow-azzurro/50 hover:-translate-y-1 duration-300">
+                      [disabled]="invioInCorso"
+                      class="w-full py-4 bg-azzurro text-white font-bold rounded-2xl hover:bg-azzurro-scuro transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-3 shadow-lg shadow-azzurro/30 hover:shadow-azzurro/50 hover:-translate-y-1 duration-300 mt-2">
                 @if (invioInCorso) {
                   <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>Invio in corso...</span>
                 } @else {
                   <span>Invia Messaggio</span>
-                  <i class="bi-send-fill"></i>
+                  <i class="bi bi-send-fill"></i>
                 }
               </button>
 

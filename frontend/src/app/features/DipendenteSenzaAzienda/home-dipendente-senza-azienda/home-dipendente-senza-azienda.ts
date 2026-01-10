@@ -87,11 +87,16 @@ export class HomeDipendenteSenzaAzienda {
   }
 
   selezionaAzienda(azienda: ContenitoreDatiAzienda) {
-    this.aziendaSelezionata = azienda;
-    if (window.innerWidth < 1024) {
-      setTimeout(() => {
-        document.getElementById('sidebar-richiesta')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+    if (this.aziendaSelezionata && this.aziendaSelezionata.idAzienda === azienda.idAzienda) {
+        this.aziendaSelezionata = {} as ContenitoreDatiAzienda;
+    } else {
+        this.aziendaSelezionata = azienda; 
+        
+        if (window.innerWidth < 1024) {
+          setTimeout(() => {
+            document.getElementById('sidebar-richiesta')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
     }
   }
 

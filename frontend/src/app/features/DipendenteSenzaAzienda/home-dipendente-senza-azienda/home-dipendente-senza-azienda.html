@@ -63,10 +63,15 @@
           </div>
 
           @if (aziendaSelezionata && aziendaSelezionata.idAzienda) {
-            <div id="pannello-richiesta" class="animate-fade-in-down animate-duration-500 animate-ease-out z-20 scroll-mt-24 mb-6">
+            <div id="pannello-richiesta" class="animate-fade-in-down animate-duration-300 animate-ease-out z-20 scroll-mt-24 mb-6 origin-top">
 
               <div class="bg-gradient-to-br from-blue-50 to-white p-1 rounded-[2.5rem] shadow-xl shadow-blue-100/50 border border-blue-100">
                 <div class="bg-white rounded-[2.2rem] overflow-hidden relative">
+
+                   <button (click)="selezionaAzienda(aziendaSelezionata)" 
+                           class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 hover:scale-110 flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm">
+                      <i class="bi-x-lg text-sm"></i>
+                   </button>
 
                    <div class="relative z-10">
                     <app-richiesta-affiliazione
