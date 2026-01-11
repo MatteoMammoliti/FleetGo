@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CardOfferta} from '@features/SezioneFleetGo/Componenti/card/card-offerta/card-offerta';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {OfferteAttiveService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/offerte-attive-service';
 import {
   ModaleAggiuntaOfferta

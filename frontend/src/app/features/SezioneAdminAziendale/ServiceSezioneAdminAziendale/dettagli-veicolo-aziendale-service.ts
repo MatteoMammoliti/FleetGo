@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 
 @Injectable({

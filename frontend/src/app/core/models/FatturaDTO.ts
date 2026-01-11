@@ -1,5 +1,5 @@
-import {AziendaDTO} from '@core/models/aziendaDTO';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {AziendaDTO} from '@core/models/AziendaDTO';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 
 export interface FatturaDTO {
   numeroFattura: number;

@@ -2,8 +2,8 @@ import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core'
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
-import {AdminAziendaleDTO} from '@core/models/adminAziendaleDTO.models';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AdminAziendaleDTO} from '@core/models/AdminAziendaleDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 

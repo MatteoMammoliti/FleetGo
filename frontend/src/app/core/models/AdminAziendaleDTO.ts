@@ -1,5 +1,5 @@
-import {UtenteDTO} from '@core/models/utenteDTO.model';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {UtenteDTO} from '@core/models/UtenteDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 
 export interface AdminAziendaleDTO extends UtenteDTO {
   idAziendaGestita?: number;

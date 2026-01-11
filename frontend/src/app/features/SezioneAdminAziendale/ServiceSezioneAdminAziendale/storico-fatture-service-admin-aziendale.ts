@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '@env/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
+import {FatturaDTO} from '@core/models/FatturaDTO';
 
 @Injectable({
   providedIn: 'root'

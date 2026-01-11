@@ -1,5 +1,5 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {Observable} from 'rxjs';
 import {Injectable, signal} from '@angular/core';
 import {ContenitoreDatiModificaPasswordDTO} from '@core/models/ContenitoreDatiModificaPasswordDTO';

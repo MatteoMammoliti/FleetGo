@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {environment} from '@env/environment';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 
 @Injectable({
   providedIn: 'root',

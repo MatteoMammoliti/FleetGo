@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
+import {FatturaDTO} from '@core/models/FatturaDTO';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {BottoneChiaro} from '@shared/Componenti/Bottoni/bottone-chiaro/bottone-chiaro';

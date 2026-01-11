@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {GoogleMapsService} from '@core/services/google-maps-service';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {
   DettagliVeicoloAziendaleService
 } from '../../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';

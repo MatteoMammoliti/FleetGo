@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '@env/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 
 @Injectable({
   providedIn: 'root'

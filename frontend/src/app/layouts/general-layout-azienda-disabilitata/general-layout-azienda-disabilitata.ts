@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Footer} from "@shared/footer/footer";
+import {Footer} from "@shared/Footer/footer";
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {Sidebar} from "@shared/Navigazione/sidebar/sidebar";
 import {AuthService} from '@core/auth/auth-service';

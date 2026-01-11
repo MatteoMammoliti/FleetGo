@@ -6,7 +6,7 @@ import {
   FormAggiungiAdminAzienda
 } from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-admin-azienda/form-aggiungi-admin-azienda';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
 

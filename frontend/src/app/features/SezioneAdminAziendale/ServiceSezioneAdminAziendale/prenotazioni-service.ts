@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {RisoluzioneConfilittiNoleggio} from '@core/models/RisoluzioneConfilittiNoleggio';
 
 @Injectable({

@@ -3,7 +3,7 @@ import {DashboardService} from '@features/SezioneAdminAziendale/ServiceSezioneAd
 import {
   CaroselloOfferte
 } from '@features/SezioneAdminAziendale/Componenti/caroselli/carosello-offerte/carosello-offerte';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {
   CaroselloRichiesteMiste
 } from '@features/SezioneAdminAziendale/Componenti/caroselli/carosello-richieste-miste/carosello-richieste-miste';
@@ -14,7 +14,7 @@ import {
 import {
   ModaleObbligoImpostazioneSede
 } from '@features/SezioneAdminAziendale/Componenti/modali/modale-obbligo-impostazione-sede/modale-obbligo-impostazione-sede';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
 import {
   GraficoTortaFlotta

@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {StoricoFattureService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/storico-fatture-service';
 import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/aziende-affiliate-service';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {FatturaDTO} from '@core/models/FatturaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {
   CardStatisticheDashboardFleet
 } from '@shared/Componenti/Card/card-statistiche-dashboard-fleet/card-statistiche-dashboard-fleet';

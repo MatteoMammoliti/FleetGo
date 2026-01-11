@@ -5,7 +5,7 @@ import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatistic
 import {environment} from '@env/environment';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 
 
 @Injectable({

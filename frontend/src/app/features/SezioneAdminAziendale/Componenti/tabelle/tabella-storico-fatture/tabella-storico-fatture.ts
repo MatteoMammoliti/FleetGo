@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
+import {FatturaDTO} from '@core/models/FatturaDTO';
 import {CurrencyPipe} from '@angular/common';
 import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
 import {BottoneChiaro} from '@shared/Componenti/Bottoni/bottone-chiaro/bottone-chiaro';

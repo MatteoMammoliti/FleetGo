@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {TemplateCardConRiga} from '@shared/Componenti/Card/template-card-con-riga/template-card-con-riga';
 
 @Component({

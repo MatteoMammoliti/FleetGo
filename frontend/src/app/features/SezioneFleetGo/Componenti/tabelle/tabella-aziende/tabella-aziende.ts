@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {CommonModule} from '@angular/common';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';

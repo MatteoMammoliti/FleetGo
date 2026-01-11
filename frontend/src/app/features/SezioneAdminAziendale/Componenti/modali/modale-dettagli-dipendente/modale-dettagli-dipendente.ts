@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {DatePipe, DecimalPipe, NgClass} from '@angular/common';
 import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
 import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';

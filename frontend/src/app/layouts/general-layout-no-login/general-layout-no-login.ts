@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
-import {Footer} from '@shared/footer/footer';
+import {Footer} from '@shared/Footer/footer';
 import {NavbarNoLog} from '@shared/Navigazione/navbar-no-log/navbar-no-log';
 
 

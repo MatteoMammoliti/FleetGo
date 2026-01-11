@@ -1,5 +1,5 @@
-import {UtenteDTO} from '@core/models/utenteDTO.model';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {UtenteDTO} from '@core/models/UtenteDTO';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
 
 
 export interface RichiestaNoleggioDTO {

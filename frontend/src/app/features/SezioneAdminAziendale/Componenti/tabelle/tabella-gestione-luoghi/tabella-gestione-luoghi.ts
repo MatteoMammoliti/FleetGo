@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {ANIMAZIONE_TABELLA} from '@shared/Animazioni/animazioneTabella';
 
 @Component({

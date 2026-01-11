@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '@env/environment';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatisticheNumeriche';
 
 @Injectable({

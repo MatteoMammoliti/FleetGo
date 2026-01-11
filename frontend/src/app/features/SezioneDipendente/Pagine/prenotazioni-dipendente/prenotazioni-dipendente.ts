@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {PrenotazioneCard} from '@features/SezioneDipendente/componenti/Card/prenotazione-card/prenotazione-card';
 import {PrenotazioniService} from '@features/SezioneDipendente/ServiceSezioneDipendente/prenotazioni-service';
 import {Router} from '@angular/router';

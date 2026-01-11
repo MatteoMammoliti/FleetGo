@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {FormsModule} from '@angular/forms';
 import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
 import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';

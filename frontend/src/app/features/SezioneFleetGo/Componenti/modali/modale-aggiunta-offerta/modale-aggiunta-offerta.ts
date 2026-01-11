@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {FormsModule} from '@angular/forms';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';

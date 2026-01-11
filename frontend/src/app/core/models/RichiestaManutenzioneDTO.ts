@@ -1,4 +1,4 @@
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
 
 export interface RichiestaManutenzioneDTO {
   idManutenzione: number;

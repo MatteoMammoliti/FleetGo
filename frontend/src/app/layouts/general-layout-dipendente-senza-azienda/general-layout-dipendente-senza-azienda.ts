@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Sidebar} from '@shared/Navigazione/sidebar/sidebar';
 import {Router, RouterOutlet} from '@angular/router';
-import {Footer} from '@shared/footer/footer';
+import {Footer} from '@shared/Footer/footer';
 import {AuthService} from '@core/auth/auth-service';
 import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 

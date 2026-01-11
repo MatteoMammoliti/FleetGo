@@ -5,7 +5,7 @@ import {
 } from '@features/SezioneAdminAziendale/Componenti/form-modifica-dati-admin-aziendale/form-modifica-dati-admin-aziendale';
 import {ModificaDatiService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/modifica-dati-service';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {
   MappaGestioneLuoghi
 } from '@features/SezioneAdminAziendale/Componenti/modali/mappa-gestione-luoghi/mappa-gestione-luoghi';

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {CommonModule} from '@angular/common';
 import {IconaStato} from '@shared/Componenti/Banner/icona-stato/icona-stato';
 

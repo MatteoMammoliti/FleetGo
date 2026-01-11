@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {CardDipendente} from '@features/SezioneAdminAziendale/Componenti/card/card-dipendente/card-dipendente';
 import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';

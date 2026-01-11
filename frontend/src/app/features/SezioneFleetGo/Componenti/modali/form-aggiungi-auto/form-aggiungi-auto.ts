@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
 import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';

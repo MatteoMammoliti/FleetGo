@@ -1,4 +1,4 @@
-import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
+import {VeicoloPrenotazioneDTO} from '@core/models/VeicoloPrenotazioneDTO';
 
 export interface ContenitoreFormNuovaRichiestaNoleggio {
   veicolo: VeicoloPrenotazioneDTO,

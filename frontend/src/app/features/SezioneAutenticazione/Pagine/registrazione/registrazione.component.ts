@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from '@core/auth/auth-service';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {Router, RouterLink} from '@angular/router';
 import {validazione} from '@core/utils/validazione';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
+import {VeicoloPrenotazioneDTO} from '@core/models/VeicoloPrenotazioneDTO';
 import {CurrencyPipe, NgClass} from '@angular/common';
 
 @Component({

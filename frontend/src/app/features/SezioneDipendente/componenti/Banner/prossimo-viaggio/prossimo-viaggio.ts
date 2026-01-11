@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {DatePipe, NgClass} from '@angular/common';
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 

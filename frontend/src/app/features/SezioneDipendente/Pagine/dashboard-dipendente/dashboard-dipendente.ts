@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {BannerHome} from '@features/SezioneDipendente/componenti/Banner/banner-home/banner-home';
 import {ProssimoViaggio} from '@features/SezioneDipendente/componenti/Banner/prossimo-viaggio/prossimo-viaggio';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {HomeService} from '@features/SezioneDipendente/ServiceSezioneDipendente/home-service';
 import {StatisticheDipendenteDTO} from '@core/models/StatisticheDipendenteDTO';
 import {StatisticheDipendente} from '@features/SezioneDipendente/componenti/Banner/statistiche-dipendente/statistiche-dipendente';
 import {Router} from '@angular/router';
 import {MappaHub} from '@features/SezioneDipendente/componenti/Banner/mappa-hub/mappa-hub';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {SupportoFleetgo} from '@features/SezioneDipendente/componenti/Banner/supporto-fleetgo/supporto-fleetgo';
 import {DatePipe} from '@angular/common';
 import {ModaleRichiestaAssistenza} from '@features/SezioneDipendente/componenti/Modali/modale-richiesta-assistenza/modale-richiesta-assistenza';

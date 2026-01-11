@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {validazione} from '@core/utils/validazione';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 
 @Component({

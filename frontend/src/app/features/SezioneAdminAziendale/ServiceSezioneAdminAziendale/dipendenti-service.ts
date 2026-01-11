@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {DipendenteDTO} from '@core/models/dipendenteDTO.models';
+import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {environment} from '@env/environment';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
-import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
+import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO';
 
 @Injectable({
   providedIn: 'root',

@@ -5,7 +5,7 @@ import {
 import {
   TabellaPrenotazioni
 } from '@features/SezioneAdminAziendale/Componenti/tabelle/tabella-prenotazioni/tabella-prenotazioni';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {PrenotazioniService} from '@features/SezioneAdminAziendale/ServiceSezioneAdminAziendale/prenotazioni-service';
 import {
   BannerNoleggiDaApprovare

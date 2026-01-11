@@ -17,7 +17,7 @@ import {
 import {
   ModaleGenerazioneFattura
 } from '@features/SezioneFleetGo/Componenti/modali/modale-generazione-fattura/modale-generazione-fattura';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
 import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
 

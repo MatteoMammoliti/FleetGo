@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {VeicoloCard} from '@features/SezioneDipendente/componenti/Card/veicolo-card/veicolo-card';
-import {VeicoloPrenotazioneDTO} from '@core/models/veicoloPrenotazioneDTO';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {VeicoloPrenotazioneDTO} from '@core/models/VeicoloPrenotazioneDTO';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {FormsModule} from '@angular/forms';
 import {CreaPrenotazioneService} from '@features/SezioneDipendente/ServiceSezioneDipendente/crea-prenotazione-service';
 import {DatiFiltriNuovaPrenotazione} from '@core/models/DatiFiltriNuovaPrenotazione';
@@ -9,7 +9,7 @@ import {ContenitoreFormNuovaRichiestaNoleggio} from '@core/models/ContenitoreFor
 import {
   RichiestaNoleggioForm
 } from '@features/SezioneDipendente/componenti/Modali/richiesta-noleggio-form/richiesta-noleggio-form';
-import {RichiestaNoleggioDTO} from '@core/models/richiestaNoleggioDTO.models';
+import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota/messaggio-card-vuota';

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
-import {FatturaDTO} from '@core/models/FatturaDTO.models';
+import {FatturaDTO} from '@core/models/FatturaDTO';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({

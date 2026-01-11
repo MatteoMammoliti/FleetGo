@@ -1,4 +1,4 @@
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 
 export interface VeicoloDTO {
   idVeicolo?: number;

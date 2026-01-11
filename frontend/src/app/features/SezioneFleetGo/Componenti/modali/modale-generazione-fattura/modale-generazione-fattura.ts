@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import {FatturaDaGenerareDTO} from '@core/models/FatturaDaGenerareDTO';
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';

@@ -1,4 +1,4 @@
-import {OffertaDTO} from '@core/models/offertaDTO.models';
+import {OffertaDTO} from '@core/models/OffertaDTO';
 
 export interface FatturaDaGenerareDTO {
   idAzienda: number;

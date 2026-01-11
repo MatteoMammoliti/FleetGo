@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
 

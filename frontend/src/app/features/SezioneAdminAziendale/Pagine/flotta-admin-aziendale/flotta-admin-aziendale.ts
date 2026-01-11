@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {FlottaAdminAziendaleService} from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
 import {ModaleGestisciVeicolo} from '@features/SezioneAdminAziendale/Componenti/modali/modale-gestisci-veicolo/modale-gestisci-veicolo';
 import {DettagliVeicoloAziendaleService} from '../../ServiceSezioneAdminAziendale/dettagli-veicolo-aziendale-service';
-import {LuogoDTO} from '@core/models/luogoDTO.models';
+import {LuogoDTO} from '@core/models/LuogoDTO';
 import {SceltaTendina} from '@shared/Componenti/Input/scelta-tendina/scelta-tendina';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
 import {ActivatedRoute, Router} from '@angular/router';

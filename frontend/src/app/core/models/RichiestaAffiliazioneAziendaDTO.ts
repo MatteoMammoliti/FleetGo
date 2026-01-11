@@ -1,4 +1,4 @@
-import {UtenteDTO} from '@core/models/utenteDTO.model';
+import {UtenteDTO} from '@core/models/UtenteDTO';
 
 export interface RichiestaAffiliazioneAziendaDTO {
   utente?: UtenteDTO,

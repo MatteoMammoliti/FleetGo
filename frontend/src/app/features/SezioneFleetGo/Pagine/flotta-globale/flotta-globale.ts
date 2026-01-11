@@ -3,9 +3,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TabellaAuto} from '@features/SezioneFleetGo/Componenti/tabelle/tabella-auto/tabella-auto';
 import {FormAggiungiAuto} from '@features/SezioneFleetGo/Componenti/modali/form-aggiungi-auto/form-aggiungi-auto';
 import {FlottaGlobaleService} from '@features/SezioneFleetGo/ServiceSezioneFleetGo/flotta-globale-service';
-import {VeicoloDTO} from '@core/models/veicoloDTO.model';
+import {VeicoloDTO} from '@core/models/VeicoloDTO';
 import {CommonModule} from '@angular/common';
-import {AziendaDTO} from '@core/models/aziendaDTO';
+import {AziendaDTO} from '@core/models/AziendaDTO';
 import {ModelloDTO} from '@core/models/ModelloDTO';
 import {
   FormAggiungiModello
