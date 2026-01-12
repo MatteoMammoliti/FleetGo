@@ -12,8 +12,7 @@ import {ContenitoreStatisticheNumeriche} from '@core/models/ContenitoreStatistic
 export class DashboardService {
   private apiUrl = environment.apiUrl + '/dashboardAdminAziendale';
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getOfferteAttive(): Observable<OffertaDTO[]> {
     return this.http.get<OffertaDTO[]>(`${this.apiUrl}/getOfferte`, {withCredentials: true})

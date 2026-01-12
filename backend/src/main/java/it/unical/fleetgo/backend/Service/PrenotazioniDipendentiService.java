@@ -92,6 +92,7 @@ public class PrenotazioniDipendentiService {
         LocalDateTime fine = LocalDateTime.parse(richiesta.getDataConsegna()+ "T" + richiesta.getOraFine());
         long minutiTotali = ChronoUnit.MINUTES.between(inizio, fine);
 
+        System.out.println(inizio + " " + fine + " " + minutiTotali);
         if (minutiTotali <= 0 || inizio.isBefore(LocalDateTime.now()) || fine.isBefore(LocalDateTime.now()) ) {
             throw new DatePrenotazioneNonValide();
         }

@@ -104,7 +104,7 @@ public class FleetGoService {
 
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
-            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura);
+            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura, null, true);
 
             if(f != null) {
                 return this.generatorePdfService.generaPdfFattura(

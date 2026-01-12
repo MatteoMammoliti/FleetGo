@@ -32,7 +32,6 @@ import {MessaggioCardVuota} from '@shared/Componenti/Banner/messaggio-card-vuota
   styleUrl: './flotta-admin-aziendale.css',
 })
 
-
 export class FlottaAdminAziendale implements OnInit {
 
   constructor(private flottaService: FlottaAdminAziendaleService,
@@ -77,7 +76,6 @@ export class FlottaAdminAziendale implements OnInit {
       }
     });
   }
-
 
   caricaVeicoli() {
     this.flottaService.richiediVeicoliAziendali().subscribe({
@@ -174,7 +172,6 @@ export class FlottaAdminAziendale implements OnInit {
     this.veicoloSelezionato = null;
   }
 
-
   caricaDettagliVeicolo(targa: string) {
     this.loading = true;
     this.dettagliService.richiediVeicolo(targa).subscribe({
@@ -193,7 +190,6 @@ export class FlottaAdminAziendale implements OnInit {
       }
     });
   }
-
 
   impostaLuogo(luogoScelto: LuogoDTO) {
 
@@ -227,7 +223,6 @@ export class FlottaAdminAziendale implements OnInit {
     }
   }
 
-
   gestisciErrore(messaggio: string) {
     this.successoBanner = '';
     this.erroreBanner = messaggio;
@@ -239,5 +234,4 @@ export class FlottaAdminAziendale implements OnInit {
     this.successoBanner = messaggio;
     setTimeout(() => this.successoBanner = '', 3000);
   }
-
 }

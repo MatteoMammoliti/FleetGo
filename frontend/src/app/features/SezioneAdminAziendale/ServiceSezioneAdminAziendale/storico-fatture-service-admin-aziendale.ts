@@ -33,7 +33,7 @@ export class StoricoFattureServiceAdminAziendale {
   }
 
   public contrassegnaFatturaPagata(idFattura: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/fatturaPagata/${idFattura}`, {}, {withCredentials: true})
+    return this.http.post(`${this.apiUrl}/fatturaPagata/${idFattura}`, {}, {withCredentials: true, responseType: 'text'})
   }
 
   public getAnniDisponibili(): Observable<number[]> {

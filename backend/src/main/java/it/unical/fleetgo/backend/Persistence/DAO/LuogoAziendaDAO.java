@@ -3,7 +3,6 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Exceptions.LuogoNonEliminabile;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.LuogoAzienda;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

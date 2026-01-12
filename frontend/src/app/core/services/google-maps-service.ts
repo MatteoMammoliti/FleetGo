@@ -4,6 +4,7 @@ import {environment} from '@env/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class GoogleMapsService {
   private apiKey = environment.googleMapsApiKey;
   private caricato = false;

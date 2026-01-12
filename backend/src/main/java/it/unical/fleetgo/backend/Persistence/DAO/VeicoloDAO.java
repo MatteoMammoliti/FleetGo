@@ -19,14 +19,14 @@ public class VeicoloDAO {
         this.connection = connection;
     }
 
-    public boolean aggiungiVeicolo(VeicoloDTO veicoloDTO) {
+    public void aggiungiVeicolo(VeicoloDTO veicoloDTO) {
         String query = "INSERT INTO veicolo(targa, modello_veicolo, tipo_distribuzione_veicolo) VALUES (?, ?, ?)";
 
         try(PreparedStatement ps = connection.prepareStatement(query))  {
             ps.setString(1, veicoloDTO.getTargaVeicolo());
             ps.setInt(2, veicoloDTO.getIdModello());
             ps.setString(3, veicoloDTO.getTipoDistribuzioneVeicolo());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e) {
 
             if(e.getSQLState().equals("23505")) {
@@ -37,7 +37,7 @@ public class VeicoloDAO {
         }
     }
 
-    public boolean eliminaVeicolo(String targaVeicolo) {
+    public void eliminaVeicolo(String targaVeicolo) {
 
         String controlloAssegmanento = "SELECT 1 FROM veicolo v JOIN gestione_veicolo_azienda g ON v.id_veicolo = g.id_veicolo WHERE v.targa = ?";
 
@@ -56,7 +56,7 @@ public class VeicoloDAO {
 
         try(PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, targaVeicolo);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -118,7 +118,6 @@ export class DashboardAzienda implements OnInit {
     }
   }
 
-
   caricaDatiGrafico() {
     this.dashboardService.getDatiGraficoTorta().subscribe({
       next: value => {
@@ -133,7 +132,6 @@ export class DashboardAzienda implements OnInit {
       }
     })
   }
-
 
   caricaOfferteAttive() {
     this.dashboardService.getOfferteAttive().subscribe({

@@ -52,13 +52,9 @@ export class CreaPrenotazione implements OnInit {
 
   caricamentoDati: boolean = true;
 
-  constructor(private service: CreaPrenotazioneService) {
-  }
+  constructor(private service: CreaPrenotazioneService) {}
 
-  ngOnInit() {
-    this.impostaDateDefault();
-    this.getListaLuoghi();
-  }
+  ngOnInit() { this.getListaLuoghi(); }
 
   getListaLuoghi() {
     this.service.richiediLuoghi().subscribe({
@@ -103,27 +99,6 @@ export class CreaPrenotazione implements OnInit {
     this.oraInizio = dati.oraInizio;
     this.calcolaCostoTotale();
     this.getRichiediVeicolo(this.dataInizio, this.dataFine, this.oraInizio, this.oraFine);
-  }
-
-  private impostaDateDefault() {
-    const oggi = new Date();
-    const domani = new Date(oggi);
-
-    domani.setDate(oggi.getDate() + 1);
-
-    const dataStringa = this.formattaData(domani);
-    this.dataInizio = dataStringa;
-    this.dataFine = dataStringa;
-
-    this.oraInizio = "09:00";
-    this.oraFine = "18:00";
-  }
-
-  private formattaData(date: Date): string {
-    const anno = date.getFullYear();
-    const mese = (date.getMonth() + 1).toString().padStart(2, '0');
-    const giorno = date.getDate().toString().padStart(2, '0');
-    return `${anno}-${mese}-${giorno}`;
   }
 
   clickCambioLuogo() {

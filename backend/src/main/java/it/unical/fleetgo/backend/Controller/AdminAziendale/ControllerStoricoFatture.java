@@ -37,8 +37,15 @@ public class ControllerStoricoFatture {
     }
 
     @GetMapping("/downloadFattura/{idFattura}")
-    public ResponseEntity<byte[]> downloadFattura(@PathVariable Integer idFattura) throws SQLException {
-        byte[] pdf = adminAziendaleService.downloadFattura(idFattura);
+    public ResponseEntity<byte[]> downloadFattura(@PathVariable Integer idFattura, HttpSession session) throws SQLException {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        byte[] pdf = adminAziendaleService.downloadFattura(idFattura, idAzienda);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
 
@@ -48,8 +55,15 @@ public class ControllerStoricoFatture {
     }
 
     @PostMapping("/pagaFattura/{idFattura}")
-    public ResponseEntity<String> pagaFattura(@PathVariable Integer idFattura) throws StripeException, SQLException {
-        String urlPagamento = adminAziendaleService.pagaFattura(idFattura);
+    public ResponseEntity<String> pagaFattura(@PathVariable Integer idFattura, HttpSession session) throws StripeException, SQLException {
+
+        Integer idAzienda = (Integer) session.getAttribute("idAzienda");
+
+        if(idAzienda == null) {
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        String urlPagamento = adminAziendaleService.pagaFattura(idFattura, idAzienda);
         return ResponseEntity.status(HttpStatus.OK).body(urlPagamento);
     }
 

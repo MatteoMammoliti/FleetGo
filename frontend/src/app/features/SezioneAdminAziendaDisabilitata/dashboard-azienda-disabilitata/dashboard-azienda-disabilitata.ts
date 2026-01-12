@@ -16,8 +16,7 @@ import {Router} from '@angular/router';
 
 export class DashboardAziendaDisabilitata implements OnInit {
   constructor(private dashboardService: DashboardService,
-              private router: Router) {
-  }
+              private router: Router) {}
 
   modaleRichiestaAppuntamentoVisibile = false;
   appuntamentoRichiesto = false;

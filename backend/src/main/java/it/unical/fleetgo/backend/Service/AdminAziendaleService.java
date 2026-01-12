@@ -266,10 +266,10 @@ public class AdminAziendaleService {
         }
     }
 
-    public byte[] downloadFattura(Integer numeroFattura) throws SQLException{
+    public byte[] downloadFattura(Integer numeroFattura, Integer idAzienda) throws SQLException{
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
-            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura);
+            Fattura f = fatturaDAO.getFatturaByNumeroFattura(numeroFattura, idAzienda, false);
 
             if(f != null) {
                 return this.generatorePdfService.generaPdfFattura(
@@ -367,13 +367,13 @@ public class AdminAziendaleService {
         }
     }
 
-    public String pagaFattura(Integer numeroFattura) throws SQLException, StripeException {
+    public String pagaFattura(Integer numeroFattura, Integer idAzienda) throws SQLException, StripeException {
         Stripe.apiKey = this.stripeApiKey;
 
         try(Connection connection = this.dataSource.getConnection()) {
             FatturaDAO fatturaDAO = new FatturaDAO(connection);
             FatturaDTO fattura = new FatturaDTO(
-                    fatturaDAO.getFatturaByNumeroFattura(numeroFattura),
+                    fatturaDAO.getFatturaByNumeroFattura(numeroFattura, idAzienda, false),
                     false,
                     false
             );

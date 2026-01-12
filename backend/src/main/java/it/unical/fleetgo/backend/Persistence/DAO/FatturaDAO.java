@@ -3,7 +3,6 @@ package it.unical.fleetgo.backend.Persistence.DAO;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Models.Proxy.FatturaProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.Fattura;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,11 +85,18 @@ public class FatturaDAO {
         }
     }
 
-    public Fattura getFatturaByNumeroFattura(Integer numeroFattura) {
-        String query = "SELECT * from fattura WHERE numero_fattura = ?";
+    public Fattura getFatturaByNumeroFattura(Integer numeroFattura, Integer idAzienda, boolean isFleetGo) {
+
+        String query;
+        if(isFleetGo) {
+            query = "SELECT * from fattura WHERE numero_fattura = ?";
+        } else {
+            query = "SELECT * from fattura WHERE numero_fattura = ? AND id_azienda = ?";
+        }
 
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, numeroFattura);
+            if(!isFleetGo) ps.setInt(2, idAzienda);
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){

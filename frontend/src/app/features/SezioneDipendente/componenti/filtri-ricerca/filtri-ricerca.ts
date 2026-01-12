@@ -21,17 +21,20 @@ export class FiltriRicerca implements OnInit {
   @Output() clickRicerca = new EventEmitter<DatiFiltriNuovaPrenotazione>()
 
   ngOnInit() {
-    const ora = new Date();
-    this.minDateRitiro = this.trasformaDataInStringa(ora);
-    this.minDateConsegna = this.trasformaDataInStringa(ora);
-
-    this.dataRitiroCompleta = this.trasformaDataInStringa(ora);
-
-    const domani = new Date();
-    domani.setDate(domani.getDate() + 1);
-    this.dataConsegnaCompleta = this.trasformaDataInStringa(domani);
-
+    this.impostaDateDefault();
     this.cerca();
+  }
+
+  private impostaDateDefault() {
+    const dataStart = new Date();
+
+    dataStart.setMinutes(dataStart.getMinutes() + 5);
+
+    const dataEnd = new Date(dataStart);
+    dataEnd.setDate(dataStart.getDate() + 1);
+
+    this.dataRitiroCompleta = this.trasformaDataInStringa(dataStart);
+    this.dataConsegnaCompleta = this.trasformaDataInStringa(dataEnd);
   }
 
   bloccaScrittura(event: any) {
@@ -40,7 +43,6 @@ export class FiltriRicerca implements OnInit {
 
   cerca() {
     if (!this.dataConsegnaCompleta || !this.dataRitiroCompleta) {
-      alert("Compila le date!");
       return;
     }
 

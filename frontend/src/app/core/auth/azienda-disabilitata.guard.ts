@@ -20,6 +20,5 @@ export const AziendaDisabilitataGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  console.warn("Azienda disabilitata, accesso alla dashboard non consentito");
   return router.createUrlTree(['/azienda-disabilitata']);
 };

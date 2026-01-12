@@ -137,7 +137,6 @@ export class ModificaDatiComponent implements OnInit {
     })
   }
 
-
   gestisciErrore(messaggio: string) {
     this.successoBanner = '';
     this.erroreBanner = messaggio;

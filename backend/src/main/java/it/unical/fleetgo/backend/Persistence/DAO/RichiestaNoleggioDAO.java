@@ -1,12 +1,9 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
-import it.unical.fleetgo.backend.Exceptions.PrenotazioneEsistente;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.StatisticheDipendenteDTO;
 import it.unical.fleetgo.backend.Models.Proxy.RichiestaNoleggioProxy;
 import it.unical.fleetgo.backend.Persistence.Entity.RichiestaNoleggio;
-import it.unical.fleetgo.backend.Persistence.Entity.Veicolo;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

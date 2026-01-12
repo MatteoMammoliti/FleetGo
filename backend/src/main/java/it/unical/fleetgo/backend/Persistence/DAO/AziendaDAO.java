@@ -1,12 +1,10 @@
 package it.unical.fleetgo.backend.Persistence.DAO;
 
-import it.unical.fleetgo.backend.Exceptions.EmailEsistente;
 import it.unical.fleetgo.backend.Exceptions.PIVAEsistente;
 import it.unical.fleetgo.backend.Models.DTO.AziendaDTO;
 import it.unical.fleetgo.backend.Models.DTO.ContenitoreDatiAzienda;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import org.jspecify.annotations.NonNull;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

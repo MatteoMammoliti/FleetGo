@@ -15,8 +15,7 @@ import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked
 export class LoginComponent {
 
   constructor(private authService: AuthService,
-              private router: Router,) {
-  }
+              private router: Router,) {}
 
   email = '';
   password = '';
