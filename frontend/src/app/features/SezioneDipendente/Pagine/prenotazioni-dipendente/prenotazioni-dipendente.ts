@@ -29,7 +29,7 @@ export class PrenotazioniDipendente implements OnInit {
   }
 
   prenotazioni: RichiestaNoleggioDTO[] = [];
-  daVisualizzare: RichiestaNoleggioDTO[] = []
+  
   filtroAttivo: string = "Tutte"
 
   successoBanner: string = '';
@@ -46,7 +46,6 @@ export class PrenotazioniDipendente implements OnInit {
     this.service.richiediPrenotazioniDipendente().subscribe({
       next: (risposta: RichiestaNoleggioDTO[]) => {
         this.prenotazioni = risposta
-        this.daVisualizzare = risposta
         this.caricamentoDati = false;
       },
       error: (err) => {

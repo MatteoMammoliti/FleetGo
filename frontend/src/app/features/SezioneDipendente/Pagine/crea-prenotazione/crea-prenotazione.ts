@@ -56,6 +56,10 @@ export class CreaPrenotazione implements OnInit {
 
   ngOnInit() { this.getListaLuoghi(); }
 
+  get veicoliFiltrati() {
+    return this.listaVeicoli;
+  }
+
   getListaLuoghi() {
     this.service.richiediLuoghi().subscribe({
       next: (risposta: LuogoDTO[]) => {
