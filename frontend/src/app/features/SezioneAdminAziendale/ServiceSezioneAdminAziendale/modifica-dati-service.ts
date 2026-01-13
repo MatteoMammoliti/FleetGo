@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {LuogoDTO} from '@core/models/LuogoDTO';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {LuogoDTO} from '@core/models/LuogoDTO';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';
 

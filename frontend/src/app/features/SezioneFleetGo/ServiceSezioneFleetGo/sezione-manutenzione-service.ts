@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {Observable} from 'rxjs';
 import {ContenitoreStatisticheNumericheManutezioni} from '@core/models/ContenitoreStatisticheNumericheManutezioni';
 import {RichiestaManutenzioneDTO} from '@core/models/RichiestaManutenzioneDTO';

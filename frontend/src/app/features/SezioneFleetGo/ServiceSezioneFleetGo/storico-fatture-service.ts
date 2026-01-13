@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {Observable} from 'rxjs';
 import {FatturaDTO} from '@core/models/FatturaDTO';
 import {HttpClient} from '@angular/common/http';

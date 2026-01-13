@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {HttpClient} from '@angular/common/http';
 import {ContenitoreDatiAzienda} from '@core/models/ContenitoreDatiAzienda';
 import {Observable} from 'rxjs';

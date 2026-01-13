@@ -4,7 +4,7 @@ import {AdminAziendaleDTO} from '@core/models/AdminAziendaleDTO';
 import {AziendaDTO} from '@core/models/AziendaDTO';
 import {ContenitoreDatiRegistrazioneAzienda} from '@core/models/ContenitoreDatiRegistrazioneAzienda';
 import {Observable} from 'rxjs';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DipendenteDTO} from '@core/models/DipendenteDTO';
-import {environment} from '@env/environment';
+import {environment} from '../../../../../environment';
 import {RichiestaNoleggioDTO} from '@core/models/RichiestaNoleggioDTO';
 import {RichiestaAffiliazioneAziendaDTO} from '@core/models/RichiestaAffiliazioneAziendaDTO';
 

@@ -3,7 +3,7 @@ import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {Observable} from 'rxjs';
 import {Injectable, signal} from '@angular/core';
 import {ContenitoreDatiModificaPasswordDTO} from '@core/models/ContenitoreDatiModificaPasswordDTO';
-import {environment} from '@env/environment';
+import {environment} from '../../../../environment';
 
 export interface LoginResponse {
   redirectUrl: string;
