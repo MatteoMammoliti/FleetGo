@@ -86,10 +86,11 @@ public class RichiestaNoleggioDAO {
         }
     }
 
-    public boolean rimuoviRichiestaNoleggio(Integer idRichiesta) {
-        String query = "DELETE FROM richiesta_noleggio WHERE id_richiesta=?";
+    public boolean rimuoviRichiestaNoleggio(Integer idRichiesta, Integer idDipendente) {
+        String query = "DELETE FROM richiesta_noleggio WHERE id_richiesta=? AND id_dipendente=?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setInt(1, idRichiesta);
+            st.setInt(2, idDipendente);
             return st.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);

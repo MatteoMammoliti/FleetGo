@@ -77,10 +77,10 @@ public class PrenotazioniDipendentiService {
         }
     }
 
-    public void eliminaRichiesta(Integer idRichiestaNoleggio) throws SQLException {
+    public void eliminaRichiesta(Integer idRichiestaNoleggio, Integer idDipendente) throws SQLException {
         try(Connection connection=dataSource.getConnection()){
             RichiestaNoleggioDAO dao = new RichiestaNoleggioDAO(connection);
-            if(dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio)){
+            if(dao.rimuoviRichiestaNoleggio(idRichiestaNoleggio, idDipendente)){
                 return;
             }
             throw new PrenotazioneNonEsistente();

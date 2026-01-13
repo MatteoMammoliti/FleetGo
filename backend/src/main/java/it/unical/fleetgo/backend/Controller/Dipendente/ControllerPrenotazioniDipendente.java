@@ -42,7 +42,7 @@ public class ControllerPrenotazioniDipendente {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        this.prenotazioniDipendentiService.eliminaRichiesta(idRichiesta);
+        this.prenotazioniDipendentiService.eliminaRichiesta(idRichiesta, idDipendente);
         return ResponseEntity.ok("Prenotazione eliminata con successo");
     }
 }
