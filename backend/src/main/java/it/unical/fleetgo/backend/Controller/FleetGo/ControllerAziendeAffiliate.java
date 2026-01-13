@@ -40,12 +40,22 @@ public class ControllerAziendeAffiliate {
 
     @PostMapping("/riabilitaAzienda")
     public ResponseEntity<String> riabilitaAzienda(@RequestBody Integer idAzienda) throws SQLException {
+
+        if(idAzienda == null || idAzienda <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         aziendaService.riabilitaAzienda(idAzienda);
         return ResponseEntity.status(HttpStatus.OK).body("Azienda riabilitata con successo");
     }
 
     @PostMapping("/disabilitaAzienda")
     public ResponseEntity<String> eliminaAzienda(@RequestBody Integer idAzienda) throws SQLException {
+
+        if(idAzienda == null || idAzienda <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         aziendaService.disabilitaAzienda(idAzienda);
         return ResponseEntity.status(HttpStatus.OK).body("Azienda eliminata con successo");
     }

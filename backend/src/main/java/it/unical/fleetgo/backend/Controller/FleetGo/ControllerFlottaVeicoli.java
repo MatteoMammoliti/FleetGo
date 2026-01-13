@@ -41,6 +41,11 @@ public class ControllerFlottaVeicoli {
     @GetMapping(value = "/informazioneVeicolo/{targa}")
     public ResponseEntity<VeicoloDTO> getInformazioneVeicolo(@PathVariable String targa) throws SQLException {
         VeicoloDTO veicolo = veicoloService.getInformazioniVeicolo(targa);
+
+        if (veicolo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity.ok(veicolo);
     }
 

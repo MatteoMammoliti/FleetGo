@@ -53,6 +53,12 @@ public class ControllerFlottaAziendale {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
+        if (richiesta.getIdVeicolo() == null ||
+                richiesta.getTipoManutenzione() == null ||
+                richiesta.getTipoManutenzione().trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dati manutenzione mancanti");
+        }
+
         richiesta.setIdAdminAzienda(idAdmin);
         adminAziendaleService.inserisciRichiestaDiManutenzione(richiesta);
         return ResponseEntity.ok("Richiesta di manutenzione inviata con successo");

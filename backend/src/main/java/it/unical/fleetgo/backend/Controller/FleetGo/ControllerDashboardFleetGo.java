@@ -37,7 +37,14 @@ public class ControllerDashboardFleetGo {
 
     @GetMapping("/dettagliRichiestaManutenzone/{id}")
     public ResponseEntity<RichiestaManutenzioneDTO> getDettagliRichiestaManutenzione(@PathVariable Integer id) throws SQLException {
-        return ResponseEntity.ok(fleetGoService.getRichiesteManutenzioneById(id));
+
+        RichiestaManutenzioneDTO richiesta = fleetGoService.getRichiesteManutenzioneById(id);
+
+        if (richiesta == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(richiesta);
     }
 
     @PostMapping("/accettaRichiestaManutenzione/{id}")

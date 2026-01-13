@@ -41,6 +41,11 @@ public class ControllerImpostazioniDipendente {
         if(idUtente==null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+        if (immagine == null || immagine.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File mancante o vuoto");
+        }
+
         this.dipendenteService.aggiornaUrlPatente(idUtente, immagine);
         return ResponseEntity.ok("Patente aggiornata con successo");
     }

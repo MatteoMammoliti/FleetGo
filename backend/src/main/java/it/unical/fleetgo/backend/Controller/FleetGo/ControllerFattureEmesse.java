@@ -20,6 +20,11 @@ public class ControllerFattureEmesse {
     @GetMapping("/downloadFattura/{idFattura}")
     public ResponseEntity<byte[]> downloadFattura(@PathVariable Integer idFattura) throws SQLException {
         byte[] pdf = fleetGoService.downloadFattura(idFattura);
+
+        if (pdf == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
 

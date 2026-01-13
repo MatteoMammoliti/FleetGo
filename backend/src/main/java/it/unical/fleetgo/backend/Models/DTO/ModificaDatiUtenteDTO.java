@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,10 @@ public class ModificaDatiUtenteDTO {
     String email;
     String nomeAzienda;
     String sedeAzienda;
+
+    @JsonProperty("pIva")
     String pIva;
+
     Integer idUtente;
 
     public ModificaDatiUtenteDTO(String nome,

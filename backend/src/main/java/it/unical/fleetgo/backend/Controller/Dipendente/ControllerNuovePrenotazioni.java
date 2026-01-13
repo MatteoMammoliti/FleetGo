@@ -1,5 +1,6 @@
 package it.unical.fleetgo.backend.Controller.Dipendente;
 
+import it.unical.fleetgo.backend.Exceptions.DatePrenotazioneNonValide;
 import it.unical.fleetgo.backend.Models.DTO.LuogoDTO;
 import it.unical.fleetgo.backend.Models.DTO.RichiestaNoleggioDTO;
 import it.unical.fleetgo.backend.Models.DTO.VeicoloPrenotazioneDTO;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,8 +31,13 @@ public class ControllerNuovePrenotazioni {
                                                                    @RequestParam("nomeLuogo") String nomeLuogo,
                                            HttpSession session) throws SQLException {
         Integer idAziendaAssociata= (Integer) session.getAttribute("idAziendaAssociata");
+
         if(idAziendaAssociata==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        if (LocalDate.parse(dataRitiro).isAfter(LocalDate.parse(dataConsegna))) {
+            throw new DatePrenotazioneNonValide();
         }
 
         return ResponseEntity.ok(service.getVeicoli(
@@ -54,6 +61,10 @@ public class ControllerNuovePrenotazioni {
 
         if(idDipendente==null || idAzienda==null || !aziendaService.isAziendaAttiva(idAzienda)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        if (richiesta.getIdVeicolo() == null) {
+            throw new IllegalArgumentException("Veicolo obbligatorio");
         }
 
         richiesta.setIdDipendente(idDipendente);

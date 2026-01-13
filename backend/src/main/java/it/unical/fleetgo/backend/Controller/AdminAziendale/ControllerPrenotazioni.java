@@ -79,7 +79,7 @@ public class ControllerPrenotazioni {
         if(adminAziendaleService.approvaRichiestaNoleggio(idRichiesta))
             return  ResponseEntity.status(HttpStatus.OK).body("Richiesta approvata con successo");
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Richiesta non trovata");
 
     }
 
@@ -88,7 +88,7 @@ public class ControllerPrenotazioni {
 
         if(adminAziendaleService.rifiutaRichiesta(idRichiesta))
             return  ResponseEntity.status(HttpStatus.OK).body("Richiesta rifiutata con successo");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Richiesta non trovata");
     }
 
     @PostMapping("/accettazioneConRifiuto")

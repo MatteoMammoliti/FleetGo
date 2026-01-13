@@ -64,6 +64,11 @@ public class ControllerStoricoFatture {
         }
 
         String urlPagamento = adminAziendaleService.pagaFattura(idFattura, idAzienda);
+
+        if (urlPagamento == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la creazione del pagamento");
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(urlPagamento);
     }
 

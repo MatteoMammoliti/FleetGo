@@ -5,8 +5,10 @@ import it.unical.fleetgo.backend.Exceptions.*;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +18,6 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<String> gestisciErroreDatabase(SQLException e) {
-        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Si è verificato un errore durante le operazioni nel Database");
     }
@@ -128,5 +129,19 @@ public class ExceptionHandlerController {
     public ResponseEntity<String> gestisciErroreGenerico(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Si è verificato un errore imprevisto.");
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> gestisciBodyMancante(org.springframework.http.converter.HttpMessageNotReadableException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Body della richiesta mancante o malformato");
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> gestisciArgomentoInvalido(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<String> gestisciParteMancante(org.springframework.web.multipart.support.MissingServletRequestPartException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Parte della richiesta mancante: " + e.getRequestPartName());
     }
 }
