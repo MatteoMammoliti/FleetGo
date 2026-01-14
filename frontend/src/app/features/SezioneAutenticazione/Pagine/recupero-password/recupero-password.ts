@@ -3,11 +3,13 @@ import {
   FormRecuperoPassword
 } from '@features/SezioneAutenticazione/Componenti/form-recupero-password/form-recupero-password';
 import {AuthService} from '@core/auth/auth-service';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-recupero-password',
   imports: [
-    FormRecuperoPassword
+    FormRecuperoPassword,
+    BannerErrore
   ],
   templateUrl: './recupero-password.html',
   styleUrl: './recupero-password.css',
@@ -21,6 +23,9 @@ export class RecuperoPassword {
   errore = '';
   messaggio = '';
 
+  erroreBanner = "";
+  successoBanner = "";
+
   inviaRichiestaOtp(email: string) {
     this.service.invioOTP(email).subscribe({
       next: (res) => {
@@ -28,7 +33,7 @@ export class RecuperoPassword {
         this.messaggio = `Abbiamo inviato un codice a ${email}`;
       },
       error: (err) => {
-        this.errore = err.error?.message || "L'email non è stata trovata o si è verificato un errore.";
+        this.gestisciErrore(err.error);
       }
     });
   }
@@ -37,10 +42,23 @@ export class RecuperoPassword {
     this.service.cambioPassword(dati.email, dati.otp, dati.password).subscribe({
       next: (res) => {
         this.stepCorrente = 3;
+        this.gestisciSuccesso("Password cambiata con successo!");
       },
       error: (err) => {
-        this.errore = "Impossibile cambiare la password. Riprova la procedura.";
+        this.gestisciErrore(err.error);
       }
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }
