@@ -5,11 +5,12 @@ import {DipendenteDTO} from '@core/models/DipendenteDTO';
 import {Router, RouterLink} from '@angular/router';
 import {validazione} from '@core/utils/validazione';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [FormsModule, RouterLink, InputChecked],
+  imports: [FormsModule, RouterLink, InputChecked, BannerErrore],
   templateUrl: './registrazione.component.html',
   styleUrl: './registrazione.component.css',
 })
@@ -26,7 +27,7 @@ export class RegistrazioneComponent {
   datanascita = '';
   patente: any = null;
 
-  errore = "";
+
 
   mappaErrori = {
     nome: false,
@@ -37,6 +38,11 @@ export class RegistrazioneComponent {
     datanascita: false,
     patente: false
   };
+
+  errore = "";
+
+  erroreBanner = "";
+  successoBanner = "";
 
 
 
@@ -133,10 +139,23 @@ export class RegistrazioneComponent {
     this.authService.registrazione(user, this.patente).subscribe({
       next: (response) => {
         this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        console.error('Errore durante la registrazione:', error);
+        this.gestisciSuccesso("Registrazione avvenuta con successo!")
+0      },
+      error: (err) => {
+        this.gestisciErrore(err.error);
       }
     });
+  }
+
+  gestisciErrore(messaggio: string) {
+    this.successoBanner = '';
+    this.erroreBanner = messaggio;
+    setTimeout(() => this.erroreBanner = '', 5000);
+  }
+
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
   }
 }
