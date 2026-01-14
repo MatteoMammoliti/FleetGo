@@ -123,6 +123,9 @@ export class GestioneDipendentiComponent implements OnInit {
           this.getRichiesteAffiliazione();
           this.getDipendenti();
           this.gestisciSuccesso("Affiliazione accettata con successo!");
+          if(this.richiesteAffiliazione?.length==0) {
+            this.chiudiModale();
+          }
         }
       }, error: err => {
         this.gestisciErrore(err.error);
@@ -138,6 +141,9 @@ export class GestioneDipendentiComponent implements OnInit {
           this.getDipendenti();
           this.chiudiModaleRifiuta()
           this.gestisciSuccesso("Affiliazione rifiutata con successo!");
+          if(this.richiesteAffiliazione?.length==0) {
+            this.chiudiModale();
+          }
         }
       }, error: err => {
         this.gestisciErrore(err.error);

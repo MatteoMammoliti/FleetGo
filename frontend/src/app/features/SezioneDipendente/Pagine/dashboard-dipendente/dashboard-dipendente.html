@@ -2,43 +2,44 @@
   [titolo]="'Dashboard'"
   [sottotitolo]="'Ecco il riepilogo delle tue attività, tutto a portata di click.'">
 
-  <div class="contenitore-dashboard">
-    <div class="griglia-dashboard">
+  <div class="pb-20 mt-6 px-3">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-      <div class="cella-piena animazione-fade ritardo-1">
+      <div class="xl:col-span-3 animate-fade-in" style="animation-delay: 0.1s;">
         <app-banner-home
-          class="componente-blocco"
+          class="h-full block"
           [nomeDipendente]="nomeDipendente"
           (clickPrenotaVeicolo)="apriPrenotazioni()"
           (clickMiePrenotazioni)="apriMieAttivita()">
         </app-banner-home>
       </div>
 
-      <div class="cella-doppia animazione-fade ritardo-4">
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.2s;">
         <app-prossimo-viaggio
-          class="componente-blocco"
+          class="h-full block"
           [viaggio]="prossimoViaggio">
         </app-prossimo-viaggio>
       </div>
 
-      <div class="cella-singola animazione-fade ritardo-3">
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.3s;">
         @if (statisticheDipendente) {
           <app-statistiche-dipendente
-            class="componente-blocco"
+            class="h-full block"
             [statistiche]="statisticheDipendente">
           </app-statistiche-dipendente>
         }
       </div>
 
-      <div class="cella-doppia animazione-fade ritardo-4">
-        <div class="card-mappa">
+      <div class="xl:col-span-2 animate-fade-in" style="animation-delay: 0.4s;">
+        <div
+          class="bg-white rounded-[2.5rem] p-3 shadow-sm border border-slate-200 h-full min-h-[400px] relative hover:shadow-lg transition-all duration-300 group">
           <app-mappa-hub [luoghiAzienda]="luoghiAzienda"></app-mappa-hub>
         </div>
       </div>
 
-      <div class="cella-singola animazione-fade ritardo-5">
+      <div class="xl:col-span-1 animate-fade-in" style="animation-delay: 0.5s;">
         <app-supporto-fleetgo
-          class="componente-blocco"
+          class="h-full block"
           (apriModale)="gestisciVisibilita()">
         </app-supporto-fleetgo>
       </div>

@@ -59,7 +59,7 @@ export class RegistrazioneComponent {
 
 
     if (this.patente == null || this.nome == '' || this.cognome == '' || this.datanascita == '' || this.email == '' || this.password == '' || this.ripetiPassword == '') {
-      this.errore = "Compila tutti i campi!";
+      this.errore="Compila tutti i campi!"
       this.mappaErrori.patente = this.patente == null;
       this.mappaErrori.nome = this.nome == '';
       this.mappaErrori.cognome = this.cognome == '';
@@ -73,7 +73,6 @@ export class RegistrazioneComponent {
     }
 
     if (!this.validator.checkNome(this.nome)) {
-      this.errore = "Nome non valido";
       this.mappaErrori.nome = true;
       return;
     } else {
@@ -81,7 +80,6 @@ export class RegistrazioneComponent {
     }
 
     if (!this.validator.checkCognome(this.cognome)) {
-      this.errore = "Cognome non valido";
       this.mappaErrori.cognome = true;
       return;
     } else {
@@ -114,7 +112,7 @@ export class RegistrazioneComponent {
         this.errore = "";
       }
       if (!this.validator.checkPassword(this.password)) {
-        this.errore = "Password non valida";
+        this.errore = "Password non valida, usa almeno 8 caratteri, una maiuscola, un numero e un simbolo.";
         this.mappaErrori.password = true;
         this.mappaErrori.ripetiPassword = true;
       } else {

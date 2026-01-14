@@ -59,13 +59,12 @@ export class FormRecuperoPassword {
   }
 
   cambiaPassword() {
-    if (!this.nuovaPassword || !this.validatore.checkPassword(this.nuovaPassword)) {
-      this.errore = "La password non è valida.";
+    if(!this.nuovaPassword || !this.confermaPassword || !this.otp){
+      this.errore = "Compila tutti i campi!";
       return;
     }
-
-    if (!this.otp) {
-      this.errore = "campi vuoti non permessi";
+    if (!this.nuovaPassword || !this.validatore.checkPassword(this.nuovaPassword)) {
+      this.errore = "Password non valida, usa almeno 8 caratteri, una maiuscola, un numero e un simbolo.";
       return;
     }
 

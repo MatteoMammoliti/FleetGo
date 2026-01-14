@@ -1,6 +1,5 @@
 <app-intestazione-ebackground titolo="Panoramica FleetGo">
-
-  <div class="griglia-statistiche">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
 
     <app-card-statistiche-dashboard-fleet
       titolo="Fatturato"
@@ -36,21 +35,19 @@
 
   </div>
 
-  <div class="griglia-contenuti">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
 
-    <div class="colonna-sinistra">
-      <app-richieste-manutenzione-da-gestire
-        id="sezioneManutezione"
-        [richiesteManutenzioneDaGestire]="richiesteManutenzione"
-        (inviaRichiesta)="caricaRichiestaManutenzione($event)">
+    <div class="colonna-sx">
+      <app-richieste-manutenzione-da-gestire id="sezioneManutezione"
+                                             [richiesteManutenzioneDaGestire]="richiesteManutenzione"
+                                             (inviaRichiesta)="caricaRichiestaManutenzione($event)">
       </app-richieste-manutenzione-da-gestire>
     </div>
 
-    <div class="colonna-destra">
-      <app-fatture-da-generare
-        id="sezioneFatture"
-        [fatture]="fatture"
-        (generaFatturaEvent)="riceviFatturaDaGenerare($event)">
+    <div class="colonna-dx">
+      <app-fatture-da-generare id="sezioneFatture"
+                               [fatture]="fatture"
+                               (generaFatturaEvent)="riceviFatturaDaGenerare($event)">
       </app-fatture-da-generare>
     </div>
 
@@ -74,9 +71,7 @@
       (confermaGenerazione)="generaFattura($event)">
     </app-modale-generazione-fattura>
   }
-
 </app-intestazione-ebackground>
-
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }

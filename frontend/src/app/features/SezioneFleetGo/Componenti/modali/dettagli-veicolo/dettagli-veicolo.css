@@ -1,0 +1,217 @@
+.contenitore-caricamento {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 450px;
+}
+
+.caricamento {
+  font-size: 1.875rem;
+  color: #cbd5e1;
+  animation: spin 1s linear infinite;
+}
+
+.wrapper-targa {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 0.75rem;
+}
+
+.badge-targa {
+  text-transform: uppercase;
+  background-color: #f3f4f6;
+  padding: 0.25rem 1rem;
+  border-radius: 0.75rem;
+  color: #374151;
+}
+
+.layout-principale {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.sezione-media {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-immagine {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.immagine-veicolo {
+  width: 100%;
+  height: 11rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.gruppo-mappa {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.etichetta {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-left: 0.25rem;
+}
+
+.contenitore-mappa {
+  width: 100%;
+  height: 18rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.mappa {
+  width: 100%;
+  height: 100%;
+}
+
+.indirizzo-testo {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-left: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icona-blu {
+  color: #2563eb;
+}
+
+.sezione-assegnazione {
+  display: flex;
+  flex-direction: column;
+}
+
+.intestazione-assegnazione {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.etichetta-piccola {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+}
+
+.bottone-dissocia {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-weight: 700;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.bottone-dissocia:hover {
+  color: #b91c1c;
+  background-color: #fee2e2;
+}
+
+.badge-azienda-assegnata {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  color: #1e40af;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icona-badge {
+  color: #93c5fd;
+}
+
+.avviso-manutenzione {
+  padding: 1rem;
+  margin-top: 0.75rem;
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 0.75rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.griglia-info-tecniche {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .griglia-info-tecniche {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.gruppo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.campo-sola-lettura {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  color: #334155;
+  font-weight: 500;
+}
+
+.animazione-fade-down {
+  animation: fadeDown 0.5s ease-out both;
+}
+
+.animazione-fade {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

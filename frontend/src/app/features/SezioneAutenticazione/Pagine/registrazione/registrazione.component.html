@@ -103,11 +103,11 @@
           }
         </div>
 
-        @if (errore == "Password non valida") {
-          <div class="messaggioErrore">
-            <i class="bi-exclamation-circle mr-100"></i> Usa almeno 8 caratteri, una maiuscola, un numero e un simbolo.
-          </div>
-        }
+          @if(errore){
+            <div class="messaggioErrore">
+              <i class="bi-exclamation-circle mr-100"></i> {{errore}}
+            </div>
+          }
 
         <button (click)="onRegistrazione()"
                 class="w-full py-4 bg-azzurro text-white font-bold rounded-xl hover:bg-azzurro-scuro hover:shadow-lg active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-4">
