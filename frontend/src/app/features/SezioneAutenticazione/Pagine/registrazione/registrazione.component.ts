@@ -111,7 +111,6 @@ export class RegistrazioneComponent {
       this.errore = "";
     }
 
-
     if (!this.validator.checkEmail(this.email) || !this.validator.checkPassword(this.password)) {
       if (!this.validator.checkEmail(this.email)) {
         this.errore = "Email non valida";

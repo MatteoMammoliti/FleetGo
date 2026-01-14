@@ -78,7 +78,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges {
     this.reset();
 
     if (!this.nome || !this.cognome || !this.data || !this.email || !this.nomeAzienda || !this.sedeAzienda || !this.partitaIva) {
-      this.errore = "campi vuoti non permessi";
+      this.errore = "Campi vuoti non permessi";
       if (!this.nome) this.mappaErrori.nome = true;
       if (!this.cognome) this.mappaErrori.cognome = true;
       if (!this.data) this.mappaErrori.data = true;
@@ -121,7 +121,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges {
     const datiAggiornati: ModificaDatiUtenteDTO = {
       nome: this.datiCorrenti.nome != this.nome ? this.nome : null,
       cognome: this.datiCorrenti.cognome != this.cognome ? this.cognome : null,
-      data: this.datiCorrenti.data != this.data ? this.datiCorrenti.data : null,
+      data: this.datiCorrenti.data != this.data ? this.data : null,
       email: this.datiCorrenti.email != this.email ? this.email : null,
       nomeAzienda: this.datiCorrenti.nomeAzienda != this.nomeAzienda ? this.nomeAzienda : null,
       sedeAzienda: null,
@@ -131,6 +131,7 @@ export class FormModificaDatiAdminAziendale implements OnChanges {
     const ciSonoModifiche = Object.values(datiAggiornati).some(val => val !== null);
 
     if (ciSonoModifiche) {
+      console.log(datiAggiornati);
       this.richiestaModifica.emit(datiAggiornati);
     }
   }

@@ -105,6 +105,7 @@ export class StoricoFattureAdminAziendale implements OnInit {
   pagaFattura(numeroFattura: number) {
     this.storicoFattureService.pagaFattura(numeroFattura).subscribe({
       next: data => {
+        console.log(data);
         window.location.href = data;
       }, error: err => {
         this.gestisciErrore(err.error);

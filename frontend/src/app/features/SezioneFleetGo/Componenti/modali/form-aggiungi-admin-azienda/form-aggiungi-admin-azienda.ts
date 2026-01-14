@@ -6,6 +6,7 @@ import {AdminAziendaleDTO} from '@core/models/AdminAziendaleDTO';
 import {AziendaDTO} from '@core/models/AziendaDTO';
 import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {ContenitoreDatiRegistrazioneAzienda} from '@core/models/ContenitoreDatiRegistrazioneAzienda';
 
 @Component({
   selector: 'app-form-aggiungi-admin-azienda',
@@ -22,7 +23,7 @@ export class FormAggiungiAdminAzienda implements OnInit {
 
   @ViewChild('modale') finestraModale!: TemplateFinestraModale;
 
-  @Output() aziendaAggiunta = new EventEmitter<any>();
+  @Output() aziendaAggiunta = new EventEmitter<ContenitoreDatiRegistrazioneAzienda>();
   @Output() chiudi = new EventEmitter<any>();
 
 
@@ -75,6 +76,12 @@ export class FormAggiungiAdminAzienda implements OnInit {
       return;
     }
 
+    if (!this.validatore.checkPartitaIva(this.partitaIva)) {
+      this.errore = 'Partita IVA non valida';
+      this.mappaErrori.partitaIva = true;
+      return;
+    }
+
     const adminAziendale: AdminAziendaleDTO = {
       nomeUtente: this.nome,
       cognomeUtente: this.cognome,
@@ -89,12 +96,12 @@ export class FormAggiungiAdminAzienda implements OnInit {
       pIva: this.partitaIva
     }
 
-    const mod: any = {
+    const contenitore: ContenitoreDatiRegistrazioneAzienda = {
       adminAziendale: adminAziendale,
-      azienda: azienda
+        azienda: azienda,
     }
 
-    this.aziendaAggiunta.emit(mod);
+    this.aziendaAggiunta.emit(contenitore);
     this.finestraModale.chiudiModale();
   }
 

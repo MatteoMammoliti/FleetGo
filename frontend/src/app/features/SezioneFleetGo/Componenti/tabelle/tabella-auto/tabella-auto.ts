@@ -35,5 +35,4 @@ export class TabellaAuto {
     }
     return 'giallo';
   }
-
 }

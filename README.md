@@ -110,4 +110,4 @@ Progetto sviluppato da:
   - [@Umberto Francesco Messina](https://github.com/umbyyy): frontend developer
   - [@Cristian Saverio Loria](https://github.com/loriacristian): frontend developer
 
-Sviluppato con ❤️ presso l'Università della Calabria - Cds in Informatica a.a. 2025/2026
+Sviluppato con ❤️ presso l'Università della Calabria - CdS in Informatica a.a. 2025/2026

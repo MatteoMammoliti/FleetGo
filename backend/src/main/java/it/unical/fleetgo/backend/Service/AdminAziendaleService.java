@@ -32,6 +32,7 @@ public class AdminAziendaleService {
 
     @Value("${stripe.api.key}") private String stripeApiKey;
     @Value("${app.frontend.url}") private String urlReinderizzazione;
+    @Value("${app.frontned.urlAziendaDisabilitata}") private String urlAziendaDisabilitata;
 
     public void registraAdminEAzienda(ContenitoreDatiRegistrazioneAzienda contenitore) throws SQLException {
 
@@ -68,7 +69,7 @@ public class AdminAziendaleService {
                 aziendaDAO.inserisciAzienda(contenitore.getAzienda());
 
                 emailService.inviaCredenzialiAdAdminAziendale(
-                        contenitore.adminAziendale.getEmail(),
+                        contenitore.adminAziendale.getEmail().toLowerCase(),
                         contenitore.adminAziendale.getPassword()
                 );
 
@@ -367,7 +368,7 @@ public class AdminAziendaleService {
         }
     }
 
-    public String pagaFattura(Integer numeroFattura, Integer idAzienda) throws SQLException, StripeException {
+    public String pagaFattura(Integer numeroFattura, Integer idAzienda, boolean aziendaAttiva) throws SQLException, StripeException {
         Stripe.apiKey = this.stripeApiKey;
 
         try(Connection connection = this.dataSource.getConnection()) {
@@ -393,8 +394,8 @@ public class AdminAziendaleService {
             SessionCreateParams params =
                     SessionCreateParams.builder()
                             .setMode(SessionCreateParams.Mode.PAYMENT)
-                            .setSuccessUrl(this.urlReinderizzazione + "?success=true&fattura=" + numeroFattura)
-                            .setCancelUrl(this.urlReinderizzazione + "?canceled=true")
+                            .setSuccessUrl((aziendaAttiva ? this.urlReinderizzazione : this.urlAziendaDisabilitata) + "?success=true&fattura=" + numeroFattura)
+                            .setCancelUrl((aziendaAttiva ? this.urlReinderizzazione : this.urlAziendaDisabilitata) + "?canceled=true")
                             .addLineItem(
                                     SessionCreateParams.LineItem.builder()
                                             .setQuantity(1L)

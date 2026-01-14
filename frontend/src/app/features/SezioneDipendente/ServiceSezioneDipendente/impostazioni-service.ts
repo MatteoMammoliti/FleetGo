@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../../../environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,12 @@ export class ImpostazioniService {
     return this.http.get(`${this.apiUrl}/getUrlPatente`, {withCredentials: true, responseType: 'text'})
   }
 
-  public inviaModifiche(dati: any): Observable<any> {
+  public inviaModifiche(dati: ModificaDatiUtenteDTO): Observable<string> {
+
+    console.log(dati);
+
     return this.http.post(`${this.apiUrl}/applicaModifiche`, dati, {
-      withCredentials: true
+      withCredentials: true, responseType: "text"
     })
   }
 

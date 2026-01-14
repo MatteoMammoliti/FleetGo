@@ -138,7 +138,7 @@
 @if (modaleDettagliVeicolo) {
   <app-dettagli-veicolo
     #dettaglioVeicolo
-    [veicolo]="veicolo" ,
+    [veicolo]="veicolo"
     [aziende]="aziendeInPiattaforma"
     (chiudi)="modaleDettagliVeicolo = false;this.veicolo=null"
     (associa)="associaVeicoloAzienda($event)"
@@ -155,8 +155,13 @@
 }
 
 @if (modaleCheck) {
-  <app-template-finestra-modale tastoBlu="Conferma" tastoBianco="Annulla" titolo="Attenzione" larghezza="max-w-md"
-                                (conferma)="confermaModale()" (annulla)="chiudiModale()" (chiudi)="chiudiModale()">
+  <app-template-finestra-modale
+    tastoBlu="Conferma"
+    tastoBianco="Annulla"
+    titolo="Attenzione" larghezza="max-w-md"
+    (conferma)="confermaModale()"
+    (annulla)="chiudiModale()"
+    (chiudi)="chiudiModale()">
     <span class="text-gray-600 px-6 flex mt-4">Cliccando su conferma il modello verrà cancellato dal Catalogo.</span>
   </app-template-finestra-modale>
 }

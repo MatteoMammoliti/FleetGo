@@ -3,6 +3,7 @@ package it.unical.fleetgo.backend.Controller.AdminAziendale;
 import com.stripe.exception.StripeException;
 import it.unical.fleetgo.backend.Models.DTO.FatturaDTO;
 import it.unical.fleetgo.backend.Service.AdminAziendaleService;
+import it.unical.fleetgo.backend.Service.AziendaService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ControllerStoricoFatture {
 
     @Autowired private AdminAziendaleService adminAziendaleService;
+    @Autowired private AziendaService aziendaService;
 
     @GetMapping(value = "/getFattureEmesse")
     public ResponseEntity<List<FatturaDTO>> getFattureEmesse(HttpSession session) throws SQLException {
@@ -63,7 +65,12 @@ public class ControllerStoricoFatture {
             return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        String urlPagamento = adminAziendaleService.pagaFattura(idFattura, idAzienda);
+        String urlPagamento;
+
+        if(aziendaService.isAziendaAttiva(idAzienda)) {
+            urlPagamento = adminAziendaleService.pagaFattura(idFattura, idAzienda, true);
+        } else urlPagamento = adminAziendaleService.pagaFattura(idFattura, idAzienda, false);
+
 
         if (urlPagamento == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la creazione del pagamento");
