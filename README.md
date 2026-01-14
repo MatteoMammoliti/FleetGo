@@ -70,7 +70,7 @@ cd frontend
 npm install --legacy-peer-deps
 ng serve
 ```
-Il backend sarà disponibile su `http://localhost:4200`.
+Il frotend sarà disponibile su `http://localhost:4200`.
 
 ---
 
@@ -105,7 +105,7 @@ Il progetto segue un'architettura a **microservizi monolitici** (Frontend e Back
 
 ## 👥 Team
 Progetto sviluppato da:
-  - Matteo Mammoliti: backend developer
+  - [@Matteo Mammoliti](https://github.com/MatteoMammoliti): backend developer
   - [@Angelo Vivacqua](https://github.com/AngeloVivacqua): backend developer
   - [@Umberto Francesco Messina](https://github.com/umbyyy): frontend developer
   - [@Cristian Saverio Loria](https://github.com/loriacristian): frontend developer
