@@ -9,6 +9,17 @@
 <app-form-contatto id="contatti"
                    [titolo]="'Contattaci'"
                    [sottotitolo]="'Prenota un appuntamento con noi ed inizia a semplificare le trasferte dei tuoi dipendenti'"
-                   [modalita]="'PUBLIC'" [invioInCorso]="invioInCorso"
-                   (inviaForm)="invia($event)">
+                   [modalita]="'PUBLIC'"
+                   [invioInCorso]="invioInCorso"
+                   [messaggioInviato]="messaggioInviato"
+                   [erroreInvio]="erroreInvio"
+                   (inviaForm)="invia($event)"
+                   (resetStato)="resetStato()">
 </app-form-contatto>
+
+@if (erroreBanner) {
+  <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
+}
+@if (successoBanner) {
+  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
