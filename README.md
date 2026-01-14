@@ -14,11 +14,9 @@ Il progetto è stato sviluppato come elaborato finale per il corso di **Web Appl
 
 ## 📋 Indice
 - [Caratteristiche Principali](#-caratteristiche-principali)
+- [Installazione e Avvio](#-installazione-e-avvio)
 - [Architettura e Tecnologie](#-architettura-e-tecnologie)
 - [Requisiti di Sistema](#-requisiti-di-sistema)
-- [Installazione e Avvio](#-installazione-e-avvio)
-- [Configurazione](#-configurazione)
-- [Testing](#-testing)
 - [Team](#-team)
 
 ---
@@ -46,6 +44,36 @@ Il sistema gestisce tre attori principali con permessi distinti:
 
 ---
 
+## 🚀 Installazione e Avvio
+### 1. Clonare il Repository
+```bash
+git clone https://github.com/MatteoMammoliti/FleetGo.git
+cd FleetGo
+```
+### 2. Avviare e configurare il Backend
+Sostituire il file `application.properties` presente in `\FleetGo\backend\src\main\resources` con quello fornito, in modo tale che vengano impostate correttamente 
+le variabili d'ambiente. Non è necessario creare alcun Database Postrgress, in quanto il DB è interamente remoto ed hostato su Neon. Fatto questo, si procede con l'avvio del server locale:
+
+```bash
+cd backend
+mvn clean install
+mvn spring-boot:run
+```
+Il backend sarà disponibile su `http://localhost:8080`.
+
+### 3. Avviare e configurare il Frontend
+Sostituire il file `environment.ts` presente in `\FleetGo\frontend` con quello fornito, in modo tale che vengano impostate correttamente 
+le variabili d'ambiente per il funzionamento dell'API di Google Maps. Fatto questo, si procede con l'avvio del progetto Angular:
+
+```bash
+cd frontend
+npm install --legacy-peer-deps
+ng serve
+```
+Il backend sarà disponibile su `http://localhost:4200`.
+
+---
+
 ## 🛠 Architettura e Tecnologie
 
 Il progetto segue un'architettura a **microservizi monolitici** (Frontend e Backend separati ma integrabili).
@@ -70,7 +98,16 @@ Il progetto segue un'architettura a **microservizi monolitici** (Frontend e Back
 
 ## 💻 Requisiti di Sistema
 
-- **Java JDK:** 21
+- **Java JDK:** 21 o 24
 - **Node.js:** 18+
 - **Maven:** 3.8+
 - **PostgreSQL:** 14+
+
+## 👥 Team
+Progetto sviluppato da:
+  - Matteo Mammoliti: backend developer
+  - [@Angelo Vivacqua](https://github.com/AngeloVivacqua): backend developer
+  - [@Umberto Francesco Messina](https://github.com/umbyyy): frontend developer
+  - [@Cristian Saverio Loria](https://github.com/loriacristian): frontend developer
+
+Sviluppato con ❤️ presso l'Università della Calabria - Cds in Informatica a.a. 2025/2026
