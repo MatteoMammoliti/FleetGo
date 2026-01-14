@@ -16,7 +16,10 @@
             <label class="text-[11px] font-bold ml-1 mb-1 uppercase tracking-wide text-slate-700 block">
               Da Mese/Anno
             </label>
-            <input type="month" [(ngModel)]="filtroDataInizio"
+            <input type="month"
+                   [(ngModel)]="filtroDataInizio"
+                   [max]="filtroDataFine || meseCorrente"
+                   (ngModelChange)="checkDate()"
                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 outline-none transition-all
                 focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
           </div>
@@ -25,7 +28,11 @@
             <label class="text-[11px] font-bold ml-1 mb-1 uppercase tracking-wide text-slate-700 block">
               A Mese/Anno
             </label>
-            <input type="month" [(ngModel)]="filtroDataFine"
+            <input type="month"
+                   [(ngModel)]="filtroDataFine"
+                   [min]="filtroDataInizio"
+                   [max]="meseCorrente"
+                   (ngModelChange)="checkDate()"
                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 outline-none transition-all
                 focus:bg-white focus:border-azzurro focus:ring-2 focus:ring-azzurro/20 text-sm text-gray-700 font-medium">
           </div>

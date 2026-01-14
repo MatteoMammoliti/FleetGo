@@ -20,10 +20,11 @@ import {
 import {OffertaDTO} from '@core/models/OffertaDTO';
 import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
 import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-errore";
+import {CurrencyPipe} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-fleet-go',
-  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground, BannerErrore],
+  imports: [CardStatisticheDashboardFleet, FattureDaGenerare, RichiesteManutenzioneDaGestire, GestisciRichiestaManutenzione, ModaleGenerazioneFattura, IntestazioneEBackground, BannerErrore, CurrencyPipe],
   templateUrl: './dashboard-fleet-go.html',
   styleUrl: './dashboard-fleet-go.css',
 })

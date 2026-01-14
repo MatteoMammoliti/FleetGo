@@ -8,6 +8,7 @@ import {CommonModule} from '@angular/common';
 import {BottonePillola} from '@shared/Componenti/Bottoni/bottone-pillola/bottone-pillola';
 import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {TemplateFinestraModale} from '@shared/Componenti/Modali/template-finestra-modale/template-finestra-modale';
 
 @Component({
   selector: 'app-prenotazioni-dipendente',
@@ -17,7 +18,7 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/t
     MessaggioCardVuota
     , CommonModule,
     BottonePillola,
-    BannerErrore
+    BannerErrore, TemplateFinestraModale
   ],
   templateUrl: './prenotazioni-dipendente.html',
   styleUrl: './prenotazioni-dipendente.css',
@@ -29,13 +30,16 @@ export class PrenotazioniDipendente implements OnInit {
   }
 
   prenotazioni: RichiestaNoleggioDTO[] = [];
-  
+
   filtroAttivo: string = "Tutte"
 
   successoBanner: string = '';
   erroreBanner: string = '';
 
   caricamentoDati: boolean = true;
+
+  modaleAnnullaPrenotazione: boolean = false;
+  richiestaInterssata:any=null;
 
   ngOnInit() {
     this.getRichiesteDipendente();
@@ -55,8 +59,8 @@ export class PrenotazioniDipendente implements OnInit {
     });
   }
 
-  eliminaPrenotazione(idPrenotazione: number) {
-    this.service.eliminaPrenotazione(idPrenotazione).subscribe({
+  eliminaPrenotazione() {
+    this.service.eliminaPrenotazione(this.richiestaInterssata).subscribe({
       next: (risposta: any) => {
         this.getRichiesteDipendente()
         this.gestisciSuccesso("Prenotazione annullata con successo!");
@@ -100,6 +104,19 @@ export class PrenotazioniDipendente implements OnInit {
     setTimeout(() => {
       this.caricamentoDati = false;
     }, 0);
+  }
+
+  apriModaleCheck(idPrenotazione: number) {
+    this.richiestaInterssata=idPrenotazione;
+    this.modaleAnnullaPrenotazione=true;
+  }
+
+  chiudiModaleCheck(){
+    this.modaleAnnullaPrenotazione=false;
+    this.richiestaInterssata=null;
+  }
+  confermaModaleCheck(){
+    this.eliminaPrenotazione();
   }
 
   gestisciErrore(messaggio: string) {

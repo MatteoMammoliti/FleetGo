@@ -53,7 +53,7 @@
             <div class="wrapper-card">
               <app-prenotazione-card
                 class="card-blocco"
-                (annullaRichiesta)="eliminaPrenotazione($event)"
+                (annullaRichiesta)="apriModaleCheck($event)"
                 [prenotazione]="prenotazione">
               </app-prenotazione-card>
             </div>
@@ -95,4 +95,17 @@
 }
 @if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
+}
+
+@if(modaleAnnullaPrenotazione){
+  <app-template-finestra-modale
+  titolo="Attenzione"
+  tastoBlu="Conferma"
+  tastoBianco="Annulla"
+  (chiudi)="chiudiModaleCheck()"
+  (conferma)="confermaModaleCheck()"
+  (annulla)="chiudiModaleCheck()"
+  >
+    <span class="messaggioModaleConferma">Sei sicuro di voler eliminare la richiesta di noleggio?</span>
+  </app-template-finestra-modale>
 }

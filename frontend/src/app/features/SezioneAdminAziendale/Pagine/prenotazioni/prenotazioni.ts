@@ -52,6 +52,8 @@ export class Prenotazioni implements OnInit {
   erroreBanner = "";
   successoBanner = "";
 
+  meseCorrente: string = '';
+
   statiNoleggio = [
     {etichetta: 'Tutti gli stati', id: 'Tutti'},
     {etichetta: 'In corso', id: 'In corso'},
@@ -67,8 +69,24 @@ export class Prenotazioni implements OnInit {
   richiesteDiInteresse: any = null;
 
   ngOnInit() {
+    this.impostaMeseCorrente();
     this.getPrenotazioni()
     this.getNumeroNoleggiDaApprovare();
+  }
+
+  checkDate() {
+    if (this.filtroDataInizio && this.filtroDataFine) {
+      if (this.filtroDataInizio > this.filtroDataFine) {
+        this.filtroDataFine = "";
+      }
+    }
+  }
+
+  impostaMeseCorrente() {
+    const dataOggi = new Date();
+    const anno = dataOggi.getFullYear();
+    const mese = (dataOggi.getMonth() + 1).toString().padStart(2, '0');
+    this.meseCorrente = `${anno}-${mese}`;
   }
 
   getPrenotazioni() {

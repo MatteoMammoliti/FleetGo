@@ -17,10 +17,7 @@ export class PrenotazioneCard {
   @Output() annullaRichiesta = new EventEmitter<number>()
 
   onAnnulla() {
-    const conferma = confirm("Sei sicuro di voler eliminare questa richiesta?");
-    if (conferma) {
-      this.annullaRichiesta.emit(this.prenotazione.idRichiesta);
-    }
+    this.annullaRichiesta.emit(this.prenotazione.idRichiesta);
   }
 
   getColoreStato(): string {
@@ -50,4 +47,5 @@ export class PrenotazioneCard {
     if (this.prenotazione.richiestaAnnullata) return 'Richiesta Annullata';
     return this.prenotazione.statoRichiesta || 'Stato sconosciuto';
   }
+
 }

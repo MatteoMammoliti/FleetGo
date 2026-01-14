@@ -3,7 +3,7 @@
 
     <app-card-statistiche-dashboard-fleet
       titolo="Fatturato"
-      [valore]="statistiche.guadagnoMensile"
+      [valore]="(statistiche.guadagnoMensile | currency:'EUR') ?? '0,00 €'"
       icona="bi-bank"
       descrizione="Valore generato questo mese">
     </app-card-statistiche-dashboard-fleet>
