@@ -16,8 +16,7 @@ import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-error
 })
 export class RecuperoPassword {
 
-  constructor(private service: AuthService) {
-  }
+  constructor(private service: AuthService) {}
 
   stepCorrente = 1;
   errore = '';
@@ -49,6 +48,8 @@ export class RecuperoPassword {
       }
     });
   }
+
+  tornaIndietroPerCambioEmail(){ this.stepCorrente = 1; }
 
   gestisciErrore(messaggio: string) {
     this.successoBanner = '';

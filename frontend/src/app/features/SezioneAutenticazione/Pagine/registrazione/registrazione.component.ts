@@ -16,8 +16,9 @@ import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-error
 })
 
 export class RegistrazioneComponent {
-  constructor(private authService: AuthService, private router: Router, private validator:validazione) {
-  }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private validator:validazione) {}
 
   nome = '';
   cognome = '';
@@ -45,6 +46,7 @@ export class RegistrazioneComponent {
   successoBanner = "";
 
 
+  isLoading = false;
 
 
   onFileSelected(event: any) {
@@ -136,12 +138,17 @@ export class RegistrazioneComponent {
       tipoUtente: 'Dipendente'
     };
 
+    this.isLoading = true;
+
     this.authService.registrazione(user, this.patente).subscribe({
       next: (response) => {
-        this.router.navigate(['/login']);
-        this.gestisciSuccesso("Registrazione avvenuta con successo!")
+        this.isLoading = false;
+        this.router.navigate(['/login'], {
+          state: { messaggioSuccesso: 'Registrazione avvenuta con successo!' }
+        });
 0      },
       error: (err) => {
+        this.isLoading = false;
         this.gestisciErrore(err.error);
       }
     });

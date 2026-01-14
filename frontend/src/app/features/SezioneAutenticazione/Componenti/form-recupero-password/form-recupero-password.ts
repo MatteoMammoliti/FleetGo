@@ -25,6 +25,7 @@ export class FormRecuperoPassword {
 
   @Output() chiamaOtp = new EventEmitter<string>();
   @Output() cambiaPass = new EventEmitter<any>();
+  @Output() tornaIndietro = new EventEmitter<any>();
 
   @Input() step: number = 1;
   @Input() errorePadre: string = '';
@@ -80,6 +81,11 @@ export class FormRecuperoPassword {
     }
 
     this.cambiaPass.emit(dati);
+  }
+
+  cambiaEmail() {
+    this.reset();
+    this.tornaIndietro.emit();
   }
 
   reset() {

@@ -14,8 +14,17 @@ import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked
 
 export class LoginComponent {
 
-  constructor(private authService: AuthService,
-              private router: Router,) {}
+  messaggioSuccesso = '';
+
+  constructor(private authService: AuthService, private router: Router) {
+
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state && navigation.extras.state['messaggioSuccesso']) {
+      this.messaggioSuccesso = navigation.extras.state['messaggioSuccesso'];
+
+      setTimeout(() => this.messaggioSuccesso = '', 5000);
+    }
+  }
 
   email = '';
   password = '';

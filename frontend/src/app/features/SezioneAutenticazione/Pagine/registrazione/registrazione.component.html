@@ -110,8 +110,14 @@
           }
 
         <button (click)="onRegistrazione()"
-                class="w-full py-4 bg-azzurro text-white font-bold rounded-xl hover:bg-azzurro-scuro hover:shadow-lg active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-4">
-          Registrati
+                class="w-full py-4 bg-azzurro text-white font-bold rounded-xl
+                hover:bg-azzurro-scuro hover:shadow-lg active:scale-[0.98]
+                transition-all flex justify-center items-center gap-2 mt-4">
+          @if (isLoading) {
+            <span>Caricamento in corso...</span>
+          } @else {
+            <span>Registrati</span>
+          }
         </button>
 
         <div class="text-center pt-6 border-t border-gray-100 mt-6">
@@ -129,7 +135,3 @@
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
 }
-@if (successoBanner) {
-  <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
-}
-

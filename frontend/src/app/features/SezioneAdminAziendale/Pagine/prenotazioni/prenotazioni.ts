@@ -36,10 +36,10 @@ import {BannerErrore} from "@shared/Componenti/Banner/banner-errore/banner-error
   templateUrl: './prenotazioni.html',
   styleUrl: './prenotazioni.css',
 })
+
 export class Prenotazioni implements OnInit {
 
-  constructor(private prenotazioniService: PrenotazioniService) {
-  }
+  constructor(private prenotazioniService: PrenotazioniService) {}
 
   richiesteNoleggio: RichiestaNoleggioDTO[] | null = null;
   modaleDettaglioAperto = false;
@@ -147,9 +147,8 @@ export class Prenotazioni implements OnInit {
   }
 
   gestisciVisibilitaModaleAccettazioneNoleggi(senzaSwitch: boolean = false) {
-    if (senzaSwitch === false) {
+    if (!senzaSwitch) {
       this.modaleAccettazioneAperto = !this.modaleAccettazioneAperto;
-
     }
 
     if (this.modaleAccettazioneAperto) {
@@ -170,10 +169,21 @@ export class Prenotazioni implements OnInit {
       next: value => {
         if (value) {
           this.getPrenotazioni();
-          this.getNumeroNoleggiDaApprovare();
+
+          this.prenotazioniService.getNumeroNoleggiDaApprovare().subscribe(numero => {
+            this.numeroNoleggiDaApprovare = numero;
+
+            if (this.numeroNoleggiDaApprovare === 0) {
+              this.modaleAccettazioneAperto = false;
+              this.chiudiModale();
+            } else {
+              this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
+              this.chiudiModale();
+            }
+          });
+
           this.resettaFiltri();
-          this.gestisciVisibilitaModaleAccettazioneNoleggi();
-          this.gestisciSuccesso('Prenotazione accettata con successo!')
+          this.gestisciSuccesso('Prenotazione accettata con successo!');
         }
       }, error: err => {
         this.gestisciErrore(err.error);
@@ -186,9 +196,20 @@ export class Prenotazioni implements OnInit {
       next: value => {
         if (value) {
           this.getPrenotazioni();
-          this.getNumeroNoleggiDaApprovare();
+
+          this.prenotazioniService.getNumeroNoleggiDaApprovare().subscribe(numero => {
+            this.numeroNoleggiDaApprovare = numero;
+
+            if (this.numeroNoleggiDaApprovare === 0) {
+              this.modaleAccettazioneAperto = false;
+              this.chiudiModale();
+            } else {
+              this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
+              this.chiudiModale();
+            }
+          });
+
           this.resettaFiltri();
-          this.gestisciVisibilitaModaleAccettazioneNoleggi();
           this.gestisciSuccesso('Prenotazione rifiutata con successo!');
         }
       }, error: err => {
@@ -199,7 +220,6 @@ export class Prenotazioni implements OnInit {
 
 
   apriModaleCheck(richieste: RisoluzioneConfilittiNoleggio) {
-
     this.richiesteDiInteresse = richieste;
     this.mostraAlertConflitti = true;
   }
@@ -207,21 +227,32 @@ export class Prenotazioni implements OnInit {
 
   accettazioneConRifiuto() {
     if (!this.richiesteDiInteresse) return;
+
     this.prenotazioniService.rifiutoAutomaticoRichieste(this.richiesteDiInteresse).subscribe({
       next: value => {
         if (value) {
-
           this.mostraAlertConflitti = false;
           this.getPrenotazioni();
-          this.getNumeroNoleggiDaApprovare();
+
+
+          this.prenotazioniService.getNumeroNoleggiDaApprovare().subscribe(numero => {
+            this.numeroNoleggiDaApprovare = numero;
+
+            if (this.numeroNoleggiDaApprovare === 0) {
+              this.modaleAccettazioneAperto = false;
+            } else {
+              this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
+            }
+          });
+
           this.resettaFiltri();
-          this.gestisciVisibilitaModaleAccettazioneNoleggi(true);
         }
-        this.gestisciSuccesso('Prenotazione accettata con successo!')
-      }, error: err => {
+        this.gestisciSuccesso('Prenotazione accettata con successo!');
+      },
+      error: err => {
         this.gestisciErrore(err.error);
       }
-    })
+    });
   }
 
   gestisciErrore(messaggio: string) {

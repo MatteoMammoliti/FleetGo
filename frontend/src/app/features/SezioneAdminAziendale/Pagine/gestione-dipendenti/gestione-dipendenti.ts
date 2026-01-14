@@ -120,12 +120,17 @@ export class GestioneDipendentiComponent implements OnInit {
     this.service.rispondiRichiesta(idDipendente, true).subscribe({
       next: value => {
         if (value) {
-          this.getRichiesteAffiliazione();
+
+          this.service.getRichiesteAffiliazione().subscribe(richieste => {
+            this.richiesteAffiliazione = richieste;
+
+            if(this.richiesteAffiliazione.length == 0){
+              this.chiudiModaleRichiestaAffiliazione();
+            }
+          })
+
           this.getDipendenti();
           this.gestisciSuccesso("Affiliazione accettata con successo!");
-          if(this.richiesteAffiliazione?.length==0) {
-            this.chiudiModale();
-          }
         }
       }, error: err => {
         this.gestisciErrore(err.error);
@@ -137,13 +142,18 @@ export class GestioneDipendentiComponent implements OnInit {
     this.service.rispondiRichiesta(this.idDipendenteDaRimuovere, false).subscribe({
       next: value => {
         if (value) {
-          this.getRichiesteAffiliazione();
+
+          this.service.getRichiesteAffiliazione().subscribe(richieste => {
+            this.richiesteAffiliazione = richieste;
+
+            if(this.richiesteAffiliazione.length == 0){
+              this.chiudiModaleRichiestaAffiliazione();
+            }
+          })
+
           this.getDipendenti();
-          this.chiudiModaleRifiuta()
+          this.chiudiModaleRifiuta();
           this.gestisciSuccesso("Affiliazione rifiutata con successo!");
-          if(this.richiesteAffiliazione?.length==0) {
-            this.chiudiModale();
-          }
         }
       }, error: err => {
         this.gestisciErrore(err.error);
