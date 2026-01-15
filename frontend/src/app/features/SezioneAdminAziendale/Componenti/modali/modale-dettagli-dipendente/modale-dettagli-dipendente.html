@@ -88,7 +88,7 @@
 
               <div class="flex flex-col md:flex-row gap-4 items-center">
                 <div
-                  class="w-full md:w-4/5 h-72 bg-white rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm group cursor-pointer relative">
+                  class="w-full bg-white rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm group cursor-pointer relative">
                   @if (!dipendente?.urlImmagine) {
                     <div class="text-center text-slate-400">
                       <i class="bi bi-image text-4xl mb-2 block"></i>
@@ -96,7 +96,7 @@
                     </div>
                   } @else {
                     <img [src]="dipendente?.urlImmagine"
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                         class="relative group cursor-pointer w-full max-w-[500px] aspect-[86/54] object-contain">
                   }
                 </div>
               </div>

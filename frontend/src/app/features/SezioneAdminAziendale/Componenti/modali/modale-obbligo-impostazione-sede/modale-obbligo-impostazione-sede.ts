@@ -13,8 +13,5 @@ import {LuogoDTO} from '@core/models/LuogoDTO';
   styleUrl: './modale-obbligo-impostazione-sede.css',
 })
 export class ModaleObbligoImpostazioneSede {
-
-  caricamento = false;
   @Output() impostaSede = new EventEmitter<LuogoDTO>();
-
 }

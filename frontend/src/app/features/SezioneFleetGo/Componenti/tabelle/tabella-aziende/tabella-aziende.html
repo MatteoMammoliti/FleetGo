@@ -8,8 +8,7 @@
       <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-bold tracking-wider">
         <th class="p-4 py-5">Azienda</th>
         <th class="p-4 py-5">Partita IVA</th>
-        <th class="p-4 py-5">Sede Operativa</th>
-        <th class="p-4 py-5 text-center">Ref. Admin</th>
+        <th class="p-4 py-5 ">Ref. Admin</th>
         <th class="p-4 py-5 text-center">Stato</th>
         <th class="p-4 py-5 text-right">Azioni</th>
       </tr>
@@ -54,15 +53,9 @@
               </span>
               </td>
 
-              <td class="p-4 text-slate-600">
-                <div class="flex items-center gap-2 text-sm">
-                  {{ azienda.sedeAzienda || 'Non specificata' }}
-                </div>
-              </td>
-
-              <td class="p-4 text-center">
+              <td class="p-4">
               <span
-                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">
+                class="ml-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">
                 #{{ azienda.idAdminAzienda }}
               </span>
               </td>

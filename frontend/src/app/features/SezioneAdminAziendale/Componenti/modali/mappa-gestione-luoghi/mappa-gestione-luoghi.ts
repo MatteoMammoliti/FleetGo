@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {LuogoDTO} from '@core/models/LuogoDTO';
 import {GoogleMapsService} from '@core/services/google-maps-service';
 import {CommonModule} from '@angular/common';
@@ -14,8 +14,10 @@ declare var google: any;
 
 export class MappaGestioneLuoghi implements OnInit, OnChanges {
 
-  constructor(private googleMapsService: GoogleMapsService) {
-  }
+  constructor(
+    private googleMapsService: GoogleMapsService,
+    private ngZone: NgZone
+  ) {}
 
   @Input() luoghiSalvati: LuogoDTO[] = [];
   @Input() modalitaAggiuntaLuogo = false;
@@ -62,6 +64,7 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
     this.barraRicerca.bindTo("bounds", this.map);
 
     this.barraRicerca.addListener("place_changed", () => {
+      this.ngZone.run(() => {
       const luogo = this.barraRicerca.getPlace();
 
       if (!luogo.geometry) return;
@@ -88,6 +91,7 @@ export class MappaGestioneLuoghi implements OnInit, OnChanges {
         map: this.map,
         title: "Nuovo Luogo",
         icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+      });
       });
     });
 

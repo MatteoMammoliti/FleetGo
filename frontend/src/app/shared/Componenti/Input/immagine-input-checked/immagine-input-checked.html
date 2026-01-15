@@ -7,7 +7,8 @@
     </label>
   }
 
-  <div class="relative group cursor-pointer h-40">
+  <div class="relative group cursor-pointer w-full max-w-[500px]"
+       [ngClass]="patente ? 'h-40' : 'aspect-[86/54]'">
     <input type="file"
            (change)="onFileChange($event)"
            accept="image/*"
@@ -22,7 +23,9 @@
       [class.group-hover:border-azzurro]="!haErrore">
 
       @if (anteprimaUrl) {
-        <img [src]="anteprimaUrl" class="w-full h-full object-cover">
+        <img [src]="anteprimaUrl" class="w-full h-full "
+        [ngClass]="patente?'object-cover':'object-contain'"
+        >
       } @else {
         <i class="bi-cloud-arrow-up text-3xl transition-colors"
            [class.text-red-400]="haErrore"

@@ -1,9 +1,9 @@
 <app-template-titolo-sottotitolo titolo="Fatture da Generare" sottotitolo="Cura la tua contabilità.">
   <div class="">
 
-    <div class="px-2" [@animazioneTabella]="fatture?.length">
+    <div  class="px-2 min-h-[400px]" [@animazioneTabella]="fatture?.length">
       @if (fatture == null) {
-        <div class="flex items-center justify-center w-full min-h-[400px] mb-5">
+        <div class="flex items-center justify-center w-full mb-5">
           <i class="bi bi-arrow-clockwise caricamento "></i>
         </div>
       } @else {

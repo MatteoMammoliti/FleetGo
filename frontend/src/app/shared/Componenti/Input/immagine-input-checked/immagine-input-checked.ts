@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -11,6 +11,8 @@ export class ImmagineInputChecked {
   @Input() titolo: string = '';
   @Input() haErrore: boolean = false;
   @Input() messaggioErrore: string = 'Immagine richiesta';
+
+  @Input() patente=true;
 
   @Output() fileSelezionato = new EventEmitter<File>();
 

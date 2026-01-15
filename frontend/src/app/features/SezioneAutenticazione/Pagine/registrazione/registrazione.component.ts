@@ -65,7 +65,6 @@ export class RegistrazioneComponent {
       patente: false
     };
 
-
     if (this.patente == null || this.nome == '' || this.cognome == '' || this.datanascita == '' || this.email == '' || this.password == '' || this.ripetiPassword == '') {
       this.errore="Compila tutti i campi!"
       this.mappaErrori.patente = this.patente == null;
@@ -159,9 +158,4 @@ export class RegistrazioneComponent {
     setTimeout(() => this.erroreBanner = '', 5000);
   }
 
-  gestisciSuccesso(messaggio: string) {
-    this.erroreBanner = '';
-    this.successoBanner = messaggio;
-    setTimeout(() => this.successoBanner = '', 3000);
-  }
 }
