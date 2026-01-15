@@ -56,7 +56,7 @@ le variabili d'ambiente. Non è necessario creare alcun Database Postrgress, in 
 
 ```bash
 cd backend
-mvn clean install
+mvn clean install -DskipTests
 mvn spring-boot:run
 ```
 Il backend sarà disponibile su `http://localhost:8080`.
