@@ -47,7 +47,7 @@ export class validazione {
   }
 
   checkPartitaIva(piva: string): boolean {
-    const pivaRegex = /^[0-9]{11}$/;
+    const pivaRegex = /^(IT)[0-9]{11}$/
     return pivaRegex.test(piva);
   }
 }

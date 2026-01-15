@@ -101,6 +101,7 @@ export class GestioneDipendentiComponent implements OnInit {
         },
         error: (err) => {
           this.gestisciErrore(err.error);
+          this.chiudiModaleRimuovi();
         }
       });
     }

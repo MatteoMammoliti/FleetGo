@@ -33,9 +33,7 @@
               [modalitaAggiuntaLuogo]="modalitaAggiunta"
               (luogoSelezionato)="aggiungiLuogo($event)">
             </app-mappa-gestione-luoghi>
-
           </div>
-
         </div>
         <div>
           <app-tabella-gestione-luoghi
@@ -46,13 +44,8 @@
           </app-tabella-gestione-luoghi>
         </div>
       </div>
-
-
     </div>
-
-
   </div>
-
 </div>
 @if (erroreBanner) {
   <app-banner-errore [errore]="erroreBanner" (chiudi)="erroreBanner=''"></app-banner-errore>
@@ -60,4 +53,3 @@
 @if (successoBanner) {
   <app-banner-errore [successo]="successoBanner" (chiudi)="successoBanner=''"></app-banner-errore>
 }
-

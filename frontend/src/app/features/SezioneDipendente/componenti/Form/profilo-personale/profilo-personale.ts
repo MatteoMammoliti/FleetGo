@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormBuilder, FormsModule} from '@angular/forms';
 import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
 import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked';
+import {validazione} from '@core/utils/validazione';
 
 @Component({
   selector: 'app-profilo-personale',
@@ -17,7 +18,9 @@ import {InputChecked} from '@shared/Componenti/Input/input-checked/input-checked
 
 export class ProfiloPersonale implements OnChanges {
 
-  @Output() clickSalva = new EventEmitter<ModificaDatiUtenteDTO>()
+  constructor(private validator: validazione) { }
+
+  @Output() clickSalva = new EventEmitter<ModificaDatiUtenteDTO>();
   @Input() utente!: ModificaDatiUtenteDTO;
   datiForm: ModificaDatiUtenteDTO = {} as ModificaDatiUtenteDTO
 
@@ -37,7 +40,6 @@ export class ProfiloPersonale implements OnChanges {
         pIva: null,
         idUtente: this.utente.idUtente
       }
-
     }
   }
 
@@ -62,18 +64,18 @@ export class ProfiloPersonale implements OnChanges {
       this.erroreEmail = true;
       valid = false;
     } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(this.datiForm.email)) {
-        this.erroreEmail = true;
+
+      if(!this.validator.checkEmail(this.datiForm.email)) {
         valid = false;
+        this.erroreEmail = true;
       }
+
     }
 
     if (!valid) {
       return;
     }
 
-    let inviare = false;
     const datiDaInviare: ModificaDatiUtenteDTO = {
       nome: null,
       cognome: null,
@@ -85,17 +87,21 @@ export class ProfiloPersonale implements OnChanges {
       idUtente: this.utente.idUtente
     };
 
+    let qualcosaCambiato = false;
+
     if (this.datiForm.nome !== this.utente.nome) {
-      inviare = true;
+      qualcosaCambiato = true;
       datiDaInviare.nome = this.datiForm.nome;
     }
     if (this.datiForm.cognome !== this.utente.cognome) {
-      inviare = true;
+      qualcosaCambiato = true;
       datiDaInviare.cognome = this.datiForm.cognome;
     }
     if (this.datiForm.email !== this.utente.email) {
-      inviare = true;
+      qualcosaCambiato = true;
       datiDaInviare.email = this.datiForm.email;
     }
+
+    if(qualcosaCambiato) this.clickSalva.emit(datiDaInviare);
   }
 }

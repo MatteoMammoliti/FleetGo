@@ -60,9 +60,9 @@ export class FlottaGlobale implements OnInit {
   aziendeInPiattaforma: AziendaDTO[] = []
 
   listaStati = [
-    {label: 'Disponibile', value: 'DISPONIBILE'},
-    {label: 'Noleggiato', value: 'NOLEGGIATO'},
-    {label: 'In Manutenzione', value: 'MANUTENZIONE'}
+    {label: 'Disponibile', value: 'Disponibile'},
+    {label: 'Assegnato', value: 'Assegnato'},
+    {label: 'In Manutenzione', value: 'Manutenzione'}
   ];
 
   mostraModale: boolean = false;
@@ -136,10 +136,12 @@ export class FlottaGlobale implements OnInit {
         matchAzienda = veicolo.idAziendaAffiliata == this.filtroAzienda.idAzienda;
       }
 
-      let matchStato = true;
+      let matchStato: boolean | undefined = true;
       if (this.filtroStatoVeicolo && this.filtroStatoVeicolo !== '') {
-        if (this.filtroStatoVeicolo === 'MANUTENZIONE') {
-          matchStato = veicolo.inManutenzione || veicolo.statusContrattualeVeicolo === 'MANUTENZIONE';
+        if (this.filtroStatoVeicolo === 'Manutenzione') {
+          matchStato = veicolo.inManutenzione;
+        } else if(this.filtroStatoVeicolo === 'Assegnato') {
+          matchStato = veicolo.statusContrattualeVeicolo?.toLowerCase() === 'noleggiato';
         } else {
           matchStato = veicolo.statusContrattualeVeicolo?.toLowerCase() === this.filtroStatoVeicolo.toLowerCase();
         }

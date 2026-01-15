@@ -17,14 +17,11 @@ export class AziendeAffiliateService {
 
   private apiUrl = environment.apiUrl + '/dashboardFleetGo';
 
-  registraAzienda(admin: AdminAziendaleDTO, azienda: AziendaDTO) {
+  registraAzienda(contenitoreDati: ContenitoreDatiRegistrazioneAzienda) {
 
-    const contenitore: ContenitoreDatiRegistrazioneAzienda = {
-      adminAziendale: admin,
-      azienda: azienda
-    }
+    console.log('sto inviando', contenitoreDati);
 
-    return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitore, {
+    return this.http.post(`${this.apiUrl}/registraAziendaAdmin`, contenitoreDati, {
       withCredentials: true,
       responseType: 'text'
     });

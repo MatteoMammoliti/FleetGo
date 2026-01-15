@@ -120,6 +120,7 @@ public class RichiesteManutenzioneDAO {
                         return false;
                     }
                 }
+
                 if(accettata){
                     try(PreparedStatement st3 = con.prepareStatement(aggiornoVeicolo)){
                         st3.setBoolean(1, true);
@@ -132,6 +133,7 @@ public class RichiesteManutenzioneDAO {
                 }
                 con.commit();
                 return true;
+
             }
         catch(SQLException e){
             con.rollback();

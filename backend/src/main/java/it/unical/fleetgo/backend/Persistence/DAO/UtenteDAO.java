@@ -338,7 +338,6 @@ public class UtenteDAO {
 
 
             if(rs.next()) {
-                System.out.println("dentro if");
                 return rs.getString("nome_utente") + " " + rs.getString("cognome");
             }
         } catch (SQLException e) {

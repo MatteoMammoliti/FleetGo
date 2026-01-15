@@ -8,6 +8,7 @@ import {ModificaDatiUtenteDTO} from '@core/models/ModificaDatiUtenteDTO';
 import {AuthService} from '@core/auth/auth-service';
 import {Router} from '@angular/router';
 import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/template-titolo-sottotitolo/template-titolo-sottotitolo';
+import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 
 @Component({
   selector: 'app-impostazioni-dipendente',
@@ -18,6 +19,7 @@ import {TemplateTitoloSottotitolo} from '@shared/Componenti/IntestazionePagina/t
     ProfiloPersonale,
     PatenteDocumentiComponent,
     AffiliazioneAzienda,
+    BannerErrore,
   ],
   templateUrl: './impostazioni-dipendente.html',
   styleUrl: './impostazioni-dipendente.css',
@@ -33,8 +35,9 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   erroreBanner = "";
   successoBanner = "";
 
-  constructor(private impostazioniService: ImpostazioniService, private authService: AuthService, private router: Router) {
-  }
+  constructor(private impostazioniService: ImpostazioniService,
+              private authService: AuthService,
+              private router: Router) {}
 
   ngOnInit() {
     this.caricaDatiUtente();
@@ -57,16 +60,12 @@ export class ImpostazioniDipendenteComponent implements OnInit {
     });
   }
 
-  cambiaTab(tab: string) {
-    this.tabSelezionata = tab;
-    this.sezione = tab;
-  }
-
   aggiornaPatente(datiPatente: File) {
     this.impostazioniService.aggiornaPatente(datiPatente).subscribe({
       next: (datiPatenteServer) => {
         if (datiPatenteServer) {
           this.caricaDatiUtente();
+          this.gestisciSuccesso("Patente aggiornata con successo");
         }
       }, error: err => this.gestisciErrore(err.error)
     })
@@ -77,7 +76,6 @@ export class ImpostazioniDipendenteComponent implements OnInit {
       next: () => {
         this.authService.logout();
         this.router.navigate(['/login']);
-
       },
       error: (err) => {
         this.gestisciErrore(err.error);
@@ -85,12 +83,14 @@ export class ImpostazioniDipendenteComponent implements OnInit {
     });
   }
 
+  inviaModifiche(dati: ModificaDatiUtenteDTO) {
 
-  inviaModifiche(dati: any) {
+    console.log(dati);
+
     this.impostazioniService.inviaModifiche(dati).subscribe({
       next: () => {
-        alert("Profilo aggiornato!");
         this.caricaDatiUtente();
+        this.gestisciSuccesso("Dati aggiornati con successo");
       },
       error: (err) => this.gestisciErrore(err.error),
     });
@@ -99,7 +99,12 @@ export class ImpostazioniDipendenteComponent implements OnInit {
   gestisciErrore(messaggio: string) {
     this.successoBanner = '';
     this.erroreBanner = messaggio;
-    setTimeout(() => this.erroreBanner = '', 5000);
+    setTimeout(() => this.erroreBanner = '', 3000);
   }
 
+  gestisciSuccesso(messaggio: string) {
+    this.erroreBanner = '';
+    this.successoBanner = messaggio;
+    setTimeout(() => this.successoBanner = '', 3000);
+  }
 }

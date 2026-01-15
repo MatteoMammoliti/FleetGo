@@ -20,7 +20,7 @@
           [placeholder]="'Inserisci nome'"
           [(valore)]="nome"
           (valoreChange)="nome = $event"
-          [haErrore]="!!mappaErrori.nome"
+          [haErrore]="mappaErrori.nome"
           messaggioErrore="Inserisci un nome valido"
         >
         </app-input-checked>
@@ -30,7 +30,7 @@
           [placeholder]="'Inserisci cognome'"
           [(valore)]="cognome"
           (valoreChange)="cognome = $event"
-          [haErrore]="!!mappaErrori.cognome"
+          [haErrore]="mappaErrori.cognome"
           messaggioErrore="Inserisci un cognome valido"
         >
         </app-input-checked>
@@ -49,7 +49,7 @@
           [placeholder]="'esempio@azienda.it'"
           [(valore)]="email"
           (valoreChange)="email = $event"
-          [haErrore]="!!mappaErrori.email"
+          [haErrore]="mappaErrori.email"
           messaggioErrore="Inserisci una e-mail valida"
 
         >
@@ -69,7 +69,7 @@
           [placeholder]="'Nome Azienda S.r.l.'"
           [(valore)]="nomeAzienda"
           (valoreChange)="nomeAzienda = $event"
-          [haErrore]="!!mappaErrori.nomeAzienda"
+          [haErrore]="mappaErrori.nomeAzienda"
           messaggioErrore="Inserisci una Ragione Sociale valida"
         >
         </app-input-checked>
@@ -81,7 +81,7 @@
           [placeholder]="'00000000000'"
           [(valore)]="partitaIva"
           (valoreChange)="partitaIva = $event"
-          [haErrore]="!!mappaErrori.partitaIva"
+          [haErrore]="mappaErrori.partitaIva"
           messaggioErrore="Inserisci una Partita Iva valida"
         >
         </app-input-checked>

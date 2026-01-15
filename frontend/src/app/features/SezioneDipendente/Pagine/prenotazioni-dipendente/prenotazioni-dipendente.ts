@@ -64,9 +64,11 @@ export class PrenotazioniDipendente implements OnInit {
       next: (risposta: any) => {
         this.getRichiesteDipendente()
         this.gestisciSuccesso("Prenotazione annullata con successo!");
+        this.chiudiModaleCheck();
       },
       error: (err) => {
         this.gestisciErrore(err.error);
+        this.chiudiModaleCheck();
       }
     })
   }
@@ -115,6 +117,7 @@ export class PrenotazioniDipendente implements OnInit {
     this.modaleAnnullaPrenotazione=false;
     this.richiestaInterssata=null;
   }
+
   confermaModaleCheck(){
     this.eliminaPrenotazione();
   }

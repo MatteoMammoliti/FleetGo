@@ -42,5 +42,4 @@ export class TemplateFinestraModale {
   confermaModale() {
     this.conferma.emit();
   }
-
 }

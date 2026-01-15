@@ -1,6 +1,7 @@
 package it.unical.fleetgo.backend.Models.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unical.fleetgo.backend.Models.DTO.Utente.UtenteDTO;
 import it.unical.fleetgo.backend.Persistence.Entity.Azienda;
 import lombok.Getter;
@@ -15,6 +16,8 @@ public class AziendaDTO {
     private Integer idAdminAzienda;
     private String nomeAzienda;
     private Integer sedeAzienda;
+
+    @JsonProperty("pIva")
     private String pIva;
 
     public AziendaDTO() {}

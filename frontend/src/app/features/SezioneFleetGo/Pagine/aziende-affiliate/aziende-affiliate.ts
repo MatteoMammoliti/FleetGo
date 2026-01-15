@@ -9,6 +9,7 @@ import {AziendeAffiliateService} from '@features/SezioneFleetGo/ServiceSezioneFl
 import {AziendaDTO} from '@core/models/AziendaDTO';
 import {BannerErrore} from '@shared/Componenti/Banner/banner-errore/banner-errore';
 import {IntestazioneEBackground} from '@shared/Componenti/IntestazionePagina/intestazione-ebackground/intestazione-ebackground';
+import {ContenitoreDatiRegistrazioneAzienda} from '@core/models/ContenitoreDatiRegistrazioneAzienda';
 
 @Component({
   selector: 'app-aziende-affiliate',
@@ -82,8 +83,8 @@ export class AziendeAffiliate implements OnInit {
     });
   }
 
-  onAziendaAggiunta(mod: any) {
-    this.aziendeService.registraAzienda(mod.adminAziendale, mod.azienda).subscribe({
+  onAziendaAggiunta(contenitore: ContenitoreDatiRegistrazioneAzienda) {
+    this.aziendeService.registraAzienda(contenitore).subscribe({
       next: (res) => {
         this.richiediAziendeAttive();
         if (this.formAggiunta) this.formAggiunta.pulisciForm();
