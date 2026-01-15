@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CardAutoAziendale} from '@shared/Componenti/Card/card-auto-aziendale/card-auto-aziendale';
+import {CardAutoAziendale} from '@features/SezioneAdminAziendale/Componenti/card/card-auto-aziendale/card-auto-aziendale';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FlottaAdminAziendaleService} from '../../ServiceSezioneAdminAziendale/flotta-aziendale-service';
